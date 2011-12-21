@@ -24,7 +24,7 @@ public class Ether : MonoBehaviour {
 	private double timeCreated;
 	private double timeToSpawnFoodbit = 0.0f;
 	private int foodbitCount = 0;
-	private int fbSpawnRange = 65;
+	private int fbSpawnRange = 200;
 	
 
 	void Awake () {

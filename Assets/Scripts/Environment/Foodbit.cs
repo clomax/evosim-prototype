@@ -34,9 +34,6 @@ public class Foodbit : MonoBehaviour {
 		mr = (MeshRenderer)this.gameObject.AddComponent("MeshRenderer");
 		mr.material = (Material)Resources.Load("Materials/Foodbit");
 		eth = GameObject.Find("Ether").GetComponent<Ether>();
-		
-		// Default value for energy assigned to each foodbit
-		// 	is defined in Ether class
 		energy = eth.getFoodbitEnergy();
 	}
 	
