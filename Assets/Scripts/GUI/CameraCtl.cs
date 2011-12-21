@@ -17,18 +17,17 @@ public class CameraCtl : MonoBehaviour {
     private float sensitivityY = 2.5F;
 	
 	private Transform _t;
-
+	private PauseMenu pause;
+	
     float hdg = 0F;
     float pitch = 0F;
-
-	PauseMenu pause;
 	
 	void Awake () {
 		_t = transform;
 	}
 	
     void Start() {
-		pause = GetComponent<PauseMenu>();
+		pause = (PauseMenu)GetComponent("PauseMenu");
 		pitch = _t.localEulerAngles.x;
     }
 

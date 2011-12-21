@@ -12,13 +12,32 @@ using System.Collections;
 
 
 public class Main : MonoBehaviour {
-
-	public Transform ether;
-	public static Logger lg;
+	
+	private Logger lg;
+	
+	private GameObject aperatus;
+	private GameObject cam;
+	private GameObject plane;
+	private GameObject ether;
+	private GameObject _catch;
+	private GameObject nrg_ether;
+	
+	private MeshRenderer p_mr;
 	
 	void Start () {
 		lg = Logger.getInstance();
-		Instantiate(ether.gameObject);
+		aperatus = (GameObject)Instantiate(Resources.Load("Prefabs/Aperatus"));
+		cam = GameObject.Find("Main Camera");
+		cam.AddComponent("CameraCtl");
+		cam.AddComponent("PauseMenu");
+		plane = GameObject.Find("Plane");
+		p_mr = (MeshRenderer)plane.AddComponent("MeshRenderer");
+		p_mr.material = (Material)Resources.Load("Materials/grid");
+		_catch = GameObject.Find("Catch");
+		_catch.AddComponent("Catch");
+		ether = (GameObject)Instantiate(Resources.Load("Prefabs/Ether"));
+		nrg_ether = (GameObject)Instantiate(Resources.Load("Prefabs/Energy"));
+		nrg_ether.AddComponent("EtherEnergy");
 	}
 
 	void OnDestroy() {

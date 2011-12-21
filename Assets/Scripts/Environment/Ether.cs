@@ -13,7 +13,7 @@ using System.Collections;
 
 public class Ether : MonoBehaviour {
 	
-	public Transform foodbit;
+	public GameObject foodbit;
 
 	private Foodbit fb;
 	private Logger lg;	
@@ -24,7 +24,7 @@ public class Ether : MonoBehaviour {
 	private double timeCreated;
 	private double timeToSpawnFoodbit = 0.0f;
 	private int foodbitCount = 0;
-	private int fbSpawnRange = 65;
+	private int fbSpawnRange = 200;
 	
 
 	void Awake () {
@@ -32,6 +32,7 @@ public class Ether : MonoBehaviour {
 	}
 	
 	void Start () {
+		foodbit = (GameObject)Resources.Load("Prefabs/Foodbit");
 		lg = Logger.getInstance();
 		lg.write("EVT: Ether_instantiated" + " " + Time.realtimeSinceStartup);
 		timeCreated = Time.time;

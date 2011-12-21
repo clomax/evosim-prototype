@@ -2,6 +2,7 @@
 ## Introduction
 The program is intended to be a 'toy'. It is not a scientific tool or a true reflection of evolution in the natural world.
 
+## License - BSD License
 Copyright (c) 2011, Craig Lomax
 All rights reserved.
 
