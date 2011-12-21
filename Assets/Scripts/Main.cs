@@ -15,6 +15,7 @@ public class Main : MonoBehaviour {
 	
 	private Logger lg;
 	private GameObject aperatus;
+	private GameObject plane;
 	private GameObject ether;
 	
 	void Start () {

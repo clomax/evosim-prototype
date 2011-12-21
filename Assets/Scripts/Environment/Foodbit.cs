@@ -25,11 +25,14 @@ public class Foodbit : MonoBehaviour {
 
 	public static float foodbitHeight = 1.0f;
 	
-	public Ether eth;
+	private Ether eth;
+	private MeshRenderer mr;
 	private double energy;
 	
 	
 	void Start () {
+		mr = (MeshRenderer)this.gameObject.AddComponent("MeshRenderer");
+		mr.material = (Material)Resources.Load("Materials/Foodbit");
 		eth = GameObject.Find("Ether").GetComponent<Ether>();
 		
 		// Default value for energy assigned to each foodbit
