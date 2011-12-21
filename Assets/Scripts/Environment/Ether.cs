@@ -60,7 +60,7 @@ public class Ether : MonoBehaviour {
 	 */
 	public void newFoodbit (Vector3 vec) {
 		Instantiate(foodbit, vec, Quaternion.identity);
-		energy -= foodbitEnergy;
+		subtractEnergy(foodbitEnergy);
 		foodbitCount++;
 	}
 	
@@ -78,6 +78,10 @@ public class Ether : MonoBehaviour {
 	
 	public int getFoodbitCount () {
 		return foodbitCount;
+	}
+	
+	public void subtractEnergy (double n) {
+		energy -= n;
 	}
 	
 	public void addToEnergy(double n) {
