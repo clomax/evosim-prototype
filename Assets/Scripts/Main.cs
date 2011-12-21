@@ -12,13 +12,15 @@ using System.Collections;
 
 
 public class Main : MonoBehaviour {
-
-	public Transform ether;
-	public static Logger lg;
+	
+	private Logger lg;
+	private GameObject aperatus;
+	private GameObject ether;
 	
 	void Start () {
 		lg = Logger.getInstance();
-		Instantiate(ether.gameObject);
+		aperatus = (GameObject)Instantiate(Resources.Load("Prefabs/Aperatus"));
+		ether = (GameObject)Instantiate(Resources.Load("Prefabs/Ether"));
 	}
 
 	void OnDestroy() {
