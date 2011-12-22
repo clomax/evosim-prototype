@@ -5,13 +5,15 @@ public class Spawner : MonoBehaviour {
 	
 	private Logger lg;
 	private Ether eth;
+	private GameObject crt;
 	public static GameObject container;
 	public static Spawner instance;
-	public bool spawnNow = false;
+	private Vector3 pos;
 	
 	void Start () {
 		lg = Logger.getInstance();
 		eth = GameObject.Find("Ether").GetComponent<Ether>();
+		crt = (GameObject)Resources.Load("Prefabs/PrototypeCreature");
 	}
 	
 	public static Spawner getInstance () {
@@ -23,14 +25,11 @@ public class Spawner : MonoBehaviour {
 		return instance;
 	}
 	
-	void Update () {
-		if(spawnNow) {
-			
-		}
-	}
-	
-	public void spawn (Vector3 pos) {
-		//drop new creature at given position
+	public void spawn (Vector3 pos, Vector3 rot) {
+		GameObject clone;
+		clone = (GameObject)Instantiate(crt, pos, Quaternion.identity);
+		clone.transform.Rotate(rot);
+		clone.AddComponent("Creature");
 	}
 
 }

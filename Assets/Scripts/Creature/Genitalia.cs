@@ -21,7 +21,7 @@ public class Genitalia : MonoBehaviour {
 	void Start () {
 		lg = Logger.getInstance();
 		crt = transform.parent.GetComponent<Creature>();
-		spw = (Spawner)GetComponent("Spawner");
+		spw = Spawner.getInstance();
 	}
 	
 	/*
@@ -33,6 +33,7 @@ public class Genitalia : MonoBehaviour {
 	void OnTriggerEnter (Collider col) {
 		if (col.gameObject.name == "Genital") {
 			other_crt = col.transform.parent.gameObject.GetComponent<Creature>();
+			spw.spawn(col.transform.position, col.transform.localEulerAngles);
 			string mesg = "CRTB" + " " + crt.getID() + " " +
 				other_crt.getID() + " " + Time.realtimeSinceStartup; 
 			Debug.Log(mesg);
