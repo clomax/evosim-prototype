@@ -12,9 +12,9 @@ using System.Collections;
 
 
 public class Main : MonoBehaviour {
-	
+
+	#pragma warning disable 0414
 	private Logger lg;
-	
 	private GameObject aperatus;
 	private GameObject cam;
 	private GameObject plane;
@@ -23,7 +23,12 @@ public class Main : MonoBehaviour {
 	private GameObject nrg_ether;
 	
 	private MeshRenderer p_mr;
+	#pragma warning restore 0414
 	
+	/*
+	 * Instantiate all necessary objects, attach and configure
+	 * Components as needed.
+	 */
 	void Start () {
 		lg = Logger.getInstance();
 		aperatus = (GameObject)Instantiate(Resources.Load("Prefabs/Aperatus"));
@@ -39,7 +44,10 @@ public class Main : MonoBehaviour {
 		nrg_ether = (GameObject)Instantiate(Resources.Load("Prefabs/Energy"));
 		nrg_ether.AddComponent("EtherEnergy");
 	}
-
+	
+	/*
+	 * Cleanup before exiting
+	 */
 	void OnDestroy() {
 		lg.close();
 	}

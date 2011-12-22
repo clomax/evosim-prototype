@@ -32,11 +32,7 @@ public class PauseMenu : MonoBehaviour
     
     public Color statColor = Color.red;
     
-    public string[] credits= {
-        "A Fugu Games Production",
-        "Programming by Phil Chu",
-        "Fugu logo by Shane Nakamura Designs",
-        "Copyright (c) 2007-2008 Technicat, LLC"} ;
+    public string[] credits= {"Copyright (c) 2011 Craig Lomax"} ;
     public Texture[] crediticons;
     
     public enum Page {
@@ -123,7 +119,6 @@ public class PauseMenu : MonoBehaviour
             GUI.skin = skin;
         }
         ShowStatNums();
-        ShowLegal();
         if (IsGamePaused()) {
             GUI.color = statColor;
             switch (currentPage) {
@@ -131,20 +126,6 @@ public class PauseMenu : MonoBehaviour
                 case Page.Options: ShowToolbar(); break;
             }
         }   
-    }
-    
-    void ShowLegal() {
-        if (!IsLegal()) {
-            GUI.Label(new Rect(Screen.width-100,Screen.height-20,90,20),
-            "jdonavan.com");
-        }
-    }
-    
-    bool IsLegal() {
-        return !IsBrowser() || 
-        Application.absoluteURL.StartsWith("http://www.jdonavan.com/") ||
-        Application.absoluteURL.StartsWith("http://jdonavan.com/");
-
     }
     
     void ShowToolbar() {

@@ -14,6 +14,7 @@ assetDatabase3
 AssetImportState
 assetservercachev3
 AssetVersioning.db
+AudioManager.asset
 BuildPlayer.prefs
 BuildSettings.asset
 EditorSettings.asset
@@ -23,6 +24,7 @@ FailedAssetImports.txt
 guidmapper
 InspectorExpandedItems.asset
 MonoManager.asset
+NetworkManager.asset
 ScriptMapper
 
 cache/*

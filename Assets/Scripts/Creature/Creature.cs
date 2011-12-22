@@ -14,15 +14,18 @@ public class Creature : MonoBehaviour {
 	
 	private string LOGTAG = "CRT";
 	private int id;
+	private int nextId;
 	private float sensitivityFwd = 0.5F;
 	private float sensitivityHdg = 2.0F;
 	private double energy;
 	private float hdg = 0F;
 	private Transform _t;
+	#pragma warning disable 0414
 	private Logger lg;
+	#pragma warning restore 0414
 	
 	public Creature () {
-		this.id = 0;
+		this.id = nextID();
 	}
 	
 	void Start () {
@@ -69,6 +72,11 @@ public class Creature : MonoBehaviour {
 	
 	public int getID () {
 		return this.id;
+	}
+	
+	private int nextID () {
+		nextId += 1;
+		return nextId;
 	}
 	
 	
