@@ -14,7 +14,6 @@ using System.Collections;
 public class GeneticsMain : MonoBehaviour {
 
 	public Ether eth;
-	public NewGene ng;
 
 	// Use this for initialization
 	void Start () {

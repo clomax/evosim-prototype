@@ -65,10 +65,6 @@ public class Creature : MonoBehaviour {
 		return (this.getEnergy());
 	}
 	
-	public string getLogTag () {
-		return this.LOGTAG;
-	}
-	
 	public int getID () {
 		return this.id;
 	}
