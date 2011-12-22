@@ -16,10 +16,12 @@ public class Genitalia : MonoBehaviour {
 	public Logger lg;
 	public Creature crt;
 	public Creature other_crt;
+	private Spawner spw;
 
 	void Start () {
 		lg = Logger.getInstance();
 		crt = transform.parent.GetComponent<Creature>();
+		spw = (Spawner)GetComponent("Spawner");
 	}
 	
 	/*
@@ -30,7 +32,7 @@ public class Genitalia : MonoBehaviour {
 	 */
 	void OnTriggerEnter (Collider col) {
 		other_crt = col.gameObject.GetComponent<Creature>();
-		if (col.gameObject.name == "Genital") {
+		if (col.gameObject.name == "Genital") {			
 			string mesg = "CRTB" + " " + crt.getID() + " " +
 				other_crt.getID() + " " + Time.realtimeSinceStartup; 
 			Debug.Log(mesg);

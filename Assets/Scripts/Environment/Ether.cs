@@ -13,7 +13,7 @@ using System.Collections;
 
 public class Ether : MonoBehaviour {
 	
-	public GameObject foodbit;
+	private GameObject foodbit;
 
 	private Foodbit fb;
 	private Logger lg;	

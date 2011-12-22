@@ -20,9 +20,4 @@ public class GeneticsMain : MonoBehaviour {
 		// 10  random genes
 		// instantiate
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

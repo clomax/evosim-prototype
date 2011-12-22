@@ -56,6 +56,10 @@ public class Creature : MonoBehaviour {
 		this.energy += n;
 	}
 	
+	public void subtractEnergy (double n) {
+		this.energy -= n;	
+	}
+	
 	/*
 	 * Remove the creature from existence and return
 	 * the creature's energy.

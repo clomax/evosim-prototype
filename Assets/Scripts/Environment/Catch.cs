@@ -21,8 +21,6 @@ public class Catch : MonoBehaviour {
 		if (col.transform.tag == "Creature") {
 			crt = col.GetComponent<Creature>();
 			eth.addToEnergy(crt.kill());
-			//eth.addToEnergy(crt.getEnergy());
-			//Destroy(col.gameObject);
 		}
 	}
 
