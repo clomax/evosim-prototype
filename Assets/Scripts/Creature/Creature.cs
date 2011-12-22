@@ -12,7 +12,6 @@ using System.Collections;
 
 public class Creature : MonoBehaviour {
 	
-	private string LOGTAG = "CRT";
 	private int id;
 	private int nextId;
 	private float sensitivityFwd = 0.5F;
@@ -82,15 +81,15 @@ public class Creature : MonoBehaviour {
 	
 	
 	
-	void moveForward (float val) {
+	void moveForward (float n) {
 		Vector3 fwd = _t.forward;
 		fwd.y = 0;
 		fwd.Normalize();
-		this._t.position += val * fwd;
+		this._t.position += n * fwd;
 	}
 	
-	void changeHeading (float val) {
-		this.hdg += val;
+	void changeHeading (float n) {
+		this.hdg += n;
 		this.wrapAngle(hdg);
 		this._t.localEulerAngles = new Vector3(0,hdg,0);
 	}

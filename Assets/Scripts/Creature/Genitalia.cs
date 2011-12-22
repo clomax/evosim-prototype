@@ -22,10 +22,17 @@ public class Genitalia : MonoBehaviour {
 		crt = transform.parent.GetComponent<Creature>();
 	}
 	
+	/*
+	 * Determine the GameObject colliding with the genital
+	 * radius. If it's the genitalia of another creature
+	 * log event and pass genes of both creatues to
+	 * a function yet undetermined.
+	 */
 	void OnTriggerEnter (Collider col) {
 		other_crt = col.gameObject.GetComponent<Creature>();
 		if (col.gameObject.name == "Genital") {
-			string mesg = "CRTB" + " " + crt.getID() + " " + other_crt.getID() + " " + Time.realtimeSinceStartup; 
+			string mesg = "CRTB" + " " + crt.getID() + " " +
+				other_crt.getID() + " " + Time.realtimeSinceStartup; 
 			Debug.Log(mesg);
 			lg.write(mesg);
 		 }
