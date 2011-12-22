@@ -11,11 +11,10 @@ using System.Collections;
  */
 
 public class Creature : MonoBehaviour {
-	
+		
 	private int id;
-	private int nextId;
-	private float sensitivityFwd = 0.5F;
-	private float sensitivityHdg = 2.0F;
+	private float sensitivityFwd = 1.0F;
+	private float sensitivityHdg = 2.5F;
 	private double energy;
 	private float hdg = 0F;
 	private Transform _t;
@@ -24,7 +23,7 @@ public class Creature : MonoBehaviour {
 	#pragma warning restore 0414
 	
 	public Creature () {
-		this.id = nextID();
+		this.id = GetInstanceID();
 	}
 	
 	void Start () {
@@ -71,11 +70,6 @@ public class Creature : MonoBehaviour {
 	
 	public int getID () {
 		return this.id;
-	}
-	
-	private int nextID () {
-		nextId += 1;
-		return nextId;
 	}
 	
 	

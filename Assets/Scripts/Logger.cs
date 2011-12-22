@@ -34,7 +34,6 @@ public class Logger : MonoBehaviour {
 	}
 	
 	public void write (String str) {
-		Debug.Log(str);
 		sw.WriteLine(str);
 	}
 	

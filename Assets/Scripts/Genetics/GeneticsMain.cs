@@ -13,11 +13,24 @@ using System.Collections;
 
 public class GeneticsMain : MonoBehaviour {
 
-	public Ether eth;
-
-	// Use this for initialization
+	private Ether eth;	
+	public static GameObject container;
+	public static GeneticsMain instance;
+	
 	void Start () {
-		// 10  random genes
-		// instantiate
+		//10 random genes
+	}
+	
+	public GeneticsMain () {
+		
+	}
+	
+	public static GeneticsMain getInstance () {
+		if(!instance) {
+			container = new GameObject();
+			container.name = "GeneticsMain";
+			instance = container.AddComponent(typeof(GeneticsMain)) as GeneticsMain;
+		}
+		return instance;
 	}
 }

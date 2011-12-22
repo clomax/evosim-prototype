@@ -1,4 +1,4 @@
-# Evosim - A realtime simulation of virtual creatures by means of Natural and Sexual Selection in varying environments.
+# Evosim - Realtime evolution of virtual creatures in physical simulated environments.
 ## Introduction
 The program is intended to be a 'toy'. It is not a scientific tool or a true reflection of evolution in the natural world.
 

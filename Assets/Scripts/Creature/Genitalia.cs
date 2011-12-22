@@ -31,8 +31,8 @@ public class Genitalia : MonoBehaviour {
 	 * a function yet undetermined.
 	 */
 	void OnTriggerEnter (Collider col) {
-		other_crt = col.gameObject.GetComponent<Creature>();
-		if (col.gameObject.name == "Genital") {			
+		if (col.gameObject.name == "Genital") {
+			other_crt = col.transform.parent.gameObject.GetComponent<Creature>();
 			string mesg = "CRTB" + " " + crt.getID() + " " +
 				other_crt.getID() + " " + Time.realtimeSinceStartup; 
 			Debug.Log(mesg);
