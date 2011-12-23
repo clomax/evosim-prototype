@@ -18,7 +18,7 @@ public class Mouth : MonoBehaviour {
 	private LineRenderer lr;
 	private Vector3 line_start;
 	private Vector3 line_end;
-	private int line_length;
+	private int line_length = 5;
 	private Vector3 pos_crt;
 	
 	void Start () {
@@ -32,13 +32,28 @@ public class Mouth : MonoBehaviour {
 	}
 	
 	public Mouth () {
-		line_length = 5;
-		lr.SetPosition(0, new Vector3(pos_crt.x,pos_crt.y,pos_crt.z));
-		lr.SetPosition(1, new Vector3(pos_crt.x,pos_crt.y,pos_crt.z + line_length));
+		
 	}
 	
-	void Update () {				
-		
+	void Update () {
+		if(closestFoodbit() != null)
+			Debug.Log(closestFoodbit().transform.position.x + ", " + closestFoodbit().transform.position.z);
+	}
+	
+	private GameObject closestFoodbit () {
+		GameObject[] fbits = GameObject.FindGameObjectsWithTag("Foodbit");
+		GameObject closest = null;
+		float dist = line_length;
+		Vector3 pos = transform.position;
+		foreach(GameObject fb in fbits) {
+			Vector3 diff = fb.transform.position - pos;
+			float curr_dist = diff.sqrMagnitude;
+			if (curr_dist < dist) {
+				closest = fb;
+				dist = curr_dist;
+			}
+		}
+		return closest;	
 	}
 	
 	/*
