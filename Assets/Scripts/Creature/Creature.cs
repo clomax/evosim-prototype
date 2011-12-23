@@ -24,6 +24,7 @@ public class Creature : MonoBehaviour {
 	
 	public Creature () {
 		this.id = GetInstanceID();
+		//induce effects of genes
 	}
 	
 	void Start () {
