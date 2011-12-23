@@ -15,19 +15,23 @@ public class Mouth : MonoBehaviour {
 	
 	public Foodbit fb;
 	public Creature crt;
+	private Transform _t;
 	private LineRenderer lr;
 	private Vector3 line_start;
 	private Vector3 line_end;
-	private int line_length = 5;
-	private Vector3 pos_crt;
+	private float line_width = 0.2F;
+	private int fb_detect_range = 600;
 	
 	void Start () {
+		_t = transform;
 		crt = transform.parent.GetComponent<Creature>();
 		lr = (LineRenderer)this.gameObject.AddComponent("LineRenderer");
-		lr.useWorldSpace = false;
+		lr.useWorldSpace = true;
 		lr.material = (Material)Resources.Load("Materials/line");
-		lr.SetWidth(0.1F,0.1F);
+		lr.SetWidth(line_width, line_width);
 		lr.SetVertexCount(2);
+		lr.castShadows = false;
+		lr.receiveShadows = false;
 		lr.renderer.enabled = true;
 	}
 	
@@ -36,14 +40,26 @@ public class Mouth : MonoBehaviour {
 	}
 	
 	void Update () {
-		if(closestFoodbit() != null)
-			Debug.Log(closestFoodbit().transform.position.x + ", " + closestFoodbit().transform.position.z);
+		GameObject cf = closestFoodbit();
+		if(cf) {
+			lr.useWorldSpace = true;
+			Debug.Log(cf.transform.position.x + ", " + cf.transform.position.z);
+			line_end = new Vector3(cf.transform.position.x, Foodbit.foodbitHeight/2, cf.transform.position.z);
+			lr.SetPosition(1,line_end);
+			resetStart();
+		} else {
+			lr.useWorldSpace = false;
+			line_start = new Vector3(0,0,0);
+			line_end = new Vector3(0,0,(fb_detect_range/100)/2);
+			lr.SetPosition(0,line_start);
+			lr.SetPosition(1,line_end);
+		}
 	}
 	
 	private GameObject closestFoodbit () {
 		GameObject[] fbits = GameObject.FindGameObjectsWithTag("Foodbit");
 		GameObject closest = null;
-		float dist = line_length;
+		float dist = fb_detect_range;
 		Vector3 pos = transform.position;
 		foreach(GameObject fb in fbits) {
 			Vector3 diff = fb.transform.position - pos;
@@ -56,6 +72,11 @@ public class Mouth : MonoBehaviour {
 		return closest;	
 	}
 	
+	private void resetStart () {
+		line_start = new Vector3(_t.position.x,_t.position.y,_t.position.z);
+		lr.SetPosition(0,line_start);
+	}
+	
 	/*
 	 * If a foobit enters the mouth; Omnomnom.
 	void OnTriggerEnter (Collider col) {
@@ -66,5 +87,6 @@ public class Mouth : MonoBehaviour {
 		}
 	}
 	*/
+
 }
 
