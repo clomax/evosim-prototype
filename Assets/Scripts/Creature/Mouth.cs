@@ -26,7 +26,6 @@ public class Mouth : MonoBehaviour {
 	
 	void Start () {
 		_t = transform;
-		crt = transform.parent.GetComponent<Creature>();
 		lr = (LineRenderer)this.gameObject.AddComponent("LineRenderer");
 		lr.material = (Material)Resources.Load("Materials/line");
 		lr.SetWidth(line_width, line_width);
