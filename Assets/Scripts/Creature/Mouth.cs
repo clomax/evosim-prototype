@@ -18,15 +18,16 @@ public class Mouth : MonoBehaviour {
 	private Transform _t;
 	private LineRenderer lr;
 	private Vector3 line_start;
+	private float line_length = 0.5f;
 	private Vector3 line_end;
-	private float line_width = 0.2F;
-	private int fb_detect_range = 600;
+	private float line_width = 0.5F;
+	private int fb_detect_range = 2000;
+	//private int fb_eat_range = ;
 	
 	void Start () {
 		_t = transform;
 		crt = transform.parent.GetComponent<Creature>();
 		lr = (LineRenderer)this.gameObject.AddComponent("LineRenderer");
-		lr.useWorldSpace = true;
 		lr.material = (Material)Resources.Load("Materials/line");
 		lr.SetWidth(line_width, line_width);
 		lr.SetVertexCount(2);
@@ -43,14 +44,13 @@ public class Mouth : MonoBehaviour {
 		GameObject cf = closestFoodbit();
 		if(cf) {
 			lr.useWorldSpace = true;
-			Debug.Log(cf.transform.position.x + ", " + cf.transform.position.z);
 			line_end = new Vector3(cf.transform.position.x, Foodbit.foodbitHeight/2, cf.transform.position.z);
 			lr.SetPosition(1,line_end);
 			resetStart();
 		} else {
 			lr.useWorldSpace = false;
 			line_start = new Vector3(0,0,0);
-			line_end = new Vector3(0,0,(fb_detect_range/100)/2);
+			line_end = new Vector3(0,0,line_length);
 			lr.SetPosition(0,line_start);
 			lr.SetPosition(1,line_end);
 		}
@@ -89,4 +89,3 @@ public class Mouth : MonoBehaviour {
 	*/
 
 }
-
