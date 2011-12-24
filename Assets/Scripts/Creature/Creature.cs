@@ -11,7 +11,8 @@ using System.Collections;
  */
 
 public class Creature : MonoBehaviour {
-		
+	
+	private GameObject mouth;
 	private int id;
 	private float sensitivityFwd = 1.0F;
 	private float sensitivityHdg = 2.5F;
@@ -24,6 +25,7 @@ public class Creature : MonoBehaviour {
 	
 	public Creature () {
 		this.id = GetInstanceID();
+		this.mouth = (GameObject)Resources.Load("Prefabs/Creature/Mouth");
 		//induce effects of genes
 	}
 	
@@ -32,6 +34,11 @@ public class Creature : MonoBehaviour {
 		this.name = "Creature";
 		this.hdg = transform.localEulerAngles.y;
 		this.lg = Logger.getInstance();
+		
+		this.mouth = (GameObject)Instantiate(mouth);
+		this.mouth.transform.parent = transform;
+		this.mouth.transform.localPosition = new Vector3(0,0,0.5F);
+		this.mouth.AddComponent("Mouth");
 	}
 	
 	void Update () {

@@ -13,7 +13,7 @@ public class Spawner : MonoBehaviour {
 	void Start () {
 		lg = Logger.getInstance();
 		eth = GameObject.Find("Ether").GetComponent<Ether>();
-		crt = (GameObject)Resources.Load("Prefabs/PrototypeCreature");
+		crt = (GameObject)Resources.Load("Prefabs/Creature/PrototypeCreature");
 	}
 	
 	public static Spawner getInstance () {

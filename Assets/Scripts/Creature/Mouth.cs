@@ -36,10 +36,6 @@ public class Mouth : MonoBehaviour {
 		lr.renderer.enabled = true;
 	}
 	
-	public Mouth () {
-		
-	}
-	
 	void Update () {
 		GameObject cf = closestFoodbit();
 		if(cf) {
