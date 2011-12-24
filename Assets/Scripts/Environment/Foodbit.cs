@@ -23,7 +23,7 @@ using System.Collections;
 
 public class Foodbit : MonoBehaviour {
 
-	public static float foodbitHeight = 2.0f;
+	public static float foodbitHeight = 1.0f;
 	
 	private Ether eth;
 	private MeshRenderer mr;

@@ -17,7 +17,11 @@ public class Ether : MonoBehaviour {
 
 	private Logger lg;	
 	
+<<<<<<< local
+	private double grossEnergy = 20000.0f;
+=======
 	private double grossEnergy = 1000.0f;
+>>>>>>> other
 	private double energy;
 	private double foodbitEnergy = 50.0f;
 	private double timeCreated;
