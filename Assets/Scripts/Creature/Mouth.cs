@@ -15,29 +15,24 @@ public class Mouth : MonoBehaviour {
 	
 	public Foodbit fb;
 	public Creature crt;
+	private Transform _t;
 	private LineRenderer lr;
 	private Vector3 line_start;
 	private float line_length = 0.5f;
 	private Vector3 line_end;
-<<<<<<< local
-	private int line_length = 5;
-	private Vector3 pos_crt;
-=======
 	private float line_width = 0.5F;
 	private int fb_detect_range = 2000;
 	//private int fb_eat_range = ;
->>>>>>> other
 	
 	void Start () {
+		_t = transform;
 		crt = transform.parent.GetComponent<Creature>();
 		lr = (LineRenderer)this.gameObject.AddComponent("LineRenderer");
-<<<<<<< local
-		lr.useWorldSpace = false;
-=======
->>>>>>> other
 		lr.material = (Material)Resources.Load("Materials/line");
-		lr.SetWidth(0.1F,0.1F);
+		lr.SetWidth(line_width, line_width);
 		lr.SetVertexCount(2);
+		lr.castShadows = false;
+		lr.receiveShadows = false;
 		lr.renderer.enabled = true;
 	}
 	
@@ -46,10 +41,6 @@ public class Mouth : MonoBehaviour {
 	}
 	
 	void Update () {
-<<<<<<< local
-		if(closestFoodbit() != null)
-			Debug.Log(closestFoodbit().transform.position.x + ", " + closestFoodbit().transform.position.z);
-=======
 		GameObject cf = closestFoodbit();
 		if(cf) {
 			lr.useWorldSpace = true;
@@ -63,13 +54,12 @@ public class Mouth : MonoBehaviour {
 			lr.SetPosition(0,line_start);
 			lr.SetPosition(1,line_end);
 		}
->>>>>>> other
 	}
 	
 	private GameObject closestFoodbit () {
 		GameObject[] fbits = GameObject.FindGameObjectsWithTag("Foodbit");
 		GameObject closest = null;
-		float dist = line_length;
+		float dist = fb_detect_range;
 		Vector3 pos = transform.position;
 		foreach(GameObject fb in fbits) {
 			Vector3 diff = fb.transform.position - pos;
@@ -82,6 +72,11 @@ public class Mouth : MonoBehaviour {
 		return closest;	
 	}
 	
+	private void resetStart () {
+		line_start = new Vector3(_t.position.x,_t.position.y,_t.position.z);
+		lr.SetPosition(0,line_start);
+	}
+	
 	/*
 	 * If a foobit enters the mouth; Omnomnom.
 	void OnTriggerEnter (Collider col) {
@@ -92,4 +87,5 @@ public class Mouth : MonoBehaviour {
 		}
 	}
 	*/
+
 }
