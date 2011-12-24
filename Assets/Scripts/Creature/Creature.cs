@@ -11,7 +11,8 @@ using System.Collections;
  */
 
 public class Creature : MonoBehaviour {
-	
+
+#pragma warning disable 0414
 	private GameObject mth;
 	private int id;
 	private float sensitivityFwd = 1.0F;
@@ -19,9 +20,8 @@ public class Creature : MonoBehaviour {
 	private double energy;
 	private float hdg = 0F;
 	private Transform _t;
-	#pragma warning disable 0414
 	private Logger lg;
-	#pragma warning restore 0414
+#pragma warning restore 0414
 	
 	void Start () {
 		this._t = transform;

@@ -17,6 +17,7 @@ public class Main : MonoBehaviour {
 	private Logger lg;
 	private Spawner spw;
 	private GeneticsMain gm;
+
 	private GameObject aperatus;
 	private GameObject cam;
 	private GameObject plane;

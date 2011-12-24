@@ -3,12 +3,14 @@ using System.Collections;
 
 public class Spawner : MonoBehaviour {
 	
+#pragma warning disable 0414
 	private Logger lg;
 	private Ether eth;
 	private GameObject crt;
 	public static GameObject container;
 	public static Spawner instance;
 	private Vector3 pos;
+#pragma warning restore 0414
 	
 	void Start () {
 		lg = Logger.getInstance();

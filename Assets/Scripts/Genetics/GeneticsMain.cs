@@ -22,7 +22,6 @@ public class GeneticsMain : MonoBehaviour {
 		spw = Spawner.getInstance();
 		spw.spawn(new Vector3(0,5,0), new Vector3(0,0,0));
 		spw.spawn(new Vector3(50,5,0), new Vector3(0,180,0));
-		//10 random genes
 	}
 	
 	public GeneticsMain () {
