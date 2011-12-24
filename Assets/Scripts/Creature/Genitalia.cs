@@ -12,11 +12,12 @@ using System.Collections;
 
 
 public class Genitalia : MonoBehaviour {
-
-	public Logger lg;
-	public Creature crt;
-	public Creature other_crt;
+#pragma warning disable 0414
+	private Logger lg;
+	private Creature crt;
+	private Creature other_crt;
 	private Spawner spw;
+#pragma warning restore 0414
 
 	void Start () {
 		lg = Logger.getInstance();
@@ -29,7 +30,7 @@ public class Genitalia : MonoBehaviour {
 	 * radius. If it's the genitalia of another creature
 	 * log event and pass genes of both creatues to
 	 * a function yet undetermined.
-	 */
+	 *
 	void OnTriggerEnter (Collider col) {
 		if (col.gameObject.name == "Genital") {
 			other_crt = col.transform.parent.gameObject.GetComponent<Creature>();
@@ -39,5 +40,5 @@ public class Genitalia : MonoBehaviour {
 			Debug.Log(mesg);
 			lg.write(mesg);
 		 }
-	}
+	}*/
 }
