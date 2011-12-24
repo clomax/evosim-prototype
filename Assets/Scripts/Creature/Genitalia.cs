@@ -22,7 +22,7 @@ public class Genitalia : MonoBehaviour {
 	private float line_length = 0.5F;
 	private Vector3 line_end;
 	private float line_width = 0.5F;
-	private int crt_detect_range = 2000;
+	private int crt_detect_range = 3000;
 #pragma warning restore 0414
 
 	void Start () {
@@ -65,7 +65,7 @@ public class Genitalia : MonoBehaviour {
 		foreach(GameObject crt in crts) {
 			Vector3 diff = crt.transform.position - pos;
 			float curr_dist = diff.sqrMagnitude;
-			if (curr_dist < dist) {
+			if (curr_dist < dist && crt != gameObject) {
 				closest = crt;
 				dist = curr_dist;
 			}
