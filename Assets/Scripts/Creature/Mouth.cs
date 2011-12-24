@@ -40,6 +40,7 @@ public class Mouth : MonoBehaviour {
 		if(cf) {
 			lr.useWorldSpace = true;
 			line_end = new Vector3(cf.transform.position.x, Foodbit.foodbitHeight/2, cf.transform.position.z);
+			line_start = _t.position;
 			lr.SetPosition(1,line_end);
 			resetStart();
 		} else {

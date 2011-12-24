@@ -12,7 +12,7 @@ using System.Collections;
 
 public class Creature : MonoBehaviour {
 	
-	private GameObject mouth;
+	private GameObject mth;
 	private int id;
 	private float sensitivityFwd = 1.0F;
 	private float sensitivityHdg = 2.5F;
@@ -28,14 +28,16 @@ public class Creature : MonoBehaviour {
 		this.name = "Creature";
 		this.hdg = transform.localEulerAngles.y;
 		this.lg = Logger.getInstance();
-		
-		this.mouth = (GameObject)Resources.Load("Prefabs/Creature/Mouth");
-		this.mouth.transform.localPosition = new Vector3(0,0,0.5F);
+		this.mth = (GameObject)Resources.Load("Prefabs/Creature/Mouth");
+		GameObject mouth = (GameObject)Instantiate(mth);
+		mouth.transform.parent = transform;
+		mouth.transform.localPosition = new Vector3(0,0,0.5F);
+		mouth.transform.localEulerAngles = new Vector3(0,0,0);
+		mouth.AddComponent("Mouth");
 	}
 	
 	public Creature () {
 		this.id = GetInstanceID();
-		//induce effects of genes
 	}
 	
 	void Update () {
