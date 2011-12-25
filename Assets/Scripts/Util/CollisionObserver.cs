@@ -42,12 +42,14 @@ public class CollisionObserver : MonoBehaviour {
 			if (x[1] == a) {
 				collision_events.Remove(x);
 				return;
+			} else {
+				evt = new ArrayList(2);
+				evt.Add(a);
+				evt.Add(b);
+				collision_events.Add(evt);
 			}
 		}
-		evt = new ArrayList(2);
-		evt.Add(a);
-		evt.Add(b);
-		collision_events.Add(evt);
+		
 	}
 	
 }
