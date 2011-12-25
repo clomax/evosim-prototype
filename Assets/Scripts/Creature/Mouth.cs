@@ -27,7 +27,7 @@ public class Mouth : MonoBehaviour {
 	void Start () {
 		_t = transform;
 		lr = (LineRenderer)this.gameObject.AddComponent("LineRenderer");
-		lr.material = (Material)Resources.Load("Materials/line");
+		lr.material = (Material)Resources.Load("Materials/mouth_vector");
 		lr.SetWidth(line_width, line_width);
 		lr.SetVertexCount(2);
 		lr.castShadows = false;
