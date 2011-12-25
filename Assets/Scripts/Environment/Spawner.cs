@@ -30,7 +30,7 @@ public class Spawner : MonoBehaviour {
 	public void spawn (Vector3 pos, Vector3 rot) {
 		GameObject clone;
 		clone = (GameObject)Instantiate(crt, pos, Quaternion.identity);
-		clone.transform.Rotate(rot);
+		clone.transform.eulerAngles = Utility.RandomRotVec();
 		clone.AddComponent("Creature");
 	}
 

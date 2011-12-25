@@ -43,7 +43,7 @@ public class Ether : MonoBehaviour {
 	
 	void Update () {
 		if (Time.time > (timeCreated + timeToSpawnFoodbit) && enoughEnergy(foodbitEnergy)) {
-			Vector3 pos = Utility.RandomVec(-fbSpawnRange,
+			Vector3 pos = Utility.RandomFlatVec(-fbSpawnRange,
 			                                Foodbit.foodbitHeight /2,
 			                                fbSpawnRange
 			                               );
