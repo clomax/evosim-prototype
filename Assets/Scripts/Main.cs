@@ -17,7 +17,7 @@ public class Main : MonoBehaviour {
 	private Logger lg;
 	private Spawner spw;
 	private GeneticsMain gm;
-	public CollisionObserver co;
+	private CollisionObserver co;
 
 	private GameObject aperatus;
 	private GameObject cam;

@@ -39,7 +39,8 @@ public class CollisionObserver : MonoBehaviour {
 	public void add_collision_event (GameObject a, GameObject b) {
 		// for each pair in collision_events; has `a` collided with another object?
 		foreach(ArrayList x in collision_events) {
-			if (x[1] == a) {
+			if (x[1] == a && x[0] == b) {
+				//spawn()
 				collision_events.Remove(x);
 				return;
 			} else {
