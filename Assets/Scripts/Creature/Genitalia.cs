@@ -12,10 +12,12 @@ using System.Collections;
 
 
 public class Genitalia : MonoBehaviour {
+
 #pragma warning disable 0414
 	public Creature crt;
 	private Logger lg;
 	private Spawner spw;
+	private CollisionObserver co;
 	private Transform _t;
 	private LineRenderer lr;
 	private Vector3 line_start;
@@ -23,12 +25,15 @@ public class Genitalia : MonoBehaviour {
 	private Vector3 line_end;
 	private float line_width = 0.5F;
 	private int crt_detect_range = 3000;
+	public int id;
 #pragma warning restore 0414
 
 	void Start () {
+		this.id = GetInstanceID();
 		this.gameObject.tag = "Genital";
 		lg = Logger.getInstance();
 		spw = Spawner.getInstance();
+		co = CollisionObserver.getInstance();
 		
 		_t = transform;
 		lr = (LineRenderer)this.gameObject.AddComponent("LineRenderer");
@@ -47,6 +52,7 @@ public class Genitalia : MonoBehaviour {
 			line_end = new Vector3(cc.transform.position.x, cc.transform.position.y, cc.transform.position.z);
 			line_start = _t.position;
 			lr.SetPosition(1,line_end);
+			co.add_collision_event(_t.gameObject, cc);
 			resetStart();
 		} else {
 			lr.useWorldSpace = false;
@@ -76,6 +82,10 @@ public class Genitalia : MonoBehaviour {
 	private void resetStart () {
 		line_start = new Vector3(_t.position.x,_t.position.y,_t.position.z);
 		lr.SetPosition(0,line_start);
+	}
+	
+	public int getID() {
+		return this.id;
 	}
 	
 	/*

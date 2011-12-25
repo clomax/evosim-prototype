@@ -19,7 +19,7 @@ public class Utility : MonoBehaviour {
 		return Random.Range(n-r, n+r);
 	}
 	
-	//return a random vector within a given range
+	//return a random 'flat' vector within a given range
 	public static Vector3 RandomFlatVec(float x, float y, float z) {
 		Vector3 vec = new Vector3( Random.Range(-x,x),
 								   y / 2,
@@ -28,6 +28,7 @@ public class Utility : MonoBehaviour {
 		return vec;
 	}
 	
+	//return a random rotation on the y axis
 	public static Vector3 RandomRotVec() {
 		return new Vector3(0,Random.Range(0,360),0);
 	}
