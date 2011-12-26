@@ -13,17 +13,34 @@ using System.Collections;
 
 public class GeneticsMain : MonoBehaviour {
 
-	public Ether eth;
-	public NewGene ng;
-
-	// Use this for initialization
+	private Ether eth;
+	private Spawner spw;
+	public static GameObject container;
+	public static GeneticsMain instance;
+	
 	void Start () {
-		// 10  random genes
-		// instantiate
+		spw = Spawner.getInstance();
+		spw.spawn(new Vector3(0,5,0), Utility.RandomRotVec());
+		spw.spawn(new Vector3(50,5,0), Utility.RandomRotVec());
+		spw.spawn(new Vector3(0,5,50), Utility.RandomRotVec());
+		spw.spawn(new Vector3(100,5,0), Utility.RandomRotVec());
+		spw.spawn(new Vector3(50,5,50), Utility.RandomRotVec());
+		spw.spawn(new Vector3(150,5,0), Utility.RandomRotVec());
+		spw.spawn(new Vector3(150,5,50), Utility.RandomRotVec());
+		spw.spawn(new Vector3(200,5,0), Utility.RandomRotVec());
+		spw.spawn(new Vector3(200,5,50), Utility.RandomRotVec());
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	public GeneticsMain () {
+		
+	}
 	
+	public static GeneticsMain getInstance () {
+		if(!instance) {
+			container = new GameObject();
+			container.name = "GeneticsMain";
+			instance = container.AddComponent(typeof(GeneticsMain)) as GeneticsMain;
+		}
+		return instance;
 	}
 }

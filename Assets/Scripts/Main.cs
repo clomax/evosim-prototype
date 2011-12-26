@@ -15,6 +15,10 @@ public class Main : MonoBehaviour {
 
 	#pragma warning disable 0414
 	private Logger lg;
+	private Spawner spw;
+	private GeneticsMain gm;
+	private CollisionObserver co;
+
 	private GameObject aperatus;
 	private GameObject cam;
 	private GameObject plane;
@@ -43,6 +47,10 @@ public class Main : MonoBehaviour {
 		ether = (GameObject)Instantiate(Resources.Load("Prefabs/Ether"));
 		nrg_ether = (GameObject)Instantiate(Resources.Load("Prefabs/Energy"));
 		nrg_ether.AddComponent("EtherEnergy");
+		
+		co = CollisionObserver.getInstance();
+		spw = Spawner.getInstance();
+		gm = GeneticsMain.getInstance();
 	}
 	
 	/*

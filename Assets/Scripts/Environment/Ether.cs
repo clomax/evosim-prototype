@@ -13,9 +13,8 @@ using System.Collections;
 
 public class Ether : MonoBehaviour {
 	
-	public GameObject foodbit;
+	private GameObject foodbit;
 
-	private Foodbit fb;
 	private Logger lg;	
 	
 	private double grossEnergy = 20000.0f;
@@ -44,7 +43,7 @@ public class Ether : MonoBehaviour {
 	
 	void Update () {
 		if (Time.time > (timeCreated + timeToSpawnFoodbit) && enoughEnergy(foodbitEnergy)) {
-			Vector3 pos = Utility.RandomVec(-fbSpawnRange,
+			Vector3 pos = Utility.RandomFlatVec(-fbSpawnRange,
 			                                Foodbit.foodbitHeight /2,
 			                                fbSpawnRange
 			                               );
