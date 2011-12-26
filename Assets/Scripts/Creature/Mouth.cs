@@ -21,7 +21,8 @@ public class Mouth : MonoBehaviour {
 	private float line_length = 0.5f;
 	private Vector3 line_end;
 	private float line_width = 0.5F;
-	private int fb_detect_range = 2000;
+	private GameObject los;
+	private GameObject[] fbits;
 	//private int fb_eat_range = ;
 	
 	void Start () {
@@ -33,8 +34,14 @@ public class Mouth : MonoBehaviour {
 		lr.castShadows = false;
 		lr.receiveShadows = false;
 		lr.renderer.enabled = true;
+		crt = (Creature)_t.parent.gameObject.GetComponent("Creature");
 	}
 	
+	void Update () {
+		
+	}
+	
+	/*
 	void Update () {
 		GameObject cf = closestFoodbit();
 		if(cf) {
@@ -53,10 +60,7 @@ public class Mouth : MonoBehaviour {
 	}
 	
 	private GameObject closestFoodbit () {
-		GameObject[] fbits = GameObject.FindGameObjectsWithTag("Foodbit");
 		GameObject closest = null;
-		float dist = fb_detect_range;
-		Vector3 pos = transform.position;
 		foreach(GameObject fb in fbits) {
 			Vector3 diff = fb.transform.position - pos;
 			float curr_dist = diff.sqrMagnitude;
@@ -67,11 +71,13 @@ public class Mouth : MonoBehaviour {
 		}
 		return closest;	
 	}
+	*/
 	
 	private void resetStart () {
 		line_start = new Vector3(_t.position.x,_t.position.y,_t.position.z);
 		lr.SetPosition(0,line_start);
 	}
+	
 	
 	/*
 	 * If a foobit enters the mouth; Omnomnom.
@@ -83,5 +89,4 @@ public class Mouth : MonoBehaviour {
 		}
 	}
 	*/
-
 }

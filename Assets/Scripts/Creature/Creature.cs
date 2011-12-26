@@ -22,6 +22,7 @@ public class Creature : MonoBehaviour {
 	private float hdg = 0F;
 	private Transform _t;
 	private Logger lg;
+	private int line_of_sight;
 #pragma warning restore 0414
 	
 	void Start () {
@@ -29,6 +30,7 @@ public class Creature : MonoBehaviour {
 		this.name = "Creature";
 		this.hdg = transform.localEulerAngles.y;
 		this.lg = Logger.getInstance();
+		this.line_of_sight = 2000;
 		
 		this.mth = (GameObject)Resources.Load("Prefabs/Creature/Mouth");
 		GameObject mouth = (GameObject)Instantiate(mth);
@@ -86,6 +88,10 @@ public class Creature : MonoBehaviour {
 	
 	public int getID () {
 		return this.id;
+	}
+	
+	public int getLOS() {
+		return this.line_of_sight;
 	}
 	
 	

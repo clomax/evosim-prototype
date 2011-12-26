@@ -17,7 +17,7 @@ public class Ether : MonoBehaviour {
 
 	private Logger lg;	
 	
-	private double grossEnergy = 1000.0f;
+	private double grossEnergy = 20000.0f;
 	private double energy;
 	private double foodbitEnergy = 50.0f;
 	private double timeCreated;
@@ -43,7 +43,7 @@ public class Ether : MonoBehaviour {
 	
 	void Update () {
 		if (Time.time > (timeCreated + timeToSpawnFoodbit) && enoughEnergy(foodbitEnergy)) {
-			Vector3 pos = Utility.RandomVec(-fbSpawnRange,
+			Vector3 pos = Utility.RandomFlatVec(-fbSpawnRange,
 			                                Foodbit.foodbitHeight /2,
 			                                fbSpawnRange
 			                               );
