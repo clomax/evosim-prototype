@@ -13,8 +13,8 @@ using System.Collections;
 public class Creature : MonoBehaviour {
 
 #pragma warning disable 0414
-	private GameObject mth;
-	private GameObject gtl;
+	private GameObject mouth;
+	private GameObject genital;
 	private int id;
 	private float sensitivityFwd = 1.0F;
 	private float sensitivityHdg = 2.5F;
@@ -32,15 +32,15 @@ public class Creature : MonoBehaviour {
 		this.lg = Logger.getInstance();
 		this.line_of_sight = 2000;
 		
-		this.mth = (GameObject)Resources.Load("Prefabs/Creature/Mouth");
-		GameObject mouth = (GameObject)Instantiate(mth);
+		mouth = new GameObject();
+		mouth.name = "Mouth";
 		mouth.transform.parent = transform;
 		mouth.transform.localPosition = new Vector3(0,0,0.5F);
 		mouth.transform.localEulerAngles = new Vector3(0,0,0);
 		mouth.AddComponent("Mouth");
 		
-		this.gtl = (GameObject)Resources.Load("Prefabs/Creature/Genital");
-		GameObject genital = (GameObject)Instantiate(gtl);
+		genital = new GameObject();
+		genital.name = "Genital";
 		genital.transform.parent = transform;
 		genital.transform.localPosition = new Vector3(0,0,-0.5F);
 		genital.transform.localEulerAngles = new Vector3(0,180,0);

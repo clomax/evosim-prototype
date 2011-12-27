@@ -40,8 +40,6 @@ public class Genitalia : MonoBehaviour {
 		lr.material = (Material)Resources.Load("Materials/genital_vector");
 		lr.SetWidth(line_width, line_width);
 		lr.SetVertexCount(2);
-		lr.castShadows = false;
-		lr.receiveShadows = false;
 		lr.renderer.enabled = true;
 	}
 	
@@ -52,7 +50,6 @@ public class Genitalia : MonoBehaviour {
 			line_end = new Vector3(cc.transform.position.x, cc.transform.position.y, cc.transform.position.z);
 			line_start = _t.position;
 			lr.SetPosition(1,line_end);
-			co.add_collision_event(_t.gameObject, cc);
 			resetStart();
 		} else {
 			lr.useWorldSpace = false;
