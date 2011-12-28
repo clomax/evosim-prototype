@@ -22,6 +22,7 @@ public class Mouth : MonoBehaviour {
 	private Vector3 line_end;
 	private float line_width = 0.5F;
 	private int fb_detect_range = 3000;
+	private int fb_eat_range = 100;
 	
 	void Start () {
 		_t = transform;
@@ -56,12 +57,17 @@ public class Mouth : MonoBehaviour {
 		GameObject closest = null;
 		float dist = fb_detect_range;
 		Vector3 pos = transform.position;
-		foreach(GameObject fb in fbits) {
-			Vector3 diff = fb.transform.position - pos;
+		foreach(GameObject fbit in fbits) {
+			Vector3 diff = fbit.transform.position - pos;
 			float curr_dist = diff.sqrMagnitude;
-			if (curr_dist < dist && fb != gameObject) {
-				closest = fb;
+			if (curr_dist < dist && fbit != gameObject) {
+				closest = fbit;
 				dist = curr_dist;
+			}
+			if (curr_dist < fb_eat_range) {
+				fb = fbit.GetComponent<Foodbit>();
+				crt.eat(fb.getEnergy());
+				fb.destroy();
 			}
 		}
 		return closest;	
