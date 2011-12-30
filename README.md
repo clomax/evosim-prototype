@@ -2,6 +2,9 @@
 ## Introduction
 The program is intended to be a 'toy'. It is not a scientific tool or a true reflection of evolution in the natural world.
 
+## Usage
+Clone this repository and open the directory as an existing project in Unity3D. There may be warnings/errors as the project is run in the editor; this is due to Components needing to be attached to objects. In the near future the only Component you'll need to attach to any GameObject will be the Main script to the Main GameObject as everything else will be done through script.
+
 ## License - BSD License
 Copyright (c) 2011, Craig Lomax
 All rights reserved.
