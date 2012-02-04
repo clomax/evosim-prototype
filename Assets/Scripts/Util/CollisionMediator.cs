@@ -38,7 +38,7 @@ public class CollisionObserver : MonoBehaviour {
 	
 	public void observe (GameObject a, GameObject b) {
 		// for each pair in collision_events; has `a` collided with another object?
-		Debug.Log(a.name + " " + b.name);
+		//Debug.Log(a.name + " " + b.name);
 		
 	}
 	
