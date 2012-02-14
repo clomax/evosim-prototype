@@ -45,6 +45,7 @@ public class Main : MonoBehaviour {
 		_catch = GameObject.Find("Catch");
 		_catch.AddComponent("Catch");
 		ether = (GameObject)Instantiate(Resources.Load("Prefabs/Ether"));
+		ether.AddComponent("Ether");
 		nrg_ether = (GameObject)Instantiate(Resources.Load("Prefabs/Energy"));
 		nrg_ether.AddComponent("EtherEnergy");
 		
