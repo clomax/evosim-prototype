@@ -53,12 +53,13 @@ public class Ether : MonoBehaviour {
 	}
 	
 	/*
-	 * Place a new foodbit at the given vector
-	 * and assign the default energy value for
-	 * all foodbits
+	 * Place a new foodbit at the given vector,
+	 * assign the default energy value for
+	 * all foodbits and attach the script
 	 */
 	public void newFoodbit (Vector3 vec) {
-		Instantiate(foodbit, vec, Quaternion.identity);
+		GameObject fb = (GameObject)Instantiate(foodbit, vec, Quaternion.identity);
+		fb.AddComponent("Foodbit");
 		subtractEnergy(foodbitEnergy);
 		foodbitCount++;
 	}

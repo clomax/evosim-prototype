@@ -21,6 +21,7 @@ public class GeneticsMain : MonoBehaviour {
 	void Start () {
 		spw = Spawner.getInstance();
 		spw.spawn(new Vector3(0,5,0), Utility.RandomRotVec());
+		/*
 		spw.spawn(new Vector3(50,5,0), Utility.RandomRotVec());
 		spw.spawn(new Vector3(0,5,50), Utility.RandomRotVec());
 		spw.spawn(new Vector3(100,5,0), Utility.RandomRotVec());
@@ -29,6 +30,7 @@ public class GeneticsMain : MonoBehaviour {
 		spw.spawn(new Vector3(150,5,50), Utility.RandomRotVec());
 		spw.spawn(new Vector3(200,5,0), Utility.RandomRotVec());
 		spw.spawn(new Vector3(200,5,50), Utility.RandomRotVec());
+		*/
 	}
 	
 	public GeneticsMain () {

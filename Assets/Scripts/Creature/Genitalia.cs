@@ -14,7 +14,7 @@ using System.Collections;
 public class Genitalia : MonoBehaviour {
 
 #pragma warning disable 0414
-	public Creature crt;
+	private Creature crt;
 	private Logger lg;
 	private Spawner spw;
 	private CollisionObserver co;
@@ -25,7 +25,9 @@ public class Genitalia : MonoBehaviour {
 	private Vector3 line_end;
 	private float line_width = 0.5F;
 	private int crt_detect_range = 3000;
-	public int id;
+	private int crt_mate_range = 100;
+	private float curr_dist = 1;
+	private int id;
 #pragma warning restore 0414
 
 	void Start () {
@@ -66,11 +68,18 @@ public class Genitalia : MonoBehaviour {
 		float dist = crt_detect_range;
 		Vector3 pos = transform.position;
 		foreach(GameObject crt in crts) {
-			Vector3 diff = crt.transform.position - pos;
-			float curr_dist = diff.sqrMagnitude;
-			if (curr_dist < dist && crt != gameObject) {
-				closest = crt;
-				dist = curr_dist;
+			if (crt != this.gameObject) {
+				Vector3 diff = crt.transform.position - pos;
+				curr_dist = diff.sqrMagnitude;
+				if (curr_dist < dist) {
+					closest = crt;
+					dist = curr_dist;
+				}
+				if (curr_dist < crt_mate_range) {
+					Genitalia other_crt = crt.transform.gameObject.GetComponent<Genitalia>();
+					co.observe(this.gameObject, other_crt.gameObject);
+					dist = curr_dist;
+				}
 			}
 		}
 		return closest;	
@@ -84,21 +93,5 @@ public class Genitalia : MonoBehaviour {
 	public int getID() {
 		return this.id;
 	}
-	
-	/*
-	 * Determine the GameObject colliding with the genital
-	 * radius. If it's the genitalia of another creature
-	 * log event and pass genes of both creatues to
-	 * a function yet undetermined.
-	 *
-	void OnTriggerEnter (Collider col) {
-		if (col.gameObject.name == "Genital") {
-			other_crt = col.transform.parent.gameObject.GetComponent<Creature>();
-			spw.spawn(col.transform.position, col.transform.localEulerAngles);
-			string mesg = "CRTB" + " " + crt.getID() + " " +
-				other_crt.getID() + " " + Time.realtimeSinceStartup; 
-			Debug.Log(mesg);
-			lg.write(mesg);
-		 }
-	}*/
+
 }

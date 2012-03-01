@@ -21,7 +21,7 @@ public class Logger : MonoBehaviour {
 	private StreamWriter sw;
 	
 	private Logger () {
-		sw = new StreamWriter(Application.dataPath + "/Logs/log.txt");	
+		sw = new StreamWriter(Application.dataPath + "/Logs/log.txt");
 	}
 	
 	public static Logger getInstance () {

@@ -77,16 +77,5 @@ public class Mouth : MonoBehaviour {
 		line_start = new Vector3(_t.position.x,_t.position.y,_t.position.z);
 		lr.SetPosition(0,line_start);
 	}
-	
-	
-	/*
-	 * If a foobit enters the mouth; Omnomnom.
-	void OnTriggerEnter (Collider col) {
-		if (col.gameObject.tag == "Foodbit") {
-			fb = col.GetComponent<Foodbit>();
-			crt.eat(fb.getEnergy());
-			fb.destroy();
-		}
-	}
-	*/
+
 }
