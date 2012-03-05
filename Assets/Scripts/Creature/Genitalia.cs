@@ -17,7 +17,7 @@ public class Genitalia : MonoBehaviour {
 	private Creature crt;
 	private Logger lg;
 	private Spawner spw;
-	private CollisionObserver co;
+	private CollisionMediator co;
 	private Transform _t;
 	private LineRenderer lr;
 	private Vector3 line_start;
@@ -35,7 +35,7 @@ public class Genitalia : MonoBehaviour {
 		this.gameObject.tag = "Genital";
 		lg = Logger.getInstance();
 		spw = Spawner.getInstance();
-		co = CollisionObserver.getInstance();
+		co = CollisionMediator.getInstance();
 		
 		_t = transform;
 		lr = (LineRenderer)this.gameObject.AddComponent("LineRenderer");

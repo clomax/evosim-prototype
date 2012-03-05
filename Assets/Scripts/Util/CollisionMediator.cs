@@ -14,31 +14,29 @@ using System.Collections;
  *	Handles events that happen between multiple
  *	Objects of the same type.
  */
-public class CollisionObserver : MonoBehaviour {
+public class CollisionMediator : MonoBehaviour {
 	
-	public static CollisionObserver instance;
-	public static GameObject container;
-	
+	public static CollisionMediator instance;
+	public static GameObject container;	
+	public CollEvent evt;
 	public ArrayList collision_events = new ArrayList();
-	public ArrayList evt;
 	public Spawner spw;
 	
 	void Start () {
 		spw = Spawner.getInstance();
 	}
 	
-	public static CollisionObserver getInstance () {
+	public static CollisionMediator getInstance () {
 		if(!instance) {
 			container = new GameObject();
 			container.name = "Collision Observer";
-			instance = container.AddComponent(typeof(CollisionObserver)) as CollisionObserver;
+			instance = container.AddComponent(typeof(CollisionMediator)) as CollisionMediator;
 		}
 		return instance;
 	}
 	
-	
 	public void observe (GameObject a, GameObject b) {
-		
+		this.collision_events.Add(new CollEvent(a, b));
 	}
 	
 }

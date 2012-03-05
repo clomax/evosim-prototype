@@ -17,7 +17,7 @@ public class Main : MonoBehaviour {
 	private Logger lg;
 	private Spawner spw;
 	private GeneticsMain gm;
-	private CollisionObserver co;
+	private CollisionMediator co;
 
 	private GameObject aperatus;
 	private GameObject cam;
@@ -49,7 +49,7 @@ public class Main : MonoBehaviour {
 		nrg_ether = (GameObject)Instantiate(Resources.Load("Prefabs/Energy"));
 		nrg_ether.AddComponent("EtherEnergy");
 		
-		co = CollisionObserver.getInstance();
+		co = CollisionMediator.getInstance();
 		spw = Spawner.getInstance();
 		gm = GeneticsMain.getInstance();
 	}
