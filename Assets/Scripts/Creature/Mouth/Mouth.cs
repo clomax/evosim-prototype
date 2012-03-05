@@ -24,6 +24,7 @@ public class Mouth : MonoBehaviour {
 	private float line_width = 0.5F;
 	private int fb_detect_range = 30;
 	private int fb_eat_range = 100;
+	private int fb_detect_range_multiplyer = 1000;		// fb_detect_range is too short for closestFoodbit(), multiply by a large constant -- Will be replaced with a less derpy method
 	private Object[] fbits;
 	private GameObject cf;
 	private GameObject fb_detect_trigger;
@@ -65,9 +66,8 @@ public class Mouth : MonoBehaviour {
 
 	private GameObject closestFoodbit () {
 		this.fbits = this.mr.getFoodbits();
-		//this.fbits = GameObject.FindGameObjectsWithTag("Foodbit");
 		GameObject closest = null;
-		float dist = fb_detect_range *1000;
+		float dist = fb_detect_range * this.fb_detect_range_multiplyer;
 		Vector3 pos = transform.position;
 		foreach(GameObject fbit in fbits) {
 			if (null != fbit && fbit.tag == "Foodbit") {
