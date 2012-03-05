@@ -35,6 +35,8 @@ public class Foodbit : MonoBehaviour {
 		mr.material = (Material)Resources.Load("Materials/Foodbit");
 		eth = GameObject.Find("Ether").GetComponent<Ether>();
 		energy = eth.getFoodbitEnergy();
+		Collider co = this.GetComponent<BoxCollider>();
+		co.isTrigger = true;
 	}
 	
 	public double getEnergy() {
