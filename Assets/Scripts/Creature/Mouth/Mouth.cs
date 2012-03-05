@@ -67,7 +67,7 @@ public class Mouth : MonoBehaviour {
 	private GameObject closestFoodbit () {
 		this.fbits = this.mr.getFoodbits();
 		GameObject closest = null;
-		float dist = fb_detect_range * this.fb_detect_range_multiplyer;
+		float dist = this.convertRadiusToDistance();
 		Vector3 pos = transform.position;
 		foreach(GameObject fbit in fbits) {
 			if (null != fbit && fbit.tag == "Foodbit") {
@@ -85,6 +85,10 @@ public class Mouth : MonoBehaviour {
 			}
 		}
 		return closest;	
+	}
+	
+	private float convertRadiusToDistance() {
+		return this.fb_detect_range * this.fb_detect_range_multiplyer;
 	}
 	
 	private void resetStart () {
