@@ -37,6 +37,18 @@ public class CollisionMediator : MonoBehaviour {
 	
 	public void observe (GameObject a, GameObject b) {
 		this.collision_events.Add(new CollEvent(a, b));
+		if (null != this.findDuplicate(a)) {
+			this.spw.spawn(new Vector3(0,0,0), Vector3.zero);
+		}
+	}
+	
+	private CollEvent findDuplicate(GameObject g) {
+		foreach (CollEvent e in this.collision_events) {
+			if (g == e.getColliders()[0] || g == e.getColliders()[1]) {
+				return e;
+			}
+		}
+		return null;
 	}
 	
 }
