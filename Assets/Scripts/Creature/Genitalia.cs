@@ -28,7 +28,7 @@ public class Genitalia : MonoBehaviour {
 	private float curr_dist = 1;
 	private int id;
 	private double timeCreated;
-	public double timeToEnableMating = 20.0f;
+	public double timeToEnableMating = 5.0f;
 #pragma warning restore 0414
 
 	void Start () {

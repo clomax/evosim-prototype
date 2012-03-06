@@ -15,6 +15,8 @@ public class Creature : MonoBehaviour {
 #pragma warning disable 0414
 	public static int MAX_ENERGY = 100;
 	
+	private int age;
+	private double timeCreated;
 	private GameObject mouth;
 	private GameObject genital;
 	private int id;
@@ -40,6 +42,8 @@ public class Creature : MonoBehaviour {
 		
 		this.energy = MAX_ENERGY / 2;
 		this.hungerThreshold = 50;
+		this.age = 0;
+		this.timeCreated = Time.time;
 		
 		mouth = new GameObject();
 		mouth.name = "Mouth";
@@ -61,6 +65,8 @@ public class Creature : MonoBehaviour {
 	}
 	
 	void Update () {
+		this.age = (int)Time.time - (int)timeCreated;
+		
 		this.changeHeading(Input.GetAxis("Horizontal") * this.sensitivityHdg);
 		this.moveForward(Input.GetAxis("Vertical") * this.sensitivityFwd);
 		if(this.state != Creature.State.mating) {
