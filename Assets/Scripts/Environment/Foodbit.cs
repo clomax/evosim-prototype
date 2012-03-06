@@ -27,7 +27,7 @@ public class Foodbit : MonoBehaviour {
 	
 	private Ether eth;
 	private MeshRenderer mr;
-	private double energy;
+	private int energy;
 	
 	
 	void Start () {
@@ -39,7 +39,7 @@ public class Foodbit : MonoBehaviour {
 		co.isTrigger = true;
 	}
 	
-	public double getEnergy() {
+	public int  getEnergy() {
 		return energy;
 	}
 	

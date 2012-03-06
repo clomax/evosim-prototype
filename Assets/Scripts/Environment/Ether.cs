@@ -17,9 +17,9 @@ public class Ether : MonoBehaviour {
 
 	private Logger lg;	
 	
-	private double grossEnergy = 20000.0f;
-	private double energy;
-	private double foodbitEnergy = 50.0f;
+	private int grossEnergy = 4000;
+	private int energy;
+	private int foodbitEnergy = 20;
 	private double timeCreated;
 	private double timeToSpawnFoodbit = 0.0f;
 	private int foodbitCount = 0;
@@ -68,7 +68,7 @@ public class Ether : MonoBehaviour {
 	 * Return the energy value given to each new
 	 * foodbit on instantiation
 	 */
-	public double getFoodbitEnergy () {
+	public int getFoodbitEnergy () {
 		return foodbitEnergy;
 	}
 	
@@ -80,16 +80,16 @@ public class Ether : MonoBehaviour {
 		return foodbitCount;
 	}
 	
-	public void subtractEnergy (double n) {
+	public void subtractEnergy (int n) {
 		energy -= n;
 	}
 	
-	public void addToEnergy(double n) {
+	public void addToEnergy(int n) {
 		energy += n;
 	}
 
-	public bool enoughEnergy(double nrg) {
-		return energy >= nrg;
+	public bool enoughEnergy(int n) {
+		return energy >= n;
 	}
 	
 

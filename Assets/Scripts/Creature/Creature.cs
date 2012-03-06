@@ -13,16 +13,22 @@ using System.Collections;
 public class Creature : MonoBehaviour {
 
 #pragma warning disable 0414
+	public static int MAX_ENERGY = 100;
+	
 	private GameObject mouth;
 	private GameObject genital;
 	private int id;
 	private float sensitivityFwd = 1.0F;
 	private float sensitivityHdg = 2.5F;
-	private double energy;
+	private int energy;
 	private float hdg = 0F;
 	private Transform _t;
 	private Logger lg;
 	private int line_of_sight;
+	private int matingEnergyDeduction;
+	private int hungerThreshold;
+	public enum State { hungry, persuing_mate, mating, eating };
+	public State state;
 #pragma warning restore 0414
 	
 	void Start () {
@@ -31,6 +37,9 @@ public class Creature : MonoBehaviour {
 		this.hdg = transform.localEulerAngles.y;
 		this.lg = Logger.getInstance();
 		this.line_of_sight = 2000;
+		
+		this.energy = MAX_ENERGY / 2;
+		this.hungerThreshold = 50;
 		
 		mouth = new GameObject();
 		mouth.name = "Mouth";
@@ -54,26 +63,33 @@ public class Creature : MonoBehaviour {
 	void Update () {
 		this.changeHeading(Input.GetAxis("Horizontal") * this.sensitivityHdg);
 		this.moveForward(Input.GetAxis("Vertical") * this.sensitivityFwd);
+		if (this.energy < this.hungerThreshold) {
+			this.state = State.hungry;
+		}
+		if (this.energy >= this.hungerThreshold) {
+			this.state = State.persuing_mate;
+		}
 	}
 	
-	
-
 	
 	/*
 	 * Return the current energy value for the creature
 	 */
-	public double getEnergy () {
+	public int getEnergy () {
 		return this.energy;
 	}
 	
 	/*
 	 * Add to the creature the energy of what it ate
 	 */
-	public void eat (double n) {
+	public void eat (int n) {
 		this.energy += n;
+		if (this.energy > MAX_ENERGY) {
+			this.energy = MAX_ENERGY;
+		}
 	}
 	
-	public void subtractEnergy (double n) {
+	public void subtractEnergy (int n) {
 		this.energy -= n;	
 	}
 	
@@ -81,7 +97,7 @@ public class Creature : MonoBehaviour {
 	 * Remove the creature from existence and return
 	 * the creature's energy.
 	 */
-	public double kill () {
+	public int kill () {
 		Destroy(gameObject);
 		return (this.getEnergy());
 	}
@@ -95,7 +111,9 @@ public class Creature : MonoBehaviour {
 	}
 	
 	
-	
+	/*
+	 * Stuff to make the creatures move to keyboard commands
+	 */
 	
 	void moveForward (float n) {
 		Vector3 fwd = _t.forward;
