@@ -20,7 +20,7 @@ public class Logger : MonoBehaviour {
 	
 	private StreamWriter sw;
 	
-	private Logger () {
+	public Logger () {
 		sw = new StreamWriter(Application.dataPath + "/Logs/log.txt");
 	}
 	
