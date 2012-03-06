@@ -32,6 +32,8 @@ public class Spawner : MonoBehaviour {
 		clone = (GameObject)Instantiate(crt, pos, Quaternion.identity);
 		clone.transform.eulerAngles = Utility.RandomRotVec();
 		clone.AddComponent("Creature");
+		// 
+		// take away energy from each creature
 	}
 
 }

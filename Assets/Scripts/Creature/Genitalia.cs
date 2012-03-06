@@ -31,8 +31,10 @@ public class Genitalia : MonoBehaviour {
 #pragma warning restore 0414
 
 	void Start () {
+		this._t = transform;
 		this.id = GetInstanceID();
 		this.gameObject.tag = "Genital";
+		this.crt = (Creature)_t.parent.gameObject.GetComponent("Creature");
 		lg = Logger.getInstance();
 		spw = Spawner.getInstance();
 		co = CollisionMediator.getInstance();
@@ -67,17 +69,19 @@ public class Genitalia : MonoBehaviour {
 		GameObject closest = null;
 		float dist = crt_detect_range;
 		Vector3 pos = transform.position;
-		foreach(GameObject crt in crts) {
-			if (crt != this.gameObject) {
-				Vector3 diff = crt.transform.position - pos;
+		foreach(GameObject c in crts) {
+			if (c != this.gameObject) {
+				Vector3 diff = c.transform.position - pos;
 				curr_dist = diff.sqrMagnitude;
 				if (curr_dist < dist) {
-					closest = crt;
+					closest = c;
 					dist = curr_dist;
 				}
 				if (curr_dist < crt_mate_range) {
-					Genitalia other_crt = crt.transform.gameObject.GetComponent<Genitalia>();
-					co.observe(this.gameObject, other_crt.gameObject);
+					if (this.crt.state == Creature.State.persuing_mate) {
+						Genitalia other_crt = c.transform.gameObject.GetComponent<Genitalia>();
+						co.observe(this.gameObject, other_crt.gameObject);
+					}
 					dist = curr_dist;
 				}
 			}
