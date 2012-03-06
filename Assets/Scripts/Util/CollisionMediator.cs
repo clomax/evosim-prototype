@@ -40,7 +40,7 @@ public class CollisionMediator : MonoBehaviour {
 		CollEvent dup = this.findDuplicate(a);
 		// If a duplicate has been found - spawn
 		if (null != dup) {
-			this.spw.spawn(new Vector3(0,0,0), Vector3.zero);
+			this.spw.spawn(new Vector3(0,1,0), Vector3.zero);
 			this.collision_events.Remove(dup);
 		}
 	}

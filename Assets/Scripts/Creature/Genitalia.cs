@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-
 /*
  *		Author: 	Craig Lomax
  *		Date: 		06.09.2011
@@ -28,6 +27,8 @@ public class Genitalia : MonoBehaviour {
 	private int crt_mate_range = 100;
 	private float curr_dist = 1;
 	private int id;
+	private double timeCreated;
+	public double timeToEnableMating = 20.0f;
 #pragma warning restore 0414
 
 	void Start () {
@@ -45,9 +46,15 @@ public class Genitalia : MonoBehaviour {
 		lr.SetWidth(line_width, line_width);
 		lr.SetVertexCount(2);
 		lr.renderer.enabled = true;
+		timeCreated = Time.time;
 	}
 	
 	void Update () {
+		if (this.crt.state == Creature.State.mating && Time.time > (timeCreated + timeToEnableMating)) {
+			this.crt.state = Creature.State.neutral;
+			timeCreated = Time.time;
+		}
+		
 		GameObject cc = closestCreature();
 		if(cc) {
 			lr.useWorldSpace = true;
@@ -78,9 +85,12 @@ public class Genitalia : MonoBehaviour {
 					dist = curr_dist;
 				}
 				if (curr_dist < crt_mate_range) {
-					if (this.crt.state == Creature.State.persuing_mate) {
-						Genitalia other_crt = c.transform.gameObject.GetComponent<Genitalia>();
-						co.observe(this.gameObject, other_crt.gameObject);
+					Genitalia other_genital = c.transform.gameObject.GetComponent<Genitalia>();
+					Creature other_crt = c.transform.parent.gameObject.GetComponent<Creature>();
+					if (this.crt.state == Creature.State.persuing_mate || other_crt.state == Creature.State.persuing_mate) {
+						co.observe(this.gameObject, other_genital.gameObject);
+						other_crt.state = Creature.State.mating;
+						this.crt.state = Creature.State.mating;
 					}
 					dist = curr_dist;
 				}

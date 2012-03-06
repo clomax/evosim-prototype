@@ -27,7 +27,7 @@ public class Creature : MonoBehaviour {
 	private int line_of_sight;
 	private int matingEnergyDeduction;
 	private int hungerThreshold;
-	public enum State { hungry, persuing_mate, mating, eating };
+	public enum State { hungry, persuing_mate, mating, eating, neutral };
 	public State state;
 #pragma warning restore 0414
 	
@@ -63,11 +63,13 @@ public class Creature : MonoBehaviour {
 	void Update () {
 		this.changeHeading(Input.GetAxis("Horizontal") * this.sensitivityHdg);
 		this.moveForward(Input.GetAxis("Vertical") * this.sensitivityFwd);
-		if (this.energy < this.hungerThreshold) {
-			this.state = State.hungry;
-		}
-		if (this.energy >= this.hungerThreshold) {
-			this.state = State.persuing_mate;
+		if(this.state != Creature.State.mating) {
+			if (this.energy < this.hungerThreshold) {
+				this.state = State.hungry;
+			}
+			if (this.energy >= this.hungerThreshold) {
+				this.state = State.persuing_mate;
+			}
 		}
 	}
 	
