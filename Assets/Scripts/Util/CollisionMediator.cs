@@ -35,20 +35,27 @@ public class CollisionMediator : MonoBehaviour {
 		return instance;
 	}
 	
+	void Update () {
+		
+	}
+	
 	public void observe (GameObject a, GameObject b) {
 		this.collision_events.Add(new CollEvent(a, b));
-		CollEvent dup = this.findDuplicate(a);
+		CollEvent dup = this.findMatch(a, b);
 		// If a duplicate has been found - spawn
 		if (null != dup) {
-			this.spw.spawn(new Vector3(0,0,0), Vector3.zero);
-			this.collision_events.Remove(dup);
+			this.collision_events.Clear();
+			Vector3 pos = Utility.RandomFlatVec(-200,1,200);
+			this.spw.spawn(pos,Vector3.zero);
+		} else {
+			this.collision_events.Add(new CollEvent(b,a));
 		}
 	}
 	
-	private CollEvent findDuplicate(GameObject g) {
+	private CollEvent findMatch(GameObject a, GameObject b) {
 		foreach (CollEvent e in this.collision_events) {
 			// if the object signalling the collision exists in another event - there is a duplicate
-			if (g == e.getColliders()[0] || g == e.getColliders()[1]) {
+			if (b == e.getColliders()[0] || a == e.getColliders()[1]) {
 				return e;
 			}
 		}

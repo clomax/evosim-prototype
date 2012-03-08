@@ -15,6 +15,8 @@ public class Creature : MonoBehaviour {
 #pragma warning disable 0414
 	public static int MAX_ENERGY = 100;
 	
+	private int age;
+	private double timeCreated;
 	private GameObject mouth;
 	private GameObject genital;
 	private int id;
@@ -27,8 +29,10 @@ public class Creature : MonoBehaviour {
 	private int line_of_sight;
 	private int matingEnergyDeduction;
 	private int hungerThreshold;
-	public enum State { hungry, persuing_mate, mating, eating };
+	public enum State { hungry, persuing_mate, mating, eating, neutral };
 	public State state;
+	private MeshRenderer mr;
+	private Material mat;
 #pragma warning restore 0414
 	
 	void Start () {
@@ -37,9 +41,14 @@ public class Creature : MonoBehaviour {
 		this.hdg = transform.localEulerAngles.y;
 		this.lg = Logger.getInstance();
 		this.line_of_sight = 2000;
+		this.mr = _t.gameObject.GetComponent<MeshRenderer>();
+		this.mat = (Material)Resources.Load("Materials/creature");
+		this.mr.material = this.mat;
 		
 		this.energy = MAX_ENERGY / 2;
 		this.hungerThreshold = 50;
+		this.age = 0;
+		this.timeCreated = Time.time;
 		
 		mouth = new GameObject();
 		mouth.name = "Mouth";
@@ -61,13 +70,17 @@ public class Creature : MonoBehaviour {
 	}
 	
 	void Update () {
+		this.age = (int)Time.time - (int)timeCreated;
+		
 		this.changeHeading(Input.GetAxis("Horizontal") * this.sensitivityHdg);
 		this.moveForward(Input.GetAxis("Vertical") * this.sensitivityFwd);
-		if (this.energy < this.hungerThreshold) {
-			this.state = State.hungry;
-		}
-		if (this.energy >= this.hungerThreshold) {
-			this.state = State.persuing_mate;
+		if(this.state != Creature.State.mating) {
+			if (this.energy < this.hungerThreshold) {
+				this.state = State.hungry;
+			}
+			if (this.energy >= this.hungerThreshold) {
+				this.state = State.persuing_mate;
+			}
 		}
 	}
 	

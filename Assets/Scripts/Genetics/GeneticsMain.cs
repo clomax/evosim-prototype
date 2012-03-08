@@ -22,6 +22,7 @@ public class GeneticsMain : MonoBehaviour {
 		spw = Spawner.getInstance();
 		spw.spawn(new Vector3(0,5,0), Utility.RandomRotVec());
 		spw.spawn(new Vector3(50,5,0), Utility.RandomRotVec());
+		/*
 		spw.spawn(new Vector3(0,5,50), Utility.RandomRotVec());
 		spw.spawn(new Vector3(100,5,0), Utility.RandomRotVec());
 		/*
