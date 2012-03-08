@@ -31,6 +31,8 @@ public class Creature : MonoBehaviour {
 	private int hungerThreshold;
 	public enum State { hungry, persuing_mate, mating, eating, neutral };
 	public State state;
+	private MeshRenderer mr;
+	private Material mat;
 #pragma warning restore 0414
 	
 	void Start () {
@@ -39,6 +41,9 @@ public class Creature : MonoBehaviour {
 		this.hdg = transform.localEulerAngles.y;
 		this.lg = Logger.getInstance();
 		this.line_of_sight = 2000;
+		this.mr = _t.gameObject.GetComponent<MeshRenderer>();
+		this.mat = (Material)Resources.Load("Materials/creature");
+		this.mr.material = this.mat;
 		
 		this.energy = MAX_ENERGY / 2;
 		this.hungerThreshold = 50;

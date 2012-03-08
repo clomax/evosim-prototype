@@ -28,7 +28,7 @@ public class Genitalia : MonoBehaviour {
 	private float curr_dist = 1;
 	private int id;
 	private double timeCreated;
-	public double timeToEnableMating = 5.0f;
+	public double timeToEnableMating = 3.0f;
 #pragma warning restore 0414
 
 	void Start () {
@@ -51,7 +51,7 @@ public class Genitalia : MonoBehaviour {
 	
 	void Update () {
 		if (this.crt.state == Creature.State.mating && Time.time > (timeCreated + timeToEnableMating)) {
-			this.crt.state = Creature.State.neutral;
+			this.crt.state = Creature.State.persuing_mate;
 			timeCreated = Time.time;
 		}
 		
