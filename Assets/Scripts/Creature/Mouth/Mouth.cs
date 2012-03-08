@@ -77,7 +77,7 @@ public class Mouth : MonoBehaviour {
 					closest = fbit;
 					dist = curr_dist;
 				}
-				if (curr_dist < fb_eat_range) {
+				if (curr_dist < fb_eat_range && this.crt.state == Creature.State.hungry) {
 					this.fb = fbit.GetComponent<Foodbit>();
 					this.crt.eat(this.fb.getEnergy());
 					this.fb.destroy();

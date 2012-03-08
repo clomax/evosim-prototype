@@ -6,7 +6,7 @@ using System.Collections;
  *		Author: 	Craig Lomax
  *		Date: 		06.09.2011
  *		URL:		clomax.me.uk
- *		email:		crl9@aber.ac.uk
+ *		email:		craig@clomax.me.uk
  *
  */
 
@@ -45,7 +45,6 @@ public class Creature : MonoBehaviour {
 		this.mat = (Material)Resources.Load("Materials/creature");
 		this.mr.material = this.mat;
 		
-		this.energy = MAX_ENERGY / 2;
 		this.hungerThreshold = 50;
 		this.age = 0;
 		this.timeCreated = Time.time;
@@ -65,8 +64,9 @@ public class Creature : MonoBehaviour {
 		genital.AddComponent("Genitalia");
 	}
 	
-	public Creature () {
+	public Creature (int energy1, int energy2) {
 		this.id = GetInstanceID();
+		this.energy += (energy1 + energy2);
 	}
 	
 	void Update () {

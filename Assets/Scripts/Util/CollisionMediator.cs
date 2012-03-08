@@ -6,7 +6,7 @@ using System.Collections;
  *		Author: 	Craig Lomax
  *		Date: 		25.12.2011
  *		URL:		clomax.me.uk
- *		email:		crl9@aber.ac.uk
+ *		email:		craig@clomax.me.uk
  *
  */
 

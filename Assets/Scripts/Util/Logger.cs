@@ -8,7 +8,7 @@ using System.Text;
  *		Author: 	Craig Lomax
  *		Date: 		06.09.2011
  *		URL:		clomax.me.uk
- *		email:		crl9@aber.ac.uk
+ *		email:		craig@clomax.me.uk
  *
  */
 
