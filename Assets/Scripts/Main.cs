@@ -42,6 +42,7 @@ public class Main : MonoBehaviour {
 		plane = GameObject.Find("Plane");
 		p_mr = (MeshRenderer)plane.AddComponent("MeshRenderer");
 		p_mr.material = (Material)Resources.Load("Materials/grid");
+		p_mr.material.mainTextureScale = new Vector2(50,50);
 		_catch = GameObject.Find("Catch");
 		_catch.AddComponent("Catch");
 		ether = (GameObject)Instantiate(Resources.Load("Prefabs/Ether"));
