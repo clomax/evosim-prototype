@@ -20,8 +20,8 @@ public class Creature : MonoBehaviour {
 	private GameObject mouth;
 	private GameObject genital;
 	private int id;
-	private float sensitivityFwd = 1.0F;
-	private float sensitivityHdg = 2.5F;
+	private float sensitivityFwd;
+	private float sensitivityHdg;
 	private int energy;
 	private float hdg = 0F;
 	private Transform _t;
@@ -49,6 +49,9 @@ public class Creature : MonoBehaviour {
 		this.age = 0;
 		this.timeCreated = Time.time;
 		
+		sensitivityFwd = 1.0F;
+		sensitivityHdg = 2.5F;
+		
 		mouth = new GameObject();
 		mouth.name = "Mouth";
 		mouth.transform.parent = transform;
@@ -71,9 +74,10 @@ public class Creature : MonoBehaviour {
 	
 	void Update () {
 		this.age = (int)Time.time - (int)timeCreated;
-		
+				
 		this.changeHeading(Input.GetAxis("Horizontal") * this.sensitivityHdg);
 		this.moveForward(Input.GetAxis("Vertical") * this.sensitivityFwd);
+		
 		if(this.state != Creature.State.mating) {
 			if (this.energy < this.hungerThreshold) {
 				this.state = State.hungry;
@@ -112,7 +116,7 @@ public class Creature : MonoBehaviour {
 	 */
 	public int kill () {
 		Destroy(gameObject);
-		return (this.getEnergy());
+		return this.getEnergy();
 	}
 	
 	public int getID () {

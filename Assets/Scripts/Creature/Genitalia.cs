@@ -33,9 +33,9 @@ public class Genitalia : MonoBehaviour {
 
 	void Start () {
 		this._t = transform;
-		this.id = GetInstanceID();
 		this.gameObject.tag = "Genital";
 		this.crt = (Creature)_t.parent.gameObject.GetComponent("Creature");
+		this.id = GetInstanceID();
 		lg = Logger.getInstance();
 		spw = Spawner.getInstance();
 		co = CollisionMediator.getInstance();

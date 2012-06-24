@@ -21,7 +21,7 @@ public class Ether : MonoBehaviour {
 	private int energy;
 	private int foodbitEnergy = 20;
 	private double timeCreated;
-	private double timeToSpawnFoodbit = 0.0f;
+	private double timeToSpawnFoodbit = 0.2f;
 	private int foodbitCount = 0;
 	private int fbSpawnRange = 200;
 	
