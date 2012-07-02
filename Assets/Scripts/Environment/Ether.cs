@@ -15,7 +15,7 @@ public class Ether : MonoBehaviour {
 	
 	private GameObject foodbit;
 
-	private Logger lg;	
+	private Logger lg;
 	
 	private int grossEnergy = 4000;
 	private int energy;
