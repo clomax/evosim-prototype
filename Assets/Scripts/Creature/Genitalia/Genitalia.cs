@@ -17,6 +17,7 @@ public class Genitalia : MonoBehaviour {
 	private Logger lg;
 	private Spawner spw;
 	private CollisionMediator co;
+	private GenitalRadius gr;
 	private Transform _t;
 	private LineRenderer lr;
 	private Vector3 line_start;
@@ -29,6 +30,7 @@ public class Genitalia : MonoBehaviour {
 	private int id;
 	private double timeCreated;
 	public double timeToEnableMating = 3.0f;
+	GameObject genital_detect_trigger;
 #pragma warning restore 0414
 
 	void Start () {
@@ -47,6 +49,14 @@ public class Genitalia : MonoBehaviour {
 		lr.SetVertexCount(2);
 		lr.renderer.enabled = true;
 		timeCreated = Time.time;
+		
+		this.genital_detect_trigger = new GameObject("GEN_Trigger");
+		this.genital_detect_trigger.transform.parent = transform;
+		this.genital_detect_trigger.transform.localPosition = Vector3.zero;
+		SphereCollider sp = this.genital_detect_trigger.AddComponent<SphereCollider>();
+		sp.isTrigger = true;
+		sp.radius = this.crt_detect_range;
+		this.gr = this.genital_detect_trigger.AddComponent<GenitalRadius>();
 	}
 	
 	void Update () {
@@ -72,12 +82,12 @@ public class Genitalia : MonoBehaviour {
 	}
 	
 	private GameObject closestCreature () {
-		GameObject[] crts = GameObject.FindGameObjectsWithTag("Genital");
+		GameObject[] crts = this.gr.g;
 		GameObject closest = null;
 		float dist = crt_detect_range;
 		Vector3 pos = transform.position;
 		foreach(GameObject c in crts) {
-			if (c != this.gameObject) {
+			if (c && c.tag == "Creature" && c != this.gameObject) {
 				Vector3 diff = c.transform.position - pos;
 				curr_dist = diff.sqrMagnitude;
 				if (curr_dist < dist) {

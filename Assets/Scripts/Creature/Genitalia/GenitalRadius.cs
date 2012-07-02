@@ -4,7 +4,7 @@ using System.Collections;
 public class GenitalRadius : MonoBehaviour {
 	
 	public static int MAX_SIZE = 50;
-	public GameObject [] g;
+	public GameObject[] g;
 	
 	void Start () {
 		g = new GameObject[MAX_SIZE];
