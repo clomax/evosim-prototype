@@ -17,6 +17,7 @@ public class Genitalia : MonoBehaviour {
 	private Logger lg;
 	private Spawner spw;
 	private CollisionMediator co;
+	private GenitalRadius gr;
 	private Transform _t;
 	private LineRenderer lr;
 	private Vector3 line_start;
