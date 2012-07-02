@@ -72,7 +72,7 @@ public class Ether : MonoBehaviour {
 		return foodbitEnergy;
 	}
 	
-	public double getEnergy() {
+	public int getEnergy() {
 		return energy;
 	}
 	

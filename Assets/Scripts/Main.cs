@@ -25,6 +25,7 @@ public class Main : MonoBehaviour {
 	private GameObject ether;
 	private GameObject _catch;
 	private GameObject nrg_ether;
+	private GameObject gui_text;
 	
 	private MeshRenderer p_mr;
 	#pragma warning restore 0414
@@ -47,8 +48,9 @@ public class Main : MonoBehaviour {
 		_catch.AddComponent("Catch");
 		ether = (GameObject)Instantiate(Resources.Load("Prefabs/Ether"));
 		ether.AddComponent("Ether");
-		nrg_ether = (GameObject)Instantiate(Resources.Load("Prefabs/Energy"));
-		nrg_ether.AddComponent("EtherEnergy");
+		//nrg_ether = (GameObject)Instantiate(Resources.Load("Prefabs/Energy"));
+		//nrg_ether.AddComponent("EtherEnergy");
+		gui_text = (GameObject)Instantiate(Resources.Load("Prefabs/GUItext"));
 		
 		co = CollisionMediator.getInstance();
 		spw = Spawner.getInstance();

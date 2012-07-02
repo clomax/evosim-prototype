@@ -15,6 +15,8 @@ public class Creature : MonoBehaviour {
 #pragma warning disable 0414
 	public static int MAX_ENERGY = 100;
 	
+	public CreatureCount crt_count;
+	
 	private int age;
 	private double timeCreated;
 	private GameObject mouth;
@@ -36,6 +38,8 @@ public class Creature : MonoBehaviour {
 #pragma warning restore 0414
 	
 	void Start () {
+		crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
+		
 		this._t = transform;
 		this.name = "Creature";
 		this.hdg = transform.localEulerAngles.y;
@@ -116,6 +120,7 @@ public class Creature : MonoBehaviour {
 	 */
 	public int kill () {
 		Destroy(gameObject);
+		crt_count.number_of_creatures--;
 		return this.getEnergy();
 	}
 	
