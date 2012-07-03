@@ -14,7 +14,7 @@ using System.Collections;
 public class Main : MonoBehaviour {
 
 	#pragma warning disable 0414
-	private Logger lg;
+	//private Logger lg;
 	private Spawner spw;
 	private GeneticsMain gm;
 	private CollisionMediator co;
@@ -35,7 +35,7 @@ public class Main : MonoBehaviour {
 	 * Components as needed.
 	 */
 	void Start () {
-		lg = Logger.getInstance();
+		//lg = Logger.getInstance();
 		aperatus = (GameObject)Instantiate(Resources.Load("Prefabs/Aperatus"));
 		cam = GameObject.Find("Main Camera");
 		cam.AddComponent("CameraCtl");
@@ -48,8 +48,6 @@ public class Main : MonoBehaviour {
 		_catch.AddComponent("Catch");
 		ether = (GameObject)Instantiate(Resources.Load("Prefabs/Ether"));
 		ether.AddComponent("Ether");
-		//nrg_ether = (GameObject)Instantiate(Resources.Load("Prefabs/Energy"));
-		//nrg_ether.AddComponent("EtherEnergy");
 		gui_text = (GameObject)Instantiate(Resources.Load("Prefabs/GUItext"));
 		
 		co = CollisionMediator.getInstance();
@@ -61,7 +59,7 @@ public class Main : MonoBehaviour {
 	 * Cleanup before exiting
 	 */
 	void OnDestroy() {
-		lg.close();
+		//lg.close();
 	}
 	
 }

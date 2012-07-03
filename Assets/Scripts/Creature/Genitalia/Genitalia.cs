@@ -24,10 +24,6 @@ public class Genitalia : MonoBehaviour {
 	private float line_length = 0.5F;
 	private Vector3 line_end;
 	private float line_width = 0.5F;
-	private int crt_detect_range = 30;
-	private int crt_mate_range = 10;
-	private float curr_dist = 1;
-	private int id;
 	private double timeCreated;
 	public double timeToEnableMating = 3.0f;
 	public Eye eye;
@@ -37,11 +33,10 @@ public class Genitalia : MonoBehaviour {
 		this._t = transform;
 		this.gameObject.tag = "Genital";
 		this.crt = (Creature)_t.parent.gameObject.GetComponent("Creature");
-		this.id = GetInstanceID();
 		lg = Logger.getInstance();
 		spw = Spawner.getInstance();
 		co = CollisionMediator.getInstance();
-		eye = crt.gameObject.GetComponent<Eye>();
+		eye = crt.eye.gameObject.GetComponent<Eye>();
 		
 		_t = transform;
 		lr = (LineRenderer)this.gameObject.AddComponent("LineRenderer");
@@ -58,10 +53,13 @@ public class Genitalia : MonoBehaviour {
 			timeCreated = Time.time;
 		}
 		
-		GameObject cc = eye.closestCrt;
+		Creature cc = eye.closestCrt;
 		if(cc) {
 			lr.useWorldSpace = true;
-			line_end = new Vector3(cc.transform.position.x, cc.transform.position.y, cc.transform.position.z);
+			line_end = new Vector3(cc.genital.transform.position.x,
+			                       cc.genital.transform.position.y,
+			                       cc.genital.transform.position.z
+			                      );
 			line_start = _t.position;
 			lr.SetPosition(1,line_end);
 			resetStart();
@@ -79,10 +77,6 @@ public class Genitalia : MonoBehaviour {
 	private void resetStart () {
 		line_start = new Vector3(_t.position.x,_t.position.y,_t.position.z);
 		lr.SetPosition(0,line_start);
-	}
-	
-	public int getID() {
-		return this.id;
 	}
 
 }

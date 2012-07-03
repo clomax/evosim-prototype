@@ -6,11 +6,10 @@ public class Eye : MonoBehaviour {
 	GameObject[] objects;
 	public Creature crt;
 	public GameObject trigger;
-	public GameObject closestCrt = null;
+	public Creature closestCrt = null;
 	private CollisionMediator co;
-	private float curr_dist = 1;
-	private int crt_detect_range = 50;
-	private int crt_mate_range = 40;
+	private float curr_dist = 0f;
+	private int crt_mate_range = 20;
 	
 	public Creature other_crt;
 	
@@ -50,9 +49,9 @@ public class Eye : MonoBehaviour {
 		closestCrt = closestCreature();
 	}
 	
-	private GameObject closestCreature () {
+	private Creature closestCreature () {
 		GameObject closest = null;
-		float dist = crt_detect_range;
+		float dist = crt.line_of_sight;
 		Vector3 pos = transform.position;
 		foreach(GameObject c in objects) {
 			if (c && c.tag == "Creature" && c != crt.gameObject) {
@@ -74,6 +73,8 @@ public class Eye : MonoBehaviour {
 				}
 			}
 		}
-		return closest;	
+		if (closest)
+			return closest.GetComponent<Creature>();
+		return null;
 	}	
 }

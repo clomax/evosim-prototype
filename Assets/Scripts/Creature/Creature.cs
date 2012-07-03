@@ -25,7 +25,7 @@ public class Creature : MonoBehaviour {
 	private int id;
 	private float sensitivityFwd;
 	private float sensitivityHdg;
-	private int energy;
+	private int energy = 100;
 	private float hdg = 0F;
 	public Transform _t;
 	private Logger lg;
@@ -76,7 +76,7 @@ public class Creature : MonoBehaviour {
 		genital = new GameObject();
 		genital.name = "Genital";
 		genital.transform.parent = transform;
-		genital.transform.localPosition = Vector3.zero;
+		genital.transform.localPosition = new Vector3(0,0,-.5f);
 		genital.transform.localEulerAngles = new Vector3(0,180,0);
 		genital.AddComponent<Genitalia>();
 	}
