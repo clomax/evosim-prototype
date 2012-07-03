@@ -77,7 +77,6 @@ public class Creature : MonoBehaviour {
 		genital.transform.parent = transform;
 		genital.transform.localPosition = new Vector3(0,0,-0.5F);
 		genital.transform.localEulerAngles = new Vector3(0,180,0);
-		genital.AddComponent("Genitalia");
 	}
 	
 	public Creature (int energy1, int energy2) {
@@ -130,7 +129,7 @@ public class Creature : MonoBehaviour {
 	public int kill () {
 		Destroy(gameObject);
 		crt_count.number_of_creatures--;
-		return this.getEnergy();
+		return this.energy;
 	}
 	
 	public int getID () {
