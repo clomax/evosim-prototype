@@ -76,7 +76,7 @@ public class Creature : MonoBehaviour {
 		genital = new GameObject();
 		genital.name = "Genital";
 		genital.transform.parent = transform;
-		genital.transform.localPosition = new Vector3(0,0,-0.5F);
+		genital.transform.localPosition = Vector3.zero;
 		genital.transform.localEulerAngles = new Vector3(0,180,0);
 		genital.AddComponent<Genitalia>();
 	}

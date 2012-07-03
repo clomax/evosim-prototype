@@ -6,10 +6,18 @@ public class Eye : MonoBehaviour {
 	GameObject[] objects;
 	public Creature crt;
 	public GameObject trigger;
+	public GameObject closestCrt = null;
+	private CollisionMediator co;
+	private float curr_dist = 1;
+	private int crt_detect_range = 50;
+	private int crt_mate_range = 40;
+	
+	public Creature other_crt;
 	
 	void Start () {
 		objects = new GameObject[MAX_SIZE];
 		crt = transform.parent.gameObject.GetComponent<Creature>();
+		co = CollisionMediator.getInstance();
 		
 		trigger = new GameObject("Trigger");
 		trigger.transform.parent = transform;
@@ -39,6 +47,33 @@ public class Eye : MonoBehaviour {
 	}
 	
 	void Update () {
-		
+		closestCrt = closestCreature();
 	}
+	
+	private GameObject closestCreature () {
+		GameObject closest = null;
+		float dist = crt_detect_range;
+		Vector3 pos = transform.position;
+		foreach(GameObject c in objects) {
+			if (c && c.tag == "Creature" && c != crt.gameObject) {
+				Vector3 diff = c.transform.position - pos;
+				curr_dist = diff.magnitude;
+				if (curr_dist < dist) {
+					closest = c;
+					dist = curr_dist;
+				}
+				if (curr_dist < crt_mate_range) {
+					other_crt = c.gameObject.GetComponent<Creature>();
+					Genitalia other_genital = other_crt.genital.GetComponent<Genitalia>();
+					if (this.crt.state == Creature.State.persuing_mate || other_crt.state == Creature.State.persuing_mate) {
+						co.observe(crt.genital.gameObject, other_genital.gameObject);
+						other_crt.state = Creature.State.mating;
+						this.crt.state = Creature.State.mating;
+					}
+					dist = curr_dist;
+				}
+			}
+		}
+		return closest;	
+	}	
 }
