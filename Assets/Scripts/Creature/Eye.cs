@@ -9,7 +9,7 @@ public class Eye : MonoBehaviour {
 	public Creature closestCrt = null;
 	private CollisionMediator co;
 	private float curr_dist = 0f;
-	private int crt_mate_range = 20;
+	private int crt_mate_range = 30;
 	
 	public Creature other_crt;
 	
@@ -52,10 +52,9 @@ public class Eye : MonoBehaviour {
 	private Creature closestCreature () {
 		GameObject closest = null;
 		float dist = crt.line_of_sight;
-		Vector3 pos = transform.position;
 		foreach(GameObject c in objects) {
 			if (c && c.tag == "Creature" && c != crt.gameObject) {
-				Vector3 diff = c.transform.position - pos;
+				Vector3 diff = c.transform.position - transform.position;
 				curr_dist = diff.magnitude;
 				if (curr_dist < dist) {
 					closest = c;
