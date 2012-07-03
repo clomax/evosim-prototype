@@ -89,8 +89,8 @@ public class Creature : MonoBehaviour {
 	void Update () {
 		this.age = (int)Time.time - (int)timeCreated;
 				
-		this.changeHeading(Input.GetAxis("Horizontal") * this.sensitivityHdg);
-		this.moveForward(Input.GetAxis("Vertical") * this.sensitivityFwd);
+		//this.changeHeading(Input.GetAxis("Horizontal") * this.sensitivityHdg);
+		//this.moveForward(Input.GetAxis("Vertical") * this.sensitivityFwd);
 		
 		if(this.state != Creature.State.mating) {
 			if (this.energy < this.hungerThreshold) {

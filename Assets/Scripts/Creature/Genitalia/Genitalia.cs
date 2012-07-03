@@ -25,7 +25,7 @@ public class Genitalia : MonoBehaviour {
 	private Vector3 line_end;
 	private float line_width = 0.5F;
 	private double timeCreated;
-	public double timeToEnableMating = 3.0f;
+	public double timeToEnableMating = 1.0f;
 	public Eye eye;
 #pragma warning restore 0414
 
