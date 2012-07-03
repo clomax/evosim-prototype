@@ -3,8 +3,8 @@ using System.Collections;
 
 public class MouthRadius : MonoBehaviour {
 	
-	private static int MAX_SIZE = 50;	// It's ridiculously unlikely that a creature will need to consider more than this many foodbits
-	private GameObject[] fbits;
+	static int MAX_SIZE = 50;	// It's ridiculously unlikely that a creature will need to consider more than this many foodbits
+	GameObject[] fbits;
 	
 	void Start () {
 		this.fbits = new GameObject[MAX_SIZE];

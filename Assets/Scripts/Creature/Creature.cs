@@ -29,7 +29,7 @@ public class Creature : MonoBehaviour {
 	private float hdg = 0F;
 	public Transform _t;
 	private Logger lg;
-	private int line_of_sight;
+	public int line_of_sight = 50;
 	private int matingEnergyDeduction;
 	private int hungerThreshold;
 	public enum State { hungry, persuing_mate, mating, eating, neutral };
@@ -62,6 +62,9 @@ public class Creature : MonoBehaviour {
 		eye.transform.parent = transform;
 		eye.transform.localPosition = Vector3.zero;
 		eye.AddComponent<Eye>();
+		SphereCollider sp = eye.AddComponent<SphereCollider>();
+		sp.isTrigger = true;
+		sp.radius = line_of_sight;
 		
 		mouth = new GameObject();
 		mouth.name = "Mouth";
