@@ -35,7 +35,6 @@ public class Creature : MonoBehaviour {
 	public State state;
 	private MeshRenderer mr;
 	private Material mat;
-	Eye scr_eye;
 #pragma warning restore 0414
 	
 	void Start () {
@@ -57,14 +56,6 @@ public class Creature : MonoBehaviour {
 		sensitivityFwd = 1.0F;
 		sensitivityHdg = 2.5F;
 		
-		GameObject eye = new GameObject("Eye");
-		eye.transform.parent = transform;
-		eye.transform.localPosition = Vector3.zero;
-		SphereCollider sp = eye.AddComponent<SphereCollider>();
-		sp.isTrigger = true;
-		sp.radius = this.line_of_sight;
-		this.scr_eye = eye.AddComponent<Eye>();
-		
 		mouth = new GameObject();
 		mouth.name = "Mouth";
 		mouth.transform.parent = transform;
@@ -77,6 +68,7 @@ public class Creature : MonoBehaviour {
 		genital.transform.parent = transform;
 		genital.transform.localPosition = new Vector3(0,0,-0.5F);
 		genital.transform.localEulerAngles = new Vector3(0,180,0);
+		genital.AddComponent<Genitalia>();
 	}
 	
 	public Creature (int energy1, int energy2) {
