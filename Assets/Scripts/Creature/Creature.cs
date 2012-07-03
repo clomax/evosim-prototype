@@ -19,6 +19,7 @@ public class Creature : MonoBehaviour {
 	
 	private int age;
 	private double timeCreated;
+	public GameObject eye;
 	private GameObject mouth;
 	public GameObject genital;
 	private int id;
@@ -55,6 +56,12 @@ public class Creature : MonoBehaviour {
 		
 		sensitivityFwd = 1.0F;
 		sensitivityHdg = 2.5F;
+		
+		eye = new GameObject();
+		eye.name = "Eye";
+		eye.transform.parent = transform;
+		eye.transform.localPosition = Vector3.zero;
+		eye.AddComponent<Eye>();
 		
 		mouth = new GameObject();
 		mouth.name = "Mouth";
