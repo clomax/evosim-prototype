@@ -15,6 +15,7 @@ public class Mouth : MonoBehaviour {
 
 	public Foodbit fb;
 	public Creature crt;
+	private MouthRadius mr;
 	private Transform _t;
 	private LineRenderer lr;
 	private Vector3 line_start;
@@ -43,10 +44,11 @@ public class Mouth : MonoBehaviour {
 		SphereCollider sp = this.fb_detect_trigger.AddComponent<SphereCollider>();
 		sp.isTrigger = true;
 		sp.radius = this.fb_detect_range;
+		this.mr = this.fb_detect_trigger.AddComponent<MouthRadius>();
 	}
 
 	void Update () {
-		/*this.cf = closestFoodbit();
+		this.cf = closestFoodbit();
 		if(cf) {
 			this.lr.useWorldSpace = true;
 			this.line_end = new Vector3(cf.transform.position.x, cf.transform.position.y, cf.transform.position.z);
@@ -60,10 +62,8 @@ public class Mouth : MonoBehaviour {
 			this.lr.SetPosition(0,line_start);
 			this.lr.SetPosition(1,line_end);
 		}
-		*/
 	}
-	
-	/*
+
 	private GameObject closestFoodbit () {
 		this.fbits = this.mr.getFoodbits();
 		GameObject closest = null;
@@ -85,7 +85,7 @@ public class Mouth : MonoBehaviour {
 			}
 		}
 		return closest;	
-	}*/
+	}
 	
 	private float convertRadiusToDistance() {
 		return this.fb_detect_range * this.fb_detect_range_multiplyer;
