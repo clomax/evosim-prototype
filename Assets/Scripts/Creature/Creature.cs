@@ -20,13 +20,13 @@ public class Creature : MonoBehaviour {
 	private int age;
 	private double timeCreated;
 	private GameObject mouth;
-	private GameObject genital;
+	public GameObject genital;
 	private int id;
 	private float sensitivityFwd;
 	private float sensitivityHdg;
 	private int energy;
 	private float hdg = 0F;
-	private Transform _t;
+	public Transform _t;
 	private Logger lg;
 	private int line_of_sight;
 	private int matingEnergyDeduction;
@@ -35,6 +35,7 @@ public class Creature : MonoBehaviour {
 	public State state;
 	private MeshRenderer mr;
 	private Material mat;
+	Eye scr_eye;
 #pragma warning restore 0414
 	
 	void Start () {
@@ -44,7 +45,7 @@ public class Creature : MonoBehaviour {
 		this.name = "Creature";
 		this.hdg = transform.localEulerAngles.y;
 		this.lg = Logger.getInstance();
-		this.line_of_sight = 2000;
+		this.line_of_sight = 40;
 		this.mr = _t.gameObject.GetComponent<MeshRenderer>();
 		this.mat = (Material)Resources.Load("Materials/creature");
 		this.mr.material = this.mat;
@@ -55,6 +56,14 @@ public class Creature : MonoBehaviour {
 		
 		sensitivityFwd = 1.0F;
 		sensitivityHdg = 2.5F;
+		
+		GameObject eye = new GameObject("Eye");
+		eye.transform.parent = transform;
+		eye.transform.localPosition = Vector3.zero;
+		SphereCollider sp = eye.AddComponent<SphereCollider>();
+		sp.isTrigger = true;
+		sp.radius = this.line_of_sight;
+		this.scr_eye = eye.AddComponent<Eye>();
 		
 		mouth = new GameObject();
 		mouth.name = "Mouth";

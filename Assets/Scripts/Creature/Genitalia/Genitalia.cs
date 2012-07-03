@@ -19,18 +19,11 @@ public class Genitalia : MonoBehaviour {
 	private CollisionMediator co;
 	private GenitalRadius gr;
 	private Transform _t;
-	private LineRenderer lr;
-	private Vector3 line_start;
-	private float line_length = 0.5F;
-	private Vector3 line_end;
-	private float line_width = 0.5F;
-	private int crt_detect_range = 3000;
-	private int crt_mate_range = 100;
+	private int crt_mate_range = 10;
 	private float curr_dist = 1;
 	private int id;
 	private double timeCreated;
 	public double timeToEnableMating = 3.0f;
-	GameObject genital_detect_trigger;
 #pragma warning restore 0414
 
 	void Start () {
@@ -38,25 +31,10 @@ public class Genitalia : MonoBehaviour {
 		this.gameObject.tag = "Genital";
 		this.crt = (Creature)_t.parent.gameObject.GetComponent("Creature");
 		this.id = GetInstanceID();
-		lg = Logger.getInstance();
-		spw = Spawner.getInstance();
 		co = CollisionMediator.getInstance();
 		
 		_t = transform;
-		lr = (LineRenderer)this.gameObject.AddComponent("LineRenderer");
-		lr.material = (Material)Resources.Load("Materials/genital_vector");
-		lr.SetWidth(line_width, line_width);
-		lr.SetVertexCount(2);
-		lr.renderer.enabled = true;
 		timeCreated = Time.time;
-		
-		this.genital_detect_trigger = new GameObject("GEN_Trigger");
-		this.genital_detect_trigger.transform.parent = transform;
-		this.genital_detect_trigger.transform.localPosition = Vector3.zero;
-		SphereCollider sp = this.genital_detect_trigger.AddComponent<SphereCollider>();
-		sp.isTrigger = true;
-		sp.radius = this.crt_detect_range;
-		this.gr = this.genital_detect_trigger.AddComponent<GenitalRadius>();
 	}
 	
 	void Update () {
@@ -65,57 +43,17 @@ public class Genitalia : MonoBehaviour {
 			timeCreated = Time.time;
 		}
 		
-		GameObject cc = closestCreature();
-		if(cc) {
-			lr.useWorldSpace = true;
-			line_end = new Vector3(cc.transform.position.x, cc.transform.position.y, cc.transform.position.z);
-			line_start = _t.position;
-			lr.SetPosition(1,line_end);
-			resetStart();
-		} else {
-			lr.useWorldSpace = false;
-			line_start = new Vector3(0,0,0);
-			line_end = new Vector3(0,0,line_length);
-			lr.SetPosition(0,line_start);
-			lr.SetPosition(1,line_end);
-		}
-	}
-	
-	private GameObject closestCreature () {
-		GameObject[] crts = this.gr.g;
-		GameObject closest = null;
-		float dist = crt_detect_range;
-		Vector3 pos = transform.position;
-		foreach(GameObject c in crts) {
-			if (c && c.tag == "Creature" && c != this.gameObject) {
-				Vector3 diff = c.transform.position - pos;
-				curr_dist = diff.sqrMagnitude;
-				if (curr_dist < dist) {
-					closest = c;
-					dist = curr_dist;
-				}
-				if (curr_dist < crt_mate_range) {
-					Genitalia other_genital = c.transform.gameObject.GetComponent<Genitalia>();
-					Creature other_crt = c.transform.parent.gameObject.GetComponent<Creature>();
-					if (this.crt.state == Creature.State.persuing_mate || other_crt.state == Creature.State.persuing_mate) {
-						co.observe(this.gameObject, other_genital.gameObject);
-						other_crt.state = Creature.State.mating;
-						this.crt.state = Creature.State.mating;
-					}
-					dist = curr_dist;
-				}
+		if (curr_dist < crt_mate_range) {
+			Genitalia other_genital = c.transform.gameObject.GetComponent<Genitalia>();
+			Creature other_crt = c.gameObject.GetComponent<Creature>();
+			if (this.crt.state == Creature.State.persuing_mate || other_crt.state == Creature.State.persuing_mate) {
+				co.observe(this.gameObject, other_genital.gameObject);
+				other_crt.state = Creature.State.mating;
+				this.crt.state = Creature.State.mating;
 			}
+			dist = curr_dist;
 		}
-		return closest;	
-	}
-	
-	private void resetStart () {
-		line_start = new Vector3(_t.position.x,_t.position.y,_t.position.z);
-		lr.SetPosition(0,line_start);
-	}
-	
-	public int getID() {
-		return this.id;
+		
 	}
 
 }
