@@ -23,10 +23,10 @@ public class Mouth : MonoBehaviour {
 	private Vector3 line_end;
 	private float line_width = 0.5F;
 	private int fb_detect_range = 40;
-	private int fb_eat_range = 10;
 	private Object[] fbits;
 	private GameObject cf;
 	private GameObject fb_detect_trigger;
+	public Eye eye;
 
 	void Start () {
 		this._t = transform;
@@ -36,18 +36,11 @@ public class Mouth : MonoBehaviour {
 		this.lr.SetWidth(line_width, line_width);
 		this.lr.SetVertexCount(2);
 		this.lr.renderer.enabled = true;
-		
-		this.fb_detect_trigger = new GameObject("FB_Trigger");
-		this.fb_detect_trigger.transform.parent = transform;
-		this.fb_detect_trigger.transform.localPosition = Vector3.zero;
-		SphereCollider sp = this.fb_detect_trigger.AddComponent<SphereCollider>();
-		sp.isTrigger = true;
-		sp.radius = this.fb_detect_range;
-		this.mr = this.fb_detect_trigger.AddComponent<MouthRadius>();
+		eye = crt.eye.gameObject.GetComponent<Eye>();
 	}
 
 	void Update () {
-		this.cf = closestFoodbit();
+		this.cf = eye.closestFbit;
 		if(cf) {
 			this.lr.useWorldSpace = true;
 			this.line_end = new Vector3(cf.transform.position.x, cf.transform.position.y, cf.transform.position.z);
@@ -61,29 +54,6 @@ public class Mouth : MonoBehaviour {
 			this.lr.SetPosition(0,line_start);
 			this.lr.SetPosition(1,line_end);
 		}
-	}
-
-	private GameObject closestFoodbit () {
-		this.fbits = this.mr.getFoodbits();
-		GameObject closest = null;
-		float dist = fb_detect_range;
-		Vector3 pos = transform.position;
-		foreach(GameObject fbit in fbits) {
-			if (null != fbit && fbit.tag == "Foodbit") {
-				Vector3 diff = fbit.transform.position - pos;
-				float curr_dist = diff.magnitude;
-				if (curr_dist < dist) {
-					closest = fbit;
-					dist = curr_dist;
-				}
-				if (curr_dist < fb_eat_range && this.crt.state == Creature.State.hungry) {
-					this.fb = fbit.GetComponent<Foodbit>();
-					this.crt.eat(this.fb.getEnergy());
-					this.fb.destroy();
-				}
-			}
-		}
-		return closest;	
 	}
 	
 	private void resetStart () {

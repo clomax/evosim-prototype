@@ -22,7 +22,6 @@ public class Creature : MonoBehaviour {
 	public GameObject eye;
 	private GameObject mouth;
 	public GameObject genital;
-	private int id;
 	private float sensitivityFwd;
 	private float sensitivityHdg;
 	private int energy = 100;
@@ -82,15 +81,14 @@ public class Creature : MonoBehaviour {
 	}
 	
 	public Creature (int energy1, int energy2) {
-		this.id = GetInstanceID();
 		this.energy += (energy1 + energy2);
 	}
 	
 	void Update () {
 		this.age = (int)Time.time - (int)timeCreated;
 				
-		//this.changeHeading(Input.GetAxis("Horizontal") * this.sensitivityHdg);
-		//this.moveForward(Input.GetAxis("Vertical") * this.sensitivityFwd);
+		this.changeHeading(Input.GetAxis("Horizontal") * this.sensitivityHdg);
+		this.moveForward(Input.GetAxis("Vertical") * this.sensitivityFwd);
 		
 		if(this.state != Creature.State.mating) {
 			if (this.energy < this.hungerThreshold) {
@@ -132,14 +130,6 @@ public class Creature : MonoBehaviour {
 		Destroy(gameObject);
 		crt_count.number_of_creatures--;
 		return this.energy;
-	}
-	
-	public int getID () {
-		return this.id;
-	}
-	
-	public int getLOS() {
-		return this.line_of_sight;
 	}
 	
 	

@@ -5,11 +5,14 @@ public class Eye : MonoBehaviour {
 	static int MAX_SIZE = 50;
 	GameObject[] objects;
 	public Creature crt;
+	public Foodbit fbit;
 	public GameObject trigger;
 	public Creature closestCrt = null;
+	public GameObject closestFbit = null;
 	private CollisionMediator co;
 	private float curr_dist = 0f;
 	private int crt_mate_range = 30;
+	private int fb_eat_range = 20;
 	
 	public Creature other_crt;
 	
@@ -47,6 +50,7 @@ public class Eye : MonoBehaviour {
 	
 	void Update () {
 		closestCrt = closestCreature();
+		closestFbit = closestFoodbit();
 	}
 	
 	private Creature closestCreature () {
@@ -63,17 +67,38 @@ public class Eye : MonoBehaviour {
 				if (curr_dist < crt_mate_range) {
 					other_crt = c.gameObject.GetComponent<Creature>();
 					Genitalia other_genital = other_crt.genital.GetComponent<Genitalia>();
-					if (this.crt.state == Creature.State.persuing_mate || other_crt.state == Creature.State.persuing_mate) {
+					if (crt.state == Creature.State.persuing_mate || other_crt.state == Creature.State.persuing_mate) {
 						co.observe(crt.genital.gameObject, other_genital.gameObject);
 						other_crt.state = Creature.State.mating;
-						this.crt.state = Creature.State.mating;
+						crt.state = Creature.State.mating;
 					}
 					dist = curr_dist;
 				}
 			}
 		}
-		if (closest)
-			return closest.GetComponent<Creature>();
+		if (closest) return closest.GetComponent<Creature>();
 		return null;
-	}	
+	}
+	
+	private GameObject closestFoodbit () {
+		GameObject closest = null;
+		float dist = crt.line_of_sight;
+		foreach(GameObject f in objects) {
+			if (f && f.tag == "Foodbit") {
+				Vector3 diff = f.transform.position - transform.position;
+				float curr_dist = diff.magnitude;
+				if (curr_dist < dist) {
+					closest = f;
+					dist = curr_dist;
+				}
+				if (curr_dist < fb_eat_range && crt.state == Creature.State.hungry) {
+					fbit = f.GetComponent<Foodbit>();
+					crt.eat(fbit.getEnergy());
+					fbit.destroy();
+				}
+			}
+		}
+		if (closest) return closest;
+		return null;
+	}
 }
