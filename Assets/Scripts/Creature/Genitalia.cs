@@ -17,7 +17,6 @@ public class Genitalia : MonoBehaviour {
 	private Logger lg;
 	private Spawner spw;
 	private CollisionMediator co;
-	private GenitalRadius gr;
 	private Transform _t;
 	private LineRenderer lr;
 	private Vector3 line_start;
@@ -27,19 +26,20 @@ public class Genitalia : MonoBehaviour {
 	private double timeCreated;
 	public double timeToEnableMating = 1.0f;
 	public Eye eye;
+	public int id;
 #pragma warning restore 0414
 
 	void Start () {
-		this._t = transform;
-		this.gameObject.tag = "Genital";
-		this.crt = (Creature)_t.parent.gameObject.GetComponent("Creature");
+		_t = transform;
+		id = GetInstanceID();
+		gameObject.tag = "Genital";
+		crt = (Creature)_t.parent.gameObject.GetComponent("Creature");
 		lg = Logger.getInstance();
-		spw = Spawner.getInstance();
 		co = CollisionMediator.getInstance();
 		eye = crt.eye.gameObject.GetComponent<Eye>();
 		
 		_t = transform;
-		lr = (LineRenderer)this.gameObject.AddComponent("LineRenderer");
+		lr = (LineRenderer)gameObject.AddComponent("LineRenderer");
 		lr.material = (Material)Resources.Load("Materials/genital_vector");
 		lr.SetWidth(line_width, line_width);
 		lr.SetVertexCount(2);
@@ -48,8 +48,8 @@ public class Genitalia : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (this.crt.state == Creature.State.mating && Time.time > (timeCreated + timeToEnableMating)) {
-			this.crt.state = Creature.State.persuing_mate;
+		if (crt.state == Creature.State.mating && Time.time > (timeCreated + timeToEnableMating)) {
+			crt.state = Creature.State.persuing_mate;
 			timeCreated = Time.time;
 		}
 		

@@ -15,7 +15,6 @@ public class Mouth : MonoBehaviour {
 
 	public Foodbit fb;
 	public Creature crt;
-	private MouthRadius mr;
 	private Transform _t;
 	private LineRenderer lr;
 	private Vector3 line_start;
@@ -25,7 +24,6 @@ public class Mouth : MonoBehaviour {
 	private int fb_detect_range = 40;
 	private Object[] fbits;
 	private GameObject cf;
-	private GameObject fb_detect_trigger;
 	public Eye eye;
 
 	void Start () {

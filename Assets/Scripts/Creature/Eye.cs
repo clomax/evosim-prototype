@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Eye : MonoBehaviour {
-	static int MAX_SIZE = 50;
-	GameObject[] objects;
+	IList objects;
 	public Creature crt;
 	public Foodbit fbit;
 	public GameObject trigger;
@@ -17,9 +17,9 @@ public class Eye : MonoBehaviour {
 	public Creature other_crt;
 	
 	void Start () {
-		objects = new GameObject[MAX_SIZE];
 		crt = transform.parent.gameObject.GetComponent<Creature>();
 		co = CollisionMediator.getInstance();
+		objects = new List<GameObject>();
 		
 		trigger = new GameObject("Trigger");
 		trigger.transform.parent = transform;
@@ -31,21 +31,11 @@ public class Eye : MonoBehaviour {
 	
 	void OnTriggerEnter (Collider c) {
 		if (c.tag == "Foodbit" || c.tag == "Creature")
-			for(int i=0; i<this.objects.Length; i++) {
-			if (null == this.objects[i]) {
-				this.objects[i] = c.gameObject;
-				break;
-			}
-		}
+			objects.Add(c.gameObject);
 	}
 	
 	void OnTriggerExit (Collider c) {
-		for(int i=0; i<this.objects.Length; i++) {
-			if (c.gameObject == this.objects[i]) {
-				this.objects[i] = null;
-				break;
-			}
-		}
+		objects.Remove(c.gameObject);
 	}
 	
 	void Update () {
@@ -56,7 +46,9 @@ public class Eye : MonoBehaviour {
 	private Creature closestCreature () {
 		GameObject closest = null;
 		float dist = crt.line_of_sight;
-		foreach(GameObject c in objects) {
+		IEnumerator e = objects.GetEnumerator();
+		while(e.MoveNext()) {
+			GameObject c = (GameObject) e.Current;;
 			if (c && c.tag == "Creature" && c != crt.gameObject) {
 				Vector3 diff = c.transform.position - transform.position;
 				curr_dist = diff.magnitude;
@@ -83,7 +75,9 @@ public class Eye : MonoBehaviour {
 	private GameObject closestFoodbit () {
 		GameObject closest = null;
 		float dist = crt.line_of_sight;
-		foreach(GameObject f in objects) {
+		IEnumerator e = objects.GetEnumerator();
+		while(e.MoveNext()) {
+			GameObject f = (GameObject) e.Current;
 			if (f && f.tag == "Foodbit") {
 				Vector3 diff = f.transform.position - transform.position;
 				float curr_dist = diff.magnitude;
