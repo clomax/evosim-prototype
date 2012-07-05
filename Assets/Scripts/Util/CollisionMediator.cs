@@ -45,7 +45,7 @@ public class CollisionMediator : MonoBehaviour {
 		// If a duplicate has been found - spawn
 		if (null != dup) {
 			this.collision_events.Clear();
-			Vector3 pos = Utility.RandomFlatVec(-200,1,200);
+			Vector3 pos = Utility.RandomFlatVec(-200,10,200);
 			this.spw.spawn(pos,Vector3.zero);
 		} else {
 			this.collision_events.Add(new CollEvent(b,a));
