@@ -13,45 +13,46 @@ using System.Collections;
 public class Creature : MonoBehaviour {
 
 #pragma warning disable 0414
-	public static int MAX_ENERGY = 100;
+	static int MAX_ENERGY = 100;
 	
-	public CreatureCount crt_count;
+	CreatureCount crt_count;
 	
-	private int age;
-	private double timeCreated;
+	int age;
+	double timeCreated;
 	public GameObject eye;
-	private GameObject mouth;
+	public GameObject mouth;
 	public GameObject genital;
-	private float sensitivityFwd;
-	private float sensitivityHdg;
-	private int energy = 100;
-	private float hdg = 0F;
-	public Transform _t;
-	private Logger lg;
-	public int line_of_sight = 50;
-	private int matingEnergyDeduction;
-	private int hungerThreshold;
+	float sensitivityFwd;
+	float sensitivityHdg;
+	int energy = 100;
+	float hdg = 0F;
+	Transform _t;
+	Logger lg;
+	public int line_of_sight;
+	int matingEnergyDeduction;
+	int hungerThreshold;
 	public enum State { hungry, persuing_mate, mating, eating, neutral };
 	public State state;
-	private MeshRenderer mr;
-	private Material mat;
+	MeshRenderer mr;
+	Material mat;
 #pragma warning restore 0414
 	
 	void Start () {
 		crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
 		
-		this._t = transform;
-		this.name = "Creature";
-		this.hdg = transform.localEulerAngles.y;
-		this.lg = Logger.getInstance();
-		this.line_of_sight = 40;
-		this.mr = _t.gameObject.GetComponent<MeshRenderer>();
-		this.mat = (Material)Resources.Load("Materials/creature");
-		this.mr.material = this.mat;
+		_t = transform;
+		name = "Creature";
+		hdg = transform.localEulerAngles.y;
+		lg = Logger.getInstance();
+		line_of_sight = 40;
+		mr = _t.gameObject.GetComponent<MeshRenderer>();
+		mat = (Material)Resources.Load("Materials/creature");
+		mr.material = mat;
 		
-		this.hungerThreshold = 50;
-		this.age = 0;
-		this.timeCreated = Time.time;
+		hungerThreshold = 50;
+		line_of_sight = 50;
+		age = 0;
+		timeCreated = Time.time;
 		
 		sensitivityFwd = 1.0F;
 		sensitivityHdg = 2.5F;
@@ -80,22 +81,22 @@ public class Creature : MonoBehaviour {
 		genital.AddComponent<Genitalia>();
 	}
 	
-	public Creature (int energy1, int energy2) {
-		this.energy += (energy1 + energy2);
+	 Creature (int energy1, int energy2) {
+		energy += (energy1 + energy2);
 	}
 	
 	void Update () {
-		this.age = (int)Time.time - (int)timeCreated;
+		age = (int)Time.time - (int)timeCreated;
 				
-		this.changeHeading(Input.GetAxis("Horizontal") * this.sensitivityHdg);
-		this.moveForward(Input.GetAxis("Vertical") * this.sensitivityFwd);
+		changeHeading(Input.GetAxis("Horizontal") * sensitivityHdg);
+		moveForward(Input.GetAxis("Vertical") * sensitivityFwd);
 		
-		if(this.state != Creature.State.mating) {
-			if (this.energy < this.hungerThreshold) {
-				this.state = State.hungry;
+		if(state != Creature.State.mating) {
+			if (energy < hungerThreshold) {
+				state = State.hungry;
 			}
-			if (this.energy >= this.hungerThreshold) {
-				this.state = State.persuing_mate;
+			if (energy >= hungerThreshold) {
+				state = State.persuing_mate;
 			}
 		}
 	}
@@ -105,21 +106,20 @@ public class Creature : MonoBehaviour {
 	 * Return the current energy value for the creature
 	 */
 	public int getEnergy () {
-		return this.energy;
+		return energy;
 	}
 	
 	/*
 	 * Add to the creature the energy of what it ate
 	 */
 	public void eat (int n) {
-		this.energy += n;
-		if (this.energy > MAX_ENERGY) {
-			this.energy = MAX_ENERGY;
-		}
+		energy += n;
+		if (energy > MAX_ENERGY) energy = MAX_ENERGY;
 	}
 	
 	public void subtractEnergy (int n) {
-		this.energy -= n;	
+		energy -= n;
+		if(energy < 0) energy = 0;
 	}
 	
 	/*
@@ -129,7 +129,7 @@ public class Creature : MonoBehaviour {
 	public int kill () {
 		Destroy(gameObject);
 		crt_count.number_of_creatures--;
-		return this.energy;
+		return energy;
 	}
 	
 	
@@ -141,13 +141,13 @@ public class Creature : MonoBehaviour {
 		Vector3 fwd = _t.forward;
 		fwd.y = 0;
 		fwd.Normalize();
-		this._t.position += n * fwd;
+		_t.position += n * fwd;
 	}
 	
 	void changeHeading (float n) {
-		this.hdg += n;
-		this.wrapAngle(hdg);
-		this._t.localEulerAngles = new Vector3(0,hdg,0);
+		hdg += n;
+		wrapAngle(hdg);
+		_t.localEulerAngles = new Vector3(0,hdg,0);
 	}
 	
 	void wrapAngle (float angle) {

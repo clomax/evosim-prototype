@@ -4,17 +4,17 @@ using System.Collections.Generic;
 
 public class Eye : MonoBehaviour {
 	IList objects;
-	public Creature crt;
-	public Foodbit fbit;
-	public GameObject trigger;
+	Creature crt;
+	Foodbit fbit;
+	GameObject trigger;
 	public Creature closestCrt = null;
 	public GameObject closestFbit = null;
-	private CollisionMediator co;
-	private float curr_dist = 0f;
-	private int crt_mate_range = 30;
-	private int fb_eat_range = 20;
+	CollisionMediator co;
+	float curr_dist = 0f;
+	int crt_mate_range = 30;
+	int fb_eat_range = 20;
 	
-	public Creature other_crt;
+	 Creature other_crt;
 	
 	void Start () {
 		crt = transform.parent.gameObject.GetComponent<Creature>();
@@ -43,7 +43,7 @@ public class Eye : MonoBehaviour {
 		closestFbit = closestFoodbit();
 	}
 	
-	private Creature closestCreature () {
+	public Creature closestCreature () {
 		GameObject closest = null;
 		float dist = crt.line_of_sight;
 		IEnumerator e = objects.GetEnumerator();
@@ -72,7 +72,7 @@ public class Eye : MonoBehaviour {
 		return null;
 	}
 	
-	private GameObject closestFoodbit () {
+	public GameObject closestFoodbit () {
 		GameObject closest = null;
 		float dist = crt.line_of_sight;
 		IEnumerator e = objects.GetEnumerator();

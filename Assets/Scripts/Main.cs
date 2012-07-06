@@ -14,20 +14,20 @@ using System.Collections;
 public class Main : MonoBehaviour {
 
 	#pragma warning disable 0414
-	//private Logger lg;
-	private Spawner spw;
-	private GeneticsMain gm;
-	private CollisionMediator co;
+	// Logger lg;
+	 Spawner spw;
+	 GeneticsMain gm;
+	 CollisionMediator co;
 
-	private GameObject aperatus;
-	private GameObject cam;
-	private GameObject plane;
-	private GameObject ether;
-	private GameObject _catch;
-	private GameObject nrg_ether;
-	private GameObject gui_text;
+	 GameObject aperatus;
+	 GameObject cam;
+	 GameObject plane;
+	 GameObject ether;
+	 GameObject _catch;
+	 GameObject nrg_ether;
+	 GameObject gui_text;
 	
-	private MeshRenderer p_mr;
+	 MeshRenderer p_mr;
 	#pragma warning restore 0414
 	
 	/*

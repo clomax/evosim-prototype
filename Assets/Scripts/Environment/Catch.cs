@@ -13,8 +13,8 @@ using System.Collections;
 
 public class Catch : MonoBehaviour {
 	
-	public Ether eth;
-	public Creature crt;
+	Ether eth;
+	Creature crt;
 	
 	void OnTriggerEnter (Collider col) {
 		eth = GameObject.Find("Ether").GetComponent<Ether>();

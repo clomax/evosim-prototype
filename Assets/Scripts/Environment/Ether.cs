@@ -13,17 +13,17 @@ using System.Collections;
 
 public class Ether : MonoBehaviour {
 	
-	private GameObject foodbit;
+	GameObject foodbit;
 
-	private Logger lg;
+	Logger lg;
 	
-	private int grossEnergy = 4000;
-	private int energy;
-	private int foodbitEnergy = 20;
-	private double timeCreated;
-	private double timeToSpawnFoodbit = 0.0f;
-	private int foodbitCount = 0;
-	private int fbSpawnRange = 200;
+	int grossEnergy = 4000;
+	int energy;
+	int foodbitEnergy = 20;
+	double timeCreated;
+	double timeToSpawnFoodbit = 0.0f;
+	public int foodbitCount = 0;
+	int fbSpawnRange = 200;
 	
 
 	void Awake () {
@@ -37,7 +37,7 @@ public class Ether : MonoBehaviour {
 		timeCreated = Time.time;
 	}
 	
-	public Ether () {
+	Ether () {
 		energy = grossEnergy;		
 	}
 	
@@ -76,11 +76,7 @@ public class Ether : MonoBehaviour {
 		return energy;
 	}
 	
-	public int getFoodbitCount () {
-		return foodbitCount;
-	}
-	
-	public void subtractEnergy (int n) {
+	void subtractEnergy (int n) {
 		energy -= n;
 	}
 	
@@ -88,7 +84,7 @@ public class Ether : MonoBehaviour {
 		energy += n;
 	}
 
-	public bool enoughEnergy(int n) {
+	bool enoughEnergy(int n) {
 		return energy >= n;
 	}
 	

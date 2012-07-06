@@ -13,25 +13,23 @@ using System.Collections;
 public class Genitalia : MonoBehaviour {
 
 #pragma warning disable 0414
-	private Creature crt;
-	private Logger lg;
-	private Spawner spw;
-	private CollisionMediator co;
-	private Transform _t;
-	private LineRenderer lr;
-	private Vector3 line_start;
-	private float line_length = 0.5F;
-	private Vector3 line_end;
-	private float line_width = 0.5F;
-	private double timeCreated;
-	public double timeToEnableMating = 1.0f;
-	public Eye eye;
-	public int id;
+	Creature crt;
+	Logger lg;
+	Spawner spw;
+	CollisionMediator co;
+	Transform _t;
+	LineRenderer lr;
+	Vector3 line_start;
+	float line_length = 0.5F;
+	Vector3 line_end;
+	float line_width = 0.5F;
+	double timeCreated;
+	double timeToEnableMating = 1.0f;
+	Eye eye;
 #pragma warning restore 0414
 
 	void Start () {
 		_t = transform;
-		id = GetInstanceID();
 		gameObject.tag = "Genital";
 		crt = (Creature)_t.parent.gameObject.GetComponent("Creature");
 		lg = Logger.getInstance();
@@ -74,7 +72,7 @@ public class Genitalia : MonoBehaviour {
 	
 	
 	
-	private void resetStart () {
+	void resetStart () {
 		line_start = new Vector3(_t.position.x,_t.position.y,_t.position.z);
 		lr.SetPosition(0,line_start);
 	}

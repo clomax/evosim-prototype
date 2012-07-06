@@ -25,25 +25,26 @@ public class Foodbit : MonoBehaviour {
 
 	public static float foodbitHeight = 1.0f;
 	
-	private Ether eth;
-	private MeshRenderer mr;
-	private int energy;
+	Ether eth;
+	MeshRenderer mr;
+	int energy;
 	
 	
 	void Start () {
-		mr = (MeshRenderer)this.gameObject.AddComponent("MeshRenderer");
+		mr = (MeshRenderer)gameObject.AddComponent("MeshRenderer");
 		mr.material = (Material)Resources.Load("Materials/Foodbit");
 		eth = GameObject.Find("Ether").GetComponent<Ether>();
 		energy = eth.getFoodbitEnergy();
-		Collider co = this.GetComponent<BoxCollider>();
+		Collider co = GetComponent<BoxCollider>();
 		co.isTrigger = true;
 	}
 	
-	public int  getEnergy() {
+	public int getEnergy() {
 		return energy;
 	}
 	
 	public void destroy () {
+		eth.foodbitCount--;
 		Destroy(gameObject);
 	}
 

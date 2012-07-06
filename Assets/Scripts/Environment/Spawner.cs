@@ -4,13 +4,13 @@ using System.Collections;
 public class Spawner : MonoBehaviour {
 	
 #pragma warning disable 0414
-	private Logger lg;
-	private Ether eth;
-	private CreatureCount crt_count;
-	private GameObject crt;
-	public static GameObject container;
 	public static Spawner instance;
-	private Vector3 pos;
+	Logger lg;
+	Ether eth;
+	CreatureCount crt_count;
+	GameObject crt;
+	static GameObject container;
+	Vector3 pos;
 #pragma warning restore 0414
 	
 	void Start () {
