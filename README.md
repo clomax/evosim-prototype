@@ -5,7 +5,7 @@ This is a proof of concept executed with the intention of realising how capable 
 The program is intended to be a 'toy'. It is not a scientific tool or a true reflection of evolution in the natural world.
 
 ## Usage
-Clone this repository and open the directory as an existing project in Unity3D. There may be warnings/errors as the project is run in the editor; this is due to Components needing to be attached to objects. In the near future the only Component you'll need to attach to any GameObject will be the Main script to the Main GameObject as everything else will be done through script.
+Clone this repository and open the directory as an existing project in Unity3D, open the scene named 'Main' and attach the script named 'Main' to the GameObject named 'Main' in the hierarchy.
 
 ## License - MIT License
 Copyright (c) 2011, Craig Lomax
