@@ -34,3 +34,5 @@ ScriptAssemblies/*
 previews/*
 Assets/Logs/*
 evosim_Data/*
+ProjectSettings/NavMeshLayers.asset
+Library/EditorUserSettings.asset

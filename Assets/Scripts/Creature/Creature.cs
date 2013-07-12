@@ -24,7 +24,7 @@ public class Creature : MonoBehaviour {
 	public GameObject genital;
 	float sensitivityFwd;
 	float sensitivityHdg;
-	int energy = 100;
+	public int energy = 100;
 	float hdg = 0F;
 	Transform _t;
 	Logger lg;
