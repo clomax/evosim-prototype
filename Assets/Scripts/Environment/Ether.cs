@@ -32,8 +32,6 @@ public class Ether : MonoBehaviour {
 	
 	void Start () {
 		foodbit = (GameObject)Resources.Load("Prefabs/Foodbit");
-		lg = Logger.getInstance();
-		lg.write("EVT: Ether_instantiated" + " " + Time.realtimeSinceStartup);
 		timeCreated = Time.time;
 	}
 	

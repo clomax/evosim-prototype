@@ -7,10 +7,7 @@ public class TotalEnergy : MonoBehaviour {
 	public Ether eth;
 	
 	void Update () {
-		eth = GameObject.Find("Ether").GetComponent("Ether") as Ether;
-		
-		total_energy = eth.getEnergy();
-			// + total foodbit energy + total creature energy
+		total_energy = 1000;
 		guiText.text = "Total energy: " + total_energy;
 	}
 }

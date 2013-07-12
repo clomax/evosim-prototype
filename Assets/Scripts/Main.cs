@@ -15,6 +15,7 @@ public class Main : MonoBehaviour {
 
 	#pragma warning disable 0414
 	// Logger lg;
+	 Settings settings;
 	 Spawner spw;
 	 GeneticsMain gm;
 	 CollisionMediator co;
@@ -34,12 +35,13 @@ public class Main : MonoBehaviour {
 	 * Instantiate all necessary objects, attach and configure
 	 * Components as needed.
 	 */
-	void Start () {
+	void Start () {		
 		//lg = Logger.getInstance();
+		settings = Settings.getInstance();
+		print( settings.read() );
 		aperatus = (GameObject)Instantiate(Resources.Load("Prefabs/Aperatus"));
 		cam = GameObject.Find("Main Camera");
 		cam.AddComponent("CameraCtl");
-		cam.AddComponent("PauseMenu");
 		plane = GameObject.Find("Plane");
 		p_mr = (MeshRenderer)plane.AddComponent("MeshRenderer");
 		p_mr.material = (Material)Resources.Load("Materials/grid");

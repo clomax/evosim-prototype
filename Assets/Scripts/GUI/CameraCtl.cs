@@ -17,7 +17,6 @@ public class CameraCtl : MonoBehaviour {
     private float sensitivityY = 2.5F;
 	
 	private Transform _t;
-	private PauseMenu pause;
 	
     float hdg = 0F;
     float pitch = 0F;
@@ -27,36 +26,31 @@ public class CameraCtl : MonoBehaviour {
 	}
 	
     void Start() {
-		pause = (PauseMenu)GetComponent("PauseMenu");
 		pitch = _t.localEulerAngles.x;
     }
 
     void Update() {
-		if (!(pause.IsGamePaused())) {
-			if (!(Input.GetMouseButton(0) || Input.GetMouseButton(1)))
-				return;
-
-			float deltaX = Input.GetAxis("Mouse X") * sensitivityX;
-			float deltaY = Input.GetAxis("Mouse Y") * sensitivityY;
-
-			if (Input.GetMouseButton(1) && !Input.GetMouseButton(0)) {
-				setHeight(deltaY);
-			} else {
-				if (Input.GetMouseButton(0) && !(Input.GetButton("Fire2"))) {
-					moveForwards(deltaY);
-					setHeading(deltaX);
-				} else if (Input.GetMouseButton(1)) {
-					setPitch(-deltaY);
-				}
-			}
-			
-			if(Input.GetButton("Fire2") && Input.GetMouseButton(0)) {
+		if (!(Input.GetMouseButton(0) || Input.GetMouseButton(1)))
+			return;
+	
+		float deltaX = Input.GetAxis("Mouse X") * sensitivityX;
+		float deltaY = Input.GetAxis("Mouse Y") * sensitivityY;
+	
+		if (Input.GetMouseButton(1) && !Input.GetMouseButton(0)) {
+			setHeight(deltaY);
+		} else {
+			if (Input.GetMouseButton(0) && !(Input.GetButton("Fire2"))) {
+				moveForwards(deltaY);
 				setHeading(deltaX);
+			} else if (Input.GetMouseButton(1)) {
 				setPitch(-deltaY);
 			}
 		}
-
-
+		
+		if(Input.GetButton("Fire2") && Input.GetMouseButton(0)) {
+			setHeading(deltaX);
+			setPitch(-deltaY);
+		}
     }
 
     void moveForwards(float n) {
