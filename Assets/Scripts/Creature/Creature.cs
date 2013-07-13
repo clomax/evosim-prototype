@@ -79,15 +79,19 @@ public class Creature : MonoBehaviour {
 		genital.transform.localPosition = new Vector3(0,0,-.5f);
 		genital.transform.localEulerAngles = new Vector3(0,180,0);
 		genital.AddComponent<Genitalia>();
+		
+		InvokeRepeating("updateAge",0,1.0f);
 	}
 	
 	 Creature (int energy1, int energy2) {
 		energy += (energy1 + energy2);
 	}
 	
-	void Update () {
-		age = (int)Time.time - (int)timeCreated;
-				
+	void updateAge() {
+		age += 1;
+	}
+	
+	void Update () {				
 		changeHeading(Input.GetAxis("Horizontal") * sensitivityHdg);
 		moveForward(Input.GetAxis("Vertical") * sensitivityFwd);
 		
