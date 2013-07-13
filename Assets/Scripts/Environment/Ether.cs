@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-
 /*
  *		Author: 	Craig Lomax
  *		Date: 		06.09.2011
@@ -25,7 +24,7 @@ public class Ether : MonoBehaviour {
 	int energy;
 	int foodbit_energy;
 	double time_created;
-	double time_spawn_foodbit;
+ 	int foodbit_spawn_time;
 	public int foodbit_count;
 	int fb_spawn_range;
 	int start_number_foodbits;
@@ -36,23 +35,22 @@ public class Ether : MonoBehaviour {
 		string name = this.name.ToLower();
 		
 		settings = Settings.getInstance();
-		total_energy = settings.contents			[name]["total_energy"].AsInt;
-		foodbit_energy = settings.contents			[name]["foodbit_energy"].AsInt;
-		time_spawn_foodbit = 5.0;//settings.contents		[name]["time_spawn_foodbit"].AsFloat;
-		fb_spawn_range = settings.contents			[name]["fb_spawn_range"].AsInt;
-		start_number_foodbits = settings.contents	[name]["start_number_foodbits"].AsInt;
+		
+		total_energy = (int) settings.contents[name]["total_energy"];
+		foodbit_energy = (int) settings.contents[name]["foodbit_energy"];
+		foodbit_spawn_time = (int) settings.contents [name]["foodbit_spawn_time"];
+		fb_spawn_range = (int) settings.contents [name]["fb_spawn_range"];
+		start_number_foodbits = (int) settings.contents [name]["start_number_foodbits"];
 		
 		energy = total_energy;
 		foodbit_count = 0;
 		time_created = Time.time;
 		
 		for (int i=0; i<start_number_foodbits; i++) {
-			Vector3 pos = Utility.RandomFlatVec(-fb_spawn_range,
-			                                Foodbit.foodbitHeight /2,
-			                                fb_spawn_range
-			                               );
-			newFoodbit(pos);
+			newFoodbit();
 		}
+		
+		InvokeRepeating("newFoodbit", 0, (float)foodbit_spawn_time);
 	}
 	
 	public static Ether getInstance () {
@@ -64,24 +62,18 @@ public class Ether : MonoBehaviour {
 		return instance;
 	}
 	
-	void Update () {
-		if (Time.time > (time_created + time_spawn_foodbit) && enoughEnergy(foodbit_energy)) {
-			Vector3 pos = Utility.RandomFlatVec(-fb_spawn_range,
-			                                Foodbit.foodbitHeight /2,
-			                                fb_spawn_range
-			                               );
-			newFoodbit(pos);
-			time_created = Time.time;
-		}
-	}
-	
+		
 	/*
-	 * Place a new foodbit at the given vector,
+	 * Place a new foodbit at a random vector,
 	 * assign the default energy value for
 	 * all foodbits and attach the script
 	 */
-	public void newFoodbit (Vector3 vec) {
-		GameObject fb = (GameObject)Instantiate(foodbit, vec, Quaternion.identity);
+	public void newFoodbit () {
+		Vector3 pos = Utility.RandomFlatVec( -fb_spawn_range,
+			                                	 Foodbit.foodbitHeight /2,
+			                                	 fb_spawn_range
+			               				   );
+		GameObject fb = (GameObject)Instantiate(foodbit, pos, Quaternion.identity);
 		fb.AddComponent("Foodbit");
 		subtractEnergy(foodbit_energy);
 		foodbit_count++;

@@ -6,7 +6,7 @@
 	"ether": {
 		"total_energy": 2000,
 		"foodbit_energy": 10,
-		"foodbit_spawn_time": 1,
+		"foodbit_spawn_time": 5,
 		"fb_spawn_range": 200,
 		"start_number_foodbits": 50
 	}
