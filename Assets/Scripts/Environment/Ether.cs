@@ -33,7 +33,7 @@ public class Ether : MonoBehaviour {
 	
 	void Start () {
 		foodbit = (GameObject)Resources.Load("Prefabs/Foodbit");
-		string name = "ether";
+		string name = this.name.ToLower();
 		
 		settings = Settings.getInstance();
 		total_energy = settings.contents			[name]["total_energy"].AsInt;
