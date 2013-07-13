@@ -33,7 +33,7 @@ public class Foodbit : MonoBehaviour {
 	void Start () {
 		mr = (MeshRenderer)gameObject.AddComponent("MeshRenderer");
 		mr.material = (Material)Resources.Load("Materials/Foodbit");
-		eth = GameObject.Find("Ether").GetComponent<Ether>();
+		eth = Ether.getInstance();
 		energy = eth.getFoodbitEnergy();
 		Collider co = GetComponent<BoxCollider>();
 		co.isTrigger = true;
@@ -44,7 +44,7 @@ public class Foodbit : MonoBehaviour {
 	}
 	
 	public void destroy () {
-		eth.foodbitCount--;
+		eth.foodbit_count--;
 		Destroy(gameObject);
 	}
 

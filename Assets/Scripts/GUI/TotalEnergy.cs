@@ -6,8 +6,12 @@ public class TotalEnergy : MonoBehaviour {
 	public int total_energy;
 	public Ether eth;
 	
+	void Start () {
+		eth = Ether.getInstance();
+	}
+	
 	void Update () {
-		total_energy = 1000;
+		total_energy = eth.total_energy;
 		guiText.text = "Total energy: " + total_energy;
 	}
 }
