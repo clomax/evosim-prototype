@@ -25,7 +25,7 @@ public class Ether : MonoBehaviour {
 	int energy;
 	int foodbit_energy;
 	double time_created;
-	double time_to_spawn_foodbit;
+	double time_spawn_foodbit;
 	public int foodbit_count;
 	int fb_spawn_range;
 	int start_number_foodbits;
@@ -38,7 +38,7 @@ public class Ether : MonoBehaviour {
 		settings = Settings.getInstance();
 		total_energy = settings.contents			[name]["total_energy"].AsInt;
 		foodbit_energy = settings.contents			[name]["foodbit_energy"].AsInt;
-		time_to_spawn_foodbit = settings.contents	[name]["time_to_spawn_foodbit"].AsDouble;
+		time_spawn_foodbit = 5.0;//settings.contents		[name]["time_spawn_foodbit"].AsFloat;
 		fb_spawn_range = settings.contents			[name]["fb_spawn_range"].AsInt;
 		start_number_foodbits = settings.contents	[name]["start_number_foodbits"].AsInt;
 		
@@ -65,7 +65,7 @@ public class Ether : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (Time.time > (time_created + time_to_spawn_foodbit) && enoughEnergy(foodbit_energy)) {
+		if (Time.time > (time_created + time_spawn_foodbit) && enoughEnergy(foodbit_energy)) {
 			Vector3 pos = Utility.RandomFlatVec(-fb_spawn_range,
 			                                Foodbit.foodbitHeight /2,
 			                                fb_spawn_range
