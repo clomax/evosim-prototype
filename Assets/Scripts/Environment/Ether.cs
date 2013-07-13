@@ -23,7 +23,6 @@ public class Ether : MonoBehaviour {
 	public int total_energy;
 	int energy;
 	int foodbit_energy;
-	double time_created;
  	int foodbit_spawn_time;
 	public int foodbit_count;
 	int fb_spawn_range;
@@ -36,15 +35,14 @@ public class Ether : MonoBehaviour {
 		
 		settings = Settings.getInstance();
 		
-		total_energy = (int) settings.contents[name]["total_energy"];
-		foodbit_energy = (int) settings.contents[name]["foodbit_energy"];
-		foodbit_spawn_time = (int) settings.contents [name]["foodbit_spawn_time"];
-		fb_spawn_range = (int) settings.contents [name]["fb_spawn_range"];
+		total_energy = 			(int) settings.contents	[name]["total_energy"];
+		foodbit_energy = 		(int) settings.contents	[name]["foodbit_energy"];
+		foodbit_spawn_time = 	(int) settings.contents	[name]["foodbit_spawn_time"];
+		fb_spawn_range = 		(int) settings.contents	[name]["fb_spawn_range"];
 		start_number_foodbits = (int) settings.contents [name]["start_number_foodbits"];
 		
 		energy = total_energy;
 		foodbit_count = 0;
-		time_created = Time.time;
 		
 		for (int i=0; i<start_number_foodbits; i++) {
 			newFoodbit();
