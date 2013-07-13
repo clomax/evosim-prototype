@@ -17,6 +17,7 @@ public class Settings : MonoBehaviour {
 		sr = new StreamReader(Application.dataPath + "/" + settings_file);
 		string _contents = sr.ReadToEnd();
 		contents = JSON.Parse(_contents);
+		sr.Close();
 	}
 	
 	public static Settings getInstance () {
