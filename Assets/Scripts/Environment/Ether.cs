@@ -13,11 +13,15 @@ using System.Collections;
 
 public class Ether : MonoBehaviour {
 	
+	public static GameObject container;
+	public static Ether instance;
+	
 	GameObject foodbit;
 
 	Logger lg;
+	Settings settings;
 	
-	int grossEnergy = 4000;
+	public int total_energy;
 	int energy;
 	int foodbitEnergy = 20;
 	double timeCreated;
@@ -25,18 +29,22 @@ public class Ether : MonoBehaviour {
 	public int foodbitCount = 0;
 	int fbSpawnRange = 200;
 	
-
-	void Awake () {
-		name = "Ether";
-	}
 	
 	void Start () {
 		foodbit = (GameObject)Resources.Load("Prefabs/Foodbit");
+		settings = Settings.getInstance();
+		total_energy = settings.contents["ether"]["total_energy"].AsInt;
+		energy = total_energy;
 		timeCreated = Time.time;
 	}
 	
-	Ether () {
-		energy = grossEnergy;		
+	public static Ether getInstance () {
+		if(!instance) {
+			container = new GameObject();
+			container.name = "Ether";
+			instance = container.AddComponent(typeof(Ether)) as Ether;
+		}
+		return instance;
 	}
 	
 	void Update () {

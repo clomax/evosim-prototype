@@ -24,7 +24,7 @@ public class EtherEnergy : MonoBehaviour {
 	public Ether eth;
 	
 	void Update () {
-		eth = GameObject.Find("Ether").GetComponent("Ether") as Ether;	
+		eth = Ether.getInstance();	
 		guiText.text = "Ether energy: " + eth.getEnergy().ToString();
 	}
 }

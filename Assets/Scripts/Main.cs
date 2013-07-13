@@ -38,7 +38,6 @@ public class Main : MonoBehaviour {
 	void Start () {		
 		//lg = Logger.getInstance();
 		settings = Settings.getInstance();
-		print( settings.read() );
 		aperatus = (GameObject)Instantiate(Resources.Load("Prefabs/Aperatus"));
 		cam = GameObject.Find("Main Camera");
 		cam.AddComponent("CameraCtl");
