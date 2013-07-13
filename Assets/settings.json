@@ -1,13 +1,13 @@
 ﻿{
-	"ether": {
-		"total_energy": 1000,
-		"foodbit_energy": 10,
-		"time_to_spawn_foodbit": 5,
-		"fb_spawn_range": 200,
-		"start_number_foodbits": 50
-	},
-	
 	"environment": {
 		"tile_scale": 100
+	},
+	
+	"ether": {
+		"total_energy": 2000,
+		"foodbit_energy": 10,
+		"foodbit_spawn_time": 1,
+		"fb_spawn_range": 200,
+		"start_number_foodbits": 50
 	}
 }
