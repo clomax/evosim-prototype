@@ -5,5 +5,9 @@
 		"time_to_spawn_foodbit": 5.0,
 		"fb_spawn_range": 200,
 		"start_number_foodbits": 50
+	},
+	
+	"environment": {
+		"tile_scale": 100
 	}
 }

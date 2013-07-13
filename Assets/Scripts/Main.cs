@@ -38,17 +38,23 @@ public class Main : MonoBehaviour {
 	void Start () {		
 		//lg = Logger.getInstance();
 		settings = Settings.getInstance();
+		
 		aperatus = (GameObject)Instantiate(Resources.Load("Prefabs/Aperatus"));
 		cam = GameObject.Find("Main Camera");
 		cam.AddComponent("CameraCtl");
 		plane = GameObject.Find("Plane");
+		
 		p_mr = (MeshRenderer)plane.AddComponent("MeshRenderer");
 		p_mr.material = (Material)Resources.Load("Materials/grid");
-		p_mr.material.mainTextureScale = new Vector2(50,50);
+		int tile_scale = settings.contents["environment"]["tile_scale"].AsInt;
+		p_mr.material.mainTextureScale = new Vector2(tile_scale, tile_scale);
+		
 		_catch = GameObject.Find("Catch");
 		_catch.AddComponent("Catch");
+		
 		ether = (GameObject)Instantiate(Resources.Load("Prefabs/Ether"));
 		ether.AddComponent("Ether");
+		
 		gui_text = (GameObject)Instantiate(Resources.Load("Prefabs/GUItext"));
 		
 		co = CollisionMediator.getInstance();
