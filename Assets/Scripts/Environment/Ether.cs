@@ -23,19 +23,36 @@ public class Ether : MonoBehaviour {
 	
 	public int total_energy;
 	int energy;
-	int foodbitEnergy = 20;
-	double timeCreated;
-	double timeToSpawnFoodbit = 0.0f;
-	public int foodbitCount = 0;
-	int fbSpawnRange = 200;
+	int foodbit_energy;
+	double time_created;
+	double time_to_spawn_foodbit;
+	public int foodbit_count;
+	int fb_spawn_range;
+	int start_number_foodbits;
 	
 	
 	void Start () {
 		foodbit = (GameObject)Resources.Load("Prefabs/Foodbit");
+		string name = "ether";
+		
 		settings = Settings.getInstance();
-		total_energy = settings.contents["ether"]["total_energy"].AsInt;
+		total_energy = settings.contents			[name]["total_energy"].AsInt;
+		foodbit_energy = settings.contents			[name]["foodbit_energy"].AsInt;
+		time_to_spawn_foodbit = settings.contents	[name]["time_to_spawn_foodbit"].AsDouble;
+		fb_spawn_range = settings.contents			[name]["fb_spawn_range"].AsInt;
+		start_number_foodbits = settings.contents	[name]["start_number_foodbits"].AsInt;
+		
 		energy = total_energy;
-		timeCreated = Time.time;
+		foodbit_count = 0;
+		time_created = Time.time;
+		
+		for (int i=0; i<start_number_foodbits; i++) {
+			Vector3 pos = Utility.RandomFlatVec(-fb_spawn_range,
+			                                Foodbit.foodbitHeight /2,
+			                                fb_spawn_range
+			                               );
+			newFoodbit(pos);
+		}
 	}
 	
 	public static Ether getInstance () {
@@ -48,13 +65,13 @@ public class Ether : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (Time.time > (timeCreated + timeToSpawnFoodbit) && enoughEnergy(foodbitEnergy)) {
-			Vector3 pos = Utility.RandomFlatVec(-fbSpawnRange,
+		if (Time.time > (time_created + time_to_spawn_foodbit) && enoughEnergy(foodbit_energy)) {
+			Vector3 pos = Utility.RandomFlatVec(-fb_spawn_range,
 			                                Foodbit.foodbitHeight /2,
-			                                fbSpawnRange
+			                                fb_spawn_range
 			                               );
 			newFoodbit(pos);
-			timeCreated = Time.time;
+			time_created = Time.time;
 		}
 	}
 	
@@ -66,8 +83,8 @@ public class Ether : MonoBehaviour {
 	public void newFoodbit (Vector3 vec) {
 		GameObject fb = (GameObject)Instantiate(foodbit, vec, Quaternion.identity);
 		fb.AddComponent("Foodbit");
-		subtractEnergy(foodbitEnergy);
-		foodbitCount++;
+		subtractEnergy(foodbit_energy);
+		foodbit_count++;
 	}
 	
 	/*
@@ -75,7 +92,7 @@ public class Ether : MonoBehaviour {
 	 * foodbit on instantiation
 	 */
 	public int getFoodbitEnergy () {
-		return foodbitEnergy;
+		return foodbit_energy;
 	}
 	
 	public int getEnergy() {

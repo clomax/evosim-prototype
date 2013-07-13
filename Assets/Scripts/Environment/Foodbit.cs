@@ -44,7 +44,7 @@ public class Foodbit : MonoBehaviour {
 	}
 	
 	public void destroy () {
-		eth.foodbitCount--;
+		eth.foodbit_count--;
 		Destroy(gameObject);
 	}
 
