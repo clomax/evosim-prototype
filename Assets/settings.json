@@ -15,5 +15,9 @@
 		"init_energy"					: 100,
 		"hunger_threshold"		: 50,
 		"line_of_sight"				: 50
+	},
+	
+	"genitalia": {
+		"line_length"					: "0.5"
 	}
 }
