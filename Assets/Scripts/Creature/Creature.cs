@@ -85,10 +85,6 @@ public class Creature : MonoBehaviour {
 		InvokeRepeating("updateAge",0,1.0f);
 	}
 	
-	 Creature (int energy1, int energy2) {
-		energy += (energy1 + energy2);
-	}
-	
 	void updateAge() {
 		age += 1;
 	}
