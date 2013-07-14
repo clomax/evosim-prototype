@@ -16,21 +16,21 @@ public class Creature : MonoBehaviour {
 	static int MAX_ENERGY = 100;
 	
 	CreatureCount crt_count;
+	Settings settings;
 	
 	int age;
-	double timeCreated;
 	public GameObject eye;
 	public GameObject mouth;
 	public GameObject genital;
 	float sensitivityFwd;
 	float sensitivityHdg;
-	public int energy = 100;
+	public int energy;
 	float hdg = 0F;
 	Transform _t;
 	Logger lg;
 	public int line_of_sight;
 	int matingEnergyDeduction;
-	int hungerThreshold;
+	int hunger_threshold;
 	public enum State { hungry, persuing_mate, mating, eating, neutral };
 	public State state;
 	MeshRenderer mr;
@@ -40,19 +40,21 @@ public class Creature : MonoBehaviour {
 	void Start () {
 		crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
 		
+		settings = Settings.getInstance();
+		
 		_t = transform;
 		name = "Creature";
 		hdg = transform.localEulerAngles.y;
-		lg = Logger.getInstance();
-		line_of_sight = 40;
+		//lg = Logger.getInstance();
 		mr = _t.gameObject.GetComponent<MeshRenderer>();
 		mat = (Material)Resources.Load("Materials/creature");
 		mr.material = mat;
 		
-		hungerThreshold = 50;
-		line_of_sight = 50;
+		energy = 			(int) settings.contents [name.ToLower()]["init_energy"];
+		hunger_threshold = 	(int) settings.contents [name.ToLower()]["hunger_threshold"];
+		line_of_sight = 	(int) settings.contents [name.ToLower()]["line_of_sight"];
+		
 		age = 0;
-		timeCreated = Time.time;
 		
 		sensitivityFwd = 1.0F;
 		sensitivityHdg = 2.5F;
@@ -96,10 +98,10 @@ public class Creature : MonoBehaviour {
 		moveForward(Input.GetAxis("Vertical") * sensitivityFwd);
 		
 		if(state != Creature.State.mating) {
-			if (energy < hungerThreshold) {
+			if (energy < hunger_threshold) {
 				state = State.hungry;
 			}
-			if (energy >= hungerThreshold) {
+			if (energy >= hunger_threshold) {
 				state = State.persuing_mate;
 			}
 		}
