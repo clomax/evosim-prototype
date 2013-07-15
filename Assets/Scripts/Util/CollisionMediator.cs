@@ -24,9 +24,12 @@ public class CollisionMediator : MonoBehaviour {
 	
 	Settings settings;
 	
+	double energy_scale;
+	
 	void Start () {
 		spw = Spawner.getInstance();
 		settings = Settings.getInstance();
+		energy_scale = (double) settings.contents["creature"]["energy_to_offspring"];
 	}
 	
 	public static CollisionMediator getInstance () {
@@ -52,7 +55,6 @@ public class CollisionMediator : MonoBehaviour {
 			
 			double a_energy = a_script.getEnergy();
 			double b_energy = b_script.getEnergy();
-			double energy_scale = (double) settings.contents["creature"]["energy_to_offpring"];
 			
 			spw.spawn(pos,Vector3.zero,
 					  a_energy * energy_scale +
