@@ -23,7 +23,7 @@ public class Main : MonoBehaviour {
 	 GameObject aperatus;
 	 GameObject cam;
 	 GameObject plane;
-	 GameObject ether;
+	 Ether ether;
 	 GameObject _catch;
 	 GameObject nrg_ether;
 	 GameObject gui_text;
@@ -52,8 +52,7 @@ public class Main : MonoBehaviour {
 		_catch = GameObject.Find("Catch");
 		_catch.AddComponent("Catch");
 		
-		ether = (GameObject)Instantiate(Resources.Load("Prefabs/Ether"));
-		ether.AddComponent("Ether");
+		ether = Ether.getInstance();
 		
 		gui_text = (GameObject)Instantiate(Resources.Load("Prefabs/GUItext"));
 		

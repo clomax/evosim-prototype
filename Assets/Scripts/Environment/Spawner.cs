@@ -6,7 +6,6 @@ public class Spawner : MonoBehaviour {
 #pragma warning disable 0414
 	public static Spawner instance;
 	Logger lg;
-	Ether eth;
 	CreatureCount crt_count;
 	GameObject crt;
 	static GameObject container;
@@ -15,7 +14,6 @@ public class Spawner : MonoBehaviour {
 	
 	void Start () {
 		lg = Logger.getInstance();
-		eth = GameObject.Find("Ether").GetComponent<Ether>();
 		crt = (GameObject)Resources.Load("Prefabs/Creature/PrototypeCreature");
 		crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
 	}

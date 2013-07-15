@@ -14,34 +14,28 @@ using System.Collections;
 public class GeneticsMain : MonoBehaviour {
 
 	private Ether eth;
+	private Settings settings;
 	private Spawner spw;
 	public static GameObject container;
 	public static GeneticsMain instance;
 	
 	void Start () {
 		spw = Spawner.getInstance();
+		eth = Ether.getInstance();
+		settings = Settings.getInstance();
+		
 		spw.spawn(new Vector3(0,5,0), Utility.RandomRotVec());
+		eth.subtractEnergy((int)settings.contents["creature"]["init_energy"]);
+		
 		spw.spawn(new Vector3(0,5,50), Utility.RandomRotVec());
-		/*
-		spw.spawn(new Vector3(0,5,50), Utility.RandomRotVec());
-		spw.spawn(new Vector3(100,5,0), Utility.RandomRotVec());
-		/*
-		spw.spawn(new Vector3(50,5,50), Utility.RandomRotVec());
-		spw.spawn(new Vector3(150,5,0), Utility.RandomRotVec());
-		spw.spawn(new Vector3(150,5,50), Utility.RandomRotVec());
-		spw.spawn(new Vector3(200,5,0), Utility.RandomRotVec());
-		spw.spawn(new Vector3(200,5,50), Utility.RandomRotVec());
-		spw.spawn(new Vector3(200,5,100), Utility.RandomRotVec());
-		spw.spawn(new Vector3(200,5,150), Utility.RandomRotVec());
-		spw.spawn(new Vector3(200,5,200), Utility.RandomRotVec());
-		*/
+		eth.subtractEnergy((int)settings.contents["creature"]["init_energy"]);
 	}
 	
 	public static GeneticsMain getInstance () {
 		if(!instance) {
 			container = new GameObject();
 			container.name = "GeneticsMain";
-			instance = container.AddComponent(typeof(GeneticsMain)) as GeneticsMain;
+			instance = container.AddComponent<GeneticsMain>();
 		}
 		return instance;
 	}

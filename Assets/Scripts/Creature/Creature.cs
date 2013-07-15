@@ -25,7 +25,7 @@ public class Creature : MonoBehaviour {
 	float sensitivityFwd;
 	float sensitivityHdg;
 	
-	public int init_energy;
+	public static int init_energy;
 	public int energy;
 	float hdg = 0F;
 	Transform _t;
