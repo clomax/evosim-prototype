@@ -7,6 +7,7 @@ public class Spawner : MonoBehaviour {
 	public static Spawner instance;
 	Logger lg;
 	CreatureCount crt_count;
+	Ether eth;
 	GameObject crt;
 	static GameObject container;
 	Vector3 pos;
@@ -16,6 +17,7 @@ public class Spawner : MonoBehaviour {
 		lg = Logger.getInstance();
 		crt = (GameObject)Resources.Load("Prefabs/Creature/PrototypeCreature");
 		crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
+		eth = Ether.getInstance();
 	}
 	
 	public static Spawner getInstance () {
@@ -27,14 +29,15 @@ public class Spawner : MonoBehaviour {
 		return instance;
 	}
 	
-	public void spawn (Vector3 pos, Vector3 rot) {
+	public void spawn (Vector3 pos, Vector3 rot, int energy) {
 		GameObject clone;
 		clone = (GameObject)Instantiate(crt, pos, Quaternion.identity);
 		clone.transform.eulerAngles = Utility.RandomRotVec();
-		clone.AddComponent("Creature");
-		// 
-		// take away energy from each creature
+		Creature crt_script = (Creature) clone.AddComponent("Creature");
+		crt_script.addEnergy(energy);
 		crt_count.number_of_creatures += 1;
+		
+		eth.subtractEnergy(energy);
 	}
 
 }

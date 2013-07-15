@@ -22,8 +22,11 @@ public class CollisionMediator : MonoBehaviour {
 	public ArrayList collision_events = new ArrayList();
 	public Spawner spw;
 	
+	//Settings settings;
+	
 	void Start () {
 		spw = Spawner.getInstance();
+		//settings = Settings.getInstance();
 	}
 	
 	public static CollisionMediator getInstance () {
@@ -46,7 +49,21 @@ public class CollisionMediator : MonoBehaviour {
 		if (null != dup) {
 			collision_events.Clear();
 			Vector3 pos = Utility.RandomFlatVec(-200,10,200);
-			spw.spawn(pos,Vector3.zero);
+			
+			// Get references to the scripts of each creature
+			Creature a_script = a.transform.parent.GetComponent<Creature>();
+			Creature b_script = b.transform.parent.GetComponent<Creature>();
+			
+			int a_energy = a_script.getEnergy();
+			int b_energy = b_script.getEnergy();
+			//double energy_scale = (double) settings.contents["creature"]["energy_to_offpring"];
+			
+			spw.spawn(pos,Vector3.zero,
+					  a_energy / 2 +
+					  b_energy / 2
+					 );
+			a_script.subtractEnergy(a_energy / 2);
+			b_script.subtractEnergy(b_energy / 2);
 		} else {
 			collision_events.Add(new CollEvent(b,a));
 		}

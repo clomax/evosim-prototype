@@ -57,7 +57,6 @@ public class Creature : MonoBehaviour {
 		line_of_sight = 	(int) settings.contents [name.ToLower()]["line_of_sight"];
 		
 		age = 0;
-		energy = init_energy;
 		
 		sensitivityFwd = 1.0F;
 		sensitivityHdg = 2.5F;
@@ -117,7 +116,7 @@ public class Creature : MonoBehaviour {
 	/*
 	 * Add to the creature the energy of what it ate
 	 */
-	public void eat (int n) {
+	public void addEnergy (int n) {
 		energy += n;
 		if (energy > MAX_ENERGY) energy = MAX_ENERGY;
 	}

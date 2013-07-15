@@ -14,7 +14,8 @@
 	"creature": {
 		"init_energy"					: 100,
 		"hunger_threshold"		: 50,
-		"line_of_sight"				: 50
+		"line_of_sight"				: 50,
+		"energy_to_offspring"		: "0.5"
 	},
 	
 	"genitalia": {

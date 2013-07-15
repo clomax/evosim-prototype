@@ -92,7 +92,7 @@ public class Eye : MonoBehaviour {
 					}
 					if (curr_dist < fb_eat_range && crt.state == Creature.State.hungry) {
 						fbit = f.GetComponent<Foodbit>();
-						crt.eat(fbit.getEnergy());
+						crt.addEnergy(fbit.getEnergy());
 						fbit.destroy();
 					}
 				}
