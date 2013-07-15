@@ -78,14 +78,6 @@ public class Ether : MonoBehaviour {
 		foodbit_count++;
 	}
 	
-	/*
-	 * Return the energy value given to each new
-	 * foodbit on instantiation
-	 */
-	public double getFoodbitEnergy () {
-		return foodbit_energy;
-	}
-	
 	public double getEnergy() {
 		return energy;
 	}
