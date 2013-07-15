@@ -57,7 +57,7 @@ public class Genitalia : MonoBehaviour {
 		}
 		
 		Creature cc = eye.closestCrt;
-		if(cc) {
+		if(cc && crt.state == Creature.State.persuing_mate) {
 			lr.useWorldSpace = true;
 			line_end = new Vector3(cc.genital.transform.position.x,
 			                       cc.genital.transform.position.y,

@@ -39,7 +39,7 @@ public class Mouth : MonoBehaviour {
 
 	void Update () {
 		cf = eye.closestFbit;
-		if(cf) {
+		if(cf && crt.state == Creature.State.hungry) {
 			lr.useWorldSpace = true;
 			line_end = new Vector3(cf.transform.position.x, cf.transform.position.y, cf.transform.position.z);
 			line_start = _t.position;
