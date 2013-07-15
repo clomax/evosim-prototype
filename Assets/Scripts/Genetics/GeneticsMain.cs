@@ -23,7 +23,7 @@ public class GeneticsMain : MonoBehaviour {
 		spw = Spawner.getInstance();
 		settings = Settings.getInstance();
 		
-		int energy = (int)settings.contents["creature"]["init_energy"];
+		double energy = (double)settings.contents["creature"]["init_energy"];
 		spw.spawn(new Vector3(0,5,0), Utility.RandomRotVec(), energy);
 		spw.spawn(new Vector3(0,5,50), Utility.RandomRotVec(), energy);
 	}

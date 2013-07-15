@@ -13,26 +13,26 @@ using System.Collections;
 public class Creature : MonoBehaviour {
 
 #pragma warning disable 0414
-	static int MAX_ENERGY = 100;
+	static double MAX_ENERGY = 100.0D;
 	
 	CreatureCount crt_count;
 	Settings settings;
 	
-	int age;
+	double age;
 	public GameObject eye;
 	public GameObject mouth;
 	public GameObject genital;
 	float sensitivityFwd;
 	float sensitivityHdg;
 	
-	public static int init_energy;
-	public int energy;
+	public static double init_energy;
+	public double energy;
 	float hdg = 0F;
 	Transform _t;
 	Logger lg;
 	public int line_of_sight;
 	int matingEnergyDeduction;
-	int hunger_threshold;
+	double hunger_threshold;
 	public enum State { hungry, persuing_mate, mating, eating, neutral };
 	public State state;
 	MeshRenderer mr;
@@ -52,11 +52,11 @@ public class Creature : MonoBehaviour {
 		mat = (Material)Resources.Load("Materials/creature");
 		mr.material = mat;
 		
-		init_energy =		(int) settings.contents [name.ToLower()]["init_energy"];
-		hunger_threshold = 	(int) settings.contents [name.ToLower()]["hunger_threshold"];
+		init_energy =		(double) settings.contents ["creature"]["init_energy"];
+		hunger_threshold = 	(double) settings.contents ["creature"]["hunger_threshold"];
 		line_of_sight = 	(int) settings.contents [name.ToLower()]["line_of_sight"];
 		
-		age = 0;
+		age = 0.0D;
 		
 		sensitivityFwd = 1.0F;
 		sensitivityHdg = 2.5F;
@@ -109,19 +109,19 @@ public class Creature : MonoBehaviour {
 	/*
 	 * Return the current energy value for the creature
 	 */
-	public int getEnergy () {
+	public double getEnergy () {
 		return energy;
 	}
 	
 	/*
 	 * Add to the creature the energy of what it ate
 	 */
-	public void addEnergy (int n) {
+	public void addEnergy (double n) {
 		energy += n;
 		if (energy > MAX_ENERGY) energy = MAX_ENERGY;
 	}
 	
-	public void subtractEnergy (int n) {
+	public void subtractEnergy (double n) {
 		energy -= n;
 		if(energy < 0) energy = 0;
 	}
@@ -130,7 +130,7 @@ public class Creature : MonoBehaviour {
 	 * Remove the creature from existence and return
 	 * the creature's energy.
 	 */
-	public int kill () {
+	public double kill () {
 		Destroy(gameObject);
 		crt_count.number_of_creatures--;
 		return energy;
