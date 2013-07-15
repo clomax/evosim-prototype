@@ -23,23 +23,27 @@ using System.Collections;
 
 public class Foodbit : MonoBehaviour {
 
-	public static float foodbitHeight = 1.0f;
+	public static float foodbitHeight = 1.0F;
 	
+	Settings settings;
 	Ether eth;
 	MeshRenderer mr;
-	int energy;
+	double energy;
 	
 	
 	void Start () {
+		settings = Settings.getInstance();
+		
+		energy = (double) settings.contents["ether"]["foodbit_energy"];
+		
 		mr = (MeshRenderer)gameObject.AddComponent("MeshRenderer");
 		mr.material = (Material)Resources.Load("Materials/Foodbit");
 		eth = Ether.getInstance();
-		energy = eth.getFoodbitEnergy();
 		Collider co = GetComponent<BoxCollider>();
 		co.isTrigger = true;
 	}
 	
-	public int getEnergy() {
+	public double getEnergy() {
 		return energy;
 	}
 	

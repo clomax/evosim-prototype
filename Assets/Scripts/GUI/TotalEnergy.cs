@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TotalEnergy : MonoBehaviour {
 	
-	public int total_energy;
+	public double total_energy;
 	public Ether eth;
 	
 	void Start () {

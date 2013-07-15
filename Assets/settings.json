@@ -4,18 +4,18 @@
 	},
 	
 	"ether": {
-		"total_energy"				: 2000,
-		"foodbit_energy"			: 10,
+		"total_energy"				: 2000.0,
+		"foodbit_energy"			: 10.0,
 		"foodbit_spawn_time"		: 5,
 		"fb_spawn_range"			: 200,
 		"start_number_foodbits"	: 50
 	},
 	
 	"creature": {
-		"init_energy"					: 100,
-		"hunger_threshold"		: 50,
+		"init_energy"					: 100.0,
+		"hunger_threshold"		: 50.0,
 		"line_of_sight"				: 50,
-		"energy_to_offspring"		: "0.5"
+		"energy_to_offspring"		: 0.5
 	},
 	
 	"genitalia": {

@@ -29,7 +29,7 @@ public class Spawner : MonoBehaviour {
 		return instance;
 	}
 	
-	public void spawn (Vector3 pos, Vector3 rot, int energy) {
+	public void spawn (Vector3 pos, Vector3 rot, double energy) {
 		GameObject clone;
 		clone = (GameObject)Instantiate(crt, pos, Quaternion.identity);
 		clone.transform.eulerAngles = Utility.RandomRotVec();
