@@ -38,10 +38,6 @@ public class CollisionMediator : MonoBehaviour {
 		return instance;
 	}
 	
-	void Update () {
-		
-	}
-	
 	public void observe (GameObject a, GameObject b) {
 		collision_events.Add(new CollEvent(a, b));
 		CollEvent dup = findMatch(a, b);
@@ -59,11 +55,11 @@ public class CollisionMediator : MonoBehaviour {
 			double energy_scale = (double) settings.contents["creature"]["energy_to_offpring"];
 			
 			spw.spawn(pos,Vector3.zero,
-					  a_energy / energy_scale +
-					  b_energy / energy_scale
+					  a_energy * energy_scale +
+					  b_energy * energy_scale
 					 );
-			a_script.subtractEnergy(a_energy / energy_scale);
-			b_script.subtractEnergy(b_energy / energy_scale);
+			a_script.subtractEnergy(a_energy * energy_scale);
+			b_script.subtractEnergy(b_energy * energy_scale);
 		} else {
 			collision_events.Add(new CollEvent(b,a));
 		}
