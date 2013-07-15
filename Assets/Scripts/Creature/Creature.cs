@@ -24,6 +24,8 @@ public class Creature : MonoBehaviour {
 	public GameObject genital;
 	float sensitivityFwd;
 	float sensitivityHdg;
+	
+	public int init_energy;
 	public int energy;
 	float hdg = 0F;
 	Transform _t;
@@ -50,11 +52,12 @@ public class Creature : MonoBehaviour {
 		mat = (Material)Resources.Load("Materials/creature");
 		mr.material = mat;
 		
-		energy = 			(int) settings.contents [name.ToLower()]["init_energy"];
+		init_energy =		(int) settings.contents [name.ToLower()]["init_energy"];
 		hunger_threshold = 	(int) settings.contents [name.ToLower()]["hunger_threshold"];
 		line_of_sight = 	(int) settings.contents [name.ToLower()]["line_of_sight"];
 		
 		age = 0;
+		energy = init_energy;
 		
 		sensitivityFwd = 1.0F;
 		sensitivityHdg = 2.5F;
