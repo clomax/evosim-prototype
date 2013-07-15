@@ -89,7 +89,7 @@ public class Ether : MonoBehaviour {
 		return energy;
 	}
 	
-	void subtractEnergy (int n) {
+	public void subtractEnergy (int n) {
 		energy -= n;
 	}
 	
