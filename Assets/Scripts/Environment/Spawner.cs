@@ -36,8 +36,6 @@ public class Spawner : MonoBehaviour {
 		Creature crt_script = (Creature) clone.AddComponent("Creature");
 		crt_script.addEnergy(energy);
 		crt_count.number_of_creatures += 1;
-		
-		eth.subtractEnergy(energy);
 	}
 
 }
