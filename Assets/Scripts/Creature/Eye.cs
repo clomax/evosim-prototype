@@ -71,7 +71,7 @@ public class Eye : MonoBehaviour {
 			if (closest)
 				closestCrt = closest.GetComponent<Creature>();
 			
-			yield return new WaitForSeconds(0.01f);
+			yield return new WaitForSeconds(0.1f);
 		}
 	}
 	
@@ -100,7 +100,7 @@ public class Eye : MonoBehaviour {
 			if (closest)
 				closestFbit = closest.gameObject;
 			
-			yield return new WaitForSeconds(0.01f);
+			yield return new WaitForSeconds(0.1f);
 
 		}
 	}
