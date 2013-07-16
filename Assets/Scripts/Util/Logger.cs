@@ -18,7 +18,7 @@ public class Logger : MonoBehaviour {
 	public static GameObject container;
 	public static Logger instance;
 	
-	private StreamWriter sw;
+	//private StreamWriter sw;
 	
 	public Logger () {
 		//sw = new StreamWriter(Application.dataPath + "/Logs/log.txt");
@@ -34,11 +34,11 @@ public class Logger : MonoBehaviour {
 	}
 	
 	public void write (String str) {
-		sw.WriteLine(str);
+		//sw.WriteLine(str);
 	}
 	
 	public void close () {
-		sw.Close();
+		//sw.Close();
 	}
 
 }

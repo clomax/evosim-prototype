@@ -13,24 +13,26 @@ using System.Collections;
 public class Creature : MonoBehaviour {
 
 #pragma warning disable 0414
-	static int MAX_ENERGY = 100;
+	static double MAX_ENERGY = 100.0D;
 	
 	CreatureCount crt_count;
+	Settings settings;
 	
-	int age;
-	double timeCreated;
+	double age;
 	public GameObject eye;
 	public GameObject mouth;
 	public GameObject genital;
 	float sensitivityFwd;
 	float sensitivityHdg;
-	public int energy = 100;
+	
+	public static double init_energy;
+	public double energy;
 	float hdg = 0F;
 	Transform _t;
 	Logger lg;
 	public int line_of_sight;
 	int matingEnergyDeduction;
-	int hungerThreshold;
+	double hunger_threshold;
 	public enum State { hungry, persuing_mate, mating, eating, neutral };
 	public State state;
 	MeshRenderer mr;
@@ -40,19 +42,21 @@ public class Creature : MonoBehaviour {
 	void Start () {
 		crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
 		
+		settings = Settings.getInstance();
+		
 		_t = transform;
 		name = "Creature";
 		hdg = transform.localEulerAngles.y;
-		lg = Logger.getInstance();
-		line_of_sight = 40;
+		//lg = Logger.getInstance();
 		mr = _t.gameObject.GetComponent<MeshRenderer>();
 		mat = (Material)Resources.Load("Materials/creature");
 		mr.material = mat;
 		
-		hungerThreshold = 50;
-		line_of_sight = 50;
-		age = 0;
-		timeCreated = Time.time;
+		init_energy =		(double) settings.contents ["creature"]["init_energy"];
+		hunger_threshold = 	(double) settings.contents ["creature"]["hunger_threshold"];
+		line_of_sight = 	(int) settings.contents [name.ToLower()]["line_of_sight"];
+		
+		age = 0.0D;
 		
 		sensitivityFwd = 1.0F;
 		sensitivityHdg = 2.5F;
@@ -79,23 +83,23 @@ public class Creature : MonoBehaviour {
 		genital.transform.localPosition = new Vector3(0,0,-.5f);
 		genital.transform.localEulerAngles = new Vector3(0,180,0);
 		genital.AddComponent<Genitalia>();
+		
+		InvokeRepeating("updateAge",0,1.0f);
 	}
 	
-	 Creature (int energy1, int energy2) {
-		energy += (energy1 + energy2);
+	void updateAge() {
+		age += 1;
 	}
 	
-	void Update () {
-		age = (int)Time.time - (int)timeCreated;
-				
+	void Update () {				
 		changeHeading(Input.GetAxis("Horizontal") * sensitivityHdg);
 		moveForward(Input.GetAxis("Vertical") * sensitivityFwd);
 		
 		if(state != Creature.State.mating) {
-			if (energy < hungerThreshold) {
+			if (energy < hunger_threshold) {
 				state = State.hungry;
 			}
-			if (energy >= hungerThreshold) {
+			if (energy >= hunger_threshold) {
 				state = State.persuing_mate;
 			}
 		}
@@ -105,19 +109,19 @@ public class Creature : MonoBehaviour {
 	/*
 	 * Return the current energy value for the creature
 	 */
-	public int getEnergy () {
+	public double getEnergy () {
 		return energy;
 	}
 	
 	/*
 	 * Add to the creature the energy of what it ate
 	 */
-	public void eat (int n) {
+	public void addEnergy (double n) {
 		energy += n;
 		if (energy > MAX_ENERGY) energy = MAX_ENERGY;
 	}
 	
-	public void subtractEnergy (int n) {
+	public void subtractEnergy (double n) {
 		energy -= n;
 		if(energy < 0) energy = 0;
 	}
@@ -126,7 +130,7 @@ public class Creature : MonoBehaviour {
 	 * Remove the creature from existence and return
 	 * the creature's energy.
 	 */
-	public int kill () {
+	public double kill () {
 		Destroy(gameObject);
 		crt_count.number_of_creatures--;
 		return energy;

@@ -7,7 +7,7 @@ public class Settings : MonoBehaviour {
 	
 	string settings_file = "settings.json";
 	StreamReader sr;
-	string _contents;
+	string raw_contents;
 	public JsonData contents;
 	
 	public static GameObject container;
@@ -15,8 +15,8 @@ public class Settings : MonoBehaviour {
 	
 	public Settings () {
 		sr = new StreamReader(Application.dataPath + "/" + settings_file);
-		_contents = sr.ReadToEnd();
-		contents = JsonMapper.ToObject(_contents);
+		raw_contents = sr.ReadToEnd();
+		contents = JsonMapper.ToObject(raw_contents);
 		sr.Close();
 	}
 	
