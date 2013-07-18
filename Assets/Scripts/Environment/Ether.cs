@@ -68,14 +68,16 @@ public class Ether : MonoBehaviour {
 	 * all foodbits and attach the script
 	 */
 	public void newFoodbit () {
-		Vector3 pos = Utility.RandomFlatVec( -fb_spawn_range,
-			                                	 Foodbit.foodbitHeight /2,
-			                                	 fb_spawn_range
-			               				   );
-		GameObject fb = (GameObject)Instantiate(foodbit, pos, Quaternion.identity);
-		fb.AddComponent("Foodbit");
-		subtractEnergy(foodbit_energy);
-		foodbit_count++;
+		if(enoughEnergy(foodbit_energy)) {
+			Vector3 pos = Utility.RandomFlatVec( -fb_spawn_range,
+				                                	 Foodbit.foodbitHeight /2,
+				                                	 fb_spawn_range
+				               				   );
+			GameObject fb = (GameObject)Instantiate(foodbit, pos, Quaternion.identity);
+			fb.AddComponent("Foodbit");
+			subtractEnergy(foodbit_energy);
+			foodbit_count++;
+		}
 	}
 	
 	public double getEnergy() {
