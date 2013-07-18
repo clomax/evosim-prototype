@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Eye : MonoBehaviour {
-	public IList objects;
 	Creature crt;
 	Foodbit fbit;
 	GameObject trigger;
@@ -14,31 +13,18 @@ public class Eye : MonoBehaviour {
 	int crt_mate_range = 30;
 	int fb_eat_range = 20;
 	
+	Transform _t;
+	
 	Creature other_crt;
 	
 	void Start () {
-		crt = transform.parent.gameObject.GetComponent<Creature>();
-		co = CollisionMediator.getInstance();
-		objects = new List<GameObject>();
+		_t = transform;
 		
-		trigger = new GameObject("Trigger");
-		trigger.transform.parent = transform;
-		trigger.transform.localPosition = Vector3.zero;
-		SphereCollider sp = trigger.AddComponent<SphereCollider>();
-		sp.isTrigger = true;
-		sp.radius = crt.line_of_sight;
+		crt = _t.parent.gameObject.GetComponent<Creature>();
+		co = CollisionMediator.getInstance();
 		
 		StartCoroutine("closestCreature");
 		StartCoroutine("closestFoodbit");
-	}
-	
-	void OnTriggerEnter (Collider c) {
-		if (c.tag == "Foodbit" || c.tag == "Creature")
-			objects.Add(c.gameObject);
-	}
-	
-	void OnTriggerExit (Collider c) {
-		objects.Remove(c.gameObject);
 	}
 	
 	IEnumerator closestCreature () {
@@ -46,11 +32,13 @@ public class Eye : MonoBehaviour {
 			closestCrt = null;
 			GameObject closest = null;
 			float dist = crt.line_of_sight;
-			IEnumerator e = objects.GetEnumerator();
-			while(e.MoveNext()) {
-				GameObject c = (GameObject) e.Current;;
+			
+			Collider[] cs = Physics.OverlapSphere(_t.position, dist);
+			
+			foreach (Collider col in cs) {
+				GameObject c = (GameObject) col.gameObject;
 				if (c && c.tag == "Creature" && c != crt.gameObject) {
-					Vector3 diff = c.transform.position - transform.position;
+					Vector3 diff = c.transform.position - _t.position;
 					curr_dist = diff.magnitude;
 					if (curr_dist < dist) {
 						closest = c;
@@ -80,11 +68,13 @@ public class Eye : MonoBehaviour {
 			closestFbit = null;
 			GameObject closest = null;
 			float dist = crt.line_of_sight;
-			IEnumerator e = objects.GetEnumerator();
-			while(e.MoveNext()) {
-				GameObject f = (GameObject) e.Current;
+			
+			Collider[] cs = Physics.OverlapSphere(_t.position, dist);
+			
+			foreach (Collider c in cs) {
+				GameObject f = (GameObject) c.gameObject;
 				if (f && f.tag == "Foodbit") {
-					Vector3 diff = f.transform.position - transform.position;
+					Vector3 diff = f.transform.position - _t.position;
 					float curr_dist = diff.magnitude;
 					if (curr_dist < dist) {
 						closest = f;
@@ -97,6 +87,7 @@ public class Eye : MonoBehaviour {
 					}
 				}
 			}
+			
 			if (closest)
 				closestFbit = closest.gameObject;
 			
