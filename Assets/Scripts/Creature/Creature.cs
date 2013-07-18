@@ -33,6 +33,7 @@ public class Creature : MonoBehaviour {
 	public int line_of_sight;
 	int matingEnergyDeduction;
 	double hunger_threshold;
+	double metabolic_rate;
 	public enum State { hungry, persuing_mate, mating, eating, neutral };
 	public State state;
 	MeshRenderer mr;
@@ -54,7 +55,8 @@ public class Creature : MonoBehaviour {
 		
 		init_energy =		(double) settings.contents ["creature"]["init_energy"];
 		hunger_threshold = 	(double) settings.contents ["creature"]["hunger_threshold"];
-		line_of_sight = 	(int) settings.contents [name.ToLower()]["line_of_sight"];
+		line_of_sight = 	(int) 	settings.contents  ["creature"]["line_of_sight"];
+		metabolic_rate = 	(double) settings.contents ["creature"]["metabolic_rate"];
 		
 		age = 0.0D;
 		
@@ -85,6 +87,7 @@ public class Creature : MonoBehaviour {
 		genital.AddComponent<Genitalia>();
 		
 		InvokeRepeating("updateAge",0,1.0f);
+		InvokeRepeating("metabolise",0,1.0f);
 	}
 	
 	void updateAge() {
@@ -124,6 +127,10 @@ public class Creature : MonoBehaviour {
 	public void subtractEnergy (double n) {
 		energy -= n;
 		if(energy < 0) energy = 0;
+	}
+	
+	private void metabolise () {
+		subtractEnergy(metabolic_rate);	
 	}
 	
 	/*
