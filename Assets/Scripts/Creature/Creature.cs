@@ -68,9 +68,6 @@ public class Creature : MonoBehaviour {
 		eye.transform.parent = transform;
 		eye.transform.localPosition = Vector3.zero;
 		eye.AddComponent<Eye>();
-		SphereCollider sp = eye.AddComponent<SphereCollider>();
-		sp.isTrigger = true;
-		sp.radius = line_of_sight;
 		
 		mouth = new GameObject();
 		mouth.name = "Mouth";
