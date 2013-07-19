@@ -25,10 +25,14 @@ public class GeneticsMain : MonoBehaviour {
 		eth = Ether.getInstance();
 		
 		double energy = (double)settings.contents["creature"]["init_energy"];
-		spw.spawn(new Vector3(0,5,0), Utility.RandomRotVec(), energy);
+		
+		for (int i=0; i<20; i++) {
+			spw.spawn(Utility.RandomFlatVec(-200,5,200), Utility.RandomRotVec(), energy);
 			eth.subtractEnergy(energy);
-		spw.spawn(new Vector3(0,5,50), Utility.RandomRotVec(), energy);
-			eth.subtractEnergy(energy);
+		}
+		
+		//spw.spawn(new Vector3(0,5,50), Utility.RandomRotVec(), energy);
+		//	eth.subtractEnergy(energy);
 	}
 	
 	public static GeneticsMain getInstance () {

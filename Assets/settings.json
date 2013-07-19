@@ -12,9 +12,9 @@
 	},
 	
 	"creature": {
-		"init_energy"					: 75.0,
+		"init_energy"					: 100.0,
 		"hunger_threshold"		: 50.0,
-		"line_of_sight"				: 50,
+		"line_of_sight"				: 50.0,
 		"energy_to_offspring"		: 0.5,
 		"metabolic_rate"			: 0.01
 	},

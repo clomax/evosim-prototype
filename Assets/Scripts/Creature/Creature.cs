@@ -17,6 +17,7 @@ public class Creature : MonoBehaviour {
 	
 	CreatureCount crt_count;
 	Settings settings;
+	Ether eth;
 	
 	double age;
 	public GameObject eye;
@@ -30,7 +31,6 @@ public class Creature : MonoBehaviour {
 	SoftJointLimit zAngularLimit;
 	JointDrive zAngDrive;
 	
-	GameObject root;
 	GameObject c1limb21;
 	GameObject c1limb22;
 	
@@ -41,7 +41,7 @@ public class Creature : MonoBehaviour {
 	public double energy;
 	Transform _t;
 	Logger lg;
-	public int line_of_sight;
+	public double line_of_sight;
 	int matingEnergyDeduction;
 	double hunger_threshold;
 	double metabolic_rate;
@@ -83,12 +83,13 @@ public class Creature : MonoBehaviour {
 		mat = (Material)Resources.Load("Materials/creature");
 		mr.material = mat;
 		
+		eth = Ether.getInstance();
 		settings = Settings.getInstance();
 		//lg = Logger.getInstance();
 		
 		init_energy =		(double) settings.contents ["creature"]["init_energy"];
 		hunger_threshold = 	(double) settings.contents ["creature"]["hunger_threshold"];
-		line_of_sight = 	(int) 	 settings.contents ["creature"]["line_of_sight"];
+		line_of_sight = 	(double) settings.contents ["creature"]["line_of_sight"];
 		metabolic_rate = 	(double) settings.contents ["creature"]["metabolic_rate"];
 		
 		age = 0.0D;
@@ -101,20 +102,21 @@ public class Creature : MonoBehaviour {
 		
 
 		
-		/*
-		// second limb
+		
+		// first limb
 		c1limb21 = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		c1limb21.name = "c1limb21";
-		c1limb21.transform.localPosition = new Vector3(2.8f,10,-28.5f);
+		c1limb21.transform.localPosition = _t.position;
 		c1limb21.transform.localScale = new Vector3(5,1,1);
 		c1limb21.transform.rotation = new Quaternion(0f,-.2f,0f,1f);
 		c1limb21.AddComponent("Rigidbody");
 		c1limb21.transform.parent = transform;
 		c1limb21.renderer.material.color = Color.green;
 		
+		// second limb
 		c1limb22 = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		c1limb22.name = "c1limb22";
-		c1limb22.transform.localPosition = new Vector3(2.8f,10,-31.5f);
+		c1limb22.transform.localPosition = _t.position;
 		c1limb22.transform.localScale = new Vector3(5,1,1);
 		c1limb22.transform.rotation = new Quaternion(0f,.2f,0f,1f);
 		c1limb22.AddComponent("Rigidbody");
@@ -123,10 +125,10 @@ public class Creature : MonoBehaviour {
 
 		
 		//configurable joint limb1 - 2
-		config_joint = (ConfigurableJoint)root.AddComponent("ConfigurableJoint");
+		config_joint = (ConfigurableJoint)gameObject.AddComponent("ConfigurableJoint");
 		config_joint.connectedBody = c1limb21.rigidbody;
 		
-		config_joint2 = (ConfigurableJoint)root.AddComponent("ConfigurableJoint");
+		config_joint2 = (ConfigurableJoint)gameObject.AddComponent("ConfigurableJoint");
 		config_joint2.connectedBody = c1limb22.rigidbody;
 		
 		
@@ -204,7 +206,7 @@ public class Creature : MonoBehaviour {
 		zAngDrive.maximumForce = 3F;
 		config_joint2.angularYZDrive = zAngDrive;
 		
-		*/
+	
 	
 
 	}
@@ -212,9 +214,9 @@ public class Creature : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		x = Sine(x);
-		//Vector3 z = new Vector3(0.0F,0.0F, x * amplitude);
-		//config_joint2.targetAngularVelocity = z;
-		//config_joint.targetAngularVelocity = z;
+		Vector3 z = new Vector3(0.0F,0.0F, x * amplitude);
+		config_joint2.targetAngularVelocity = z;
+		config_joint.targetAngularVelocity = z;
 	}
 	
 	private static float Sine (float x){
@@ -271,7 +273,8 @@ public class Creature : MonoBehaviour {
 	}
 	
 	private void metabolise () {
-		subtractEnergy(metabolic_rate);	
+		subtractEnergy(metabolic_rate);
+		eth.addToEnergy(metabolic_rate);
 	}
 	
 	/*
