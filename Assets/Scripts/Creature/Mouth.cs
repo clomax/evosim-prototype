@@ -15,33 +15,40 @@ public class Mouth : MonoBehaviour {
 
 	Foodbit fb;
 	Creature crt;
+	Eye eye;
+	
 	Transform _t;
 	LineRenderer lr;
+	
 	Vector3 line_start;
-	float line_length = 0.5f;
 	Vector3 line_end;
+	
+	float line_length = 0.5F;
 	float line_width = 0.5F;
+	
 	int fb_detect_range = 40;
-	Object[] fbits;
+	
 	GameObject cf;
-	Eye eye;
 
 	void Start () {
 		_t = transform;
 		crt = (Creature)_t.parent.gameObject.GetComponent("Creature");
+		eye = crt.eye.gameObject.GetComponent<Eye>();
 		lr = (LineRenderer)gameObject.AddComponent("LineRenderer");
 		lr.material = (Material)Resources.Load("Materials/mouth_vector");
 		lr.SetWidth(line_width, line_width);
 		lr.SetVertexCount(2);
 		lr.renderer.enabled = true;
-		eye = crt.eye.gameObject.GetComponent<Eye>();
 	}
 
 	void Update () {
 		cf = eye.closestFbit;
 		if(cf && crt.state == Creature.State.hungry) {
 			lr.useWorldSpace = true;
-			line_end = new Vector3(cf.transform.position.x, cf.transform.position.y, cf.transform.position.z);
+			line_end = new Vector3(cf.transform.position.x,
+								   cf.transform.position.y,
+				               	   cf.transform.position.z
+								  );
 			line_start = _t.position;
 			lr.SetPosition(1,line_end);
 			resetStart();
