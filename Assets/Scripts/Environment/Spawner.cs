@@ -33,6 +33,10 @@ public class Spawner : MonoBehaviour {
 		GameObject clone = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		clone.transform.localPosition = pos;
 		clone.transform.eulerAngles = Utility.RandomRotVec();
+		
+		//pretent there are genes being invoked to set the size...
+		clone.transform.localScale = new Vector3(5,1,3);
+		
 		Creature crt_script = (Creature) clone.AddComponent("Creature");
 		crt_script.addEnergy(energy);
 		crt_count.number_of_creatures += 1;

@@ -13,6 +13,8 @@ public class Eye : MonoBehaviour {
 	int crt_mate_range = 30;
 	int fb_eat_range = 20;
 	
+	public Collider[] cs;
+	
 	Transform _t;
 	
 	Creature other_crt;
@@ -33,7 +35,7 @@ public class Eye : MonoBehaviour {
 			GameObject closest = null;
 			float dist = crt.line_of_sight;
 			
-			Collider[] cs = Physics.OverlapSphere(_t.position, dist);
+			cs = Physics.OverlapSphere(_t.position, dist);
 			
 			foreach (Collider col in cs) {
 				GameObject c = (GameObject) col.gameObject;
@@ -69,7 +71,7 @@ public class Eye : MonoBehaviour {
 			GameObject closest = null;
 			float dist = crt.line_of_sight;
 			
-			Collider[] cs = Physics.OverlapSphere(_t.position, dist);
+			cs = Physics.OverlapSphere(_t.position, dist);
 			
 			foreach (Collider c in cs) {
 				GameObject f = (GameObject) c.gameObject;

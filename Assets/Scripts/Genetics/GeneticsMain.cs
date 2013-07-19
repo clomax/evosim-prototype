@@ -27,8 +27,8 @@ public class GeneticsMain : MonoBehaviour {
 		double energy = (double)settings.contents["creature"]["init_energy"];
 		spw.spawn(new Vector3(0,5,0), Utility.RandomRotVec(), energy);
 			eth.subtractEnergy(energy);
-		//spw.spawn(new Vector3(0,5,50), Utility.RandomRotVec(), energy);
-		//	eth.subtractEnergy(energy);
+		spw.spawn(new Vector3(0,5,50), Utility.RandomRotVec(), energy);
+			eth.subtractEnergy(energy);
 	}
 	
 	public static GeneticsMain getInstance () {

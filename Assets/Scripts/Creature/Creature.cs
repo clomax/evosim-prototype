@@ -78,11 +78,12 @@ public class Creature : MonoBehaviour {
 		genital.transform.localPosition = Vector3.zero;
 		genital.AddComponent<Genitalia>();
 		crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
+
+		mr = _t.gameObject.GetComponent<MeshRenderer>();
+		mat = (Material)Resources.Load("Materials/creature");
+		mr.material = mat;
 		
 		settings = Settings.getInstance();
-		
-		_t = transform;
-		name = "Creature";
 		//lg = Logger.getInstance();
 		
 		init_energy =		(double) settings.contents ["creature"]["init_energy"];
