@@ -44,7 +44,7 @@ public class Eye : MonoBehaviour {
 						Vector3 diff = c.transform.position - _t.position;
 						curr_dist = diff.magnitude;
 						if (curr_dist < dist) {
-							closest = c;
+							closest = c.transform.parent.gameObject;
 							dist = curr_dist;
 						}
 						if (curr_dist < crt_mate_range) {
