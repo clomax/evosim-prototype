@@ -49,7 +49,7 @@ public class Creature : MonoBehaviour {
 		
 		eth = Ether.getInstance();
 		settings = Settings.getInstance();
-		//lg = Logger.getInstance();
+		crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
 		
 		root = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		root.name = "root";
