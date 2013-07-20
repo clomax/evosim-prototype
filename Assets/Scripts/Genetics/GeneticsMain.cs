@@ -30,9 +30,6 @@ public class GeneticsMain : MonoBehaviour {
 			spw.spawn(Utility.RandomFlatVec(-200,5,200), Utility.RandomRotVec(), energy);
 			eth.subtractEnergy(energy);
 		}
-		
-		//spw.spawn(new Vector3(0,5,50), Utility.RandomRotVec(), energy);
-		//	eth.subtractEnergy(energy);
 	}
 	
 	public static GeneticsMain getInstance () {

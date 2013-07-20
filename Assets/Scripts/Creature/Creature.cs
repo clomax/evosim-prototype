@@ -15,223 +15,81 @@ public class Creature : MonoBehaviour {
 #pragma warning disable 0414
 	static double MAX_ENERGY = 100.0D;
 	
-	CreatureCount crt_count;
 	Settings settings;
 	Ether eth;
+	Logger lg;
 	
-	double age;
+	public GameObject root;
+	public Root root_script;
+	Vector3 rootsize;
+	
 	public GameObject eye;
-	public GameObject mouth;
+	public GameObject mouth;	
 	public GameObject genital;
+	
+	public CreatureCount crt_count;
 
-	public ConfigurableJoint config_joint;
-	public ConfigurableJoint config_joint2;
-	public float x = 0.0F;
-	
-	SoftJointLimit zAngularLimit;
-	JointDrive zAngDrive;
-	
-	GameObject c1limb21;
-	GameObject c1limb22;
-	
-	public static float frequency = 5F;
-	public static float amplitude = 3F;
-	
+	double age;
 	public static double init_energy;
 	public double energy;
+	
 	Transform _t;
-	Logger lg;
 	public double line_of_sight;
 	int matingEnergyDeduction;
 	double hunger_threshold;
 	double metabolic_rate;
 	public enum State { hungry, persuing_mate, mating, eating, neutral };
 	public State state;
-	MeshRenderer mr;
-	Material mat;
+
 #pragma warning restore 0414
 
 	void Start () {
-		_t = transform;
-		gameObject.AddComponent<Rigidbody>();
-		
+		_t = transform;		
 		name = "Creature";
-		
-		eye = new GameObject();
-		eye.name = "Eye";
-		eye.transform.parent = _t;
-		eye.transform.localEulerAngles = Vector3.zero;
-		eye.transform.localPosition = Vector3.zero;
-		eye.AddComponent<Eye>();
-		
-		mouth = new GameObject();
-		mouth.name = "Mouth";
-		mouth.transform.parent = _t;
-		mouth.transform.localEulerAngles = Vector3.zero;
-		mouth.transform.localPosition = Vector3.zero;
-		mouth.AddComponent<Mouth>();
-		
-		genital = new GameObject();
-		genital.name = "Genital";
-		genital.transform.parent = _t;
-		genital.transform.localEulerAngles = Vector3.zero;
-		genital.transform.localPosition = Vector3.zero;
-		genital.AddComponent<Genitalia>();
-		crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
-
-		mr = _t.gameObject.GetComponent<MeshRenderer>();
-		mat = (Material)Resources.Load("Materials/creature");
-		mr.material = mat;
 		
 		eth = Ether.getInstance();
 		settings = Settings.getInstance();
 		//lg = Logger.getInstance();
 		
-		init_energy =		(double) settings.contents ["creature"]["init_energy"];
-		hunger_threshold = 	(double) settings.contents ["creature"]["hunger_threshold"];
-		line_of_sight = 	(double) settings.contents ["creature"]["line_of_sight"];
-		metabolic_rate = 	(double) settings.contents ["creature"]["metabolic_rate"];
+		root = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		root.name = "root";
+		root.transform.parent 			= _t;
+		root.transform.position 		= _t.position;
+		root.transform.localScale 		= rootsize;
+		root.transform.eulerAngles 		= _t.eulerAngles;
+		root.AddComponent<Rigidbody>();
+		root_script = root.AddComponent<Root>();
+		
+		eye = new GameObject();
+		eye.name = "Eye";
+		eye.transform.parent 			= root.transform;
+		eye.transform.eulerAngles 		= root.transform.eulerAngles;
+		eye.transform.position 			= root.transform.position;
+		eye.AddComponent<Eye>();
+		
+		mouth = new GameObject();
+		mouth.name = "Mouth";
+		mouth.transform.parent 			= root.transform;
+		mouth.transform.eulerAngles 	= root.transform.eulerAngles;
+		mouth.transform.position 		= root.transform.position;
+		mouth.AddComponent<Mouth>();
+		
+		genital = new GameObject();
+		genital.name = "Genital";
+		genital.transform.parent 		= root.transform;
+		genital.transform.eulerAngles 	= root.transform.eulerAngles;
+		genital.transform.position		= root.transform.position;
+		genital.AddComponent<Genitalia>();
+		
+		init_energy 		= (double) settings.contents ["creature"]["init_energy"];
+		hunger_threshold 	= (double) settings.contents ["creature"]["hunger_threshold"];
+		line_of_sight 		= (double) settings.contents ["creature"]["line_of_sight"];
+		metabolic_rate 		= (double) settings.contents ["creature"]["metabolic_rate"];
 		
 		age = 0.0D;
 		
 		InvokeRepeating("updateAge",0,1.0f);
 		InvokeRepeating("metabolise",0,1.0f);
-		
-		
-		
-		
-
-		
-		
-		// first limb
-		c1limb21 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		c1limb21.name = "c1limb21";
-		c1limb21.transform.localPosition = _t.position;
-		c1limb21.transform.localScale = new Vector3(5,1,1);
-		c1limb21.transform.rotation = new Quaternion(0f,-.2f,0f,1f);
-		c1limb21.AddComponent("Rigidbody");
-		c1limb21.transform.parent = transform;
-		c1limb21.renderer.material.color = Color.green;
-		
-		// second limb
-		c1limb22 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		c1limb22.name = "c1limb22";
-		c1limb22.transform.localPosition = _t.position;
-		c1limb22.transform.localScale = new Vector3(5,1,1);
-		c1limb22.transform.rotation = new Quaternion(0f,.2f,0f,1f);
-		c1limb22.AddComponent("Rigidbody");
-		c1limb22.transform.parent = transform;
-		c1limb22.renderer.material.color = Color.green;
-
-		
-		//configurable joint limb1 - 2
-		config_joint = (ConfigurableJoint)gameObject.AddComponent("ConfigurableJoint");
-		config_joint.connectedBody = c1limb21.rigidbody;
-		
-		config_joint2 = (ConfigurableJoint)gameObject.AddComponent("ConfigurableJoint");
-		config_joint2.connectedBody = c1limb22.rigidbody;
-		
-		
-		
-		// anchor
-		config_joint.anchor = new Vector3(.5F,0,0);
-		
-		//lock axes
-		config_joint.xMotion = ConfigurableJointMotion.Locked;
-		config_joint.yMotion = ConfigurableJointMotion.Locked;
-		config_joint.zMotion = ConfigurableJointMotion.Locked;
-		
-		//lock angular rotation for x and y, limit to 30 for z
-		config_joint.angularXMotion = ConfigurableJointMotion.Locked;
-		config_joint.angularYMotion = ConfigurableJointMotion.Locked;
-		
-		config_joint.angularZMotion = ConfigurableJointMotion.Limited;
-		zAngularLimit = new SoftJointLimit();
-		zAngularLimit.limit = 150F;
-		config_joint.angularZLimit = zAngularLimit;
-		
-		// enable angluar z drive
-		zAngDrive = new JointDrive();
-		zAngDrive.mode = JointDriveMode.Velocity;
-		zAngDrive.maximumForce = 3F;
-		config_joint.angularYZDrive = zAngDrive;
-		
-		
-		// anchor
-		config_joint2.anchor = new Vector3(.5F,0,0);
-		
-		//lock axes
-		config_joint2.xMotion = ConfigurableJointMotion.Locked;
-		config_joint2.yMotion = ConfigurableJointMotion.Locked;
-		config_joint2.zMotion = ConfigurableJointMotion.Locked;
-		
-		//lock angular rotation for x and y, limit to 30 for z
-		config_joint2.angularXMotion = ConfigurableJointMotion.Locked;
-		config_joint2.angularYMotion = ConfigurableJointMotion.Locked;
-		
-		config_joint2.angularZMotion = ConfigurableJointMotion.Limited;
-		zAngularLimit = new SoftJointLimit();
-		zAngularLimit.limit = 150F;
-		config_joint2.angularZLimit = zAngularLimit;
-		
-		// enable angluar z drive
-		zAngDrive = new JointDrive();
-		zAngDrive.mode = JointDriveMode.Velocity;
-		zAngDrive.maximumForce = 3F;
-		config_joint2.angularYZDrive = zAngDrive;
-		
-		
-	
-		
-		// anchor
-		config_joint.anchor = new Vector3(.5F,0,0);
-		
-		//lock axes
-		config_joint.xMotion = ConfigurableJointMotion.Locked;
-		config_joint.yMotion = ConfigurableJointMotion.Locked;
-		config_joint.zMotion = ConfigurableJointMotion.Locked;
-		
-		//lock angular rotation for x and y, limit to 30 for z
-		config_joint.angularXMotion = ConfigurableJointMotion.Locked;
-		config_joint.angularYMotion = ConfigurableJointMotion.Locked;
-		
-		config_joint.angularZMotion = ConfigurableJointMotion.Limited;
-		zAngularLimit = new SoftJointLimit();
-		zAngularLimit.limit = 150F;
-		config_joint.angularZLimit = zAngularLimit;
-		
-		// enable angluar z drive
-		zAngDrive = new JointDrive();
-		zAngDrive.mode = JointDriveMode.Velocity;
-		zAngDrive.maximumForce = 3F;
-		config_joint2.angularYZDrive = zAngDrive;
-		
-	
-	
-
-	}
-		
-	// Update is called once per frame
-	void FixedUpdate () {
-		x = Sine(x);
-		Vector3 z = new Vector3(0.0F,0.0F, x * amplitude);
-		config_joint2.targetAngularVelocity = z;
-		config_joint.targetAngularVelocity = z;
-	}
-	
-	private static float Sine (float x){
-		return Mathf.Sin(Time.timeSinceLevelLoad * frequency);
-	}
-	
-	/**
-	 * Given a variable of constant delta (age of a creature, typically),
-	 * the frequency, and amplitude, return the sine
-	 */
-	private static float Sine (float x, float frequency, float amplitude){
-		return amplitude * Mathf.Sin(2 * Mathf.PI
-		                             * (frequency * x)
-		                             + Time.timeSinceLevelLoad
-		                            );
 	}	
 		
 	
@@ -249,6 +107,10 @@ public class Creature : MonoBehaviour {
 				state = State.persuing_mate;
 			}
 		}
+	}
+	
+	public void setRootSize (Vector3 scale) {
+		rootsize = scale;	
 	}
 	
 	

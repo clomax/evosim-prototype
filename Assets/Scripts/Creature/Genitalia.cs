@@ -34,7 +34,7 @@ public class Genitalia : MonoBehaviour {
 		
 		_t = transform;
 		gameObject.tag = "Genital";
-		crt = (Creature)_t.parent.gameObject.GetComponent("Creature");
+		crt = (Creature)_t.parent.parent.gameObject.GetComponent("Creature");
 		lg = Logger.getInstance();
 		co = CollisionMediator.getInstance();
 		eye = crt.eye.gameObject.GetComponent<Eye>();

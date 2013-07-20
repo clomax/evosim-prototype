@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class Eye : MonoBehaviour {
 	Creature crt;
 	Foodbit fbit;
-	GameObject trigger;
 	public Creature closestCrt = null;
 	public GameObject closestFbit = null;
 	CollisionMediator co;
@@ -22,7 +21,7 @@ public class Eye : MonoBehaviour {
 	void Start () {
 		_t = transform;
 		
-		crt = _t.parent.gameObject.GetComponent<Creature>();
+		crt = _t.parent.parent.gameObject.GetComponent<Creature>();
 		co = CollisionMediator.getInstance();
 		
 		StartCoroutine("closestCreature");
@@ -33,16 +32,15 @@ public class Eye : MonoBehaviour {
 		while(true) {
 			closestCrt = null;
 			GameObject closest = null;
+			GameObject c = null; // current collider
 			double dist = crt.line_of_sight;
 			
 			if (crt.state == Creature.State.persuing_mate) {
-
-				
 				cs = Physics.OverlapSphere(_t.position, (float)dist);
 				
 				foreach (Collider col in cs) {
-					GameObject c = (GameObject) col.gameObject;
-					if (c && c.name == "Creature" && c != crt.gameObject) {
+					c = (GameObject) col.transform.gameObject;
+					if (c && c.gameObject.name == "root" && c != crt.root.gameObject) {
 						Vector3 diff = c.transform.position - _t.position;
 						curr_dist = diff.magnitude;
 						if (curr_dist < dist) {
@@ -50,7 +48,7 @@ public class Eye : MonoBehaviour {
 							dist = curr_dist;
 						}
 						if (curr_dist < crt_mate_range) {
-							other_crt = c.gameObject.GetComponent<Creature>();
+							other_crt = c.transform.parent.GetComponent<Creature>();
 							Genitalia other_genital = other_crt.genital.GetComponent<Genitalia>();
 							if (crt.state == Creature.State.persuing_mate || other_crt.state == Creature.State.persuing_mate) {
 								co.observe(crt.genital.gameObject, other_genital.gameObject);

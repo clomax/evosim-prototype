@@ -16,7 +16,15 @@
 		"hunger_threshold"		: 50.0,
 		"line_of_sight"				: 50.0,
 		"energy_to_offspring"		: 0.5,
-		"metabolic_rate"			: 0.01
+		"metabolic_rate"			: 0.01,
+		
+		"root": {
+			"max_root_scale" : {
+				"x"						: 7.0,
+				"y"						: 7.0,
+				"z"						: 7.0
+			}
+		}
 	},
 	
 	"genitalia": {
