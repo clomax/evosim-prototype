@@ -29,12 +29,12 @@ public class Eye : MonoBehaviour {
 	}
 	
 	IEnumerator closestCreature () {
-		while(true) {
-			closestCrt = null;
-			GameObject closest = null;
-			GameObject c = null; // current collider
-			double dist = crt.line_of_sight;
-			
+		closestCrt = null;
+		GameObject closest = null;
+		GameObject c = null; // current collider
+		double dist = crt.line_of_sight;
+		
+		while(true) {			
 			if (crt.state == Creature.State.persuing_mate) {
 				cs = Physics.OverlapSphere(_t.position, (float)dist);
 				
@@ -67,11 +67,11 @@ public class Eye : MonoBehaviour {
 	}
 	
 	IEnumerator closestFoodbit () {
-		while(true) {
-			closestFbit = null;
-			GameObject closest = null;
-			double dist = crt.line_of_sight;
-				
+		closestFbit = null;
+		GameObject closest = null;
+		double dist = crt.line_of_sight;
+		
+		while(true) {				
 			if (crt.state == Creature.State.hungry) {
 				cs = Physics.OverlapSphere(_t.position, (float)dist);
 				
