@@ -22,7 +22,7 @@ public class Creature : MonoBehaviour {
 	public GameObject root;
 	public Root root_script;
 	Vector3 rootsize;
-	
+		
 	public GameObject eye;
 	public GameObject mouth;	
 	public GameObject genital;
@@ -38,7 +38,13 @@ public class Creature : MonoBehaviour {
 	int matingEnergyDeduction;
 	double hunger_threshold;
 	double metabolic_rate;
-	public enum State { hungry, persuing_mate, mating, eating, neutral };
+	
+	public enum State { hungry,
+						persuing_mate,
+						mating,
+						eating,
+						neutral
+					  };
 	public State state;
 
 #pragma warning restore 0414
@@ -80,6 +86,7 @@ public class Creature : MonoBehaviour {
 		genital.transform.eulerAngles 	= root.transform.eulerAngles;
 		genital.transform.position		= root.transform.position;
 		genital.AddComponent<Genitalia>();
+		
 		
 		init_energy 		= (double) settings.contents ["creature"]["init_energy"];
 		hunger_threshold 	= (double) settings.contents ["creature"]["hunger_threshold"];

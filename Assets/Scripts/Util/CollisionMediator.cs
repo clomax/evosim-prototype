@@ -37,7 +37,7 @@ public class CollisionMediator : MonoBehaviour {
 		if(!instance) {
 			container = new GameObject();
 			container.name = "Collision Observer";
-			instance = container.AddComponent(typeof(CollisionMediator)) as CollisionMediator;
+			instance = container.AddComponent<CollisionMediator>();
 		}
 		return instance;
 	}

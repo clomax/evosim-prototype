@@ -5,12 +5,12 @@ using System.Collections.Generic;
 public class Eye : MonoBehaviour {
 	Creature crt;
 	Foodbit fbit;
-	public Creature closestCrt = null;
-	public GameObject closestFbit = null;
+	public Creature closestCrt 		= null;
+	public GameObject closestFbit	= null;
 	CollisionMediator co;
-	float curr_dist = 0f;
-	int crt_mate_range = 30;
-	int fb_eat_range = 20;
+	float curr_dist 				= 0f;
+	int crt_mate_range 				= 30;
+	int fb_eat_range 				= 20;
 	
 	public Collider[] cs;
 	
@@ -29,10 +29,10 @@ public class Eye : MonoBehaviour {
 	}
 	
 	IEnumerator closestCreature () {
-		closestCrt = null;
-		GameObject closest = null;
-		GameObject c = null; // current collider
-		double dist = crt.line_of_sight;
+		closestCrt 				= null;
+		GameObject closest 		= null;
+		GameObject c 			= null; // current collider
+		double dist 			= crt.line_of_sight;
 		
 		while(true) {			
 			if (crt.state == Creature.State.persuing_mate) {
@@ -67,9 +67,9 @@ public class Eye : MonoBehaviour {
 	}
 	
 	IEnumerator closestFoodbit () {
-		closestFbit = null;
-		GameObject closest = null;
-		double dist = crt.line_of_sight;
+		closestFbit 		= null;
+		GameObject closest 	= null;
+		double dist 		= crt.line_of_sight;
 		
 		while(true) {				
 			if (crt.state == Creature.State.hungry) {
