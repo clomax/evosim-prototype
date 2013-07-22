@@ -32,10 +32,4 @@ public class Utility : MonoBehaviour {
 	public static Vector3 RandomRotVec() {
 		return new Vector3(0,Random.Range(0,360),0);
 	}
-	
-	public static T rangeConvert<T> (float min, float max, float old_val) {
-		int oldRange = 255;
-		float newRange = (max - min);
-		return (T) System.Convert.ChangeType( (((old_val - 0) * newRange) / oldRange) + min, typeof(T) );
-	}
 }

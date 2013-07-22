@@ -82,10 +82,10 @@ public class Creature : MonoBehaviour {
 		root.AddComponent<Rigidbody>();
 		root_script = root.AddComponent<Root>();
 		root_script.setColour(chromosome);
-		root.transform.localScale = new Vector3(Utility.rangeConvert<float>(min_root_scale.x, max_root_scale.x, chromosome[3]),
-							   					Utility.rangeConvert<float>(min_root_scale.y, max_root_scale.y, chromosome[4]),
-							   					Utility.rangeConvert<float>(min_root_scale.z, max_root_scale.z, chromosome[5])
-						   			);
+		root.transform.localScale = new Vector3( chromosome[3],
+							   					 chromosome[4],
+							   					 chromosome[5]
+						   					   );
 		
 		eye = new GameObject();
 		eye.name = "Eye";

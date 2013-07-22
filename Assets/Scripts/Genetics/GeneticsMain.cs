@@ -25,6 +25,8 @@ public class GeneticsMain : MonoBehaviour {
 	int starting_creatures;
 	
 	Vector3 max_root_scale;
+	Vector3 min_root_scale;
+	
 	
 	void Start () {
 		spw = Spawner.getInstance();
@@ -35,9 +37,15 @@ public class GeneticsMain : MonoBehaviour {
 		max_root_scale.x 	= (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["x"]);
 		max_root_scale.y 	= (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["y"]);
 		max_root_scale.z 	= (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["z"]);
-		starting_creatures	= (int) settings.contents["ether"]["starting_creatures"];
-		chromosome_length	= (int) settings.contents["genetics"]["chromosome_length"];
-		double energy		= (double)settings.contents["creature"]["init_energy"];
+		
+		min_root_scale 		= new Vector3();
+		min_root_scale.x 	= (float) ((double) settings.contents["creature"]["root"]["min_root_scale"]["x"]);
+		min_root_scale.y 	= (float) ((double) settings.contents["creature"]["root"]["min_root_scale"]["y"]);
+		min_root_scale.z 	= (float) ((double) settings.contents["creature"]["root"]["min_root_scale"]["z"]);
+		
+		starting_creatures	= (int) 			settings.contents["ether"]	 ["starting_creatures"];
+		chromosome_length	= (int) 			settings.contents["genetics"]["chromosome_length"];
+		double energy		= (double)			settings.contents["creature"]["init_energy"];
 		
 		for (int i=0; i<starting_creatures; i++) {
 			chromosome = new float[chromosome_length];
@@ -48,9 +56,9 @@ public class GeneticsMain : MonoBehaviour {
 			}
 			
 			// random root sizes
-			chromosome[3] 	= (float)Random.Range(0,255);
-			chromosome[4] 	= (float)Random.Range(0,255);
-			chromosome[5] 	= (float)Random.Range(0,255);
+			chromosome[3] 	= (float) Random.Range(min_root_scale.x,max_root_scale.x);
+			chromosome[4] 	= (float) Random.Range(min_root_scale.y,max_root_scale.y);
+			chromosome[5] 	= (float) Random.Range(min_root_scale.z,max_root_scale.z);
 			
 			spw.spawn(Utility.RandomFlatVec(-200,5,200), Utility.RandomRotVec(), energy, chromosome);
 			eth.subtractEnergy(energy);
