@@ -21,6 +21,8 @@ public class Creature : MonoBehaviour {
 	
 	public GameObject root;
 	public Root root_script;
+	
+	Vector3 max_root_scale;
 	Vector3 rootsize;
 		
 	public GameObject eye;
@@ -32,6 +34,8 @@ public class Creature : MonoBehaviour {
 	double age;
 	public static double init_energy;
 	public double energy;
+	
+	public byte[] genes;
 	
 	Transform _t;
 	public double line_of_sight;
@@ -57,6 +61,11 @@ public class Creature : MonoBehaviour {
 		settings = Settings.getInstance();
 		crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
 		
+		max_root_scale = new Vector3();
+		max_root_scale.x = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["x"]);
+		max_root_scale.y = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["y"]);
+		max_root_scale.z = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["z"]);
+		
 		root = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		root.name = "root";
 		root.transform.parent 			= _t;
@@ -65,6 +74,11 @@ public class Creature : MonoBehaviour {
 		root.transform.eulerAngles 		= _t.eulerAngles;
 		root.AddComponent<Rigidbody>();
 		root_script = root.AddComponent<Root>();
+		root_script.setColour(genes);
+		root.transform.localScale = new Vector3(Utility.rangeConvert(1.5F, 7.0F, genes[3]),
+							   					Utility.rangeConvert(1.5F, 7.0F, genes[4]),
+							   					Utility.rangeConvert(1.5F, 7.0F, genes[5])
+						   			);
 		
 		eye = new GameObject();
 		eye.name = "Eye";
@@ -96,6 +110,7 @@ public class Creature : MonoBehaviour {
 		age = 0.0D;
 		
 		InvokeRepeating("updateAge",0,1.0f);
+		InvokeRepeating("updateState",0,0.1f);
 		InvokeRepeating("metabolise",0,1.0f);
 	}	
 		
@@ -104,8 +119,7 @@ public class Creature : MonoBehaviour {
 		age += 1;
 	}
 	
-	void Update () {				
-
+	void updateState() {
 		if(state != Creature.State.mating) {
 			if (energy < hunger_threshold) {
 				state = State.hungry;
@@ -114,6 +128,10 @@ public class Creature : MonoBehaviour {
 				state = State.persuing_mate;
 			}
 		}
+	}
+	
+	public void invokeGenes (params byte[] gs) {
+		this.genes = gs;
 	}
 	
 	public void setRootSize (Vector3 scale) {

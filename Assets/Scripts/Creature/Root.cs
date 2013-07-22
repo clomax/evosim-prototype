@@ -12,19 +12,30 @@ public class Root : MonoBehaviour {
 	public GameObject mouth;
 	public GameObject genital;
 	
-	MeshRenderer mr;
-	Material mat;
+	public MeshRenderer mr;
+	public Material mt;
 
 	void Start () {
 		_t = transform;
+		
+		mr = gameObject.GetComponent<MeshRenderer>();
 		
 		crt = _t.parent.gameObject.GetComponent<Creature>();
 		eye = crt.eye;
 		mouth = crt.mouth;
 		genital = crt.genital;
-
-		mr = this.gameObject.GetComponent<MeshRenderer>();
-		mat = (Material)Resources.Load("Materials/creature");
-		mr.material = mat;
+	}
+	
+	public void setColour (params byte[] gs) {
+		Color c = new Color( (float)gs[0]/255.0F,
+							 (float)gs[1]/255.0F,
+							 (float)gs[2]/255.0F
+						   );
+		mr = gameObject.GetComponent<MeshRenderer>();
+		mr.material.color = c;
+	}
+	
+	public void setSize (Vector3 scale) {
+		print (scale);	
 	}
 }

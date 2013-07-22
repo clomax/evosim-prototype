@@ -36,17 +36,13 @@ public class Spawner : MonoBehaviour {
 		return instance;
 	}
 	
-	public void spawn (Vector3 pos, Vector3 rot, double energy) {
+	public void spawn (Vector3 pos, Vector3 rot, double energy, byte[] genes) {
 		GameObject clone = new GameObject();
 		clone.transform.localPosition = pos;
 		clone.transform.eulerAngles = Utility.RandomRotVec();
-		Creature crt_script = (Creature) clone.AddComponent("Creature");
-		
-		//pretend there are genes being invoked to set the size...
-		crt_script.setRootSize(new Vector3(Random.Range(1.5F,max_root_scale.x),
-				 						   Random.Range(1.5F,max_root_scale.y),
-										   Random.Range(1.5F,max_root_scale.z))
-							  );
+		Creature crt_script = clone.AddComponent<Creature>();
+	
+		crt_script.invokeGenes(genes);
 		
 		crt_script.addEnergy(energy);
 		crt_count.number_of_creatures += 1;

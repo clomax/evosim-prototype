@@ -59,7 +59,8 @@ public class CollisionMediator : MonoBehaviour {
 			
 			spw.spawn(pos,Vector3.zero,
 					  a_energy * energy_scale +
-					  b_energy * energy_scale
+					  b_energy * energy_scale,
+					  a_script.genes
 					 );
 			a_script.subtractEnergy(a_energy * energy_scale);
 			b_script.subtractEnergy(b_energy * energy_scale);
