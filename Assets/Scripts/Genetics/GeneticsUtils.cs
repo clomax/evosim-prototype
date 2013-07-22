@@ -13,7 +13,6 @@ public class GeneticsUtils {
 		float[] newChromosome = c1;
 		for (int i=0; i<length; i++) {
 			double rand = rnd.NextDouble();
-			Debug.Log (rand);
 			if (rand < rate)
 				newChromosome[i] = c2[i];
 		}
