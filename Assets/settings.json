@@ -9,7 +9,7 @@
 		"foodbit_spawn_time"		: 0.1,
 		"fb_spawn_range"			: 200,
 		"start_number_foodbits"	: 50,
-		"starting_creatures"		: 20
+		"starting_creatures"		: 30
 	},
 	
 	"creature": {
@@ -42,6 +42,7 @@
 	
 	"genetics": {
 		"chromosome_length"	: 6,
-		"crossover_rate"			: 0.25
+		"crossover_rate"			: 0.7,
+		"mutation_rate"				: 0.7
 	}
 }
