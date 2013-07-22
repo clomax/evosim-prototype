@@ -9,7 +9,7 @@ public class GeneticsUtils {
 		for (int i=0; i<length; i++) {
 			double rand = rnd.NextDouble();
 			if (rand < rate)
-				c[i] += (float) rnd.NextDouble() * 0.01F;
+				c[i] += (float) rnd.NextDouble() * (-0.01F * 0.01F) + -0.01F;
 		}
 		return c;
 	}
