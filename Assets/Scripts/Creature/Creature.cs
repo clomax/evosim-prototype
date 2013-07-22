@@ -15,86 +15,111 @@ public class Creature : MonoBehaviour {
 #pragma warning disable 0414
 	static double MAX_ENERGY = 100.0D;
 	
-	CreatureCount crt_count;
 	Settings settings;
+	Ether eth;
+	Logger lg;
 	
-	double age;
+	public GameObject root;
+	public Root root_script;
+	
+	Vector3 max_root_scale;
+	Vector3 rootsize;
+		
 	public GameObject eye;
-	public GameObject mouth;
+	public GameObject mouth;	
 	public GameObject genital;
-	float sensitivityFwd;
-	float sensitivityHdg;
 	
+	public CreatureCount crt_count;
+
+	double age;
 	public static double init_energy;
 	public double energy;
-	float hdg = 0F;
+	
+	public byte[] genes;
+	
 	Transform _t;
-	Logger lg;
-	public int line_of_sight;
+	public double line_of_sight;
 	int matingEnergyDeduction;
 	double hunger_threshold;
 	double metabolic_rate;
-	public enum State { hungry, persuing_mate, mating, eating, neutral };
-	public State state;
-	MeshRenderer mr;
-	Material mat;
-#pragma warning restore 0414
 	
+	public enum State { hungry,
+						persuing_mate,
+						mating,
+						eating,
+						neutral
+					  };
+	public State state;
+
+#pragma warning restore 0414
+
 	void Start () {
+		_t = transform;		
+		name = "Creature";
+		
+		eth = Ether.getInstance();
+		settings = Settings.getInstance();
 		crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
 		
-		settings = Settings.getInstance();
+		max_root_scale = new Vector3();
+		max_root_scale.x = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["x"]);
+		max_root_scale.y = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["y"]);
+		max_root_scale.z = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["z"]);
 		
-		_t = transform;
-		name = "Creature";
-		hdg = transform.localEulerAngles.y;
-		//lg = Logger.getInstance();
-		mr = _t.gameObject.GetComponent<MeshRenderer>();
-		mat = (Material)Resources.Load("Materials/creature");
-		mr.material = mat;
-		
-		init_energy =		(double) settings.contents ["creature"]["init_energy"];
-		hunger_threshold = 	(double) settings.contents ["creature"]["hunger_threshold"];
-		line_of_sight = 	(int) 	settings.contents  ["creature"]["line_of_sight"];
-		metabolic_rate = 	(double) settings.contents ["creature"]["metabolic_rate"];
-		
-		age = 0.0D;
-		
-		sensitivityFwd = 1.0F;
-		sensitivityHdg = 2.5F;
+		root = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		root.name = "root";
+		root.transform.parent 			= _t;
+		root.transform.position 		= _t.position;
+		root.transform.localScale 		= rootsize;
+		root.transform.eulerAngles 		= _t.eulerAngles;
+		root.AddComponent<Rigidbody>();
+		root_script = root.AddComponent<Root>();
+		root_script.setColour(genes);
+		root.transform.localScale = new Vector3(Utility.rangeConvert(1.5F, 7.0F, genes[3]),
+							   					Utility.rangeConvert(1.5F, 7.0F, genes[4]),
+							   					Utility.rangeConvert(1.5F, 7.0F, genes[5])
+						   			);
 		
 		eye = new GameObject();
 		eye.name = "Eye";
-		eye.transform.parent = transform;
-		eye.transform.localPosition = Vector3.zero;
+		eye.transform.parent 			= root.transform;
+		eye.transform.eulerAngles 		= root.transform.eulerAngles;
+		eye.transform.position 			= root.transform.position;
 		eye.AddComponent<Eye>();
 		
 		mouth = new GameObject();
 		mouth.name = "Mouth";
-		mouth.transform.parent = transform;
-		mouth.transform.localPosition = new Vector3(0,0,0.5F);
-		mouth.transform.localEulerAngles = new Vector3(0,0,0);
-		mouth.AddComponent("Mouth");
+		mouth.transform.parent 			= root.transform;
+		mouth.transform.eulerAngles 	= root.transform.eulerAngles;
+		mouth.transform.position 		= root.transform.position;
+		mouth.AddComponent<Mouth>();
 		
 		genital = new GameObject();
 		genital.name = "Genital";
-		genital.transform.parent = transform;
-		genital.transform.localPosition = new Vector3(0,0,-.5f);
-		genital.transform.localEulerAngles = new Vector3(0,180,0);
+		genital.transform.parent 		= root.transform;
+		genital.transform.eulerAngles 	= root.transform.eulerAngles;
+		genital.transform.position		= root.transform.position;
 		genital.AddComponent<Genitalia>();
 		
+		
+		init_energy 		= (double) settings.contents ["creature"]["init_energy"];
+		hunger_threshold 	= (double) settings.contents ["creature"]["hunger_threshold"];
+		line_of_sight 		= (double) settings.contents ["creature"]["line_of_sight"];
+		metabolic_rate 		= (double) settings.contents ["creature"]["metabolic_rate"];
+		
+		age = 0.0D;
+		
 		InvokeRepeating("updateAge",0,1.0f);
+		InvokeRepeating("updateState",0,0.1f);
 		InvokeRepeating("metabolise",0,1.0f);
-	}
+	}	
+		
 	
 	void updateAge() {
 		age += 1;
 	}
 	
-	void Update () {				
-		changeHeading(Input.GetAxis("Horizontal") * sensitivityHdg);
-		moveForward(Input.GetAxis("Vertical") * sensitivityFwd);
-		
+	void updateState() {
 		if(state != Creature.State.mating) {
 			if (energy < hunger_threshold) {
 				state = State.hungry;
@@ -103,6 +128,14 @@ public class Creature : MonoBehaviour {
 				state = State.persuing_mate;
 			}
 		}
+	}
+	
+	public void invokeGenes (params byte[] gs) {
+		this.genes = gs;
+	}
+	
+	public void setRootSize (Vector3 scale) {
+		rootsize = scale;	
 	}
 	
 	
@@ -123,11 +156,12 @@ public class Creature : MonoBehaviour {
 	
 	public void subtractEnergy (double n) {
 		energy -= n;
-		if(energy < 0) energy = 0;
+		if(energy <= 0) kill();
 	}
 	
 	private void metabolise () {
-		subtractEnergy(metabolic_rate);	
+		subtractEnergy(metabolic_rate);
+		eth.addToEnergy(metabolic_rate);
 	}
 	
 	/*
@@ -138,31 +172,6 @@ public class Creature : MonoBehaviour {
 		Destroy(gameObject);
 		crt_count.number_of_creatures--;
 		return energy;
-	}
-	
-	
-	/*
-	 * Stuff to make the creatures move to keyboard commands
-	 */
-	
-	void moveForward (float n) {
-		Vector3 fwd = _t.forward;
-		fwd.y = 0;
-		fwd.Normalize();
-		_t.position += n * fwd;
-	}
-	
-	void changeHeading (float n) {
-		hdg += n;
-		wrapAngle(hdg);
-		_t.localEulerAngles = new Vector3(0,hdg,0);
-	}
-	
-	void wrapAngle (float angle) {
-		if (angle < -360F)
-			angle += 360F;
-		if (angle > 360F)
-			angle -= 360F;
 	}
 
 }

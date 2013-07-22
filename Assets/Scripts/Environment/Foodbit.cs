@@ -32,6 +32,7 @@ public class Foodbit : MonoBehaviour {
 	
 	
 	void Start () {
+		name = "Foodbit";
 		settings = Settings.getInstance();
 		
 		energy = (double) settings.contents["ether"]["foodbit_energy"];

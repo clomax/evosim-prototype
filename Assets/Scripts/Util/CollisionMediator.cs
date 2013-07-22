@@ -19,7 +19,7 @@ public class CollisionMediator : MonoBehaviour {
 	public static CollisionMediator instance;
 	public static GameObject container;	
 	public CollEvent evt;
-	public ArrayList collision_events = new ArrayList();
+	public ArrayList collision_events;
 	public Spawner spw;
 	
 	Settings settings;
@@ -27,6 +27,7 @@ public class CollisionMediator : MonoBehaviour {
 	double energy_scale;
 	
 	void Start () {
+		collision_events = new ArrayList();
 		spw = Spawner.getInstance();
 		settings = Settings.getInstance();
 		energy_scale = (double) settings.contents["creature"]["energy_to_offspring"];
@@ -36,7 +37,7 @@ public class CollisionMediator : MonoBehaviour {
 		if(!instance) {
 			container = new GameObject();
 			container.name = "Collision Observer";
-			instance = container.AddComponent(typeof(CollisionMediator)) as CollisionMediator;
+			instance = container.AddComponent<CollisionMediator>();
 		}
 		return instance;
 	}
@@ -50,15 +51,16 @@ public class CollisionMediator : MonoBehaviour {
 			Vector3 pos = Utility.RandomFlatVec(-200,10,200);
 			
 			// Get references to the scripts of each creature
-			Creature a_script = a.transform.parent.GetComponent<Creature>();
-			Creature b_script = b.transform.parent.GetComponent<Creature>();
+			Creature a_script = a.transform.parent.parent.GetComponent<Creature>();
+			Creature b_script = b.transform.parent.parent.GetComponent<Creature>();
 			
 			double a_energy = a_script.getEnergy();
 			double b_energy = b_script.getEnergy();
 			
 			spw.spawn(pos,Vector3.zero,
 					  a_energy * energy_scale +
-					  b_energy * energy_scale
+					  b_energy * energy_scale,
+					  a_script.genes
 					 );
 			a_script.subtractEnergy(a_energy * energy_scale);
 			b_script.subtractEnergy(b_energy * energy_scale);

@@ -1,0 +1,41 @@
+using UnityEngine;
+using System.Collections;
+
+public class Root : MonoBehaviour {
+	
+	Transform _t;
+	
+	GameObject root;
+	
+	public Creature crt;	
+	public GameObject eye;
+	public GameObject mouth;
+	public GameObject genital;
+	
+	public MeshRenderer mr;
+	public Material mt;
+
+	void Start () {
+		_t = transform;
+		
+		mr = gameObject.GetComponent<MeshRenderer>();
+		
+		crt = _t.parent.gameObject.GetComponent<Creature>();
+		eye = crt.eye;
+		mouth = crt.mouth;
+		genital = crt.genital;
+	}
+	
+	public void setColour (params byte[] gs) {
+		Color c = new Color( (float)gs[0]/255.0F,
+							 (float)gs[1]/255.0F,
+							 (float)gs[2]/255.0F
+						   );
+		mr = gameObject.GetComponent<MeshRenderer>();
+		mr.material.color = c;
+	}
+	
+	public void setSize (Vector3 scale) {
+		print (scale);	
+	}
+}

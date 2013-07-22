@@ -21,11 +21,11 @@ public class Genitalia : MonoBehaviour {
 	Transform _t;
 	LineRenderer lr;
 	Vector3 line_start;
-	float line_length = 0.5F; // default
-	float line_width  = 0.5F; // values
+	float line_length			= 0.5F; // default
+	float line_width  			= 0.5F; // values
 	Vector3 line_end;
 	double timeCreated;
-	double timeToEnableMating = 1.0F;
+	double timeToEnableMating 	= 1.0F;
 	Eye eye;
 #pragma warning restore 0414
 
@@ -34,7 +34,7 @@ public class Genitalia : MonoBehaviour {
 		
 		_t = transform;
 		gameObject.tag = "Genital";
-		crt = (Creature)_t.parent.gameObject.GetComponent("Creature");
+		crt = (Creature)_t.parent.parent.gameObject.GetComponent("Creature");
 		lg = Logger.getInstance();
 		co = CollisionMediator.getInstance();
 		eye = crt.eye.gameObject.GetComponent<Eye>();
