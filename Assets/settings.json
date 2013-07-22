@@ -8,7 +8,8 @@
 		"foodbit_energy"			: 10.0,
 		"foodbit_spawn_time"		: 0.1,
 		"fb_spawn_range"			: 200,
-		"start_number_foodbits"	: 50
+		"start_number_foodbits"	: 50,
+		"starting_creatures"		: 30
 	},
 	
 	"creature": {
