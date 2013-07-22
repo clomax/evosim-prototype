@@ -36,13 +36,13 @@ public class Spawner : MonoBehaviour {
 		return instance;
 	}
 	
-	public void spawn (Vector3 pos, Vector3 rot, double energy, byte[] genes) {
+	public void spawn (Vector3 pos, Vector3 rot, double energy, byte[] chromosome) {
 		GameObject clone = new GameObject();
 		clone.transform.localPosition = pos;
 		clone.transform.eulerAngles = Utility.RandomRotVec();
 		Creature crt_script = clone.AddComponent<Creature>();
 	
-		crt_script.invokeGenes(genes);
+		crt_script.invokechromosome(chromosome);
 		
 		crt_script.addEnergy(energy);
 		crt_count.number_of_creatures += 1;

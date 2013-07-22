@@ -23,6 +23,7 @@ public class Creature : MonoBehaviour {
 	public Root root_script;
 	
 	Vector3 max_root_scale;
+	Vector3 min_root_scale;
 	Vector3 rootsize;
 		
 	public GameObject eye;
@@ -35,7 +36,7 @@ public class Creature : MonoBehaviour {
 	public static double init_energy;
 	public double energy;
 	
-	public byte[] genes;
+	public byte[] chromosome;
 	
 	Transform _t;
 	public double line_of_sight;
@@ -66,6 +67,12 @@ public class Creature : MonoBehaviour {
 		max_root_scale.y = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["y"]);
 		max_root_scale.z = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["z"]);
 		
+		min_root_scale = new Vector3();
+		min_root_scale.x = (float) ((double) settings.contents["creature"]["root"]["min_root_scale"]["x"]);
+		min_root_scale.y = (float) ((double) settings.contents["creature"]["root"]["min_root_scale"]["y"]);
+		min_root_scale.z = (float) ((double) settings.contents["creature"]["root"]["min_root_scale"]["z"]);
+
+		
 		root = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		root.name = "root";
 		root.transform.parent 			= _t;
@@ -74,10 +81,10 @@ public class Creature : MonoBehaviour {
 		root.transform.eulerAngles 		= _t.eulerAngles;
 		root.AddComponent<Rigidbody>();
 		root_script = root.AddComponent<Root>();
-		root_script.setColour(genes);
-		root.transform.localScale = new Vector3(Utility.rangeConvert(1.5F, 7.0F, genes[3]),
-							   					Utility.rangeConvert(1.5F, 7.0F, genes[4]),
-							   					Utility.rangeConvert(1.5F, 7.0F, genes[5])
+		root_script.setColour(chromosome);
+		root.transform.localScale = new Vector3(Utility.rangeConvert(min_root_scale.x, max_root_scale.x, chromosome[3]),
+							   					Utility.rangeConvert(min_root_scale.y, max_root_scale.y, chromosome[4]),
+							   					Utility.rangeConvert(min_root_scale.z, max_root_scale.z, chromosome[5])
 						   			);
 		
 		eye = new GameObject();
@@ -130,8 +137,8 @@ public class Creature : MonoBehaviour {
 		}
 	}
 	
-	public void invokeGenes (params byte[] gs) {
-		this.genes = gs;
+	public void invokechromosome (params byte[] gs) {
+		this.chromosome = gs;
 	}
 	
 	public void setRootSize (Vector3 scale) {

@@ -20,7 +20,7 @@ public class GeneticsMain : MonoBehaviour {
 	public static GeneticsMain instance;
 	
 	int chromosome_length = 6;
-	byte[] genes;
+	byte[] chromosome;
 	
 	int starting_creatures;
 	
@@ -41,19 +41,19 @@ public class GeneticsMain : MonoBehaviour {
 		double energy = (double)settings.contents["creature"]["init_energy"];
 		
 		for (int i=0; i<starting_creatures; i++) {
-			genes = new byte[chromosome_length];
+			chromosome = new byte[chromosome_length];
 			
 			// random colours
 			for (int j=0; j<3; j++) {
-				genes[j] = (byte)Random.Range(0,255);
+				chromosome[j] = (byte)Random.Range(0,255);
 			}
 			
 			// random root sizes
-			genes[3] = 	(byte)Random.Range(0,255);
-			genes[4] = 	(byte)Random.Range(0,255);
-			genes[5] = 	(byte)Random.Range(0,255);
+			chromosome[3] = 	(byte)Random.Range(0,255);
+			chromosome[4] = 	(byte)Random.Range(0,255);
+			chromosome[5] = 	(byte)Random.Range(0,255);
 			
-			spw.spawn(Utility.RandomFlatVec(-200,5,200), Utility.RandomRotVec(), energy, genes);
+			spw.spawn(Utility.RandomFlatVec(-200,5,200), Utility.RandomRotVec(), energy, chromosome);
 			eth.subtractEnergy(energy);
 		}
 	}
