@@ -29,9 +29,9 @@ public class Eye : MonoBehaviour {
 	}
 	
 	void closestCreature () {
-		closestCrt 				= null;
+		closestCrt 				= null;	// reference to the script of the closest creature
 		GameObject closest 		= null;
-		GameObject c 			= null; // current collider
+		GameObject c 			= null; // current collider being looked at
 		double dist 			= crt.line_of_sight;
 		
 		if (crt.state == Creature.State.persuing_mate) {
@@ -64,7 +64,7 @@ public class Eye : MonoBehaviour {
 	}
 	
 	void closestFoodbit () {
-		closestFbit 		= null;
+		closestFbit 		= null;	// reference to the script of the closest foodbit
 		GameObject closest 	= null;
 		double dist 		= crt.line_of_sight;
 		

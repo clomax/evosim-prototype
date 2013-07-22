@@ -33,9 +33,9 @@ public class Utility : MonoBehaviour {
 		return new Vector3(0,Random.Range(0,360),0);
 	}
 	
-	public static float rangeConvert (float min, float max, byte old_val) {
+	public static T rangeConvert<T> (float min, float max, byte old_val) {
 		int oldRange = 255;
 		float newRange = (max - min);
-		return (((old_val - 0) * newRange) / oldRange) + min;
+		return (T) System.Convert.ChangeType( (((old_val - 0) * newRange) / oldRange) + min, typeof(T) );
 	}
 }
