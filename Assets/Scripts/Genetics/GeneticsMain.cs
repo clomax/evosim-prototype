@@ -31,14 +31,13 @@ public class GeneticsMain : MonoBehaviour {
 		settings = Settings.getInstance();
 		eth = Ether.getInstance();
 		
-		max_root_scale = new Vector3();
-		max_root_scale.x = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["x"]);
-		max_root_scale.y = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["y"]);
-		max_root_scale.z = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["z"]);
-
-		starting_creatures = (int) settings.contents["ether"]["starting_creatures"];
-		
-		double energy = (double)settings.contents["creature"]["init_energy"];
+		max_root_scale 		= new Vector3();
+		max_root_scale.x 	= (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["x"]);
+		max_root_scale.y 	= (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["y"]);
+		max_root_scale.z 	= (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["z"]);
+		starting_creatures	= (int) settings.contents["ether"]["starting_creatures"];
+		chromosome_length	= (int) settings.contents["genetics"]["chromosome_length"];
+		double energy		= (double)settings.contents["creature"]["init_energy"];
 		
 		for (int i=0; i<starting_creatures; i++) {
 			chromosome = new float[chromosome_length];
@@ -49,9 +48,9 @@ public class GeneticsMain : MonoBehaviour {
 			}
 			
 			// random root sizes
-			chromosome[3] = 	(float)Random.Range(0,255);
-			chromosome[4] = 	(float)Random.Range(0,255);
-			chromosome[5] = 	(float)Random.Range(0,255);
+			chromosome[3] 	= (float)Random.Range(0,255);
+			chromosome[4] 	= (float)Random.Range(0,255);
+			chromosome[5] 	= (float)Random.Range(0,255);
 			
 			spw.spawn(Utility.RandomFlatVec(-200,5,200), Utility.RandomRotVec(), energy, chromosome);
 			eth.subtractEnergy(energy);

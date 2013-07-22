@@ -25,12 +25,16 @@ public class CollisionMediator : MonoBehaviour {
 	Settings settings;
 	
 	double energy_scale;
+	int chromosome_length;
+	double crossover_rate;
 	
 	void Start () {
 		collision_events = new ArrayList();
 		spw = Spawner.getInstance();
 		settings = Settings.getInstance();
-		energy_scale = (double) settings.contents["creature"]["energy_to_offspring"];
+		energy_scale 		= (double) 	settings.contents["creature"]["energy_to_offspring"];
+		chromosome_length 	= (int) 	settings.contents["genetics"]["chromosome_length"];
+		crossover_rate 		= (double) 	settings.contents["genetics"]["crossover_rate"];
 	}
 	
 	public static CollisionMediator getInstance () {
@@ -58,13 +62,13 @@ public class CollisionMediator : MonoBehaviour {
 			double b_energy = b_script.getEnergy();
 			
 			float[] newChromosome;
-			newChromosome = GeneticsUtils.crossover(a_script.chromosome, b_script.chromosome);
+			newChromosome = GeneticsUtils.crossover(a_script.chromosome, b_script.chromosome, chromosome_length, crossover_rate);
 			newChromosome = GeneticsUtils.mutate(newChromosome);
 			
 			spw.spawn(pos,Vector3.zero,
 					  a_energy * energy_scale +
 					  b_energy * energy_scale,
-					  a_script.chromosome
+					  newChromosome
 					 );
 			a_script.subtractEnergy(a_energy * energy_scale);
 			b_script.subtractEnergy(b_energy * energy_scale);

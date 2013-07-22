@@ -9,13 +9,14 @@ public class Eye : MonoBehaviour {
 	public GameObject closestFbit	= null;
 	CollisionMediator co;
 	float curr_dist 				= 0f;
-	int crt_mate_range 				= 30;
-	int fb_eat_range 				= 20;
+	double crt_mate_range;
+	double fb_eat_range;
 	
 	public Collider[] cs;
 	
 	Transform _t;
 	
+	Settings settings;
 	Creature other_crt;
 	
 	void Start () {
@@ -23,6 +24,10 @@ public class Eye : MonoBehaviour {
 		
 		crt = _t.parent.parent.gameObject.GetComponent<Creature>();
 		co = CollisionMediator.getInstance();
+		settings = Settings.getInstance();
+		
+		crt_mate_range =	(double) settings.contents["creature"]["mate_range"];
+		fb_eat_range = 		(double) settings.contents["creature"]["eat_range"];
 		
 		InvokeRepeating("closestCreature",0,0.1F);
 		InvokeRepeating("closestFoodbit",0,0.1F);
@@ -46,7 +51,7 @@ public class Eye : MonoBehaviour {
 						closest = c.transform.parent.gameObject;
 						dist = curr_dist;
 					}
-					if (curr_dist < crt_mate_range) {
+					if (curr_dist < (float)crt_mate_range) {
 						other_crt = c.transform.parent.GetComponent<Creature>();
 						Genitalia other_genital = other_crt.genital.GetComponent<Genitalia>();
 						if (crt.state == Creature.State.persuing_mate || other_crt.state == Creature.State.persuing_mate) {
@@ -80,7 +85,7 @@ public class Eye : MonoBehaviour {
 						closest = f;
 						dist = curr_dist;
 					}
-					if (curr_dist < fb_eat_range && crt.state == Creature.State.hungry) {
+					if (curr_dist < (float)fb_eat_range && crt.state == Creature.State.hungry) {
 						fbit = f.GetComponent<Foodbit>();
 						crt.addEnergy(fbit.getEnergy());
 						fbit.destroy();

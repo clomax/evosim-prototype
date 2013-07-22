@@ -9,21 +9,23 @@
 		"foodbit_spawn_time"		: 0.1,
 		"fb_spawn_range"			: 200,
 		"start_number_foodbits"	: 50,
-		"starting_creatures"		: 30
+		"starting_creatures"		: 20
 	},
 	
 	"creature": {
 		"init_energy"					: 100.0,
 		"hunger_threshold"		: 50.0,
-		"line_of_sight"				: 50.0,
+		"line_of_sight"				: 100.0,
 		"energy_to_offspring"		: 0.5,
 		"metabolic_rate"			: 0.01,
+		"mate_range"				: 20.0,
+		"eat_range"					: 20.0,
 		
 		"root": {
 			"max_root_scale" : {
-				"x"						: 7.0,
-				"y"						: 7.0,
-				"z"						: 7.0
+				"x"						: 10.0,
+				"y"						: 10.0,
+				"z"						: 10.0
 			},
 			
 			"min_root_scale": {
@@ -36,5 +38,10 @@
 	
 	"genitalia": {
 		"line_length"					: "0.5"
+	},
+	
+	"genetics": {
+		"chromosome_length"	: 6,
+		"crossover_rate"			: 0.25
 	}
 }
