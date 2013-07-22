@@ -4,7 +4,7 @@
 	},
 	
 	"ether": {
-		"total_energy"				: 10000.0,
+		"total_energy"				: 20000.0,
 		"foodbit_energy"			: 10.0,
 		"foodbit_spawn_time"		: 0.1,
 		"fb_spawn_range"			: 200,

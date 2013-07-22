@@ -57,7 +57,7 @@ public class CollisionMediator : MonoBehaviour {
 			double a_energy = a_script.getEnergy();
 			double b_energy = b_script.getEnergy();
 			
-			byte[] newChromosome;
+			float[] newChromosome;
 			newChromosome = GeneticsUtils.crossover(a_script.chromosome, b_script.chromosome);
 			newChromosome = GeneticsUtils.mutate(newChromosome);
 			

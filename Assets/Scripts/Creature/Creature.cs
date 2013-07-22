@@ -36,7 +36,7 @@ public class Creature : MonoBehaviour {
 	public static double init_energy;
 	public double energy;
 	
-	public byte[] chromosome;
+	public float[] chromosome;
 	
 	Transform _t;
 	public double line_of_sight;
@@ -137,7 +137,7 @@ public class Creature : MonoBehaviour {
 		}
 	}
 	
-	public void invokechromosome (params byte[] gs) {
+	public void invokechromosome (params float[] gs) {
 		this.chromosome = gs;
 	}
 	
