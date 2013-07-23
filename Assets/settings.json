@@ -20,6 +20,7 @@
 		"metabolic_rate"			: 0.01,
 		"mate_range"				: 20.0,
 		"eat_range"					: 20.0,
+		"age_sexual_maturity"	: 10,
 		
 		"root": {
 			"max_root_scale" : {

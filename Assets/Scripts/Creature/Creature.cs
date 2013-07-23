@@ -38,11 +38,12 @@ public class Creature : MonoBehaviour {
 	
 	public float[] chromosome;
 	
-	Transform _t;
-	public double line_of_sight;
-	int matingEnergyDeduction;
-	double hunger_threshold;
-	double metabolic_rate;
+	Transform 		_t;
+	public double 	line_of_sight;
+	int 			matingEnergyDeduction;
+	double 			hunger_threshold;
+	double 			metabolic_rate;
+	int 			age_sexual_maturity;
 	
 	public enum State { hungry,
 						persuing_mate,
@@ -109,12 +110,14 @@ public class Creature : MonoBehaviour {
 		genital.AddComponent<Genitalia>();
 		
 		
-		init_energy 		= (double) settings.contents ["creature"]["init_energy"];
-		hunger_threshold 	= (double) settings.contents ["creature"]["hunger_threshold"];
-		line_of_sight 		= (double) settings.contents ["creature"]["line_of_sight"];
-		metabolic_rate 		= (double) settings.contents ["creature"]["metabolic_rate"];
+		init_energy 		= (double) 	settings.contents ["creature"]["init_energy"];
+		hunger_threshold 	= (double) 	settings.contents ["creature"]["hunger_threshold"];
+		line_of_sight 		= (double) 	settings.contents ["creature"]["line_of_sight"];
+		metabolic_rate 		= (double) 	settings.contents ["creature"]["metabolic_rate"];
+		age_sexual_maturity = (int)		settings.contents ["creature"]["age_sexual_maturity"];
 		
 		age = 0.0D;
+		state = State.neutral;
 		
 		InvokeRepeating("updateAge",0,1.0f);
 		InvokeRepeating("updateState",0,0.1f);
@@ -131,7 +134,7 @@ public class Creature : MonoBehaviour {
 			if (energy < hunger_threshold) {
 				state = State.hungry;
 			}
-			if (energy >= hunger_threshold) {
+			if (energy >= hunger_threshold && age > age_sexual_maturity) {
 				state = State.persuing_mate;
 			}
 		}
