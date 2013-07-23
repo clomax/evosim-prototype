@@ -54,7 +54,7 @@ public class CollisionMediator : MonoBehaviour {
 		// If a duplicate has been found - spawn
 		if (null != dup) {
 			collision_events.Clear();
-			Vector3 pos = Utility.RandomFlatVec(-200,10,200);
+			Vector3 pos = (a.transform.position - b.transform.position) * 0.5F + b.transform.position;
 			
 			// Get references to the scripts of each creature
 			Creature a_script = a.transform.parent.parent.GetComponent<Creature>();

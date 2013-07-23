@@ -43,6 +43,6 @@
 	"genetics": {
 		"chromosome_length"	: 6,
 		"crossover_rate"			: 0.7,
-		"mutation_rate"				: 0.7
+		"mutation_rate"				: 0.05
 	}
 }
