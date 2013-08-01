@@ -24,7 +24,7 @@ public class Ether : MonoBehaviour {
 	public double total_energy;
 	double energy;
 	double foodbit_energy;
- 	float foodbit_spawn_time;
+ 	double foodbit_spawn_time;
 	public int foodbit_count;
 	int fb_spawn_range;
 	int start_number_foodbits;
@@ -38,7 +38,7 @@ public class Ether : MonoBehaviour {
 		
 		total_energy = 			(double) settings.contents[name]["total_energy"];
 		foodbit_energy = 		(double) settings.contents	[name]["foodbit_energy"];
-		foodbit_spawn_time = 	(int) settings.contents	[name]["foodbit_spawn_time"];
+		foodbit_spawn_time = 	(double) settings.contents	[name]["foodbit_spawn_time"];
 		fb_spawn_range = 		(int) settings.contents	[name]["fb_spawn_range"];
 		start_number_foodbits = (int) settings.contents [name]["start_number_foodbits"];
 		
@@ -68,14 +68,16 @@ public class Ether : MonoBehaviour {
 	 * all foodbits and attach the script
 	 */
 	public void newFoodbit () {
-		Vector3 pos = Utility.RandomFlatVec( -fb_spawn_range,
-			                                	 Foodbit.foodbitHeight /2,
-			                                	 fb_spawn_range
-			               				   );
-		GameObject fb = (GameObject)Instantiate(foodbit, pos, Quaternion.identity);
-		fb.AddComponent("Foodbit");
-		subtractEnergy(foodbit_energy);
-		foodbit_count++;
+		if(enoughEnergy(foodbit_energy)) {
+			Vector3 pos = Utility.RandomFlatVec( -fb_spawn_range,
+				                                	 Foodbit.foodbitHeight /2,
+				                                	 fb_spawn_range
+				               				   );
+			GameObject fb = (GameObject)Instantiate(foodbit, pos, Quaternion.identity);
+			fb.AddComponent("Foodbit");
+			subtractEnergy(foodbit_energy);
+			foodbit_count++;
+		}
 	}
 	
 	public double getEnergy() {
