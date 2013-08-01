@@ -34,14 +34,14 @@ public class GeneticsMain : MonoBehaviour {
 		eth = Ether.getInstance();
 		
 		max_root_scale 		= new Vector3();
-		max_root_scale.x 	= (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["x"]);
-		max_root_scale.y 	= (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["y"]);
-		max_root_scale.z 	= (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["z"]);
+		max_root_scale.x 	= float.Parse( settings.contents["creature"]["root"]["max_root_scale"]["x"].ToString() );
+		max_root_scale.y 	= float.Parse( settings.contents["creature"]["root"]["max_root_scale"]["y"].ToString() );
+		max_root_scale.z 	= float.Parse( settings.contents["creature"]["root"]["max_root_scale"]["z"].ToString() );
 		
 		min_root_scale 		= new Vector3();
-		min_root_scale.x 	= (float) ((double) settings.contents["creature"]["root"]["min_root_scale"]["x"]);
-		min_root_scale.y 	= (float) ((double) settings.contents["creature"]["root"]["min_root_scale"]["y"]);
-		min_root_scale.z 	= (float) ((double) settings.contents["creature"]["root"]["min_root_scale"]["z"]);
+		min_root_scale.x 	= float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["x"].ToString() );
+		min_root_scale.y 	= float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["y"].ToString() );
+		min_root_scale.z 	= float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["z"].ToString() );
 		
 		starting_creatures	= (int) 			settings.contents["ether"]	 ["starting_creatures"];
 		chromosome_length	= (int) 			settings.contents["genetics"]["chromosome_length"];
@@ -60,7 +60,7 @@ public class GeneticsMain : MonoBehaviour {
 			chromosome[4] 	= (float) Random.Range(min_root_scale.y,max_root_scale.y);
 			chromosome[5] 	= (float) Random.Range(min_root_scale.z,max_root_scale.z);
 			
-			spw.spawn(Utility.RandomFlatVec(-200,5,200), Utility.RandomRotVec(), energy, chromosome);
+			spw.spawn(Utility.RandomFlatVec(-200,10,200), Utility.RandomRotVec(), energy, chromosome);
 			eth.subtractEnergy(energy);
 		}
 	}
