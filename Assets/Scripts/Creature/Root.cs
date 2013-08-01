@@ -26,10 +26,10 @@ public class Root : MonoBehaviour {
 		genital = crt.genital;
 	}
 	
-	public void setColour (params byte[] gs) {
-		Color c = new Color( (float)gs[0]/255.0F,
-							 (float)gs[1]/255.0F,
-							 (float)gs[2]/255.0F
+	public void setColour (params float[] gs) {
+		Color c = new Color( (float)gs[0],
+							 (float)gs[1],
+							 (float)gs[2]
 						   );
 		mr = gameObject.GetComponent<MeshRenderer>();
 		mr.material.color = c;

@@ -21,21 +21,14 @@ public class Utility : MonoBehaviour {
 	
 	//return a random 'flat' vector within a given range
 	public static Vector3 RandomFlatVec(float x, float y, float z) {
-		Vector3 vec = new Vector3( Random.Range(-x,x),
-								   y / 2,
-								   Random.Range(-z,z)
-			                     );
-		return vec;
+		return new Vector3( Random.Range(-x,x),
+							y / 2,
+							Random.Range(-z,z)
+			              );
 	}
 	
 	//return a random rotation on the y axis
 	public static Vector3 RandomRotVec() {
 		return new Vector3(0,Random.Range(0,360),0);
-	}
-	
-	public static float rangeConvert (float min, float max, byte old_val) {
-		int oldRange = 255;
-		float newRange = (max - min);
-		return (((old_val - 0) * newRange) / oldRange) + min;
 	}
 }

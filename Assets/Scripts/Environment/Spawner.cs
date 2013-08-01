@@ -22,9 +22,9 @@ public class Spawner : MonoBehaviour {
 		eth = Ether.getInstance();
 		settings = Settings.getInstance();
 		
-		max_root_scale.x = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["x"]);
-		max_root_scale.y = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["y"]);
-		max_root_scale.z = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["z"]);
+		max_root_scale.x = float.Parse( settings.contents["creature"]["root"]["max_root_scale"]["x"].ToString() );
+		max_root_scale.y = float.Parse( settings.contents["creature"]["root"]["max_root_scale"]["y"].ToString() );
+		max_root_scale.z = float.Parse( settings.contents["creature"]["root"]["max_root_scale"]["z"].ToString() );
 	}
 	
 	public static Spawner getInstance () {
@@ -36,13 +36,13 @@ public class Spawner : MonoBehaviour {
 		return instance;
 	}
 	
-	public void spawn (Vector3 pos, Vector3 rot, double energy, byte[] genes) {
+	public void spawn (Vector3 pos, Vector3 rot, double energy, float[] chromosome) {
 		GameObject clone = new GameObject();
 		clone.transform.localPosition = pos;
 		clone.transform.eulerAngles = Utility.RandomRotVec();
 		Creature crt_script = clone.AddComponent<Creature>();
 	
-		crt_script.invokeGenes(genes);
+		crt_script.invokechromosome(chromosome);
 		
 		crt_script.addEnergy(energy);
 		crt_count.number_of_creatures += 1;

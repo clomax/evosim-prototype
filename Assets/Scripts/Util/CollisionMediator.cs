@@ -25,12 +25,20 @@ public class CollisionMediator : MonoBehaviour {
 	Settings settings;
 	
 	double energy_scale;
+	int chromosome_length;
+	double crossover_rate;
+	double mutation_rate;
+	float mutation_factor;
 	
 	void Start () {
 		collision_events = new ArrayList();
 		spw = Spawner.getInstance();
 		settings = Settings.getInstance();
-		energy_scale = (double) settings.contents["creature"]["energy_to_offspring"];
+		energy_scale 		= (double) 		settings.contents["creature"]["energy_to_offspring"];
+		chromosome_length 	= (int) 		settings.contents["genetics"]["chromosome_length"];
+		crossover_rate 		= (double) 		settings.contents["genetics"]["crossover_rate"];
+		mutation_rate		= (double)		settings.contents["genetics"]["mutation_rate"];	
+		mutation_factor		= float.Parse(	settings.contents["genetics"]["mutation_factor"].ToString() );
 	}
 	
 	public static CollisionMediator getInstance () {
@@ -48,7 +56,8 @@ public class CollisionMediator : MonoBehaviour {
 		// If a duplicate has been found - spawn
 		if (null != dup) {
 			collision_events.Clear();
-			Vector3 pos = Utility.RandomFlatVec(-200,10,200);
+			Vector3 pos = (a.transform.position - b.transform.position) * 0.5F + b.transform.position;
+			pos.y += 10.0F;		// Drop creatures from a height
 			
 			// Get references to the scripts of each creature
 			Creature a_script = a.transform.parent.parent.GetComponent<Creature>();
@@ -57,10 +66,14 @@ public class CollisionMediator : MonoBehaviour {
 			double a_energy = a_script.getEnergy();
 			double b_energy = b_script.getEnergy();
 			
+			float[] newChromosome;
+			newChromosome = GeneticsUtils.crossover(a_script.chromosome, b_script.chromosome, chromosome_length, crossover_rate);
+			newChromosome = GeneticsUtils.mutate(newChromosome, chromosome_length, mutation_rate, mutation_factor);
+			
 			spw.spawn(pos,Vector3.zero,
 					  a_energy * energy_scale +
 					  b_energy * energy_scale,
-					  a_script.genes
+					  newChromosome
 					 );
 			a_script.subtractEnergy(a_energy * energy_scale);
 			b_script.subtractEnergy(b_energy * energy_scale);

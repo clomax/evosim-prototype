@@ -13,7 +13,9 @@ using System.Collections;
 public class Creature : MonoBehaviour {
 
 #pragma warning disable 0414
-	static double MAX_ENERGY = 100.0D;
+	private static double MAX_ENERGY = 100.0D;
+	
+	Transform 		_t;
 	
 	Settings settings;
 	Ether eth;
@@ -23,6 +25,7 @@ public class Creature : MonoBehaviour {
 	public Root root_script;
 	
 	Vector3 max_root_scale;
+	Vector3 min_root_scale;
 	Vector3 rootsize;
 		
 	public GameObject eye;
@@ -35,13 +38,12 @@ public class Creature : MonoBehaviour {
 	public static double init_energy;
 	public double energy;
 	
-	public byte[] genes;
+	public float[] chromosome;
 	
-	Transform _t;
-	public double line_of_sight;
-	int matingEnergyDeduction;
-	double hunger_threshold;
-	double metabolic_rate;
+	public double 	line_of_sight;
+	double 			hunger_threshold;
+	double 			metabolic_rate;
+	int 			age_sexual_maturity;
 	
 	public enum State { hungry,
 						persuing_mate,
@@ -50,7 +52,6 @@ public class Creature : MonoBehaviour {
 						neutral
 					  };
 	public State state;
-
 #pragma warning restore 0414
 
 	void Start () {
@@ -66,6 +67,12 @@ public class Creature : MonoBehaviour {
 		max_root_scale.y = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["y"]);
 		max_root_scale.z = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["z"]);
 		
+		min_root_scale = new Vector3();
+		min_root_scale.x = (float) ((double) settings.contents["creature"]["root"]["min_root_scale"]["x"]);
+		min_root_scale.y = (float) ((double) settings.contents["creature"]["root"]["min_root_scale"]["y"]);
+		min_root_scale.z = (float) ((double) settings.contents["creature"]["root"]["min_root_scale"]["z"]);
+
+		
 		root = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		root.name = "root";
 		root.transform.parent 			= _t;
@@ -74,11 +81,11 @@ public class Creature : MonoBehaviour {
 		root.transform.eulerAngles 		= _t.eulerAngles;
 		root.AddComponent<Rigidbody>();
 		root_script = root.AddComponent<Root>();
-		root_script.setColour(genes);
-		root.transform.localScale = new Vector3(Utility.rangeConvert(1.5F, 7.0F, genes[3]),
-							   					Utility.rangeConvert(1.5F, 7.0F, genes[4]),
-							   					Utility.rangeConvert(1.5F, 7.0F, genes[5])
-						   			);
+		root_script.setColour(chromosome);
+		root.transform.localScale = new Vector3( chromosome[3],
+							   					 chromosome[4],
+							   					 chromosome[5]
+						   					   );
 		
 		eye = new GameObject();
 		eye.name = "Eye";
@@ -101,20 +108,23 @@ public class Creature : MonoBehaviour {
 		genital.transform.position		= root.transform.position;
 		genital.AddComponent<Genitalia>();
 		
-		
-		init_energy 		= (double) settings.contents ["creature"]["init_energy"];
-		hunger_threshold 	= (double) settings.contents ["creature"]["hunger_threshold"];
-		line_of_sight 		= (double) settings.contents ["creature"]["line_of_sight"];
-		metabolic_rate 		= (double) settings.contents ["creature"]["metabolic_rate"];
+		init_energy 		= (double) 	settings.contents ["creature"]["init_energy"];
+		hunger_threshold 	= (double) 	settings.contents ["creature"]["hunger_threshold"];
+		line_of_sight 		= (double) 	settings.contents ["creature"]["line_of_sight"];
+		metabolic_rate 		= (double) 	settings.contents ["creature"]["metabolic_rate"];
+		age_sexual_maturity = (int)		settings.contents ["creature"]["age_sexual_maturity"];
 		
 		age = 0.0D;
+		state = State.neutral;
 		
 		InvokeRepeating("updateAge",0,1.0f);
 		InvokeRepeating("updateState",0,0.1f);
 		InvokeRepeating("metabolise",0,1.0f);
 	}	
 		
-	
+	/*
+	 * Add 1 second to the creature's age when called.
+	 */
 	void updateAge() {
 		age += 1;
 	}
@@ -124,16 +134,19 @@ public class Creature : MonoBehaviour {
 			if (energy < hunger_threshold) {
 				state = State.hungry;
 			}
-			if (energy >= hunger_threshold) {
+			if (energy >= hunger_threshold && age > age_sexual_maturity) {
 				state = State.persuing_mate;
 			}
 		}
 	}
 	
-	public void invokeGenes (params byte[] gs) {
-		this.genes = gs;
+	public void invokechromosome (params float[] gs) {
+		this.chromosome = gs;
 	}
 	
+	/*
+	 * 
+	 */
 	public void setRootSize (Vector3 scale) {
 		rootsize = scale;	
 	}
@@ -154,11 +167,19 @@ public class Creature : MonoBehaviour {
 		if (energy > MAX_ENERGY) energy = MAX_ENERGY;
 	}
 	
+	/*
+	 * Remove a specified amount of energy from the creature,
+	 * kill it if the creature's energy reaches zero.
+	 */
 	public void subtractEnergy (double n) {
 		energy -= n;
 		if(energy <= 0) kill();
 	}
 	
+	/*
+	 * Remove energy from the creature for merely existing,
+	 * return it to the ether.
+	 */
 	private void metabolise () {
 		subtractEnergy(metabolic_rate);
 		eth.addToEnergy(metabolic_rate);

@@ -20,40 +20,47 @@ public class GeneticsMain : MonoBehaviour {
 	public static GeneticsMain instance;
 	
 	int chromosome_length = 6;
-	byte[] genes;
+	float[] chromosome;
 	
 	int starting_creatures;
 	
 	Vector3 max_root_scale;
+	Vector3 min_root_scale;
+	
 	
 	void Start () {
 		spw = Spawner.getInstance();
 		settings = Settings.getInstance();
 		eth = Ether.getInstance();
 		
-		max_root_scale = new Vector3();
-		max_root_scale.x = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["x"]);
-		max_root_scale.y = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["y"]);
-		max_root_scale.z = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["z"]);
-
-		starting_creatures = (int) settings.contents["ether"]["starting_creatures"];
+		max_root_scale 		= new Vector3();
+		max_root_scale.x 	= float.Parse( settings.contents["creature"]["root"]["max_root_scale"]["x"].ToString() );
+		max_root_scale.y 	= float.Parse( settings.contents["creature"]["root"]["max_root_scale"]["y"].ToString() );
+		max_root_scale.z 	= float.Parse( settings.contents["creature"]["root"]["max_root_scale"]["z"].ToString() );
 		
-		double energy = (double)settings.contents["creature"]["init_energy"];
+		min_root_scale 		= new Vector3();
+		min_root_scale.x 	= float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["x"].ToString() );
+		min_root_scale.y 	= float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["y"].ToString() );
+		min_root_scale.z 	= float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["z"].ToString() );
+		
+		starting_creatures	= (int) 			settings.contents["ether"]	 ["starting_creatures"];
+		chromosome_length	= (int) 			settings.contents["genetics"]["chromosome_length"];
+		double energy		= (double)			settings.contents["creature"]["init_energy"];
 		
 		for (int i=0; i<starting_creatures; i++) {
-			genes = new byte[chromosome_length];
+			chromosome = new float[chromosome_length];
 			
 			// random colours
 			for (int j=0; j<3; j++) {
-				genes[j] = (byte)Random.Range(0,255);
+				chromosome[j] = (float)Random.Range(0.0F,1.0F);
 			}
 			
 			// random root sizes
-			genes[3] = 	(byte)Random.Range(0,255);
-			genes[4] = 	(byte)Random.Range(0,255);
-			genes[5] = 	(byte)Random.Range(0,255);
+			chromosome[3] 	= (float) Random.Range(min_root_scale.x,max_root_scale.x);
+			chromosome[4] 	= (float) Random.Range(min_root_scale.y,max_root_scale.y);
+			chromosome[5] 	= (float) Random.Range(min_root_scale.z,max_root_scale.z);
 			
-			spw.spawn(Utility.RandomFlatVec(-200,5,200), Utility.RandomRotVec(), energy, genes);
+			spw.spawn(Utility.RandomFlatVec(-200,10,200), Utility.RandomRotVec(), energy, chromosome);
 			eth.subtractEnergy(energy);
 		}
 	}
