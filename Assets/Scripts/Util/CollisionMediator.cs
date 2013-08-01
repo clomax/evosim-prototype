@@ -28,15 +28,17 @@ public class CollisionMediator : MonoBehaviour {
 	int chromosome_length;
 	double crossover_rate;
 	double mutation_rate;
+	float mutation_factor;
 	
 	void Start () {
 		collision_events = new ArrayList();
 		spw = Spawner.getInstance();
 		settings = Settings.getInstance();
-		energy_scale 		= (double) 	settings.contents["creature"]["energy_to_offspring"];
-		chromosome_length 	= (int) 	settings.contents["genetics"]["chromosome_length"];
-		crossover_rate 		= (double) 	settings.contents["genetics"]["crossover_rate"];
-		mutation_rate		= (double)	settings.contents["genetics"]["mutation_rate"];		
+		energy_scale 		= (double) 		settings.contents["creature"]["energy_to_offspring"];
+		chromosome_length 	= (int) 		settings.contents["genetics"]["chromosome_length"];
+		crossover_rate 		= (double) 		settings.contents["genetics"]["crossover_rate"];
+		mutation_rate		= (double)		settings.contents["genetics"]["mutation_rate"];	
+		mutation_factor		= float.Parse(	settings.contents["genetics"]["mutation_factor"].ToString() );
 	}
 	
 	public static CollisionMediator getInstance () {
@@ -55,6 +57,7 @@ public class CollisionMediator : MonoBehaviour {
 		if (null != dup) {
 			collision_events.Clear();
 			Vector3 pos = (a.transform.position - b.transform.position) * 0.5F + b.transform.position;
+			pos.y += 10.0F;		// Drop creatures from a height
 			
 			// Get references to the scripts of each creature
 			Creature a_script = a.transform.parent.parent.GetComponent<Creature>();
@@ -65,7 +68,7 @@ public class CollisionMediator : MonoBehaviour {
 			
 			float[] newChromosome;
 			newChromosome = GeneticsUtils.crossover(a_script.chromosome, b_script.chromosome, chromosome_length, crossover_rate);
-			newChromosome = GeneticsUtils.mutate(newChromosome, chromosome_length, mutation_rate);
+			newChromosome = GeneticsUtils.mutate(newChromosome, chromosome_length, mutation_rate, mutation_factor);
 			
 			spw.spawn(pos,Vector3.zero,
 					  a_energy * energy_scale +
