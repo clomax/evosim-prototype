@@ -22,6 +22,8 @@
 		"mate_range"				: 30.0,
 		"eat_range"					: 30.0,
 		"age_sexual_maturity"	: 10,
+		"branch_limit"				: 1,
+		"recursion_limit"			: 2,
 		
 		"root": {
 			"max_root_scale" : {
