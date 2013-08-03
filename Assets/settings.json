@@ -28,14 +28,14 @@
 		"root": {
 			"max_root_scale" : {
 				"x"						: 10.0,
-				"y"						: 10.0,
-				"z"						: 10.0
+				"y"						: 3.0,
+				"z"						: 5.0
 			},
 			
 			"min_root_scale": {
-				"x"						: 3.0,
+				"x"						: 7.0,
 				"y"						: 3.0,
-				"z"						: 3.0
+				"z"						: 4.0
 			}
 		}
 	},
@@ -45,7 +45,7 @@
 	},
 	
 	"genetics": {
-		"chromosome_length"	: 6,
+		"chromosome_length"	: 9,
 		"crossover_rate"			: 0.7,
 		"mutation_rate"				: 0.05,
 		"mutation_factor"			: 0.1

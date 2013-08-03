@@ -52,6 +52,11 @@ public class Creature : MonoBehaviour {
 						neutral
 					  };
 	public State state;
+	
+	int branch_limit;
+	int recursion_limit;
+	
+	GameObject limb;
 #pragma warning restore 0414
 
 	void Start () {
@@ -113,6 +118,25 @@ public class Creature : MonoBehaviour {
 		line_of_sight 		= (double) 	settings.contents ["creature"]["line_of_sight"];
 		metabolic_rate 		= (double) 	settings.contents ["creature"]["metabolic_rate"];
 		age_sexual_maturity = (int)		settings.contents ["creature"]["age_sexual_maturity"];
+		branch_limit 		= (int)		settings.contents ["creature"]["branch_limit"];
+		recursion_limit		= (int)		settings.contents ["creature"]["recursion_limit"];
+		
+
+		
+		for (int i=0; i<branch_limit; i++) {
+			limb = GameObject.CreatePrimitive(PrimitiveType.Cube);
+			limb.transform.parent = _t;
+			Vector3 tmp = new Vector3(chromosome[6], chromosome[7], chromosome[8]);
+			limb.transform.position = root.collider.ClosestPointOnBounds(tmp);
+			limb.transform.localEulerAngles = Utility.RandomRotVec();
+			limb.transform.localScale = new Vector3(5f,2f,2f);
+			HingeJoint j = limb.AddComponent<HingeJoint>();
+			j.connectedBody = root.rigidbody;
+			JointMotor m = new JointMotor();
+			m.force = 500;
+			m.targetVelocity = 500;
+			j.motor = m;
+		}
 		
 		age = 0.0D;
 		state = State.neutral;

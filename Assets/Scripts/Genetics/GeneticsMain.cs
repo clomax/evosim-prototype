@@ -19,7 +19,7 @@ public class GeneticsMain : MonoBehaviour {
 	public static GameObject container;
 	public static GeneticsMain instance;
 	
-	int chromosome_length = 6;
+	int chromosome_length;
 	float[] chromosome;
 	
 	int starting_creatures;
@@ -59,6 +59,12 @@ public class GeneticsMain : MonoBehaviour {
 			chromosome[3] 	= (float) Random.Range(min_root_scale.x,max_root_scale.x);
 			chromosome[4] 	= (float) Random.Range(min_root_scale.y,max_root_scale.y);
 			chromosome[5] 	= (float) Random.Range(min_root_scale.z,max_root_scale.z);
+			
+			Vector3 root_scale = new Vector3(chromosome[3], chromosome[4], chromosome[5]);
+			Vector3 tmp = Utility.RandomPointInsideCube(root_scale);
+			chromosome[6]	= (float) tmp.x;
+			chromosome[7]	= (float) tmp.y;
+			chromosome[8]	= (float) tmp.z;
 			
 			spw.spawn(Utility.RandomFlatVec(-200,10,200), Utility.RandomRotVec(), energy, chromosome);
 			eth.subtractEnergy(energy);
