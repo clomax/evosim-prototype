@@ -66,6 +66,11 @@ public class GeneticsMain : MonoBehaviour {
 			chromosome[7]	= (float) tmp.y;
 			chromosome[8]	= (float) tmp.z;
 			
+			tmp = Utility.RandomRotVec();
+			chromosome[9]	= (float) tmp.x;
+			chromosome[10]	= (float) tmp.y;
+			chromosome[11]	= (float) tmp.z;
+			
 			spw.spawn(Utility.RandomFlatVec(-200,10,200), Utility.RandomRotVec(), energy, chromosome);
 			eth.subtractEnergy(energy);
 		}

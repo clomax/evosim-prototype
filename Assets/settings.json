@@ -45,7 +45,7 @@
 	},
 	
 	"genetics": {
-		"chromosome_length"	: 9,
+		"chromosome_length"	: 30,
 		"crossover_rate"			: 0.7,
 		"mutation_rate"				: 0.05,
 		"mutation_factor"			: 0.1

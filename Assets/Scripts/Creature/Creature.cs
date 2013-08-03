@@ -126,10 +126,16 @@ public class Creature : MonoBehaviour {
 		for (int i=0; i<branch_limit; i++) {
 			limb = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			limb.transform.parent = _t;
+			limb.AddComponent<Rigidbody>();
+			
 			Vector3 tmp = new Vector3(chromosome[6], chromosome[7], chromosome[8]);
 			limb.transform.position = root.collider.ClosestPointOnBounds(tmp);
-			limb.transform.localEulerAngles = Utility.RandomRotVec();
+			
+			tmp = new Vector3(chromosome[9], chromosome[10], chromosome[11]);
+			limb.transform.localEulerAngles = tmp;
+			
 			limb.transform.localScale = new Vector3(5f,2f,2f);
+			
 			HingeJoint j = limb.AddComponent<HingeJoint>();
 			j.connectedBody = root.rigidbody;
 			JointMotor m = new JointMotor();
