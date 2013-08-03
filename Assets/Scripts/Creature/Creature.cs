@@ -125,6 +125,8 @@ public class Creature : MonoBehaviour {
 		
 		for (int i=0; i<branch_limit; i++) {
 			limb = GameObject.CreatePrimitive(PrimitiveType.Cube);
+			MeshRenderer mr = limb.GetComponent<MeshRenderer>();
+			mr.material.color = new Color(chromosome[0], chromosome[1], chromosome[2]);
 			limb.transform.parent = _t;
 			limb.AddComponent<Rigidbody>();
 			
@@ -137,11 +139,16 @@ public class Creature : MonoBehaviour {
 			limb.transform.localScale = new Vector3(5f,2f,2f);
 			
 			HingeJoint j = limb.AddComponent<HingeJoint>();
+			tmp = new Vector3(chromosome[12], chromosome[13], chromosome[14]);
+			j.axis = tmp;
+			
 			j.connectedBody = root.rigidbody;
 			JointMotor m = new JointMotor();
 			m.force = 500;
 			m.targetVelocity = 500;
 			j.motor = m;
+			
+			Physics.IgnoreCollision(root.collider, limb.collider, true);
 		}
 		
 		age = 0.0D;

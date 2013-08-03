@@ -59,17 +59,25 @@ public class GeneticsMain : MonoBehaviour {
 			chromosome[3] 	= (float) Random.Range(min_root_scale.x,max_root_scale.x);
 			chromosome[4] 	= (float) Random.Range(min_root_scale.y,max_root_scale.y);
 			chromosome[5] 	= (float) Random.Range(min_root_scale.z,max_root_scale.z);
-			
 			Vector3 root_scale = new Vector3(chromosome[3], chromosome[4], chromosome[5]);
+			
+			// random joint connection point
 			Vector3 tmp = Utility.RandomPointInsideCube(root_scale);
 			chromosome[6]	= (float) tmp.x;
 			chromosome[7]	= (float) tmp.y;
 			chromosome[8]	= (float) tmp.z;
 			
-			tmp = Utility.RandomRotVec();
+			// random limb rotation
+			tmp = Utility.RandomVector3();
 			chromosome[9]	= (float) tmp.x;
 			chromosome[10]	= (float) tmp.y;
 			chromosome[11]	= (float) tmp.z;
+			
+			// random limb axis
+			tmp = Utility.RandomVector3();
+			chromosome[12]	= (float) tmp.x;
+			chromosome[13]	= (float) tmp.y;
+			chromosome[14]	= (float) tmp.z;
 			
 			spw.spawn(Utility.RandomFlatVec(-200,10,200), Utility.RandomRotVec(), energy, chromosome);
 			eth.subtractEnergy(energy);

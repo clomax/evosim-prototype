@@ -29,7 +29,14 @@ public class Utility : MonoBehaviour {
 	
 	//return a random rotation on the y axis
 	public static Vector3 RandomRotVec() {
-		return new Vector3(0,Random.Range(0,360),0);
+		return new Vector3(0.0F,Random.Range(0.0F,360.0F),0.0F);
+	}
+	
+	public static Vector3 RandomVector3() {
+		return new Vector3 ( Random.Range(0.0F,360.0F),
+							 Random.Range(0.0F,360.0F),
+							 Random.Range(0.0F,360.0F)
+						   );
 	}
 	
 	//return a random point inside a given cube's scale
