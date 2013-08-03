@@ -43,9 +43,9 @@ public class GeneticsMain : MonoBehaviour {
 		min_root_scale.y 	= float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["y"].ToString() );
 		min_root_scale.z 	= float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["z"].ToString() );
 		
-		starting_creatures	= (int) 			settings.contents["ether"]	 ["starting_creatures"];
-		chromosome_length	= (int) 			settings.contents["genetics"]["chromosome_length"];
-		double energy		= (double)			settings.contents["creature"]["init_energy"];
+		starting_creatures	= (int) 		settings.contents["ether"]	 ["starting_creatures"];
+		chromosome_length	= (int) 		settings.contents["genetics"]["chromosome_length"];
+		double energy		= (double)		settings.contents["creature"]["init_energy"];
 		
 		for (int i=0; i<starting_creatures; i++) {
 			chromosome = new float[chromosome_length];
@@ -79,7 +79,7 @@ public class GeneticsMain : MonoBehaviour {
 			chromosome[13]	= (float) tmp.y;
 			chromosome[14]	= (float) tmp.z;
 			
-			spw.spawn(Utility.RandomFlatVec(-200,10,200), Utility.RandomRotVec(), energy, chromosome);
+			spw.spawn(Utility.RandomFlatVec(-100,10,100), Utility.RandomRotVec(), energy, chromosome);
 			eth.subtractEnergy(energy);
 		}
 	}

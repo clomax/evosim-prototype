@@ -57,6 +57,7 @@ public class Creature : MonoBehaviour {
 	int recursion_limit;
 	
 	GameObject limb;
+	Vector3 tmp;
 #pragma warning restore 0414
 
 	void Start () {
@@ -91,6 +92,7 @@ public class Creature : MonoBehaviour {
 							   					 chromosome[4],
 							   					 chromosome[5]
 						   					   );
+		root.rigidbody.mass = 10;
 		
 		eye = new GameObject();
 		eye.name = "Eye";
@@ -130,8 +132,7 @@ public class Creature : MonoBehaviour {
 			limb.transform.parent = _t;
 			limb.AddComponent<Rigidbody>();
 			
-			Vector3 tmp = new Vector3(chromosome[6], chromosome[7], chromosome[8]);
-			limb.transform.position = root.collider.ClosestPointOnBounds(tmp);
+			limb.transform.localPosition = new Vector3(chromosome[6], chromosome[7], chromosome[8]);
 			
 			tmp = new Vector3(chromosome[9], chromosome[10], chromosome[11]);
 			limb.transform.localEulerAngles = tmp;
@@ -142,13 +143,16 @@ public class Creature : MonoBehaviour {
 			tmp = new Vector3(chromosome[12], chromosome[13], chromosome[14]);
 			j.axis = tmp;
 			
+			j.anchor = new Vector3(0.5F,0,0);
 			j.connectedBody = root.rigidbody;
 			JointMotor m = new JointMotor();
-			m.force = 500;
+			m.force = 1000;
 			m.targetVelocity = 500;
 			j.motor = m;
 			
 			Physics.IgnoreCollision(root.collider, limb.collider, true);
+			limb.rigidbody.mass = 3;
+			limb.collider.material = (PhysicMaterial) Resources.Load("Physics Materials/Rubber");
 		}
 		
 		age = 0.0D;

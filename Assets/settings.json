@@ -9,7 +9,7 @@
 		"foodbit_spawn_time"		: 0.1,
 		"fb_spawn_range"			: 200,
 		"start_number_foodbits"	: 50,
-		"starting_creatures"		: 30
+		"starting_creatures"		: 20
 	},
 	
 	"creature": {
@@ -18,7 +18,7 @@
 		"hunger_threshold"		: 50.0,
 		"line_of_sight"				: 50.0,
 		"energy_to_offspring"		: 0.5,
-		"metabolic_rate"			: 0.5,
+		"metabolic_rate"			: 0.4,
 		"mate_range"				: 10.0,
 		"eat_range"					: 10.0,
 		"age_sexual_maturity"	: 10,
