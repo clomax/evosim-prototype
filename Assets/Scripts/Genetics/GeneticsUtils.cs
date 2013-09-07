@@ -18,7 +18,7 @@ public class GeneticsUtils {
 		for (int i=0; i<length; i++) {
 			double rand = rnd.NextDouble();
 			if (rand < rate)
-				c[i] += (float) rnd.NextDouble() * (-factor * factor) - factor;
+				c[i] += (float) rnd.NextDouble() * ( Mathf.Abs(factor-(-factor)) ) + (-factor);
 		}
 		return c;
 	}

@@ -19,7 +19,7 @@ public class GeneticsMain : MonoBehaviour {
 	public static GameObject container;
 	public static GeneticsMain instance;
 	
-	int chromosome_length = 6;
+	int chromosome_length;
 	float[] chromosome;
 	
 	int starting_creatures;
@@ -43,10 +43,13 @@ public class GeneticsMain : MonoBehaviour {
 		min_root_scale.y 	= float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["y"].ToString() );
 		min_root_scale.z 	= float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["z"].ToString() );
 		
-		starting_creatures	= (int) 			settings.contents["ether"]	 ["starting_creatures"];
-		chromosome_length	= (int) 			settings.contents["genetics"]["chromosome_length"];
-		double energy		= (double)			settings.contents["creature"]["init_energy"];
+		starting_creatures	= (int) 		settings.contents["ether"]	 ["starting_creatures"];
+		chromosome_length	= (int) 		settings.contents["genetics"]["chromosome_length"];
+		double energy		= (double)		settings.contents["creature"]["init_energy"];
 		
+		/*
+		 * For each new creature, generate random genes and spawn the bugger
+		 */
 		for (int i=0; i<starting_creatures; i++) {
 			chromosome = new float[chromosome_length];
 			
@@ -59,8 +62,27 @@ public class GeneticsMain : MonoBehaviour {
 			chromosome[3] 	= (float) Random.Range(min_root_scale.x,max_root_scale.x);
 			chromosome[4] 	= (float) Random.Range(min_root_scale.y,max_root_scale.y);
 			chromosome[5] 	= (float) Random.Range(min_root_scale.z,max_root_scale.z);
+			Vector3 root_scale = new Vector3(chromosome[3], chromosome[4], chromosome[5]);
 			
-			spw.spawn(Utility.RandomFlatVec(-200,10,200), Utility.RandomRotVec(), energy, chromosome);
+			// random joint connection point
+			Vector3 tmp = Utility.RandomPointInsideCube(root_scale);
+			chromosome[6]	= (float) tmp.x;
+			chromosome[7]	= (float) tmp.y;
+			chromosome[8]	= (float) tmp.z;
+			
+			// random limb rotation
+			tmp = Utility.RandomVector3();
+			chromosome[9]	= (float) tmp.x;
+			chromosome[10]	= (float) tmp.y;
+			chromosome[11]	= (float) tmp.z;
+			
+			// random limb axis
+			tmp = Utility.RandomVector3();
+			chromosome[12]	= (float) tmp.x;
+			chromosome[13]	= (float) tmp.y;
+			chromosome[14]	= (float) tmp.z;
+			
+			spw.spawn(Utility.RandomFlatVec(-100,10,100), Utility.RandomRotVec(), energy, chromosome);
 			eth.subtractEnergy(energy);
 		}
 	}

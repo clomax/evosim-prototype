@@ -52,6 +52,12 @@ public class Creature : MonoBehaviour {
 						neutral
 					  };
 	public State state;
+	
+	int branch_limit;
+	int recursion_limit;
+	
+	GameObject limb;
+	Vector3 tmp;
 #pragma warning restore 0414
 
 	void Start () {
@@ -86,6 +92,7 @@ public class Creature : MonoBehaviour {
 							   					 chromosome[4],
 							   					 chromosome[5]
 						   					   );
+		root.rigidbody.mass = 10;
 		
 		eye = new GameObject();
 		eye.name = "Eye";
@@ -113,6 +120,40 @@ public class Creature : MonoBehaviour {
 		line_of_sight 		= (double) 	settings.contents ["creature"]["line_of_sight"];
 		metabolic_rate 		= (double) 	settings.contents ["creature"]["metabolic_rate"];
 		age_sexual_maturity = (int)		settings.contents ["creature"]["age_sexual_maturity"];
+		branch_limit 		= (int)		settings.contents ["creature"]["branch_limit"];
+		recursion_limit		= (int)		settings.contents ["creature"]["recursion_limit"];
+		
+
+		
+		for (int i=0; i<branch_limit; i++) {
+			limb = GameObject.CreatePrimitive(PrimitiveType.Cube);
+			MeshRenderer mr = limb.GetComponent<MeshRenderer>();
+			mr.material.color = new Color(chromosome[0], chromosome[1], chromosome[2]);
+			limb.transform.parent = _t;
+			limb.AddComponent<Rigidbody>();
+			
+			tmp = new Vector3(chromosome[9], chromosome[10], chromosome[11]);
+			limb.transform.localEulerAngles = tmp;
+			
+			limb.transform.localScale = new Vector3(5f,2f,2f);
+			
+			HingeJoint j = limb.AddComponent<HingeJoint>();
+			tmp = new Vector3(chromosome[12], chromosome[13], chromosome[14]);
+			j.axis = tmp;
+			
+			limb.transform.localPosition = new Vector3(chromosome[6], chromosome[7], chromosome[8]);
+			
+			j.anchor = new Vector3(0.5F,0,0);
+			j.connectedBody = root.rigidbody;
+			JointMotor m = new JointMotor();
+			//m.force = 1000;
+			//m.targetVelocity = 500;
+			j.motor = m;
+			
+			Physics.IgnoreCollision(root.collider, limb.collider, true);
+			limb.rigidbody.mass = 3;
+			limb.collider.material = (PhysicMaterial) Resources.Load("Physics Materials/Rubber");
+		}
 		
 		age = 0.0D;
 		state = State.neutral;
