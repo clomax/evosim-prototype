@@ -45,14 +45,19 @@ public class GeneticsUtils {
 	}
 	
 	public static Chromosome crossover (Chromosome c1, Chromosome c2, double rate) {
-		Chromosome newChromosome = c1;
-		for (int i=0; i<length; i++) {
+		Chromosome c = c1;
+		
+		// Crossover colour
+		Color col = c1.getColour();
+		for (int i=0; i<3; i++) {
 			double rand = rnd.NextDouble();
 			if (rand < rate)
-				newChromosome[i] = c2[i];
+				col[i] = c2.getColour()[i];
 		}
+		c.setColour(col[0], col[1], col[2]);
 		
-		return newChromosome;
+		
+		return c;
 	}
 	
 	private static float randomiseGene(float factor) {
