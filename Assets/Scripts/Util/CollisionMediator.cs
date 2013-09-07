@@ -66,9 +66,9 @@ public class CollisionMediator : MonoBehaviour {
 			double a_energy = a_script.getEnergy();
 			double b_energy = b_script.getEnergy();
 			
-			float[] newChromosome;
-			newChromosome = GeneticsUtils.crossover(a_script.chromosome, b_script.chromosome, chromosome_length, crossover_rate);
-			newChromosome = GeneticsUtils.mutate(newChromosome, chromosome_length, mutation_rate, mutation_factor);
+			Chromosome newChromosome;
+			newChromosome = GeneticsUtils.crossover(a_script.chromosome, b_script.chromosome, crossover_rate);
+			newChromosome = GeneticsUtils.mutate(newChromosome, mutation_rate, mutation_factor);
 			
 			spw.spawn(pos,Vector3.zero,
 					  a_energy * energy_scale +

@@ -36,7 +36,7 @@ public class Spawner : MonoBehaviour {
 		return instance;
 	}
 	
-	public void spawn (Vector3 pos, Vector3 rot, double energy, float[] chromosome) {
+	public void spawn (Vector3 pos, Vector3 rot, double energy, Chromosome chromosome) {
 		GameObject clone = new GameObject();
 		clone.transform.localPosition = pos;
 		clone.transform.eulerAngles = Utility.RandomRotVec();

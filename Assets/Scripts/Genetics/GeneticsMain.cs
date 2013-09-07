@@ -20,7 +20,7 @@ public class GeneticsMain : MonoBehaviour {
 	public static GeneticsMain instance;
 	
 	int chromosome_length;
-	float[] chromosome;
+	Chromosome chromosome;
 	
 	int starting_creatures;
 	
@@ -51,19 +51,20 @@ public class GeneticsMain : MonoBehaviour {
 		 * For each new creature, generate random genes and spawn the bugger
 		 */
 		for (int i=0; i<starting_creatures; i++) {
-			chromosome = new float[chromosome_length];
+			chromosome = new Chromosome();
 			
 			// random colours
-			for (int j=0; j<3; j++) {
-				chromosome[j] = (float)Random.Range(0.0F,1.0F);
-			}
+			chromosome.setColour( (float)Random.Range(0.0F,1.0F),
+								  (float)Random.Range(0.0F,1.0F),
+								  (float)Random.Range(0.0F,1.0F)
+								);
 			
 			// random root sizes
-			chromosome[3] 	= (float) Random.Range(min_root_scale.x,max_root_scale.x);
-			chromosome[4] 	= (float) Random.Range(min_root_scale.y,max_root_scale.y);
-			chromosome[5] 	= (float) Random.Range(min_root_scale.z,max_root_scale.z);
-			Vector3 root_scale = new Vector3(chromosome[3], chromosome[4], chromosome[5]);
-			
+			chromosome.setRootScale((float) Random.Range(min_root_scale.x,max_root_scale.x),
+									(float) Random.Range(min_root_scale.y,max_root_scale.y),
+									(float) Random.Range(min_root_scale.z,max_root_scale.z)
+								   );
+			/*
 			// random joint connection point
 			Vector3 tmp = Utility.RandomPointInsideCube(root_scale);
 			chromosome[6]	= (float) tmp.x;
@@ -81,6 +82,7 @@ public class GeneticsMain : MonoBehaviour {
 			chromosome[12]	= (float) tmp.x;
 			chromosome[13]	= (float) tmp.y;
 			chromosome[14]	= (float) tmp.z;
+			*/
 			
 			spw.spawn(Utility.RandomFlatVec(-100,10,100), Utility.RandomRotVec(), energy, chromosome);
 			eth.subtractEnergy(energy);

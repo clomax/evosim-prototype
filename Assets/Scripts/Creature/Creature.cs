@@ -38,7 +38,7 @@ public class Creature : MonoBehaviour {
 	public static double init_energy;
 	public double energy;
 	
-	public float[] chromosome;
+	public Chromosome chromosome;
 	
 	public double 	line_of_sight;
 	double 			hunger_threshold;
@@ -87,11 +87,8 @@ public class Creature : MonoBehaviour {
 		root.transform.eulerAngles 		= _t.eulerAngles;
 		root.AddComponent<Rigidbody>();
 		root_script = root.AddComponent<Root>();
-		root_script.setColour(chromosome);
-		root.transform.localScale = new Vector3( chromosome[3],
-							   					 chromosome[4],
-							   					 chromosome[5]
-						   					   );
+		root_script.setColour(chromosome.getColour());
+		root.transform.localScale = chromosome.getRootScale();
 		root.rigidbody.mass = 10;
 		
 		eye = new GameObject();
@@ -124,7 +121,7 @@ public class Creature : MonoBehaviour {
 		recursion_limit		= (int)		settings.contents ["creature"]["recursion_limit"];
 		
 
-		
+		/*
 		for (int i=0; i<branch_limit; i++) {
 			limb = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			MeshRenderer mr = limb.GetComponent<MeshRenderer>();
@@ -154,6 +151,7 @@ public class Creature : MonoBehaviour {
 			limb.rigidbody.mass = 3;
 			limb.collider.material = (PhysicMaterial) Resources.Load("Physics Materials/Rubber");
 		}
+		*/
 		
 		age = 0.0D;
 		state = State.neutral;
@@ -181,7 +179,7 @@ public class Creature : MonoBehaviour {
 		}
 	}
 	
-	public void invokechromosome (params float[] gs) {
+	public void invokechromosome (Chromosome gs) {
 		this.chromosome = gs;
 	}
 	
