@@ -47,6 +47,9 @@ public class GeneticsMain : MonoBehaviour {
 		chromosome_length	= (int) 		settings.contents["genetics"]["chromosome_length"];
 		double energy		= (double)		settings.contents["creature"]["init_energy"];
 		
+		/*
+		 * For each new creature, generate random genes and spawn the bugger
+		 */
 		for (int i=0; i<starting_creatures; i++) {
 			chromosome = new float[chromosome_length];
 			

@@ -132,8 +132,6 @@ public class Creature : MonoBehaviour {
 			limb.transform.parent = _t;
 			limb.AddComponent<Rigidbody>();
 			
-			limb.transform.localPosition = new Vector3(chromosome[6], chromosome[7], chromosome[8]);
-			
 			tmp = new Vector3(chromosome[9], chromosome[10], chromosome[11]);
 			limb.transform.localEulerAngles = tmp;
 			
@@ -143,11 +141,13 @@ public class Creature : MonoBehaviour {
 			tmp = new Vector3(chromosome[12], chromosome[13], chromosome[14]);
 			j.axis = tmp;
 			
+			limb.transform.localPosition = new Vector3(chromosome[6], chromosome[7], chromosome[8]);
+			
 			j.anchor = new Vector3(0.5F,0,0);
 			j.connectedBody = root.rigidbody;
 			JointMotor m = new JointMotor();
-			m.force = 1000;
-			m.targetVelocity = 500;
+			//m.force = 1000;
+			//m.targetVelocity = 500;
 			j.motor = m;
 			
 			Physics.IgnoreCollision(root.collider, limb.collider, true);
