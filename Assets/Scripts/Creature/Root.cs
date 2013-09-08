@@ -31,7 +31,7 @@ public class Root : MonoBehaviour {
 		mr.material.color = c;
 	}
 	
-	public void setSize (Vector3 scale) {
-		print (scale);	
+	public void setScale (Vector3 scale) {
+		transform.localScale = scale;	
 	}
 }

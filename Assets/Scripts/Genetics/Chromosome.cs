@@ -12,16 +12,12 @@ using System.Collections.Generic;
 
 public class Chromosome {
 	
-	int size;
-	
 	Color colour;
 	Vector3 root_scale;
 	
-	List<Vector3> joint_connections;
-	List<Vector3> limb_rotations;
-	// ...etc...
-	
-	
+	ArrayList limbs = new ArrayList();	
+	ArrayList limb;
+
 	public Color getColour () {
 		return colour;	
 	}
@@ -34,8 +30,26 @@ public class Chromosome {
 		colour = new Color(r,g,b);
 	}
 	
-	public void setRootScale(float x, float y, float z) {
+	public void setRootScale (float x, float y, float z) {
 		root_scale = new Vector3(x,y,z);
+	}
+	
+	public void addLimb (Color col, Vector3 point, Vector3 rot, Vector3 scale, int recur) {
+		limb = new ArrayList();
+		limb.Add(col);
+		limb.Add(point);
+		limb.Add(rot);
+		limb.Add(scale);
+		limb.Add(recur);
+		limbs.Add(limb);
+	}
+	
+	public void delLimb () {
+		
+	}
+	
+	public ArrayList getLimbs () {
+		return limbs;
 	}
 
 }

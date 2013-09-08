@@ -57,6 +57,8 @@ public class Creature : MonoBehaviour {
 	int recursion_limit;
 	
 	GameObject limb;
+	int branches;
+	ArrayList limbs;
 	Vector3 tmp;
 #pragma warning restore 0414
 
@@ -88,7 +90,7 @@ public class Creature : MonoBehaviour {
 		root.AddComponent<Rigidbody>();
 		root_script = root.AddComponent<Root>();
 		root_script.setColour(chromosome.getColour());
-		root.transform.localScale = chromosome.getRootScale();
+		root_script.setScale(chromosome.getRootScale());
 		root.rigidbody.mass = 10;
 		
 		eye = new GameObject();
@@ -120,20 +122,28 @@ public class Creature : MonoBehaviour {
 		branch_limit 		= (int)		settings.contents ["creature"]["branch_limit"];
 		recursion_limit		= (int)		settings.contents ["creature"]["recursion_limit"];
 		
-
-		/*
-		for (int i=0; i<branch_limit; i++) {
+		limbs = chromosome.getLimbs();
+		branches = limbs.Count;
+		
+		for (int i=0; i<branches; i++) {
 			limb = GameObject.CreatePrimitive(PrimitiveType.Cube);
-			MeshRenderer mr = limb.GetComponent<MeshRenderer>();
-			mr.material.color = new Color(chromosome[0], chromosome[1], chromosome[2]);
 			limb.transform.parent = _t;
+			
+			Limb limb_script = limb.AddComponent<Limb>();
+			ArrayList l = (ArrayList) limbs[i];
+			for (int j=0; j<l.Count; j++) {
+				Debug.Log(l[j]);	
+			}
+			
+			limb_script.setColour		( (Color)	l[0] );
+			limb_script.setPosition		( (Vector3) l[1] );
+			limb_script.setRotation		( (Vector3) l[2] );
+			limb_script.setScale		( (Vector3) l[3] );
+			limb_script.setRecurrances	( (int) 	l[4] );
+			
+
 			limb.AddComponent<Rigidbody>();
-			
-			tmp = new Vector3(chromosome[9], chromosome[10], chromosome[11]);
-			limb.transform.localEulerAngles = tmp;
-			
-			limb.transform.localScale = new Vector3(5f,2f,2f);
-			
+			/*
 			HingeJoint j = limb.AddComponent<HingeJoint>();
 			tmp = new Vector3(chromosome[12], chromosome[13], chromosome[14]);
 			j.axis = tmp;
@@ -150,8 +160,8 @@ public class Creature : MonoBehaviour {
 			Physics.IgnoreCollision(root.collider, limb.collider, true);
 			limb.rigidbody.mass = 3;
 			limb.collider.material = (PhysicMaterial) Resources.Load("Physics Materials/Rubber");
+			*/
 		}
-		*/
 		
 		age = 0.0D;
 		state = State.neutral;

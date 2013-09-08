@@ -9,7 +9,7 @@
 		"foodbit_spawn_time"		: 0.05,
 		"fb_spawn_range"			: 400,
 		"start_number_foodbits"	: 50,
-		"starting_creatures"		: 30
+		"starting_creatures"		: 1
 	},
 	
 	"creature": {
@@ -22,18 +22,18 @@
 		"mate_range"				: 10.0,
 		"eat_range"					: 10.0,
 		"age_sexual_maturity"	: 10,
-		"branch_limit"				: 1,
+		"branch_limit"				: 4,
 		"recursion_limit"			: 1,
 		
 		"root": {
 			"max_root_scale" : {
-				"x"						: 10.0,
+				"x"						: 15.0,
 				"y"						: 3.0,
-				"z"						: 5.0
+				"z"						: 8.0
 			},
 			
 			"min_root_scale": {
-				"x"						: 7.0,
+				"x"						: 5.0,
 				"y"						: 3.0,
 				"z"						: 4.0
 			}
