@@ -9,6 +9,8 @@ public class Limb : MonoBehaviour {
 	Vector3 rotation;
 	Vector3 scale;
 	
+	HingeJoint hj;
+	
 	int recurrances;
 	
 	void Start () {
@@ -37,5 +39,20 @@ public class Limb : MonoBehaviour {
 	
 	public void setRecurrances (int r) {
 		recurrances = r;
+	}
+	
+	public void setJoint (Vector3 axis, Vector3 anchor, Rigidbody connected_body) {
+		hj = gameObject.AddComponent<HingeJoint>();
+		hj.axis = axis;
+		hj.anchor = anchor;
+		hj.connectedBody = connected_body;
+
+	}
+	
+	public void setMotor (float force, float target_vel) {
+		JointMotor m = new JointMotor();
+		m.force = force;
+		m.targetVelocity = target_vel;
+		hj.motor = m;
 	}
 }

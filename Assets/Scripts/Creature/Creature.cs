@@ -59,7 +59,6 @@ public class Creature : MonoBehaviour {
 	GameObject limb;
 	int branches;
 	ArrayList limbs;
-	Vector3 tmp;
 #pragma warning restore 0414
 
 	void Start () {
@@ -91,7 +90,7 @@ public class Creature : MonoBehaviour {
 		root_script = root.AddComponent<Root>();
 		root_script.setColour(chromosome.getColour());
 		root_script.setScale(chromosome.getRootScale());
-		root.rigidbody.mass = 10;
+		root.rigidbody.mass = 50;
 		
 		eye = new GameObject();
 		eye.name = "Eye";
@@ -124,6 +123,7 @@ public class Creature : MonoBehaviour {
 		
 		limbs = chromosome.getLimbs();
 		branches = limbs.Count;
+		ArrayList limb_objects = new ArrayList();
 		
 		for (int i=0; i<branches; i++) {
 			limb = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -131,36 +131,29 @@ public class Creature : MonoBehaviour {
 			
 			Limb limb_script = limb.AddComponent<Limb>();
 			ArrayList l = (ArrayList) limbs[i];
-			for (int j=0; j<l.Count; j++) {
-				Debug.Log(l[j]);	
-			}
 			
-			limb_script.setColour		( (Color)	l[0] );
+			//limb_script.setColour		( (Color)	l[0] );
+			limb_script.setColour		( chromosome.getColour() );
 			limb_script.setPosition		( (Vector3) l[1] );
 			limb_script.setRotation		( (Vector3) l[2] );
 			limb_script.setScale		( (Vector3) l[3] );
 			limb_script.setRecurrances	( (int) 	l[4] );
+			limb.transform.LookAt(root.transform);
 			
 
 			limb.AddComponent<Rigidbody>();
-			/*
-			HingeJoint j = limb.AddComponent<HingeJoint>();
-			tmp = new Vector3(chromosome[12], chromosome[13], chromosome[14]);
-			j.axis = tmp;
-			
-			limb.transform.localPosition = new Vector3(chromosome[6], chromosome[7], chromosome[8]);
-			
-			j.anchor = new Vector3(0.5F,0,0);
-			j.connectedBody = root.rigidbody;
-			JointMotor m = new JointMotor();
-			//m.force = 1000;
-			//m.targetVelocity = 500;
-			j.motor = m;
-			
 			Physics.IgnoreCollision(root.collider, limb.collider, true);
+			limb_script.setJoint(new Vector3(0.5F,0F,0F), new Vector3(0F,0F,0.5F), root.rigidbody);
+			limb_script.setMotor(1000, 300);
+			
 			limb.rigidbody.mass = 3;
 			limb.collider.material = (PhysicMaterial) Resources.Load("Physics Materials/Rubber");
-			*/
+
+			foreach (GameObject lmb in limb_objects) {
+				Physics.IgnoreCollision(limb.collider, lmb.collider, true);
+			}
+			limb_objects.Add(limb);
+
 		}
 		
 		age = 0.0D;
