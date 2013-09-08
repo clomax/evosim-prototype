@@ -19,7 +19,6 @@ public class GeneticsMain : MonoBehaviour {
 	public static GameObject container;
 	public static GeneticsMain instance;
 	
-	int chromosome_length;
 	Chromosome chromosome;
 	
 	int starting_creatures;
