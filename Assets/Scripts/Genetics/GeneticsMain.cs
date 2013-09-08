@@ -43,7 +43,6 @@ public class GeneticsMain : MonoBehaviour {
 		min_root_scale.z 	= float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["z"].ToString() );
 		
 		starting_creatures	= (int) 		settings.contents["ether"]	 ["starting_creatures"];
-		chromosome_length	= (int) 		settings.contents["genetics"]["chromosome_length"];
 		double energy		= (double)		settings.contents["creature"]["init_energy"];
 		
 		/*
