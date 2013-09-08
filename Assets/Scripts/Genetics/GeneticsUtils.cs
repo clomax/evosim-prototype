@@ -13,6 +13,8 @@ using System.Collections;
 public class GeneticsUtils {
 	
 	static System.Random rnd = new System.Random();
+	
+	static Vector3 c2_v;
 
 	public static Chromosome mutate (Chromosome c, double rate, float factor) {
 		// Mutate colour
@@ -70,6 +72,40 @@ public class GeneticsUtils {
 		}
 		c.setColour(col[0], col[1], col[2]);
 		
+		// Crossover limbs
+		// get limbs from first creature
+		ArrayList c_limbs = c.getLimbs();
+
+		// get limbs from second creature
+		ArrayList c2_limbs = c2.getLimbs();
+		
+		// Collect limb attributes from second creature
+		
+		for (int i=0; i<c2_limbs.Count; i++) {
+			ArrayList c2_l = (ArrayList) c2_limbs[i];
+			
+			for (int j=1; j<c2_l.Count-1; j++) {
+				c2_v = (Vector3) c2_l[j];
+			}
+		}
+		
+		// Randomly select attributes from second creature's limbs to
+		//	assign to creature's limbs
+		for (int i=0; i<c_limbs.Count; i++) {
+			ArrayList c_l = (ArrayList) c_limbs[i];
+			
+			for (int j=1; j<c_l.Count-1; j++) {
+				Vector3 c_v = (Vector3) c_l[j];
+				
+				for (int k=0; k<3; k++) {
+					double rand = rnd.NextDouble();
+					int index = Random.Range(0,3);
+					
+					if(rand < rate)
+						c_v[k] = c2_v[index];
+				}
+			}
+		}		
 		
 		return c;
 	}
