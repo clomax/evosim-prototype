@@ -19,8 +19,7 @@ public class GeneticsMain : MonoBehaviour {
 	public static GameObject container;
 	public static GeneticsMain instance;
 	
-	int chromosome_length;
-	float[] chromosome;
+	Chromosome chromosome;
 	
 	int starting_creatures;
 	
@@ -44,26 +43,44 @@ public class GeneticsMain : MonoBehaviour {
 		min_root_scale.z 	= float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["z"].ToString() );
 		
 		starting_creatures	= (int) 		settings.contents["ether"]	 ["starting_creatures"];
-		chromosome_length	= (int) 		settings.contents["genetics"]["chromosome_length"];
 		double energy		= (double)		settings.contents["creature"]["init_energy"];
+		int branch_limit 	= (int)			settings.contents["creature"]["branch_limit"];
+		int recursion_limit = (int)			settings.contents["creature"]["recursion_limit"];
+
 		
 		/*
 		 * For each new creature, generate random genes and spawn the bugger
 		 */
 		for (int i=0; i<starting_creatures; i++) {
-			chromosome = new float[chromosome_length];
+			chromosome = new Chromosome();
 			
 			// random colours
-			for (int j=0; j<3; j++) {
-				chromosome[j] = (float)Random.Range(0.0F,1.0F);
-			}
+			Color col = new Color( (float)Random.Range(0.0F,1.0F),
+								   (float)Random.Range(0.0F,1.0F),
+								   (float)Random.Range(0.0F,1.0F)
+								 );
+			chromosome.setColour(col.r, col.g, col.b);
 			
 			// random root sizes
-			chromosome[3] 	= (float) Random.Range(min_root_scale.x,max_root_scale.x);
-			chromosome[4] 	= (float) Random.Range(min_root_scale.y,max_root_scale.y);
-			chromosome[5] 	= (float) Random.Range(min_root_scale.z,max_root_scale.z);
-			Vector3 root_scale = new Vector3(chromosome[3], chromosome[4], chromosome[5]);
+			chromosome.setRootScale((float) Random.Range(min_root_scale.x,max_root_scale.x),
+									(float) Random.Range(min_root_scale.y,max_root_scale.y),
+									(float) Random.Range(min_root_scale.z,max_root_scale.z)
+								   );
 			
+			// random initial limbs
+			int branches = Random.Range (1,branch_limit);
+			for (int j=0; j<branches; j++) {
+				Vector3 point = Utility.RandomPointInsideCube(chromosome.getRootScale());
+				Vector3 rot = Utility.RandomRotVec();
+				Vector3 scale = new Vector3 (2F,2F,5F);
+				int recurrances = Random.Range(0,recursion_limit);
+				chromosome.addLimb(col, point, rot, scale, recurrances);
+				// foreach recurrance
+					// create new limb, place at business end of its parent limb
+					// decrement recurrance count
+			}
+			
+			/*
 			// random joint connection point
 			Vector3 tmp = Utility.RandomPointInsideCube(root_scale);
 			chromosome[6]	= (float) tmp.x;
@@ -81,6 +98,7 @@ public class GeneticsMain : MonoBehaviour {
 			chromosome[12]	= (float) tmp.x;
 			chromosome[13]	= (float) tmp.y;
 			chromosome[14]	= (float) tmp.z;
+			*/
 			
 			spw.spawn(Utility.RandomFlatVec(-100,10,100), Utility.RandomRotVec(), energy, chromosome);
 			eth.subtractEnergy(energy);

@@ -3,15 +3,56 @@ using System.Collections;
 
 public class Limb : MonoBehaviour {
 	
-	Transform _t;
 	MeshRenderer mr;
+	Color c;
+	Vector3 position;
+	Vector3 rotation;
+	Vector3 scale;
+	
+	HingeJoint hj;
+	
+	int recurrances;
 	
 	void Start () {
-		_t = transform;
-		name = "limb";
-		_t.localScale = new Vector3(5,1,1);
-		
-		//mr = this.gameObject.GetComponent<MeshRenderer>();
-		//mr.material.color = Color.green;	
+		gameObject.name = "limb";
+	}
+	
+	public void setColour (Color c) {
+		mr = gameObject.GetComponent<MeshRenderer>();
+		mr.material.color = c;
+	}
+	
+	public void setPosition (Vector3 p) {
+		position = p;
+		transform.localPosition = p;
+	}
+	
+	public void setScale (Vector3 s) {
+		scale = s;
+		transform.localScale = s;
+	}
+	
+	public void setRotation (Vector3 r) {
+		rotation = r;
+		transform.localEulerAngles = r;
+	}
+	
+	public void setRecurrances (int r) {
+		recurrances = r;
+	}
+	
+	public void setJoint (Vector3 axis, Vector3 anchor, Rigidbody connected_body) {
+		hj = gameObject.AddComponent<HingeJoint>();
+		hj.axis = axis;
+		hj.anchor = anchor;
+		hj.connectedBody = connected_body;
+
+	}
+	
+	public void setMotor (float force, float target_vel) {
+		JointMotor m = new JointMotor();
+		m.force = force;
+		m.targetVelocity = target_vel;
+		hj.motor = m;
 	}
 }
