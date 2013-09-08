@@ -41,6 +41,20 @@ public class GeneticsUtils {
 		}
 		c.setRootScale(rs[0], rs[1], rs[2]);
 		
+		// mutate limbs
+		ArrayList limbs = c.getLimbs();
+		for (int i=0; i<limbs.Count; i++) {
+			ArrayList l = (ArrayList) limbs[i];
+			for (int j=1; j<l.Count-1; j++) {
+				Vector3 v = (Vector3) l[j];
+				for (int k=0; k<3; k++) {
+					double rand = rnd.NextDouble();
+					if(rand < rate)
+						v[k] += randomiseGene(factor);
+				}
+			}
+		}
+		
 		return c;
 	}
 	

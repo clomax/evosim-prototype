@@ -69,10 +69,10 @@ public class GeneticsMain : MonoBehaviour {
 			
 			// random initial limbs
 			int branches = Random.Range (1,branch_limit);
-			for (i=0; i<branches; i++) {
+			for (int j=0; j<branches; j++) {
 				Vector3 point = Utility.RandomPointInsideCube(chromosome.getRootScale());
 				Vector3 rot = Utility.RandomRotVec();
-				Vector3 scale = new Vector3 (5F,2F,2F);
+				Vector3 scale = new Vector3 (2F,2F,5F);
 				int recurrances = Random.Range(0,recursion_limit);
 				chromosome.addLimb(col, point, rot, scale, recurrances);
 				// foreach recurrance
