@@ -15,6 +15,7 @@ public class Chromosome {
 	Color colour;
 	Vector3 root_scale;
 	
+	int branches;
 	ArrayList limbs = new ArrayList();	
 	ArrayList limb;
 
@@ -26,6 +27,10 @@ public class Chromosome {
 		return root_scale;	
 	}
 	
+	public int getBranches () {
+		return branches;
+	}
+	
 	public void setColour (float r, float g, float b) {
 		colour = new Color(r,g,b);
 	}
@@ -34,11 +39,14 @@ public class Chromosome {
 		root_scale = new Vector3(x,y,z);
 	}
 	
-	public void addLimb (Color col, Vector3 point, Vector3 rot, Vector3 scale, int recur) {
+	public void setBranches (int b) {
+		branches = b;	
+	}
+	
+	public void addLimb (Color col, Vector3 point, Vector3 scale, int recur) {
 		limb = new ArrayList();
 		limb.Add(col);
 		limb.Add(point);
-		limb.Add(rot);
 		limb.Add(scale);
 		limb.Add(recur);
 		limbs.Add(limb);

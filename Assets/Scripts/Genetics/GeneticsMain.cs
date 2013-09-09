@@ -69,36 +69,37 @@ public class GeneticsMain : MonoBehaviour {
 			
 			// random initial limbs
 			int branches = Random.Range (1,branch_limit);
+			chromosome.setBranches(branches);
 			for (int j=0; j<branches; j++) {
-				Vector3 point = Utility.RandomPointInsideCube(chromosome.getRootScale());
-				Vector3 rot = Utility.RandomRotVec();
+				
+				/* Randomly select point on root's surface */
+				Vector3 tmp = new Vector3(0F,0F,0F);
+				// set all axes to random float between -.5 and .5
+				for (int k=0; k<3; k++) {
+					tmp[k] = Random.Range(-0.5F, 0.5F);
+				}
+				// randomly select between x,y,z
+				int axis = Random.Range(0,3);
+				// randomly set that axis to -.5 or .5
+				int rnd = Random.Range(0,1);
+				if (rnd == 0) tmp[axis] = -0.5F;
+				else 	 tmp[axis] = 0.5F;
+				// set anchor point to new vector
+				Vector3 point = tmp;
+				//Debug.Log(point);
 				Vector3 scale = new Vector3 (2F,2F,5F);
 				int recurrances = Random.Range(0,recursion_limit);
-				chromosome.addLimb(col, point, rot, scale, recurrances);
-				// foreach recurrance
+				chromosome.addLimb(col, point, scale, recurrances);
+				
+				int recursion = Random.Range(0,recursion_limit);
+				for (int k=0; k<recursion; k++) {
 					// create new limb, place at business end of its parent limb
-					// decrement recurrance count
+					point = Utility.RandomPointInsideCube(scale);
+					scale = new Vector3 (2F,2F,5F);
+					recurrances -= 1;
+					chromosome.addLimb(col, point, scale, recurrances);
+				}
 			}
-			
-			/*
-			// random joint connection point
-			Vector3 tmp = Utility.RandomPointInsideCube(root_scale);
-			chromosome[6]	= (float) tmp.x;
-			chromosome[7]	= (float) tmp.y;
-			chromosome[8]	= (float) tmp.z;
-			
-			// random limb rotation
-			tmp = Utility.RandomVector3();
-			chromosome[9]	= (float) tmp.x;
-			chromosome[10]	= (float) tmp.y;
-			chromosome[11]	= (float) tmp.z;
-			
-			// random limb axis
-			tmp = Utility.RandomVector3();
-			chromosome[12]	= (float) tmp.x;
-			chromosome[13]	= (float) tmp.y;
-			chromosome[14]	= (float) tmp.z;
-			*/
 			
 			spw.spawn(Utility.RandomFlatVec(-100,10,100), Utility.RandomRotVec(), energy, chromosome);
 			eth.subtractEnergy(energy);
