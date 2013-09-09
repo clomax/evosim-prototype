@@ -18,8 +18,9 @@ public class Catch : MonoBehaviour {
 	
 	void OnTriggerEnter (Collider col) {
 		eth = GameObject.Find("Ether").GetComponent<Ether>();
-		if (col.transform.tag == "Creature") {
-			crt = col.GetComponent<Creature>();
+		Debug.Log(col.gameObject.name);
+		if (col.gameObject.name == "root") {
+			crt = col.transform.parent.gameObject.GetComponent<Creature>();
 			eth.addToEnergy(crt.kill());
 		}
 	}

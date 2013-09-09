@@ -4,12 +4,12 @@
 	},
 	
 	"ether": {
-		"total_energy"				: 7500.0,
+		"total_energy"				: 10000.0,
 		"foodbit_energy"			: 30.0,
 		"foodbit_spawn_time"		: 0.05,
 		"fb_spawn_range"			: 400,
 		"start_number_foodbits"	: 50,
-		"starting_creatures"		: 1
+		"starting_creatures"		: 30
 	},
 	
 	"creature": {

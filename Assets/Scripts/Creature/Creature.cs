@@ -132,8 +132,8 @@ public class Creature : MonoBehaviour {
 			Limb limb_script = limb.AddComponent<Limb>();
 			ArrayList l = (ArrayList) limbs[i];
 			
-			//limb_script.setColour		( (Color)	l[0] );
-			limb_script.setColour		( chromosome.getColour() );
+			limb_script.setColour		( (Color)	l[0] );
+			//limb_script.setColour		( chromosome.getColour() );
 			limb_script.setPosition		( (Vector3) l[1] );
 			limb_script.setRotation		( (Vector3) l[2] );
 			limb_script.setScale		( (Vector3) l[3] );
