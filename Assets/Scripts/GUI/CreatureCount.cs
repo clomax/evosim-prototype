@@ -16,7 +16,7 @@ public class CreatureCount : MonoBehaviour {
 		
 		log_time = float.Parse( settings.contents["config"]["log_time"].ToString() );
 		filename = "creatures-"+Utility.UnixTimeNow().ToString();
-		lg.write( log_time.ToString(), filename );
+		lg.write( log_time.ToString()+",", filename );
 		InvokeRepeating("log",0,log_time);
 	}
 	
