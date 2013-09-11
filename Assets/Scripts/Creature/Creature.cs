@@ -95,7 +95,6 @@ public class Creature : MonoBehaviour {
 		root.rigidbody.mass = 10;
 		
 		rd = root.GetComponent<Renderer>();
-		Debug.Log("Scale: " + root.transform.localScale);
 		
 		eye = new GameObject();
 		eye.name = "Eye";
@@ -141,21 +140,22 @@ public class Creature : MonoBehaviour {
 			limb_script.setPosition		( (Vector3) l[1] );
 			limb_script.setScale		( (Vector3) l[2] );
 			limb_script.setPosition		( Utility.RandomPointInsideCube(root.transform.localScale) );
-			Debug.Log(limb.transform.localPosition);
 			limb_script.setRecurrances	( (int) 	l[3] );
 			limb.transform.LookAt(root.transform);
 			
 			limb.AddComponent<Rigidbody>();
-			HingeJoint hj = limb.AddComponent<HingeJoint>();
-			hj.axis = new Vector3(0.5F, 0F, 0F);
-			hj.anchor = new Vector3(0F, 0F, 0.5F);
-			hj.connectedBody = root.rigidbody;
+			
+			/* Hingejoint connecting limb to root */
+			HingeJoint hj_root = limb.AddComponent<HingeJoint>();
+			hj_root.axis = new Vector3(0.5F, 0F, 0F);
+			hj_root.anchor = new Vector3(0F, 0F, 0.5F);
+			hj_root.connectedBody = root.rigidbody;
 			Physics.IgnoreCollision(root.collider, limb.collider, true);
 			
 			JointMotor m = new JointMotor();
 			m.force = 10000;
 			m.targetVelocity = 200;
-			hj.motor = m;
+			hj_root.motor = m;
 			
 			limb.rigidbody.mass = 3;
 
@@ -164,7 +164,7 @@ public class Creature : MonoBehaviour {
 			}
 			limb_objects.Add(limb);
 			
-			
+			GameObject limb_child = null;
 			for (int j=0; j<limb_script.getRecurrances(); j++) {
 				limb_child = GameObject.CreatePrimitive(PrimitiveType.Cube);
 				limb_child.transform.parent = _t;				
@@ -181,13 +181,15 @@ public class Creature : MonoBehaviour {
 				*/
 				
 				limb_script.setColour		( (Color)	l[0] );
-				//limb_script.setColour		( chromosome.getColour() );
-				//limb_script.setPosition		( limb_script.parent.transform.localPosition );
-				//limb_script.setRotation		( (Vector3) l[2] );
-				limb_script.setScale		( new Vector3(2F,2F,5F) );
+				
+				limb_child.transform.parent = limb.transform;
+				limb_script.setPosition		( new Vector3(0,0,limb.transform.localPosition.z) / 2 );
+				limb_child.transform.parent = _t;
+				
+				limb_script.setScale		( new Vector3(1.6F,1.6F,4.4F) );
 				limb_script.setRecurrances	( 0 );
 				
-				limb_child.transform.LookAt(root.transform);
+				limb_child.transform.LookAt(limb.transform);
 				
 				limb_child.AddComponent<Rigidbody>();
 				Physics.IgnoreCollision(root.collider, limb_child.collider, true);
@@ -195,7 +197,7 @@ public class Creature : MonoBehaviour {
 				// add joint to parent
 				HingeJoint jnt = limb.AddComponent<HingeJoint>();
 				jnt.axis = new Vector3(1F,0F,0F);
-				jnt.anchor = new Vector3(0F,0F,-.5F);
+				jnt.anchor = new Vector3(0F,0F,.5F);
 				jnt.connectedBody = limb_child.rigidbody;
 				
 				limb_child.rigidbody.mass = 1;
@@ -206,7 +208,14 @@ public class Creature : MonoBehaviour {
 				}
 				limb_objects.Add(limb_child);
 			}
-
+			
+			if (limb_child != null) {
+				HingeJoint hj_child = limb.AddComponent<HingeJoint>();
+				hj_child.axis = new Vector3(0.5F, 0F, 0F);
+				hj_child.anchor = new Vector3(0F, 0F, -0.5F);
+				hj_child.connectedBody = limb_child.rigidbody;
+				Physics.IgnoreCollision(root.collider, limb_child.collider, true);
+			}
 		}
 		
 		age = 0.0D;
