@@ -33,6 +33,7 @@ metadata/*
 ScriptAssemblies/*
 previews/*
 Assets/Logs/*
+Assets/data/*
 evosim_Data/*
 ProjectSettings/NavMeshLayers.asset
 Library/EditorUserSettings.asset

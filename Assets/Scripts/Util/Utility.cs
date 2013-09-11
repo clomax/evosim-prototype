@@ -46,4 +46,9 @@ public class Utility : MonoBehaviour {
 							 Random.Range (-bounds.z, bounds.z) / 2
 						   );
 	}
+	
+	public static int UnixTimeNow () {
+		System.TimeSpan t = (System.DateTime.UtcNow - new System.DateTime(1970,1,1,0,0,0));
+		return (int) t.TotalSeconds;
+	}
 }
