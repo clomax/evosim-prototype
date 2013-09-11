@@ -41,9 +41,9 @@ public class Utility : MonoBehaviour {
 	
 	//return a random point inside a given cube's scale
 	public static Vector3 RandomPointInsideCube(Vector3 bounds) {
-		return new Vector3 ( Random.Range (-bounds.x, bounds.x),
-							 Random.Range (-bounds.y, bounds.y),
-							 Random.Range (-bounds.z, bounds.z)
+		return new Vector3 ( Random.Range (-bounds.x, bounds.x) / 2,
+							 Random.Range (-bounds.y, bounds.y) / 2,
+							 Random.Range (-bounds.z, bounds.z) / 2
 						   );
 	}
 }

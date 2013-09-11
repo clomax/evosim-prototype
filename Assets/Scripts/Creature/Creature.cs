@@ -57,8 +57,11 @@ public class Creature : MonoBehaviour {
 	int recursion_limit;
 	
 	GameObject limb;
+	GameObject limb_child;
 	int branches;
 	ArrayList limbs;
+	
+	Renderer rd;
 #pragma warning restore 0414
 
 	void Start () {
@@ -84,13 +87,14 @@ public class Creature : MonoBehaviour {
 		root.name = "root";
 		root.transform.parent 			= _t;
 		root.transform.position 		= _t.position;
-		root.transform.localScale 		= rootsize;
 		root.transform.eulerAngles 		= _t.eulerAngles;
 		root.AddComponent<Rigidbody>();
 		root_script = root.AddComponent<Root>();
 		root_script.setColour(chromosome.getColour());
 		root_script.setScale(chromosome.getRootScale());
-		root.rigidbody.mass = 50;
+		root.rigidbody.mass = 10;
+		
+		rd = root.GetComponent<Renderer>();
 		
 		eye = new GameObject();
 		eye.name = "Eye";
@@ -122,7 +126,7 @@ public class Creature : MonoBehaviour {
 		recursion_limit		= (int)		settings.contents ["creature"]["recursion_limit"];
 		
 		limbs = chromosome.getLimbs();
-		branches = limbs.Count;
+		branches = chromosome.getBranches();
 		ArrayList limb_objects = new ArrayList();
 		
 		for (int i=0; i<branches; i++) {
@@ -133,27 +137,85 @@ public class Creature : MonoBehaviour {
 			ArrayList l = (ArrayList) limbs[i];
 			
 			limb_script.setColour		( (Color)	l[0] );
-			//limb_script.setColour		( chromosome.getColour() );
 			limb_script.setPosition		( (Vector3) l[1] );
-			limb_script.setRotation		( (Vector3) l[2] );
-			limb_script.setScale		( (Vector3) l[3] );
-			limb_script.setRecurrances	( (int) 	l[4] );
+			limb_script.setScale		( (Vector3) l[2] );
+			limb_script.setPosition		( Utility.RandomPointInsideCube(root.transform.localScale) );
+			limb_script.setRecurrances	( (int) 	l[3] );
 			limb.transform.LookAt(root.transform);
 			
-
 			limb.AddComponent<Rigidbody>();
+			
+			/* Hingejoint connecting limb to root */
+			HingeJoint hj_root = limb.AddComponent<HingeJoint>();
+			hj_root.axis = new Vector3(0.5F, 0F, 0F);
+			hj_root.anchor = new Vector3(0F, 0F, 0.5F);
+			hj_root.connectedBody = root.rigidbody;
 			Physics.IgnoreCollision(root.collider, limb.collider, true);
-			limb_script.setJoint(new Vector3(0.5F,0F,0F), new Vector3(0F,0F,0.5F), root.rigidbody);
-			limb_script.setMotor(1000, 300);
+			
+			JointMotor m = new JointMotor();
+			m.force = 10000;
+			m.targetVelocity = 200;
+			hj_root.motor = m;
 			
 			limb.rigidbody.mass = 3;
-			limb.collider.material = (PhysicMaterial) Resources.Load("Physics Materials/Rubber");
 
 			foreach (GameObject lmb in limb_objects) {
 				Physics.IgnoreCollision(limb.collider, lmb.collider, true);
 			}
 			limb_objects.Add(limb);
-
+			
+			GameObject limb_child = null;
+			for (int j=0; j<limb_script.getRecurrances(); j++) {
+				limb_child = GameObject.CreatePrimitive(PrimitiveType.Cube);
+				limb_child.transform.parent = _t;				
+				limb_script = limb_child.AddComponent<Limb>();
+				limb_script.parent = limb;
+				
+				/*
+				limb_script.setColour		( (Color)	l[0] );
+				//limb_script.setColour		( chromosome.getColour() );
+				limb_script.setPosition		( (Vector3) l[1] );
+				limb_script.setRotation		( (Vector3) l[2] );
+				limb_script.setScale		( (Vector3) l[3] );
+				limb_script.setRecurrances	( (int) 	l[4] );
+				*/
+				
+				limb_script.setColour		( (Color)	l[0] );
+				
+				limb_child.transform.parent = limb.transform;
+				limb_script.setPosition		( new Vector3(0,0,limb.transform.localPosition.z) / 2 );
+				limb_child.transform.parent = _t;
+				
+				limb_script.setScale		( new Vector3(1.6F,1.6F,4.4F) );
+				limb_script.setRecurrances	( 0 );
+				
+				limb_child.transform.LookAt(limb.transform);
+				
+				limb_child.AddComponent<Rigidbody>();
+				Physics.IgnoreCollision(root.collider, limb_child.collider, true);
+				
+				// add joint to parent
+				HingeJoint jnt = limb.AddComponent<HingeJoint>();
+				jnt.axis = new Vector3(1F,0F,0F);
+				jnt.anchor = new Vector3(0F,0F,.5F);
+				jnt.connectedBody = limb_child.rigidbody;
+				
+				limb_child.rigidbody.mass = 1;
+				//limb_child.collider.material = (PhysicMaterial) Resources.Load("Physics Materials/Rubber");
+	
+				foreach (GameObject lmb in limb_objects) {
+					Physics.IgnoreCollision(limb_child.collider, lmb.collider, true);
+				}
+				limb_objects.Add(limb_child);
+			}
+			
+			if (limb_child != null) {
+				HingeJoint hj_child = limb.AddComponent<HingeJoint>();
+				hj_child.axis = new Vector3(0.5F, 0F, 0F);
+				hj_child.anchor = new Vector3(0F, 0F, -0.5F);
+				hj_child.connectedBody = limb_child.rigidbody;
+				Physics.IgnoreCollision(root.collider, limb_child.collider, true);
+			}
 		}
 		
 		age = 0.0D;

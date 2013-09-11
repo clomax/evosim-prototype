@@ -6,8 +6,9 @@ public class Limb : MonoBehaviour {
 	MeshRenderer mr;
 	Color c;
 	Vector3 position;
-	Vector3 rotation;
 	Vector3 scale;
+	
+	public GameObject parent;
 	
 	HingeJoint hj;
 	
@@ -32,13 +33,13 @@ public class Limb : MonoBehaviour {
 		transform.localScale = s;
 	}
 	
-	public void setRotation (Vector3 r) {
-		rotation = r;
-		transform.localEulerAngles = r;
-	}
 	
 	public void setRecurrances (int r) {
 		recurrances = r;
+	}
+	
+	public int getRecurrances () {
+		return recurrances;
 	}
 	
 	public void setJoint (Vector3 axis, Vector3 anchor, Rigidbody connected_body) {

@@ -4,7 +4,7 @@
 	},
 	
 	"ether": {
-		"total_energy"				: 10000.0,
+		"total_energy"				: 20000.0,
 		"foodbit_energy"			: 30.0,
 		"foodbit_spawn_time"		: 0.05,
 		"fb_spawn_range"			: 400,
@@ -14,22 +14,22 @@
 	
 	"creature": {
 		"MAX_ENERGY"				: 100.0,
-		"init_energy"					: 100.0,
+		"init_energy"					: 75.0,
 		"hunger_threshold"		: 50.0,
 		"line_of_sight"				: 50.0,
 		"energy_to_offspring"		: 0.5,
-		"metabolic_rate"			: 0.1,
+		"metabolic_rate"			: 0.2,
 		"mate_range"				: 10.0,
 		"eat_range"					: 10.0,
 		"age_sexual_maturity"	: 10,
-		"branch_limit"				: 4,
-		"recursion_limit"			: 1,
+		"branch_limit"				: 3,
+		"recursion_limit"			: 2,
 		
 		"root": {
 			"max_root_scale" : {
-				"x"						: 15.0,
+				"x"						: 10.0,
 				"y"						: 3.0,
-				"z"						: 8.0
+				"z"						: 6.0
 			},
 			
 			"min_root_scale": {
