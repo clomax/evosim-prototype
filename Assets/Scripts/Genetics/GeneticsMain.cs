@@ -61,7 +61,7 @@ public class GeneticsMain : MonoBehaviour {
 								 );
 			chromosome.setColour(col.r, col.g, col.b);
 			
-			// random root sizes
+			// random root scale
 			chromosome.setRootScale((float) Random.Range(min_root_scale.x,max_root_scale.x),
 									(float) Random.Range(min_root_scale.y,max_root_scale.y),
 									(float) Random.Range(min_root_scale.z,max_root_scale.z)

@@ -87,7 +87,6 @@ public class Creature : MonoBehaviour {
 		root.name = "root";
 		root.transform.parent 			= _t;
 		root.transform.position 		= _t.position;
-		root.transform.localScale 		= rootsize;
 		root.transform.eulerAngles 		= _t.eulerAngles;
 		root.AddComponent<Rigidbody>();
 		root_script = root.AddComponent<Root>();
@@ -96,6 +95,7 @@ public class Creature : MonoBehaviour {
 		root.rigidbody.mass = 10;
 		
 		rd = root.GetComponent<Renderer>();
+		Debug.Log("Scale: " + root.transform.localScale);
 		
 		eye = new GameObject();
 		eye.name = "Eye";
@@ -138,9 +138,10 @@ public class Creature : MonoBehaviour {
 			ArrayList l = (ArrayList) limbs[i];
 			
 			limb_script.setColour		( (Color)	l[0] );
-			//limb_script.setColour		( chromosome.getColour() );
-			limb.transform.localPosition = Vector3.zero;
+			limb_script.setPosition		( (Vector3) l[1] );
 			limb_script.setScale		( (Vector3) l[2] );
+			limb_script.setPosition		( Utility.RandomPointInsideCube(root.transform.localScale) );
+			Debug.Log(limb.transform.localPosition);
 			limb_script.setRecurrances	( (int) 	l[3] );
 			limb.transform.LookAt(root.transform);
 			
