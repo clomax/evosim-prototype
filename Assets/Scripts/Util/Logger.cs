@@ -18,12 +18,6 @@ public class Logger : MonoBehaviour {
 	public static GameObject container;
 	public static Logger instance;
 	
-	//private StreamWriter sw;
-	
-	public Logger () {
-		//sw = new StreamWriter(Application.dataPath + "/Logs/log.txt");
-	}
-	
 	public static Logger getInstance () {
 		if(!instance) {
 			container = new GameObject();
@@ -33,8 +27,8 @@ public class Logger : MonoBehaviour {
 		return instance;
 	}
 	
-	public void write (String str) {
-		//sw.WriteLine(str);
+	public void write (String str, String file) {
+		File.AppendAllText(Application.dataPath + "/data/" + file + ".csv", str);
 	}
 	
 	public void close () {

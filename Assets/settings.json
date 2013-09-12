@@ -1,4 +1,10 @@
 ﻿{
+	"config": {
+		"population_logging"		: 1,
+		"foodbit_logging"			: 1,
+		"log_time"						: 1.0
+	},
+
 	"environment": {
 		"tile_scale"					: 100
 	},
@@ -22,7 +28,7 @@
 		"mate_range"				: 10.0,
 		"eat_range"					: 10.0,
 		"age_sexual_maturity"	: 10,
-		"branch_limit"				: 3,
+		"branch_limit"				: 4,
 		"recursion_limit"			: 2,
 		
 		"root": {
