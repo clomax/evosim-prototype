@@ -171,12 +171,10 @@ public class Creature : MonoBehaviour {
 				limb_script = limb_child.AddComponent<Limb>();
 				limb_script.parent = limb;
 				
-				/*
 				limb_script.setColour		( (Color)	l[0] );
 				limb_child.transform.parent = limb.transform;
 				limb_script.setPosition		( new Vector3(0,0,limb.transform.localPosition.z) / 2 );
 				limb_child.transform.parent = _t;
-				
 				limb_script.setScale		( new Vector3(1.6F,1.6F,4.4F) );
 				limb_script.setRecurrances	( 0 );
 				
