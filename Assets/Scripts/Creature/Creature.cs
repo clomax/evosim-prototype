@@ -173,15 +173,6 @@ public class Creature : MonoBehaviour {
 				
 				/*
 				limb_script.setColour		( (Color)	l[0] );
-				//limb_script.setColour		( chromosome.getColour() );
-				limb_script.setPosition		( (Vector3) l[1] );
-				limb_script.setRotation		( (Vector3) l[2] );
-				limb_script.setScale		( (Vector3) l[3] );
-				limb_script.setRecurrances	( (int) 	l[4] );
-				*/
-				
-				limb_script.setColour		( (Color)	l[0] );
-				
 				limb_child.transform.parent = limb.transform;
 				limb_script.setPosition		( new Vector3(0,0,limb.transform.localPosition.z) / 2 );
 				limb_child.transform.parent = _t;
