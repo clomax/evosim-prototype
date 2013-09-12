@@ -73,14 +73,14 @@ public class Creature : MonoBehaviour {
 		crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
 		
 		max_root_scale = new Vector3();
-		max_root_scale.x = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["x"]);
-		max_root_scale.y = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["y"]);
-		max_root_scale.z = (float) ((double) settings.contents["creature"]["root"]["max_root_scale"]["z"]);
+		max_root_scale.x = float.Parse( settings.contents["creature"]["root"]["max_root_scale"]["x"].ToString() );
+		max_root_scale.y = float.Parse( settings.contents["creature"]["root"]["max_root_scale"]["y"].ToString() );
+		max_root_scale.z = float.Parse( settings.contents["creature"]["root"]["max_root_scale"]["z"].ToString() );
 		
 		min_root_scale = new Vector3();
-		min_root_scale.x = (float) ((double) settings.contents["creature"]["root"]["min_root_scale"]["x"]);
-		min_root_scale.y = (float) ((double) settings.contents["creature"]["root"]["min_root_scale"]["y"]);
-		min_root_scale.z = (float) ((double) settings.contents["creature"]["root"]["min_root_scale"]["z"]);
+		min_root_scale.x = float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["x"].ToString() );
+		min_root_scale.y = float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["y"].ToString() );
+		min_root_scale.z = float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["z"].ToString() );
 
 		
 		root = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -171,21 +171,10 @@ public class Creature : MonoBehaviour {
 				limb_script = limb_child.AddComponent<Limb>();
 				limb_script.parent = limb;
 				
-				/*
 				limb_script.setColour		( (Color)	l[0] );
-				//limb_script.setColour		( chromosome.getColour() );
-				limb_script.setPosition		( (Vector3) l[1] );
-				limb_script.setRotation		( (Vector3) l[2] );
-				limb_script.setScale		( (Vector3) l[3] );
-				limb_script.setRecurrances	( (int) 	l[4] );
-				*/
-				
-				limb_script.setColour		( (Color)	l[0] );
-				
 				limb_child.transform.parent = limb.transform;
 				limb_script.setPosition		( new Vector3(0,0,limb.transform.localPosition.z) / 2 );
 				limb_child.transform.parent = _t;
-				
 				limb_script.setScale		( new Vector3(1.6F,1.6F,4.4F) );
 				limb_script.setRecurrances	( 0 );
 				

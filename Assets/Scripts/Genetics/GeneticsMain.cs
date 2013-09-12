@@ -101,7 +101,7 @@ public class GeneticsMain : MonoBehaviour {
 				}
 			}
 			
-			spw.spawn(Utility.RandomFlatVec(-100,10,100), Utility.RandomRotVec(), energy, chromosome);
+			spw.spawn(Utility.RandomFlatVec(-200,10,200), Utility.RandomRotVec(), energy, chromosome);
 			eth.subtractEnergy(energy);
 		}
 	}
