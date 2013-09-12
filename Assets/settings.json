@@ -1,5 +1,7 @@
 ﻿{
 	"config": {
+		"population_logging"		: 1,
+		"foodbit_logging"			: 1,
 		"log_time"						: 1.0
 	},
 
