@@ -56,7 +56,7 @@ public class Foodbit : MonoBehaviour {
 		co.isTrigger = true;
 		
 		//Debug.Log((float)foodbit_spawn_time);
-		InvokeRepeating("requestFoodbit",1.0F,foodbit_spawn_time);
+		StartCoroutine(requestFoodbit());
 		InvokeRepeating("decay",decay_time,decay_time);
 	}
 	
@@ -68,9 +68,13 @@ public class Foodbit : MonoBehaviour {
 		}
 	}
 	
-	void requestFoodbit () {
-		if (rnd.NextDouble() < (double)request_rate)
-			eth.newFoodbit(transform.localPosition);
+	IEnumerator requestFoodbit () {
+		while (true) {
+			if (rnd.NextDouble() < (double)request_rate)
+				eth.newFoodbit(transform.localPosition);
+			
+			yield return new WaitForSeconds(foodbit_spawn_time);
+		}
 	}
 	
 	public double getEnergy() {
