@@ -13,7 +13,9 @@ using System.Collections;
  
 
 public class Utility : MonoBehaviour {
-
+	
+	static System.Random rnd = new System.Random();
+	
 	 // generate random float in the vicinity of n
 	 public static float RandomApprox(float n, float r) {
 		return Random.Range(n-r, n+r);
@@ -51,4 +53,9 @@ public class Utility : MonoBehaviour {
 		System.TimeSpan t = (System.DateTime.UtcNow - new System.DateTime(1970,1,1,0,0,0));
 		return (int) t.TotalSeconds;
 	}
+	
+	public static float randomDelta(float factor) {
+		return (float) rnd.NextDouble() * ( Mathf.Abs(factor-(-factor)) ) + (-factor);
+	}
+	
 }

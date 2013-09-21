@@ -28,11 +28,10 @@ public class Foodbit : MonoBehaviour {
 	Settings settings;
 	Ether eth;
 	MeshRenderer mr;
+	
 	System.Random rnd = new System.Random();
 	
 	double energy;
-	float foodbit_spawn_time;
-	int	  fb_spawn_range;
 	float decay_amount;
 	float decay_time;
 	float decay_rate;
@@ -41,9 +40,7 @@ public class Foodbit : MonoBehaviour {
 	void Start () {
 		name = "Foodbit";
 		settings = Settings.getInstance();
-		
 		energy = 				(double) settings.contents["ether"]["foodbit_energy"];
-		foodbit_spawn_time = 	float.Parse(settings.contents["ether"]["foodbit_spawn_time"].ToString() );
 		decay_amount = 			float.Parse(settings.contents["foodbit"]["decay_amount"].ToString() );
 		decay_time = 			float.Parse(settings.contents["foodbit"]["decay_time"].ToString() );
 		decay_rate = 			float.Parse(settings.contents["foodbit"]["decay_rate"].ToString() );
@@ -55,25 +52,15 @@ public class Foodbit : MonoBehaviour {
 		Collider co = GetComponent<BoxCollider>();
 		co.isTrigger = true;
 		
-		//Debug.Log((float)foodbit_spawn_time);
-		StartCoroutine(requestFoodbit());
 		InvokeRepeating("decay",decay_time,decay_time);
 	}
 	
 	void decay () {
 		if (rnd.NextDouble() < (double)decay_rate) {
 			energy -= decay_amount;
+			eth.addToEnergy(decay_amount);
 			if (energy <= 0)
 				destroy();
-		}
-	}
-	
-	IEnumerator requestFoodbit () {
-		while (true) {
-			if (rnd.NextDouble() < (double)request_rate)
-				eth.newFoodbit(transform.localPosition);
-			
-			yield return new WaitForSeconds(foodbit_spawn_time);
 		}
 	}
 	
@@ -82,7 +69,7 @@ public class Foodbit : MonoBehaviour {
 	}
 	
 	public void destroy () {
-		eth.foodbit_count--;
+		eth.removeFoodbit(this.gameObject);
 		Destroy(gameObject);
 	}
 

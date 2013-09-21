@@ -24,11 +24,13 @@ public class Ether : MonoBehaviour {
 	public double total_energy;
 	double energy;
 	double foodbit_energy;
- 	double foodbit_spawn_time;
 	public int foodbit_count;
 	int fb_spawn_range;
 	int fb_wide_spread;
 	int start_number_foodbits;
+	float foodbit_spawn_time;
+	
+	ArrayList foodbits;
 	
 	
 	void Start () {
@@ -42,9 +44,12 @@ public class Ether : MonoBehaviour {
 		start_number_foodbits = (int)	 settings.contents [name]["start_number_foodbits"];
 		fb_spawn_range = 		(int)	 settings.contents["ether"]["fb_spawn_range"];
 		fb_wide_spread = 		(int)	 settings.contents["ether"]["fb_wide_spread"];
+		foodbit_spawn_time = 	float.Parse(settings.contents["ether"]["foodbit_spawn_time"].ToString() );
 
 		energy = total_energy;
 		foodbit_count = 0;
+		
+		foodbits = new ArrayList();
 		
 		for (int i=0; i<start_number_foodbits; i++) {
 			Vector3 pos = Utility.RandomFlatVec( -fb_wide_spread,
@@ -53,6 +58,8 @@ public class Ether : MonoBehaviour {
 				               				   );
 			newFoodbit(pos);
 		}
+		
+		InvokeRepeating("fbSpawn",foodbit_spawn_time, foodbit_spawn_time);
 	}
 	
 	/*
@@ -60,17 +67,34 @@ public class Ether : MonoBehaviour {
 	 * assign the default energy value for
 	 * all foodbits and attach the script
 	 */
-	public void newFoodbit (Vector3 fb_pos) {
+	public void newFoodbit (Vector3 pos) {
 		if(enoughEnergy(foodbit_energy)) {
-			Vector3 pos = Utility.RandomFlatVec( -fb_spawn_range,
-				                                 Foodbit.foodbitHeight /2,
-				                                 fb_spawn_range
-				               				   );
-			GameObject fb = (GameObject)Instantiate(foodbit, fb_pos + pos, Quaternion.identity);
+			GameObject fb = (GameObject)Instantiate(foodbit, pos, Quaternion.identity);
 			fb.AddComponent("Foodbit");
 			subtractEnergy(foodbit_energy);
-			foodbit_count++;
+			foodbits.Add(fb);
 		}
+	}
+	
+	private void fbSpawn () {
+		int fb_count = getFoodbitCount();
+		int fb_index = Random.Range(0,fb_count);
+		GameObject fb = (GameObject) foodbits[fb_index];
+		Foodbit fb_script = fb.GetComponent<Foodbit>();
+		Vector3 fb_pos = fb_script.transform.localPosition;
+		Vector3 pos = Utility.RandomFlatVec( -fb_spawn_range,
+	                                 		 Foodbit.foodbitHeight /2,
+	                                 		 fb_spawn_range
+	               				  		   );
+		newFoodbit(fb_pos + pos);
+	}
+	
+	public void removeFoodbit (GameObject fb) {
+		foodbits.Remove(fb);	
+	}
+	
+	public int getFoodbitCount () {
+		return foodbits.Count;
 	}
 	
 	public static Ether getInstance () {

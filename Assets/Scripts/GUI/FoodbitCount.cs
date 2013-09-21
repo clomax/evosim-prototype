@@ -27,7 +27,7 @@ public class FoodbitCount : MonoBehaviour {
 	}
 
 	void Update ()	{
-		guiText.text = "Foodbits: " + eth.foodbit_count;
+		guiText.text = "Foodbits: " + eth.getFoodbitCount();
 	}
 	
 	void log () {
