@@ -1,7 +1,7 @@
 ﻿{
 	"config": {
-		"population_logging"		: 0,
-		"foodbit_logging"			: 0,
+		"population_logging"		: 1,
+		"foodbit_logging"			: 1,
 		"log_time"						: 1.0
 	},
 
@@ -11,19 +11,18 @@
 	
 	"ether": {
 		"total_energy"				: 10000.0,
-		"foodbit_energy"			: 50.0,
-		"foodbit_spawn_time"		: 0.1,
+		"foodbit_energy"			: 40.0,
+		"foodbit_spawn_time"		: 0.5,
 		"fb_wide_spread"			: 400,
-		"fb_spawn_range"			: 50,
-		"start_number_foodbits"	: 30,
+		"fb_spawn_range"			: 70,
+		"start_number_foodbits"	: 50,
 		"starting_creatures"		: 30
 	},
 	
 	"foodbit": {
 		"decay_amount"			: 0.1,
 		"decay_time"					: 1.0,
-		"decay_rate"					: 0.5,
-		"request_rate"				: 1.0
+		"decay_rate"					: 0.5
 	},
 	
 	"creature": {
@@ -32,7 +31,7 @@
 		"hunger_threshold"		: 50.0,
 		"line_of_sight"				: 50.0,
 		"energy_to_offspring"		: 0.5,
-		"metabolic_rate"			: 0.05,
+		"metabolic_rate"			: 0.06,
 		"mate_range"				: 15.0,
 		"eat_range"					: 15.0,
 		"age_sexual_maturity"	: 10,

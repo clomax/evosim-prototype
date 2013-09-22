@@ -35,7 +35,6 @@ public class Foodbit : MonoBehaviour {
 	float decay_amount;
 	float decay_time;
 	float decay_rate;
-	float request_rate;
 	
 	void Start () {
 		name = "Foodbit";
@@ -44,7 +43,6 @@ public class Foodbit : MonoBehaviour {
 		decay_amount = 			float.Parse(settings.contents["foodbit"]["decay_amount"].ToString() );
 		decay_time = 			float.Parse(settings.contents["foodbit"]["decay_time"].ToString() );
 		decay_rate = 			float.Parse(settings.contents["foodbit"]["decay_rate"].ToString() );
-		request_rate = 			float.Parse(settings.contents["foodbit"]["request_rate"].ToString() );
 		
 		mr = (MeshRenderer)gameObject.AddComponent("MeshRenderer");
 		mr.material = (Material)Resources.Load("Materials/Foodbit");

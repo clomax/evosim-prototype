@@ -20,7 +20,7 @@ public class FoodbitCount : MonoBehaviour {
 		log_data = (int) settings.contents["config"]["foodbit_logging"];
 		if (log_data == 1) {
 			log_time = float.Parse( settings.contents["config"]["log_time"].ToString() );
-			filename = "footbits-"+Utility.UnixTimeNow().ToString();
+			filename = "foodbits-"+Utility.UnixTimeNow().ToString();
 			lg.write( log_time.ToString(), filename );
 			InvokeRepeating("log",0,log_time);
 		}
@@ -31,6 +31,6 @@ public class FoodbitCount : MonoBehaviour {
 	}
 	
 	void log () {
-		lg.write( ","+eth.foodbit_count.ToString(), filename );
+		lg.write( ","+eth.getFoodbitCount().ToString(), filename );
 	}
 }
