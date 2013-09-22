@@ -22,6 +22,7 @@ public class GeneticsMain : MonoBehaviour {
 	Chromosome chromosome;
 	
 	int starting_creatures;
+	float creature_spread;
 	
 	Vector3 max_root_scale;
 	Vector3 min_root_scale;
@@ -42,7 +43,8 @@ public class GeneticsMain : MonoBehaviour {
 		min_root_scale.y 	= float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["y"].ToString() );
 		min_root_scale.z 	= float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["z"].ToString() );
 		
-		starting_creatures	= (int) 		settings.contents["ether"]	 ["starting_creatures"];
+		starting_creatures	= (int) 		settings.contents["ether"]["starting_creatures"];
+		creature_spread		= float.Parse(	settings.contents["ether"]["creature_spread"].ToString() );
 		double energy		= (double)		settings.contents["creature"]["init_energy"];
 		int branch_limit 	= (int)			settings.contents["creature"]["branch_limit"];
 		int recursion_limit = (int)			settings.contents["creature"]["recursion_limit"];
@@ -93,15 +95,15 @@ public class GeneticsMain : MonoBehaviour {
 				
 				int recursion = Random.Range(0,recursion_limit);
 				for (int k=0; k<recursion; k++) {
-					// create new limb, place at business end of its parent limb
-					point = Utility.RandomPointInsideCube(scale);
+					// create new limb
+					point = Vector3.zero;	// Position is not a factor in child limbs, set it to zero
 					scale = new Vector3 (2F,2F,5F);
 					recurrances -= 1;
 					chromosome.addLimb(col, point, scale, recurrances);
 				}
 			}
 			
-			spw.spawn(Utility.RandomFlatVec(-200,10,200), Utility.RandomRotVec(), energy, chromosome);
+			spw.spawn(Utility.RandomFlatVec(-creature_spread,10,creature_spread), Utility.RandomRotVec(), energy, chromosome);
 			eth.subtractEnergy(energy);
 		}
 	}

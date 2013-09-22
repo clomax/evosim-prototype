@@ -26,7 +26,7 @@ public class Ether : MonoBehaviour {
 	double foodbit_energy;
 	public int foodbit_count;
 	int fb_spawn_range;
-	int fb_wide_spread;
+	float fb_wide_spread;
 	int start_number_foodbits;
 	float foodbit_spawn_time;
 	
@@ -43,7 +43,7 @@ public class Ether : MonoBehaviour {
 		foodbit_energy = 		(double) settings.contents	[name]["foodbit_energy"];
 		start_number_foodbits = (int)	 settings.contents [name]["start_number_foodbits"];
 		fb_spawn_range = 		(int)	 settings.contents["ether"]["fb_spawn_range"];
-		fb_wide_spread = 		(int)	 settings.contents["ether"]["fb_wide_spread"];
+		fb_wide_spread = 		float.Parse(settings.contents["ether"]["fb_wide_spread"].ToString() );
 		foodbit_spawn_time = 	float.Parse(settings.contents["ether"]["foodbit_spawn_time"].ToString() );
 
 		energy = total_energy;
@@ -86,7 +86,18 @@ public class Ether : MonoBehaviour {
 	                                 		 Foodbit.foodbitHeight /2,
 	                                 		 fb_spawn_range
 	               				  		   );
-		newFoodbit(fb_pos + pos);
+		
+		Vector3 new_pos = fb_pos + pos;
+		if (new_pos.x > fb_wide_spread  || new_pos.x < -fb_wide_spread
+			|| new_pos.z > fb_wide_spread || new_pos.z < -fb_wide_spread)
+		{
+			new_pos = Utility.RandomFlatVec( -fb_wide_spread,
+				                         Foodbit.foodbitHeight /2,
+				                         fb_wide_spread
+				               		   );
+		}
+		
+		newFoodbit(new_pos);
 	}
 	
 	public void removeFoodbit (GameObject fb) {
