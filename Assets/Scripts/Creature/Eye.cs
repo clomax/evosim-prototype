@@ -11,6 +11,7 @@ public class Eye : MonoBehaviour {
 	float curr_dist 				= 0f;
 	double crt_mate_range;
 	double fb_eat_range;
+	float eye_refresh_rate;
 	
 	public Collider[] cs;
 	
@@ -28,9 +29,10 @@ public class Eye : MonoBehaviour {
 		
 		crt_mate_range =	(double) settings.contents["creature"]["mate_range"];
 		fb_eat_range = 		(double) settings.contents["creature"]["eat_range"];
+		eye_refresh_rate =	float.Parse( settings.contents["creature"]["eye_refresh_rate"].ToString() );
 		
-		InvokeRepeating("closestCreature",0,0.1F);
-		InvokeRepeating("closestFoodbit",0,0.1F);
+		InvokeRepeating("closestCreature",0,eye_refresh_rate);
+		InvokeRepeating("closestFoodbit",0,eye_refresh_rate);
 	}
 	
 	void closestCreature () {
