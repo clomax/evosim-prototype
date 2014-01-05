@@ -209,6 +209,7 @@ public class Creature : MonoBehaviour {
 		}
 		
 		age = 0.0D;
+		energy = init_energy;
 		state = State.neutral;
 		
 		InvokeRepeating("updateAge",0,1.0f);
@@ -257,8 +258,13 @@ public class Creature : MonoBehaviour {
 	 * Add to the creature the energy of what it ate
 	 */
 	public void addEnergy (double n) {
+		double remainder = 0.0;
 		energy += n;
-		if (energy > MAX_ENERGY) energy = MAX_ENERGY;
+		if (energy > MAX_ENERGY) {
+			remainder = energy - MAX_ENERGY;
+			energy = MAX_ENERGY;
+			eth.addToEnergy(remainder);
+		}
 	}
 	
 	/*
