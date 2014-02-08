@@ -27,6 +27,7 @@ public class CameraCtl : MonoBehaviour {
 	
     void Start() {
 		pitch = _t.localEulerAngles.x;
+		camera.farClipPlane = 100000;
     }
 
     void Update() {
