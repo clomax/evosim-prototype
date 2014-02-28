@@ -57,8 +57,7 @@ public class Foodbit : MonoBehaviour {
 		if (rnd.NextDouble() < (double)decay_rate) {
 			energy -= decay_amount;
 			eth.addToEnergy(decay_amount);
-			if (energy <= 0)
-				destroy();
+			if (energy <= 0) destroy();
 		}
 	}
 	

@@ -41,7 +41,7 @@ public class Eye : MonoBehaviour {
 		GameObject c 			= null; // current collider being looked at
 		double dist 			= crt.line_of_sight;
 		
-		if (crt.state == Creature.State.persuing_mate) {
+		if (crt.state == Creature.State.pursuing_mate) {
 			cs = Physics.OverlapSphere(_t.position, (float)dist);
 			
 			foreach (Collider col in cs) {
@@ -56,7 +56,7 @@ public class Eye : MonoBehaviour {
 					if (curr_dist < (float)crt_mate_range) {
 						other_crt = c.transform.parent.GetComponent<Creature>();
 						Genitalia other_genital = other_crt.genital.GetComponent<Genitalia>();
-						if (crt.state == Creature.State.persuing_mate || other_crt.state == Creature.State.persuing_mate) {
+						if (crt.state == Creature.State.pursuing_mate || other_crt.state == Creature.State.pursuing_mate) {
 							co.observe(crt.genital.gameObject, other_genital.gameObject);
 							other_crt.state = Creature.State.mating;
 							crt.state = Creature.State.mating;

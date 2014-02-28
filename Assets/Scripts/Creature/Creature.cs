@@ -46,7 +46,7 @@ public class Creature : MonoBehaviour {
 	int 			age_sexual_maturity;
 	
 	public enum State { hungry,
-						persuing_mate,
+						pursuing_mate,
 						mating,
 						eating,
 						neutral
@@ -180,6 +180,8 @@ public class Creature : MonoBehaviour {
 				limb_script.setRecurrances	( 0 );
 				
 				limb_child.transform.LookAt(limb.transform);
+
+
 				
 				limb_child.AddComponent<Rigidbody>();
 				Physics.IgnoreCollision(root.collider, limb_child.collider, true);
@@ -189,6 +191,11 @@ public class Creature : MonoBehaviour {
 				jnt.axis = new Vector3(1F,0F,0F);
 				jnt.anchor = new Vector3(0F,0F,.5F);
 				jnt.connectedBody = limb_child.rigidbody;
+
+				JointMotor jm = new JointMotor();
+				jm.force = 10000;
+				jm.targetVelocity = -50;
+				jnt.motor = jm;
 				
 				limb_child.rigidbody.mass = 1;
 				//limb_child.collider.material = (PhysicMaterial) Resources.Load("Physics Materials/Rubber");
@@ -215,7 +222,7 @@ public class Creature : MonoBehaviour {
 		InvokeRepeating("updateAge",0,1.0f);
 		InvokeRepeating("updateState",0,0.1f);
 		InvokeRepeating("metabolise",0,1.0f);
-	}	
+	}
 		
 	/*
 	 * Add 1 second to the creature's age when called.
@@ -230,7 +237,7 @@ public class Creature : MonoBehaviour {
 				state = State.hungry;
 			}
 			if (energy >= hunger_threshold && age > age_sexual_maturity) {
-				state = State.persuing_mate;
+				state = State.pursuing_mate;
 			}
 		}
 	}
