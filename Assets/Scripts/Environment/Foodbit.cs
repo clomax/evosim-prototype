@@ -50,14 +50,19 @@ public class Foodbit : MonoBehaviour {
 		Collider co = GetComponent<BoxCollider>();
 		co.isTrigger = true;
 		
-		//InvokeRepeating("decay",0.01F,decay_time);
+		InvokeRepeating("decay",0.01F,decay_time);
 	}
 	
 	void decay () {
 		if (rnd.NextDouble() < (double)decay_rate) {
-			energy -= decay_amount;
-			eth.addToEnergy(decay_amount);
-			if (energy <= 0) destroy();
+			if (energy <= decay_amount) {
+				eth.addToEnergy(energy);
+				energy = 0;
+				destroy();
+			} else {
+				energy -= decay_amount;
+				eth.addToEnergy(decay_amount);
+			}
 		}
 	}
 	

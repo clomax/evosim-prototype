@@ -218,9 +218,9 @@ public class Creature : MonoBehaviour {
 		age = 0.0D;
 		state = State.neutral;
 		
-		InvokeRepeating("updateAge",0,1.0f);
+		InvokeRepeating("updateAge",1.0f,1.0f);
 		InvokeRepeating("updateState",0,0.1f);
-		InvokeRepeating("metabolise",0,1.0f);
+		InvokeRepeating("metabolise",1.0f,1.0f);
 	}
 		
 	/*
@@ -281,8 +281,14 @@ public class Creature : MonoBehaviour {
 	 * kill it if the creature's energy reaches zero.
 	 */
 	public void subtractEnergy (double n) {
-		energy -= n;
-		if(energy <= 0) kill();
+		if (energy <= n) {
+			eth.addToEnergy(energy);
+			energy = 0;
+			kill ();
+		} else {
+			energy -= n;
+			eth.addToEnergy(n);
+		}
 	}
 	
 	/*
@@ -291,7 +297,6 @@ public class Creature : MonoBehaviour {
 	 */
 	private void metabolise () {
 		subtractEnergy(metabolic_rate);
-		eth.addToEnergy(metabolic_rate);
 	}
 	
 	/*
