@@ -268,10 +268,9 @@ public class Creature : MonoBehaviour {
 	 * Add to the creature the energy of what it ate
 	 */
 	public void addEnergy (double n) {
-		double remainder = 0.0;
 		energy += n;
 		if (energy > MAX_ENERGY) {
-			remainder = energy - MAX_ENERGY;
+			double remainder = energy - MAX_ENERGY;
 			energy = MAX_ENERGY;
 			eth.addToEnergy(remainder);
 		}
