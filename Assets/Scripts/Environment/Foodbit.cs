@@ -50,7 +50,7 @@ public class Foodbit : MonoBehaviour {
 		Collider co = GetComponent<BoxCollider>();
 		co.isTrigger = true;
 		
-		InvokeRepeating("decay",decay_time,decay_time);
+		//InvokeRepeating("decay",0.01F,decay_time);
 	}
 	
 	void decay () {
@@ -65,9 +65,10 @@ public class Foodbit : MonoBehaviour {
 		return energy;
 	}
 	
-	public void destroy () {
+	public double destroy () {
 		eth.removeFoodbit(this.gameObject);
 		Destroy(gameObject);
+		return energy;
 	}
 
 
