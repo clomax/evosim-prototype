@@ -78,26 +78,28 @@ public class Ether : MonoBehaviour {
 	
 	private void fbSpawn () {
 		int fb_count = getFoodbitCount();
-		int fb_index = Random.Range(0,fb_count);
-		GameObject fb = (GameObject) foodbits[fb_index];
-		Foodbit fb_script = fb.GetComponent<Foodbit>();
-		Vector3 fb_pos = fb_script.transform.localPosition;
-		Vector3 pos = Utility.RandomFlatVec( -fb_spawn_range,
-	                                 		 Foodbit.foodbitHeight /2,
-	                                 		 fb_spawn_range
-	               				  		   );
-		
-		Vector3 new_pos = fb_pos + pos;
-		if (new_pos.x > fb_wide_spread  || new_pos.x < -fb_wide_spread
-			|| new_pos.z > fb_wide_spread || new_pos.z < -fb_wide_spread)
-		{
-			new_pos = Utility.RandomFlatVec( -fb_wide_spread,
-				                         Foodbit.foodbitHeight /2,
-				                         fb_wide_spread
-				               		   );
+		if (fb_count >= 1) {
+			int fb_index = Random.Range(0,fb_count);
+			GameObject fb = (GameObject) foodbits[fb_index];
+			Foodbit fb_script = fb.GetComponent<Foodbit>();
+			Vector3 fb_pos = fb_script.transform.localPosition;
+			Vector3 pos = Utility.RandomFlatVec( -fb_spawn_range,
+		                                 		 Foodbit.foodbitHeight /2,
+		                                 		 fb_spawn_range
+		               				  		   );
+			
+			Vector3 new_pos = fb_pos + pos;
+			if (new_pos.x > fb_wide_spread  || new_pos.x < -fb_wide_spread
+				|| new_pos.z > fb_wide_spread || new_pos.z < -fb_wide_spread)
+			{
+				new_pos = Utility.RandomFlatVec( -fb_wide_spread,
+					                         Foodbit.foodbitHeight /2,
+					                         fb_wide_spread
+					               		   );
+			}
+			
+			newFoodbit(new_pos);
 		}
-		
-		newFoodbit(new_pos);
 	}
 	
 	public void removeFoodbit (GameObject fb) {
