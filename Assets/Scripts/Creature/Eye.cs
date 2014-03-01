@@ -12,6 +12,7 @@ public class Eye : MonoBehaviour {
 	double crt_mate_range;
 	double fb_eat_range;
 	float eye_refresh_rate;
+	double dist;
 	
 	public Collider[] cs;
 	
@@ -30,20 +31,23 @@ public class Eye : MonoBehaviour {
 		crt_mate_range =	(double) settings.contents["creature"]["mate_range"];
 		fb_eat_range = 		(double) settings.contents["creature"]["eat_range"];
 		eye_refresh_rate =	float.Parse( settings.contents["creature"]["eye_refresh_rate"].ToString() );
-		
-		InvokeRepeating("closestCreature",0,eye_refresh_rate);
-		InvokeRepeating("closestFoodbit",0,eye_refresh_rate);
+		dist = crt.line_of_sight;
+
+		InvokeRepeating("refreshVision",0,eye_refresh_rate);
+	}
+
+	void refreshVision () {
+		cs = Physics.OverlapSphere(_t.position, (float)dist);
+		closestCreature();
+		closestFoodbit();
 	}
 	
 	void closestCreature () {
 		closestCrt 				= null;	// reference to the script of the closest creature
 		GameObject closest 		= null;
 		GameObject c 			= null; // current collider being looked at
-		double dist 			= crt.line_of_sight;
-		
+
 		if (crt.state == Creature.State.pursuing_mate) {
-			cs = Physics.OverlapSphere(_t.position, (float)dist);
-			
 			foreach (Collider col in cs) {
 				c = (GameObject) col.transform.gameObject;
 				if (c && c.gameObject.name == "root" && c != crt.root.gameObject) {
@@ -73,11 +77,8 @@ public class Eye : MonoBehaviour {
 	void closestFoodbit () {
 		closestFbit 		= null;	// reference to the script of the closest foodbit
 		GameObject closest 	= null;
-		double dist 		= crt.line_of_sight;
-		
+
 		if (crt.state == Creature.State.hungry) {
-			cs = Physics.OverlapSphere(_t.position, (float)dist);
-			
 			foreach (Collider c in cs) {
 				GameObject f = (GameObject) c.gameObject;
 				if (f && f.name == "Foodbit") {
@@ -89,8 +90,7 @@ public class Eye : MonoBehaviour {
 					}
 					if (curr_dist < (float)fb_eat_range && crt.state == Creature.State.hungry) {
 						fbit = f.GetComponent<Foodbit>();
-						crt.addEnergy(fbit.getEnergy());
-						fbit.destroy();
+						crt.addEnergy(fbit.destroy ());
 					}
 				}
 			}
