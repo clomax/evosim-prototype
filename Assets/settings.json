@@ -11,11 +11,11 @@
 	
 	"ether": {
 		"total_energy"				: 10000.0,
-		"foodbit_energy"			: 10.0,
-		"foodbit_spawn_time"		: 10.0,
+		"foodbit_energy"			: 30.0,
+		"foodbit_spawn_time"		: 0.5,
 		"fb_wide_spread"			: 400.0,
 		"fb_spawn_range"			: 80,
-		"start_number_foodbits"		: 200,
+		"start_number_foodbits"		: 300,
 		"starting_creatures"		: 50,
 		"creature_spread"			: 200
 	},
@@ -32,7 +32,7 @@
 		"hunger_threshold"			: 50.0,
 		"line_of_sight"				: 70.0,
 		"energy_to_offspring"		: 0.45,
-		"metabolic_rate"			: 0.5,
+		"metabolic_rate"			: 0.4,
 		"mate_range"				: 20.0,
 		"eat_range"					: 20.0,
 		"eye_refresh_rate"			: 1.0,

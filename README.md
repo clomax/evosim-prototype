@@ -8,7 +8,7 @@ The program is intended to be a 'toy'. It is not a scientific tool or a true ref
 Clone this repository and open the directory as an existing project in Unity3D, open the scene named 'Main' and attach the script named 'Main' to the GameObject named 'Main' in the hierarchy.
 
 ## License - MIT License
-Copyright (c) 2011, Craig Lomax
+Copyright (c) 2011 - 2014, Craig Lomax
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
