@@ -216,7 +216,6 @@ public class Creature : MonoBehaviour {
 		}
 		
 		age = 0.0D;
-		energy = init_energy;
 		state = State.neutral;
 		
 		InvokeRepeating("updateAge",0,1.0f);
@@ -229,6 +228,10 @@ public class Creature : MonoBehaviour {
 	 */
 	void updateAge() {
 		age += 1;
+	}
+
+	public void setEnergy(double n) {
+		energy = n;
 	}
 	
 	void updateState() {
