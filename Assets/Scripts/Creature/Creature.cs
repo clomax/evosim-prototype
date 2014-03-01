@@ -35,7 +35,6 @@ public class Creature : MonoBehaviour {
 	public CreatureCount crt_count;
 
 	double age;
-	public static double init_energy;
 	public double energy;
 	
 	public Chromosome chromosome;
@@ -117,7 +116,6 @@ public class Creature : MonoBehaviour {
 		genital.transform.position		= root.transform.position;
 		genital.AddComponent<Genitalia>();
 		
-		init_energy 		= (double) 	settings.contents ["creature"]["init_energy"];
 		hunger_threshold 	= (double) 	settings.contents ["creature"]["hunger_threshold"];
 		line_of_sight 		= (double) 	settings.contents ["creature"]["line_of_sight"];
 		metabolic_rate 		= (double) 	settings.contents ["creature"]["metabolic_rate"];
@@ -285,10 +283,8 @@ public class Creature : MonoBehaviour {
 			eth.addToEnergy(energy);
 			energy = 0;
 			kill ();
-		} else {
+		} else
 			energy -= n;
-			eth.addToEnergy(n);
-		}
 	}
 	
 	/*
@@ -297,6 +293,7 @@ public class Creature : MonoBehaviour {
 	 */
 	private void metabolise () {
 		subtractEnergy(metabolic_rate);
+		eth.addToEnergy(metabolic_rate);
 	}
 	
 	/*
