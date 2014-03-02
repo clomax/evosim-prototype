@@ -57,7 +57,14 @@ public class Foodbit : MonoBehaviour {
 		Collider co = GetComponent<BoxCollider>();
 		co.isTrigger = true;
 		
-		InvokeRepeating("decay",decay_time,decay_time);
+		InvokeRepeating("decay", decay_time, decay_time);
+		InvokeRepeating("spore", spore_time, spore_time);
+	}
+
+	void spore () {
+		if (rnd.NextDouble() < (double)spore_rate) {
+			eth.newFoodbit(this.transform.localPosition);
+		}
 	}
 	
 	void decay () {
