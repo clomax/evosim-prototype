@@ -37,3 +37,4 @@ Assets/data/*
 evosim_Data/*
 ProjectSettings/NavMeshLayers.asset
 Library/EditorUserSettings.asset
+Assets/data.meta

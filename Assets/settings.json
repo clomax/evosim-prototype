@@ -10,29 +10,29 @@
 	},
 	
 	"ether": {
-		"total_energy"				: 10000.0,
-		"foodbit_energy"			: 30.0,
-		"foodbit_spawn_time"		: 0.5,
+		"total_energy"				: 15000.0,
+		"foodbit_energy"			: 50.0,
+		"foodbit_spawn_time"		: 1.0,
 		"fb_wide_spread"			: 400.0,
-		"fb_spawn_range"			: 80,
-		"start_number_foodbits"		: 300,
+		"fb_spawn_range"			: 125,
+		"start_number_foodbits"		: 200,
 		"starting_creatures"		: 50,
 		"creature_spread"			: 200
 	},
 	
 	"foodbit": {
-		"decay_amount"				: 0.25,
+		"decay_amount"				: 0.35,
 		"decay_time"				: 1.0,
 		"decay_rate"				: 0.2
 	},
 	
 	"creature": {
 		"MAX_ENERGY"				: 100.0,
-		"init_energy"				: 60.0,
+		"init_energy"				: 75.0,
 		"hunger_threshold"			: 50.0,
 		"line_of_sight"				: 70.0,
-		"energy_to_offspring"		: 0.45,
-		"metabolic_rate"			: 0.4,
+		"energy_to_offspring"		: 0.50,
+		"metabolic_rate"			: 0.3,
 		"mate_range"				: 20.0,
 		"eat_range"					: 20.0,
 		"eye_refresh_rate"			: 1.0,
@@ -61,7 +61,7 @@
 	
 	"genetics": {
 		"crossover_rate"			: 0.5,
-		"mutation_rate"				: 0.1,
-		"mutation_factor"			: 0.5
+		"mutation_rate"				: 0.2,
+		"mutation_factor"			: 0.1
 	}
 }
