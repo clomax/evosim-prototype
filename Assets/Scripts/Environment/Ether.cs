@@ -25,10 +25,10 @@ public class Ether : MonoBehaviour {
 	double energy;
 	double foodbit_energy;
 	public int foodbit_count;
-	int fb_spawn_range;
-	float fb_wide_spread;
+	int spore_range;
+	float wide_spread;
 	int start_number_foodbits;
-	float foodbit_spawn_time;
+	float spore_time;
 	
 	ArrayList foodbits;
 	
@@ -39,12 +39,12 @@ public class Ether : MonoBehaviour {
 		
 		settings = Settings.getInstance();
 		
-		total_energy = 			(double) settings.contents[name]["total_energy"];
-		foodbit_energy = 		(double) settings.contents	[name]["foodbit_energy"];
-		start_number_foodbits = (int)	 settings.contents [name]["start_number_foodbits"];
-		fb_spawn_range = 		(int)	 settings.contents["ether"]["fb_spawn_range"];
-		fb_wide_spread = 		float.Parse(settings.contents["ether"]["fb_wide_spread"].ToString() );
-		foodbit_spawn_time = 	float.Parse(settings.contents["ether"]["foodbit_spawn_time"].ToString() );
+		total_energy = 			(double) 	settings.contents[name]	["total_energy"];
+		foodbit_energy = 		(double) 	settings.contents["foodbit"]["init_energy"];
+		start_number_foodbits = (int)	 	settings.contents[name]	["start_number_foodbits"];
+		spore_range = 			(int)	 	settings.contents["foodbit"]["spore_range"];
+		wide_spread = 			float.Parse(settings.contents["foodbit"]["wide_spread"].ToString() );
+		spore_time = 			float.Parse(settings.contents["foodbit"]["spore_time"].ToString() );
 
 		energy = total_energy;
 		foodbit_count = 0;
@@ -52,14 +52,14 @@ public class Ether : MonoBehaviour {
 		foodbits = new ArrayList();
 		
 		for (int i=0; i<start_number_foodbits; i++) {
-			Vector3 pos = Utility.RandomFlatVec( -fb_wide_spread,
+			Vector3 pos = Utility.RandomFlatVec( -wide_spread,
 				                                  Foodbit.foodbitHeight /2,
-				                                  fb_wide_spread
+				                                  wide_spread
 				               				   );
 			newFoodbit(pos);
 		}
 		
-		InvokeRepeating("fbSpawn",foodbit_spawn_time, foodbit_spawn_time);
+		InvokeRepeating("fbSpawn",spore_time, spore_time);
 	}
 	
 	/*
