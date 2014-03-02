@@ -22,13 +22,16 @@ public class Ether : MonoBehaviour {
 	Settings settings;
 	
 	public double total_energy;
-	double energy;
-	double foodbit_energy;
-	public int foodbit_count;
-	int fb_spawn_range;
-	float fb_wide_spread;
-	int start_number_foodbits;
-	float foodbit_spawn_time;
+	double 		energy;
+	double 		foodbit_energy;
+	public int 	foodbit_count;
+
+	Vector3 pos;
+
+	float 	wide_spread;
+	int		start_number_foodbits;
+	float 	spore_time;
+	int 	spore_range;
 	
 	ArrayList foodbits;
 	
@@ -39,12 +42,12 @@ public class Ether : MonoBehaviour {
 		
 		settings = Settings.getInstance();
 		
-		total_energy = 			(double) settings.contents[name]["total_energy"];
-		foodbit_energy = 		(double) settings.contents	[name]["foodbit_energy"];
-		start_number_foodbits = (int)	 settings.contents [name]["start_number_foodbits"];
-		fb_spawn_range = 		(int)	 settings.contents["ether"]["fb_spawn_range"];
-		fb_wide_spread = 		float.Parse(settings.contents["ether"]["fb_wide_spread"].ToString() );
-		foodbit_spawn_time = 	float.Parse(settings.contents["ether"]["foodbit_spawn_time"].ToString() );
+		total_energy = 			(double) 	settings.contents[name]	["total_energy"];
+		foodbit_energy = 		(double) 	settings.contents["foodbit"]["init_energy"];
+		start_number_foodbits = (int)	 	settings.contents[name]	["start_number_foodbits"];
+		spore_range = 			(int)	 	settings.contents["foodbit"]["spore_range"];
+		wide_spread = 			float.Parse(settings.contents["foodbit"]["wide_spread"].ToString() );
+		spore_time = 			float.Parse(settings.contents["foodbit"]["spore_time"].ToString() );
 
 		energy = total_energy;
 		foodbit_count = 0;
@@ -52,14 +55,14 @@ public class Ether : MonoBehaviour {
 		foodbits = new ArrayList();
 		
 		for (int i=0; i<start_number_foodbits; i++) {
-			Vector3 pos = Utility.RandomFlatVec( -fb_wide_spread,
+			Vector3 pos = Utility.RandomFlatVec( -wide_spread,
 				                                  Foodbit.foodbitHeight /2,
-				                                  fb_wide_spread
+				                                  wide_spread
 				               				   );
 			newFoodbit(pos);
 		}
 		
-		InvokeRepeating("fbSpawn",foodbit_spawn_time, foodbit_spawn_time);
+		InvokeRepeating("fbSpawn",spore_time, spore_time);
 	}
 	
 	/*
@@ -83,18 +86,18 @@ public class Ether : MonoBehaviour {
 			GameObject fb = (GameObject) foodbits[fb_index];
 			Foodbit fb_script = fb.GetComponent<Foodbit>();
 			Vector3 fb_pos = fb_script.transform.localPosition;
-			Vector3 pos = Utility.RandomFlatVec( -fb_spawn_range,
-		                                 		 Foodbit.foodbitHeight /2,
-		                                 		 fb_spawn_range
-		               				  		   );
+			pos = Utility.RandomFlatVec (-spore_range,
+		                                 		 Foodbit.foodbitHeight / 2,
+		                                 		 spore_range
+						);
 			
 			Vector3 new_pos = fb_pos + pos;
-			if (new_pos.x > fb_wide_spread  || new_pos.x < -fb_wide_spread
-				|| new_pos.z > fb_wide_spread || new_pos.z < -fb_wide_spread)
+			if (new_pos.x > wide_spread  || new_pos.x < -wide_spread
+				|| new_pos.z > wide_spread || new_pos.z < -wide_spread)
 			{
-				new_pos = Utility.RandomFlatVec( -fb_wide_spread,
+				new_pos = Utility.RandomFlatVec( -wide_spread,
 					                         Foodbit.foodbitHeight /2,
-					                         fb_wide_spread
+					                         wide_spread
 					               		   );
 			}
 			
