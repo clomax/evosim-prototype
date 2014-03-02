@@ -14,7 +14,7 @@ using System.Collections;
 public class Main : MonoBehaviour {
 
 	#pragma warning disable 0414
-	// Logger lg;
+	 Logger lg;
 	 Settings settings;
 	 Spawner spw;
 	 GeneticsMain gm;
@@ -36,7 +36,7 @@ public class Main : MonoBehaviour {
 	 * Components as needed.
 	 */
 	void Start () {		
-		//lg = Logger.getInstance();
+		lg = Logger.getInstance();
 		settings = Settings.getInstance();
 		
 		aperatus = (GameObject)Instantiate(Resources.Load("Prefabs/Aperatus"));
