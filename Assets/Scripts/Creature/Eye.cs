@@ -12,7 +12,7 @@ public class Eye : MonoBehaviour {
 	double crt_mate_range;
 	double fb_eat_range;
 	float eye_refresh_rate;
-	double dist;
+	double los;
 	
 	public Collider[] cs;
 	
@@ -31,23 +31,35 @@ public class Eye : MonoBehaviour {
 		crt_mate_range =	(double) settings.contents["creature"]["mate_range"];
 		fb_eat_range = 		(double) settings.contents["creature"]["eat_range"];
 		eye_refresh_rate =	float.Parse( settings.contents["creature"]["eye_refresh_rate"].ToString() );
-		dist = crt.line_of_sight;
+		los = crt.line_of_sight;
 
 		InvokeRepeating("refreshVision",0,eye_refresh_rate);
 	}
 
 	void refreshVision () {
-		cs = Physics.OverlapSphere(_t.position, (float)dist);
+		switch (crt.state) {
+		case Creature.State.pursuing_mate:
+			closestCreature();
+			break;
+		case Creature.State.hungry:
+			closestFoodbit();
+			break;
+		}
+		/*
 		if (crt.state == Creature.State.pursuing_mate)
-			closestCreature(cs);
+			closestCreature();
+
 		if (crt.state == Creature.State.hungry)
-			closestFoodbit(cs);
+			closestFoodbit();
+			*/
 	}
 	
-	void closestCreature (Collider[] cs) {
+	void closestCreature () {
 		closestCrt 				= null;	// reference to the script of the closest creature
 		GameObject closest 		= null;
 		GameObject c 			= null; // current collider being looked at
+		float dist 				= Mathf.Infinity;
+		cs = Physics.OverlapSphere(_t.position, (float)los);
 
 		foreach (Collider col in cs) {
 			c = (GameObject) col.transform.gameObject;
@@ -56,6 +68,7 @@ public class Eye : MonoBehaviour {
 				curr_dist = diff.magnitude;
 				if (curr_dist < dist) {
 					closest = c.transform.parent.gameObject;
+					dist = curr_dist;
 				}
 				if (curr_dist < (float)crt_mate_range) {
 					other_crt = c.transform.parent.GetComponent<Creature>();
@@ -65,8 +78,8 @@ public class Eye : MonoBehaviour {
 						other_crt.state = Creature.State.mating;
 						crt.state = Creature.State.mating;
 					}
+					dist = curr_dist;
 				}
-				dist = curr_dist;
 			}
 
 			if (closest)
@@ -74,9 +87,11 @@ public class Eye : MonoBehaviour {
 		}	
 	}
 	
-	void closestFoodbit (Collider[] cs) {
+	void closestFoodbit () {
 		closestFbit 		= null;	// reference to the script of the closest foodbit
 		GameObject closest 	= null;
+		float dist 			= Mathf.Infinity;
+		cs = Physics.OverlapSphere(_t.position, (float)los);
 
 		foreach (Collider c in cs) {
 			GameObject f = (GameObject) c.gameObject;
@@ -85,13 +100,13 @@ public class Eye : MonoBehaviour {
 				float curr_dist = diff.magnitude;
 				if (curr_dist < dist) {
 					closest = f;
+					dist = curr_dist;
 				}
 				if (curr_dist < (float)fb_eat_range && crt.state == Creature.State.hungry) {
 					fbit = f.GetComponent<Foodbit>();
 					crt.addEnergy(fbit.energy);
 					fbit.destroy ();
 				}
-				dist = curr_dist;
 			}
 		}
 		
