@@ -85,13 +85,13 @@ public class Eye : MonoBehaviour {
 				float curr_dist = diff.magnitude;
 				if (curr_dist < dist) {
 					closest = f;
-					dist = curr_dist;
 				}
 				if (curr_dist < (float)fb_eat_range && crt.state == Creature.State.hungry) {
 					fbit = f.GetComponent<Foodbit>();
 					crt.addEnergy(fbit.energy);
 					fbit.destroy ();
 				}
+				dist = curr_dist;
 			}
 		}
 		
