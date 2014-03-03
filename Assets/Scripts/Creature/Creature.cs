@@ -12,7 +12,6 @@ using System.Collections;
 
 public class Creature : MonoBehaviour {
 
-#pragma warning disable 0414
 	private static double MAX_ENERGY = 100.0D;
 	
 	Transform 		_t;
@@ -61,7 +60,6 @@ public class Creature : MonoBehaviour {
 	ArrayList limbs;
 	
 	Renderer rd;
-#pragma warning restore 0414
 
 	void Start () {
 		_t = transform;		
@@ -175,7 +173,7 @@ public class Creature : MonoBehaviour {
 				limb_script.setPosition		( new Vector3(0,0,-0.9F) );
 				limb_child.transform.parent = _t;
 				limb_script.setScale		( new Vector3(1.6F,1.6F,4.4F) );
-				limb_script.setRecurrances	( 0 );
+				limb_script.setRecurrances	( 1 );
 				
 				limb_child.transform.LookAt(limb.transform);
 
