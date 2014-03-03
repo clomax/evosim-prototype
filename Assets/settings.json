@@ -1,7 +1,7 @@
 ﻿{
 	"config": {
-		"population_logging"		: 1,
-		"foodbit_logging"			: 1,
+		"population_logging"		: 0,
+		"foodbit_logging"			: 0,
 		"log_time"					: 1.0
 	},
 
@@ -18,25 +18,26 @@
 	
 	"foodbit": {
 		"init_energy"				: 30.0,
+		"destroy_at"				: 10.0,
 		"spore_time"				: 0.75,
-		"spore_range"				: 80,
-		"spore_rate"				: 0.1,
+		"spore_range"				: 120,
+		"spore_rate"				: 1.0,
 		"wide_spread"				: 400.0,
 		"decay_amount"				: 0.4,
 		"decay_time"				: 1.0,
-		"decay_rate"				: 0.2
+		"decay_rate"				: 0.1
 	},
 	
 	"creature": {
 		"MAX_ENERGY"				: 100.0,
 		"init_energy"				: 75.0,
 		"hunger_threshold"			: 50.0,
-		"line_of_sight"				: 100.0,
+		"line_of_sight"				: 150.0,
 		"energy_to_offspring"		: 0.50,
 		"metabolic_rate"			: 0.3,
 		"mate_range"				: 20.0,
 		"eat_range"					: 20.0,
-		"eye_refresh_rate"			: 1.0,
+		"eye_refresh_rate"			: 0.1,
 		"age_sexual_maturity"		: 10,
 		"branch_limit"				: 4,
 		"recursion_limit"			: 5,

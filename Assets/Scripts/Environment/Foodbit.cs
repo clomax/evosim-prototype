@@ -34,6 +34,7 @@ public class Foodbit : MonoBehaviour {
 	double init_energy;
 	public double energy;
 	float decay_amount;
+	float destroy_at;
 	float decay_time;
 	float decay_rate;
 	float spore_time;
@@ -45,6 +46,7 @@ public class Foodbit : MonoBehaviour {
 		init_energy = 			(double) settings.contents["foodbit"]["init_energy"];
 		decay_amount = 			float.Parse(settings.contents["foodbit"]["decay_amount"].ToString() );
 		decay_time = 			float.Parse(settings.contents["foodbit"]["decay_time"].ToString() );
+		destroy_at = 			float.Parse(settings.contents["foodbit"]["destroy_at"].ToString() );
 		decay_rate = 			float.Parse(settings.contents["foodbit"]["decay_rate"].ToString() );
 		spore_rate = 			float.Parse(settings.contents["foodbit"]["spore_rate"].ToString() );
 		spore_time = 			float.Parse(settings.contents["foodbit"]["spore_time"].ToString() );
@@ -69,9 +71,8 @@ public class Foodbit : MonoBehaviour {
 	
 	void decay () {
 		if (rnd.NextDouble() < (double)decay_rate) {
-			if (energy <= decay_amount) {
+			if (energy <= destroy_at) {
 				eth.addToEnergy(energy);
-				energy = 0;
 				destroy();
 			} else {
 				energy -= decay_amount;
