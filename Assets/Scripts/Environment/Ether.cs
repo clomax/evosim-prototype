@@ -24,7 +24,6 @@ public class Ether : MonoBehaviour {
 	public double total_energy;
 	double 		energy;
 	double 		foodbit_energy;
-	public int 	foodbit_count;
 
 	Vector3 pos;
 
@@ -50,8 +49,7 @@ public class Ether : MonoBehaviour {
 		spore_time = 			float.Parse(settings.contents["foodbit"]["spore_time"].ToString() );
 
 		energy = total_energy;
-		foodbit_count = 0;
-		
+
 		foodbits = new ArrayList();
 		
 		for (int i=0; i<start_number_foodbits; i++) {
@@ -87,18 +85,18 @@ public class Ether : MonoBehaviour {
 			Foodbit fb_script = fb.GetComponent<Foodbit>();
 			Vector3 fb_pos = fb_script.transform.localPosition;
 			pos = Utility.RandomFlatVec (-spore_range,
-		                                 		 Foodbit.foodbitHeight / 2,
-		                                 		 spore_range
-						);
+		                                 Foodbit.foodbitHeight / 2,
+		                                 spore_range
+										);
 			
 			Vector3 new_pos = fb_pos + pos;
 			if (new_pos.x > wide_spread  || new_pos.x < -wide_spread
 				|| new_pos.z > wide_spread || new_pos.z < -wide_spread)
 			{
-				new_pos = Utility.RandomFlatVec( -wide_spread,
-					                         Foodbit.foodbitHeight /2,
-					                         wide_spread
-					               		   );
+				new_pos = Utility.RandomFlatVec(-wide_spread,
+					                         	Foodbit.foodbitHeight / 2,
+					                         	wide_spread
+					               		   	   );
 			}
 			
 			newFoodbit(new_pos);

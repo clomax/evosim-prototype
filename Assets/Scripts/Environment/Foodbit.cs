@@ -60,19 +60,13 @@ public class Foodbit : MonoBehaviour {
 		co.isTrigger = true;
 		
 		InvokeRepeating("decay", decay_time, decay_time);
-		InvokeRepeating("spore", spore_time, spore_time);
 	}
 
-	void spore () {
-		if (rnd.NextDouble() < (double)spore_rate) {
-			eth.newFoodbit(this.transform.localPosition);
-		}
-	}
-	
 	void decay () {
 		if (rnd.NextDouble() < (double)decay_rate) {
 			if (energy <= destroy_at) {
 				eth.addToEnergy(energy);
+				eth.removeFoodbit(gameObject);
 				destroy();
 			} else {
 				energy -= decay_amount;
