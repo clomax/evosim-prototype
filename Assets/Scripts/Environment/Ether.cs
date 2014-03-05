@@ -130,6 +130,7 @@ public class Ether : MonoBehaviour {
 	
 	public void addToEnergy(double n) {
 		energy += n;
+		if (energy > total_energy) energy = total_energy;
 	}
 
 	public bool enoughEnergy(double n) {
