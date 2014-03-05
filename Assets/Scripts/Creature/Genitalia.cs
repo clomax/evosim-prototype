@@ -41,7 +41,8 @@ public class Genitalia : MonoBehaviour {
 		
 		_t = transform;
 		lr = (LineRenderer)gameObject.AddComponent("LineRenderer");
-		lr.material = (Material)Resources.Load("Materials/genital_vector");
+		lr.material.color = Color.white;
+		lr.material.shader = Shader.Find("Sprites/Default");
 		lr.SetWidth(line_width, line_width);
 		lr.SetVertexCount(2);
 		lr.renderer.enabled = true;
