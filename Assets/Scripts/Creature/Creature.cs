@@ -104,14 +104,14 @@ public class Creature : MonoBehaviour {
 		mouth.name = "Mouth";
 		mouth.transform.parent 			= root.transform;
 		mouth.transform.eulerAngles 	= root.transform.eulerAngles;
-		mouth.transform.position 		= root.transform.position;
+		mouth.transform.localPosition 	= new Vector3(.5F,0,0);
 		mouth.AddComponent<Mouth>();
 		
 		genital = new GameObject();
 		genital.name = "Genital";
 		genital.transform.parent 		= root.transform;
 		genital.transform.eulerAngles 	= root.transform.eulerAngles;
-		genital.transform.position		= root.transform.position;
+		genital.transform.localPosition	= new Vector3(-.5F,0,0);
 		genital.AddComponent<Genitalia>();
 		
 		hunger_threshold 	= (double) 	settings.contents ["creature"]["hunger_threshold"];
