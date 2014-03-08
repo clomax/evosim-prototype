@@ -44,6 +44,17 @@ public class GeneticsUtils {
 		c.setRootScale(rs[0], rs[1], rs[2]);
 		
 		// mutate limbs
+		cc = c.getLimbColour();
+		cs[0] = cc.r;
+		cs[1] = cc.g;
+		cs[2] = cc.b;
+		for (int i=0; i<3; i++) {
+			double rand = rnd.NextDouble();
+			if (rand < rate)
+				cs[i] += randomiseGene(factor);
+		}
+		c.setLimbColour(cs[0], cs[1], cs[2]);
+
 		ArrayList limbs = c.getLimbs();
 		for (int i=0; i<limbs.Count; i++) {
 			ArrayList l = (ArrayList) limbs[i];

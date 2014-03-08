@@ -13,6 +13,7 @@ using System.Collections.Generic;
 public class Chromosome {
 	
 	Color colour;
+	Color limb_colour;
 	Vector3 root_scale;
 	
 	int branches;
@@ -21,6 +22,10 @@ public class Chromosome {
 
 	public Color getColour () {
 		return colour;	
+	}
+
+	public Color getLimbColour () {
+		return limb_colour;
 	}
 	
 	public Vector3 getRootScale () {
@@ -34,6 +39,10 @@ public class Chromosome {
 	public void setColour (float r, float g, float b) {
 		colour = new Color(r,g,b);
 	}
+
+	public void setLimbColour (float r, float g, float b) {
+		limb_colour = new Color(r,g,b);
+	}
 	
 	public void setRootScale (float x, float y, float z) {
 		root_scale = new Vector3(x,y,z);
@@ -44,6 +53,7 @@ public class Chromosome {
 	}
 	
 	public void addLimb (Color col, Vector3 point, Vector3 scale, int recur) {
+		limb_colour = col;
 		limb = new ArrayList();
 		limb.Add(col);
 		limb.Add(point);
