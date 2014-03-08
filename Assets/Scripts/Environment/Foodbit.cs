@@ -37,9 +37,7 @@ public class Foodbit : MonoBehaviour {
 	float destroy_at;
 	float decay_time;
 	float decay_rate;
-	float spore_time;
-	float spore_rate;
-	
+
 	void Start () {
 		name = "Foodbit";
 		settings = Settings.getInstance();
@@ -48,8 +46,6 @@ public class Foodbit : MonoBehaviour {
 		decay_time = 			float.Parse(settings.contents["foodbit"]["decay_time"].ToString() );
 		destroy_at = 			float.Parse(settings.contents["foodbit"]["destroy_at"].ToString() );
 		decay_rate = 			float.Parse(settings.contents["foodbit"]["decay_rate"].ToString() );
-		spore_rate = 			float.Parse(settings.contents["foodbit"]["spore_rate"].ToString() );
-		spore_time = 			float.Parse(settings.contents["foodbit"]["spore_time"].ToString() );
 
 		energy = init_energy;
 		
