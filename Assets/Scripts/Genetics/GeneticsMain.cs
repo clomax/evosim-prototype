@@ -26,6 +26,9 @@ public class GeneticsMain : MonoBehaviour {
 	
 	Vector3 max_root_scale;
 	Vector3 min_root_scale;
+
+	Vector3 max_limb_scale;
+	Vector3 min_limb_scale;
 	
 	
 	void Start () {
@@ -42,12 +45,26 @@ public class GeneticsMain : MonoBehaviour {
 		min_root_scale.x 	= float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["x"].ToString() );
 		min_root_scale.y 	= float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["y"].ToString() );
 		min_root_scale.z 	= float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["z"].ToString() );
-		
+
+
+
+		max_limb_scale		= new Vector3();
+		max_limb_scale.x 	= float.Parse( settings.contents["creature"]["limb"]["max_limb_scale"]["x"].ToString() );
+		max_limb_scale.y 	= float.Parse( settings.contents["creature"]["limb"]["max_limb_scale"]["y"].ToString() );
+		max_limb_scale.z 	= float.Parse( settings.contents["creature"]["limb"]["max_limb_scale"]["z"].ToString() );
+
+		min_limb_scale 		= new Vector3();
+		min_limb_scale.x 	= float.Parse( settings.contents["creature"]["limb"]["min_limb_scale"]["x"].ToString() );
+		min_limb_scale.y 	= float.Parse( settings.contents["creature"]["limb"]["min_limb_scale"]["y"].ToString() );
+		min_limb_scale.z 	= float.Parse( settings.contents["creature"]["limb"]["min_limb_scale"]["z"].ToString() );
+
+
+
 		starting_creatures	= (int) 		settings.contents["ether"]["starting_creatures"];
 		creature_spread		= float.Parse(	settings.contents["ether"]["creature_spread"].ToString() );
 		double init_energy	= (double)		settings.contents["creature"]["init_energy"];
 		int branch_limit 	= (int)			settings.contents["creature"]["branch_limit"];
-		int recursion_limit = (int)			settings.contents["creature"]["recursion_limit"];
+		int recurrence_limit = (int)		settings.contents["creature"]["recurrence_limit"];
 
 		
 		/*
@@ -89,17 +106,21 @@ public class GeneticsMain : MonoBehaviour {
 				// set anchor point to new vector
 				Vector3 point = tmp;
 				//Debug.Log(point);
-				Vector3 scale = new Vector3 (2F,2F,5F);
-				int recurrances = Random.Range(0,recursion_limit);
-				chromosome.addLimb(col, point, scale, recurrances);
+				Vector3 scale = new Vector3 ((float) Random.Range(min_limb_scale.x,max_limb_scale.x),
+				                             (float) Random.Range(min_limb_scale.y,max_limb_scale.y),
+				                             (float) Random.Range(min_limb_scale.z,max_limb_scale.z)
+				                            );
 				
-				int recursion = Random.Range(0,recursion_limit);
-				for (int k=0; k<recursion; k++) {
+				int recurrence = Random.Range(1,recurrence_limit);
+				for (int k=0; k<recurrence; k++) {
 					// create new limb
 					point = Vector3.zero;	// Position is not a factor in child limbs, set it to zero
-					scale = new Vector3 (2F,2F,5F);
-					recurrances -= 1;
-					chromosome.addLimb(col, point, scale, recurrances);
+					scale = new Vector3 ((float) Random.Range(min_limb_scale.x,max_limb_scale.x),
+		                                 (float) Random.Range(min_limb_scale.y,max_limb_scale.y),
+		                                 (float) Random.Range(min_limb_scale.z,max_limb_scale.z)
+		                                );
+					recurrence -= 1;
+					chromosome.addLimb(col, point, scale, recurrence);
 				}
 			}
 
