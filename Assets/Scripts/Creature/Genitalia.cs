@@ -16,43 +16,49 @@ public class Genitalia : MonoBehaviour {
 	Creature crt;
 	Logger lg;
 	Spawner spw;
+	Settings settings;
 	CollisionMediator co;
 	Transform _t;
 	LineRenderer lr;
 	Vector3 line_start;
-	float line_length = 0.5F;
+	float line_length			= 0.5F; // default
+	float line_width  			= 0.5F; // values
 	Vector3 line_end;
-	float line_width = 0.5F;
 	double timeCreated;
-	double timeToEnableMating = 1.0f;
+	double timeToEnableMating 	= 1.0F;
 	Eye eye;
 #pragma warning restore 0414
 
 	void Start () {
+		settings = Settings.getInstance();
+		
 		_t = transform;
 		gameObject.tag = "Genital";
-		crt = (Creature)_t.parent.gameObject.GetComponent("Creature");
+		crt = (Creature)_t.parent.parent.gameObject.GetComponent("Creature");
 		lg = Logger.getInstance();
 		co = CollisionMediator.getInstance();
 		eye = crt.eye.gameObject.GetComponent<Eye>();
 		
 		_t = transform;
 		lr = (LineRenderer)gameObject.AddComponent("LineRenderer");
-		lr.material = (Material)Resources.Load("Materials/genital_vector");
+		lr.material.color = Color.white;
+		lr.material.shader = Shader.Find("Sprites/Default");
 		lr.SetWidth(line_width, line_width);
 		lr.SetVertexCount(2);
 		lr.renderer.enabled = true;
 		timeCreated = Time.time;
+		
+		line_length = 	float.Parse( settings.contents["genitalia"]["line_length"].ToString() );
 	}
 	
 	void Update () {
 		if (crt.state == Creature.State.mating && Time.time > (timeCreated + timeToEnableMating)) {
-			crt.state = Creature.State.persuing_mate;
+			crt.state = Creature.State.pursuing_mate;
 			timeCreated = Time.time;
 		}
 		
 		Creature cc = eye.closestCrt;
-		if(cc) {
+		if(cc && crt.state == Creature.State.pursuing_mate) {
 			lr.useWorldSpace = true;
 			line_end = new Vector3(cc.genital.transform.position.x,
 			                       cc.genital.transform.position.y,

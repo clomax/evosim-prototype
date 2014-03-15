@@ -3,63 +3,77 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Eye : MonoBehaviour {
-	IList objects;
 	Creature crt;
 	Foodbit fbit;
-	GameObject trigger;
-	public Creature closestCrt = null;
-	public GameObject closestFbit = null;
+	public Creature closestCrt 		= null;
+	public GameObject closestFbit	= null;
 	CollisionMediator co;
-	float curr_dist = 0f;
-	int crt_mate_range = 30;
-	int fb_eat_range = 20;
+	float curr_dist 				= 0f;
+	double crt_mate_range;
+	double fb_eat_range;
+	float eye_refresh_rate;
+	double los;
 	
-	 Creature other_crt;
+	public Collider[] cs;
+	
+	Transform _t;
+	
+	Settings settings;
+	Creature other_crt;
 	
 	void Start () {
-		crt = transform.parent.gameObject.GetComponent<Creature>();
-		co = CollisionMediator.getInstance();
-		objects = new List<GameObject>();
+		_t = transform;
 		
-		trigger = new GameObject("Trigger");
-		trigger.transform.parent = transform;
-		trigger.transform.localPosition = Vector3.zero;
-		SphereCollider sp = trigger.AddComponent<SphereCollider>();
-		sp.isTrigger = true;
-		sp.radius = crt.line_of_sight;
+		crt = _t.parent.parent.gameObject.GetComponent<Creature>();
+		co = CollisionMediator.getInstance();
+		settings = Settings.getInstance();
+		
+		crt_mate_range =	(double) settings.contents["creature"]["mate_range"];
+		fb_eat_range = 		(double) settings.contents["creature"]["eat_range"];
+		eye_refresh_rate =	float.Parse( settings.contents["creature"]["eye_refresh_rate"].ToString() );
+		los = crt.line_of_sight;
+
+		InvokeRepeating("refreshVision",0,eye_refresh_rate);
+	}
+
+	void refreshVision () {
+		switch (crt.state) {
+		case Creature.State.pursuing_mate:
+			closestCreature();
+			break;
+		case Creature.State.hungry:
+			closestFoodbit();
+			break;
+		}
+		/*
+		if (crt.state == Creature.State.pursuing_mate)
+			closestCreature();
+
+		if (crt.state == Creature.State.hungry)
+			closestFoodbit();
+			*/
 	}
 	
-	void OnTriggerEnter (Collider c) {
-		if (c.tag == "Foodbit" || c.tag == "Creature")
-			objects.Add(c.gameObject);
-	}
-	
-	void OnTriggerExit (Collider c) {
-		objects.Remove(c.gameObject);
-	}
-	
-	void Update () {
-		closestCrt = closestCreature();
-		closestFbit = closestFoodbit();
-	}
-	
-	public Creature closestCreature () {
-		GameObject closest = null;
-		float dist = crt.line_of_sight;
-		IEnumerator e = objects.GetEnumerator();
-		while(e.MoveNext()) {
-			GameObject c = (GameObject) e.Current;;
-			if (c && c.tag == "Creature" && c != crt.gameObject) {
-				Vector3 diff = c.transform.position - transform.position;
+	void closestCreature () {
+		closestCrt 				= null;	// reference to the script of the closest creature
+		GameObject closest 		= null;
+		GameObject c 			= null; // current collider being looked at
+		float dist 				= Mathf.Infinity;
+		cs = Physics.OverlapSphere(_t.position, (float)los);
+
+		foreach (Collider col in cs) {
+			c = (GameObject) col.transform.gameObject;
+			if (c && c.gameObject.name == "root" && c != crt.root.gameObject) {
+				Vector3 diff = c.transform.position - _t.position;
 				curr_dist = diff.magnitude;
 				if (curr_dist < dist) {
-					closest = c;
+					closest = c.transform.parent.gameObject;
 					dist = curr_dist;
 				}
-				if (curr_dist < crt_mate_range) {
-					other_crt = c.gameObject.GetComponent<Creature>();
+				if (curr_dist < (float)crt_mate_range) {
+					other_crt = c.transform.parent.GetComponent<Creature>();
 					Genitalia other_genital = other_crt.genital.GetComponent<Genitalia>();
-					if (crt.state == Creature.State.persuing_mate || other_crt.state == Creature.State.persuing_mate) {
+					if (crt.state == Creature.State.pursuing_mate || other_crt.state == Creature.State.pursuing_mate) {
 						co.observe(crt.genital.gameObject, other_genital.gameObject);
 						other_crt.state = Creature.State.mating;
 						crt.state = Creature.State.mating;
@@ -67,32 +81,37 @@ public class Eye : MonoBehaviour {
 					dist = curr_dist;
 				}
 			}
-		}
-		if (closest) return closest.GetComponent<Creature>();
-		return null;
+
+			if (closest)
+				closestCrt = closest.GetComponent<Creature>();
+		}	
 	}
 	
-	public GameObject closestFoodbit () {
-		GameObject closest = null;
-		float dist = crt.line_of_sight;
-		IEnumerator e = objects.GetEnumerator();
-		while(e.MoveNext()) {
-			GameObject f = (GameObject) e.Current;
-			if (f && f.tag == "Foodbit") {
-				Vector3 diff = f.transform.position - transform.position;
+	void closestFoodbit () {
+		closestFbit 		= null;	// reference to the script of the closest foodbit
+		GameObject closest 	= null;
+		float dist 			= Mathf.Infinity;
+		cs = Physics.OverlapSphere(_t.position, (float)los);
+
+		foreach (Collider c in cs) {
+			GameObject f = (GameObject) c.gameObject;
+			if (f && f.name == "Foodbit") {
+				Vector3 diff = f.transform.position - _t.position;
 				float curr_dist = diff.magnitude;
 				if (curr_dist < dist) {
 					closest = f;
 					dist = curr_dist;
 				}
-				if (curr_dist < fb_eat_range && crt.state == Creature.State.hungry) {
+				if (curr_dist < (float)fb_eat_range && crt.state == Creature.State.hungry) {
 					fbit = f.GetComponent<Foodbit>();
-					crt.eat(fbit.getEnergy());
-					fbit.destroy();
+					crt.addEnergy(fbit.energy);
+					fbit.destroy ();
 				}
 			}
 		}
-		if (closest) return closest;
-		return null;
+		
+		if (closest)
+			closestFbit = closest.gameObject;
+		
 	}
 }

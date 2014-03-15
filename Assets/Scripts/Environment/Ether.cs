@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-
+using LitJson;
 
 /*
  *		Author: 	Craig Lomax
@@ -13,78 +13,127 @@ using System.Collections;
 
 public class Ether : MonoBehaviour {
 	
+	public static GameObject container;
+	public static Ether instance;
+	
 	GameObject foodbit;
 
 	Logger lg;
+	Settings settings;
 	
-	int grossEnergy = 4000;
-	int energy;
-	int foodbitEnergy = 20;
-	double timeCreated;
-	double timeToSpawnFoodbit = 0.0f;
-	public int foodbitCount = 0;
-	int fbSpawnRange = 200;
-	
+	public double total_energy;
+	double 		energy;
+	double 		foodbit_energy;
 
-	void Awake () {
-		name = "Ether";
-	}
+	Vector3 pos;
+
+	float 	wide_spread;
+	int		start_number_foodbits;
+	float 	spore_time;
+	int 	spore_range;
+	
+	ArrayList foodbits;
+	
 	
 	void Start () {
 		foodbit = (GameObject)Resources.Load("Prefabs/Foodbit");
-		lg = Logger.getInstance();
-		lg.write("EVT: Ether_instantiated" + " " + Time.realtimeSinceStartup);
-		timeCreated = Time.time;
-	}
-	
-	Ether () {
-		energy = grossEnergy;		
-	}
-	
-	void Update () {
-		if (Time.time > (timeCreated + timeToSpawnFoodbit) && enoughEnergy(foodbitEnergy)) {
-			Vector3 pos = Utility.RandomFlatVec(-fbSpawnRange,
-			                                Foodbit.foodbitHeight /2,
-			                                fbSpawnRange
-			                               );
+		string name = this.name.ToLower();
+		
+		settings = Settings.getInstance();
+		
+		total_energy = 			(double) 	settings.contents[name]	["total_energy"];
+		foodbit_energy = 		(double) 	settings.contents["foodbit"]["init_energy"];
+		start_number_foodbits = (int)	 	settings.contents[name]	["start_number_foodbits"];
+		spore_range = 			(int)	 	settings.contents["foodbit"]["spore_range"];
+		wide_spread = 			float.Parse(settings.contents["foodbit"]["wide_spread"].ToString() );
+		spore_time = 			float.Parse(settings.contents["foodbit"]["spore_time"].ToString() );
+
+		energy = total_energy;
+
+		foodbits = new ArrayList();
+		
+		for (int i=0; i<start_number_foodbits; i++) {
+			Vector3 pos = Utility.RandomFlatVec( -wide_spread,
+				                                  Foodbit.foodbitHeight /2,
+				                                  wide_spread
+				               				   );
 			newFoodbit(pos);
-			timeCreated = Time.time;
 		}
+		
+		InvokeRepeating("fbSpawn",spore_time, spore_time);
 	}
 	
 	/*
-	 * Place a new foodbit at the given vector,
+	 * Place a new foodbit at a random vector,
 	 * assign the default energy value for
 	 * all foodbits and attach the script
 	 */
-	public void newFoodbit (Vector3 vec) {
-		GameObject fb = (GameObject)Instantiate(foodbit, vec, Quaternion.identity);
-		fb.AddComponent("Foodbit");
-		subtractEnergy(foodbitEnergy);
-		foodbitCount++;
+	public void newFoodbit (Vector3 pos) {
+		if(enoughEnergy(foodbit_energy)) {
+			GameObject fb = (GameObject)Instantiate(foodbit, pos, Quaternion.identity);
+			fb.AddComponent("Foodbit");
+			subtractEnergy(foodbit_energy);
+			foodbits.Add(fb);
+		}
 	}
 	
-	/*
-	 * Return the energy value given to each new
-	 * foodbit on instantiation
-	 */
-	public int getFoodbitEnergy () {
-		return foodbitEnergy;
+	private void fbSpawn () {
+		int fb_count = getFoodbitCount();
+		if (fb_count >= 1) {
+			int fb_index = Random.Range(0,fb_count);
+			GameObject fb = (GameObject) foodbits[fb_index];
+			Foodbit fb_script = fb.GetComponent<Foodbit>();
+			Vector3 fb_pos = fb_script.transform.localPosition;
+			pos = Utility.RandomFlatVec (-spore_range,
+		                                 Foodbit.foodbitHeight / 2,
+		                                 spore_range
+										);
+			
+			Vector3 new_pos = fb_pos + pos;
+			if (new_pos.x > wide_spread  || new_pos.x < -wide_spread
+				|| new_pos.z > wide_spread || new_pos.z < -wide_spread)
+			{
+				new_pos = Utility.RandomFlatVec(-wide_spread,
+					                         	Foodbit.foodbitHeight / 2,
+					                         	wide_spread
+					               		   	   );
+			}
+			
+			newFoodbit(new_pos);
+		}
 	}
 	
-	public int getEnergy() {
+	public void removeFoodbit (GameObject fb) {
+		foodbits.Remove(fb);	
+	}
+	
+	public int getFoodbitCount () {
+		return foodbits.Count;
+	}
+	
+	public static Ether getInstance () {
+		if(!instance) {
+			container = new GameObject();
+			container.name = "Ether";
+			instance = container.AddComponent(typeof(Ether)) as Ether;
+		}
+		return instance;
+	}
+	
+	public double getEnergy() {
 		return energy;
 	}
 	
-	void subtractEnergy (int n) {
+	public void subtractEnergy (double n) {
 		energy -= n;
 	}
 	
-	public void addToEnergy(int n) {
+	public void addToEnergy(double n) {
 		energy += n;
+		if (energy > total_energy) energy = total_energy;
 	}
 
-	bool enoughEnergy(int n) {
+	public bool enoughEnergy(double n) {
 		return energy >= n;
 	}
 	

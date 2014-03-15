@@ -2,15 +2,17 @@ using UnityEngine;
 using System.Collections;
 
 public class FoodbitCount : MonoBehaviour {
+	public int fbit_count;
 
 	public Ether eth;
 	
 	void Start() {
 		name = "FoodbitCount";
-		eth = GameObject.Find("Ether").GetComponent<Ether>();
+		eth = Ether.getInstance();
 	}
 
 	void Update ()	{
-		guiText.text = "Foodbits: " + eth.foodbitCount;
+		fbit_count = eth.getFoodbitCount();
+		guiText.text = "Foodbits: " + fbit_count;
 	}
 }

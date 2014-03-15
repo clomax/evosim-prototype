@@ -3,14 +3,15 @@ using System.Collections;
 
 public class TotalEnergy : MonoBehaviour {
 	
-	public int total_energy;
+	public double total_energy;
 	public Ether eth;
 	
+	void Start () {
+		eth = Ether.getInstance();
+	}
+	
 	void Update () {
-		eth = GameObject.Find("Ether").GetComponent("Ether") as Ether;
-		
-		total_energy = eth.getEnergy();
-			// + total foodbit energy + total creature energy
+		total_energy = eth.total_energy;
 		guiText.text = "Total energy: " + total_energy;
 	}
 }

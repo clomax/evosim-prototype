@@ -12,149 +12,296 @@ using System.Collections;
 
 public class Creature : MonoBehaviour {
 
-#pragma warning disable 0414
-	static int MAX_ENERGY = 100;
+	private static double MAX_ENERGY = 100.0D;
 	
-	CreatureCount crt_count;
+	Transform 		_t;
 	
-	int age;
-	double timeCreated;
-	public GameObject eye;
-	public GameObject mouth;
-	public GameObject genital;
-	float sensitivityFwd;
-	float sensitivityHdg;
-	public int energy = 100;
-	float hdg = 0F;
-	Transform _t;
+	Settings settings;
+	Ether eth;
 	Logger lg;
-	public int line_of_sight;
-	int matingEnergyDeduction;
-	int hungerThreshold;
-	public enum State { hungry, persuing_mate, mating, eating, neutral };
-	public State state;
-	MeshRenderer mr;
-	Material mat;
-#pragma warning restore 0414
 	
+	public GameObject root;
+	public Root root_script;
+	
+	Vector3 max_root_scale;
+	Vector3 min_root_scale;
+	Vector3 rootsize;
+		
+	public GameObject eye;
+	public GameObject mouth;	
+	public GameObject genital;
+	
+	public CreatureCount crt_count;
+
+	double age;
+	public double energy;
+	
+	public Chromosome chromosome;
+	
+	public double 	line_of_sight;
+	double 			hunger_threshold;
+	double 			metabolic_rate;
+	int 			age_sexual_maturity;
+	
+	public enum State { hungry,
+						pursuing_mate,
+						mating,
+						eating,
+						neutral
+					  };
+	public State state;
+	
+	int branch_limit;
+	int recursion_limit;
+	
+	GameObject limb;
+	GameObject limb_child;
+	int branches;
+	ArrayList limbs;
+	
+	Renderer rd;
+
 	void Start () {
+		_t = transform;		
+		name = "Creature";
+		
+		eth = Ether.getInstance();
+		settings = Settings.getInstance();
 		crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
 		
-		_t = transform;
-		name = "Creature";
-		hdg = transform.localEulerAngles.y;
-		lg = Logger.getInstance();
-		line_of_sight = 40;
-		mr = _t.gameObject.GetComponent<MeshRenderer>();
-		mat = (Material)Resources.Load("Materials/creature");
-		mr.material = mat;
+		max_root_scale = new Vector3();
+		max_root_scale.x = float.Parse( settings.contents["creature"]["root"]["max_root_scale"]["x"].ToString() );
+		max_root_scale.y = float.Parse( settings.contents["creature"]["root"]["max_root_scale"]["y"].ToString() );
+		max_root_scale.z = float.Parse( settings.contents["creature"]["root"]["max_root_scale"]["z"].ToString() );
 		
-		hungerThreshold = 50;
-		line_of_sight = 50;
-		age = 0;
-		timeCreated = Time.time;
+		min_root_scale = new Vector3();
+		min_root_scale.x = float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["x"].ToString() );
+		min_root_scale.y = float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["y"].ToString() );
+		min_root_scale.z = float.Parse( settings.contents["creature"]["root"]["min_root_scale"]["z"].ToString() );
+
 		
-		sensitivityFwd = 1.0F;
-		sensitivityHdg = 2.5F;
+		root = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		root.name = "root";
+		root.transform.parent 			= _t;
+		root.transform.position 		= _t.position;
+		root.transform.eulerAngles 		= _t.eulerAngles;
+		root.AddComponent<Rigidbody>();
+		root_script = root.AddComponent<Root>();
+		root_script.setColour(chromosome.getColour());
+		root_script.setScale(chromosome.getRootScale());
+		root.rigidbody.mass = 10;
+		
+		rd = root.GetComponent<Renderer>();
 		
 		eye = new GameObject();
 		eye.name = "Eye";
-		eye.transform.parent = transform;
-		eye.transform.localPosition = Vector3.zero;
+		eye.transform.parent 			= root.transform;
+		eye.transform.eulerAngles 		= root.transform.eulerAngles;
+		eye.transform.position 			= root.transform.position;
 		eye.AddComponent<Eye>();
-		SphereCollider sp = eye.AddComponent<SphereCollider>();
-		sp.isTrigger = true;
-		sp.radius = line_of_sight;
 		
 		mouth = new GameObject();
 		mouth.name = "Mouth";
-		mouth.transform.parent = transform;
-		mouth.transform.localPosition = new Vector3(0,0,0.5F);
-		mouth.transform.localEulerAngles = new Vector3(0,0,0);
-		mouth.AddComponent("Mouth");
+		mouth.transform.parent 			= root.transform;
+		mouth.transform.eulerAngles 	= root.transform.eulerAngles;
+		mouth.transform.localPosition 	= new Vector3(.5F,0,0);
+		mouth.AddComponent<Mouth>();
 		
 		genital = new GameObject();
 		genital.name = "Genital";
-		genital.transform.parent = transform;
-		genital.transform.localPosition = new Vector3(0,0,-.5f);
-		genital.transform.localEulerAngles = new Vector3(0,180,0);
+		genital.transform.parent 		= root.transform;
+		genital.transform.eulerAngles 	= root.transform.eulerAngles;
+		genital.transform.localPosition	= new Vector3(-.5F,0,0);
 		genital.AddComponent<Genitalia>();
-	}
-	
-	 Creature (int energy1, int energy2) {
-		energy += (energy1 + energy2);
-	}
-	
-	void Update () {
-		age = (int)Time.time - (int)timeCreated;
-				
-		changeHeading(Input.GetAxis("Horizontal") * sensitivityHdg);
-		moveForward(Input.GetAxis("Vertical") * sensitivityFwd);
 		
-		if(state != Creature.State.mating) {
-			if (energy < hungerThreshold) {
-				state = State.hungry;
+		hunger_threshold 	= (double) 	settings.contents ["creature"]["hunger_threshold"];
+		line_of_sight 		= (double) 	settings.contents ["creature"]["line_of_sight"];
+		metabolic_rate 		= (double) 	settings.contents ["creature"]["metabolic_rate"];
+		age_sexual_maturity = (int)		settings.contents ["creature"]["age_sexual_maturity"];
+		branch_limit 		= (int)		settings.contents ["creature"]["branch_limit"];
+		recursion_limit		= (int)		settings.contents ["creature"]["recursion_limit"];
+		
+		limbs = chromosome.getLimbs();
+		branches = chromosome.getBranches();
+		ArrayList limb_objects = new ArrayList();
+		
+		for (int i=0; i<branches; i++) {
+			limb = GameObject.CreatePrimitive(PrimitiveType.Cube);
+			limb.transform.parent = _t;
+			
+			Limb limb_script = limb.AddComponent<Limb>();
+			ArrayList l = (ArrayList) limbs[i];
+			
+			limb_script.setColour		( (Color)	l[0] );
+			limb_script.setPosition		( (Vector3) l[1] );
+			limb_script.setScale		( (Vector3) l[2] );
+			limb_script.setPosition		( Utility.RandomPointInsideCube(root.transform.localScale) );
+			limb_script.setRecurrances	( (int) 	l[3] );
+			limb.transform.LookAt(root.transform);
+			
+			limb.AddComponent<Rigidbody>();
+			
+			/* Hingejoint connecting limb to root */
+			HingeJoint hj_root = limb.AddComponent<HingeJoint>();
+			hj_root.axis = new Vector3(0.5F, 0F, 0F);
+			hj_root.anchor = new Vector3(0F, 0F, 0.5F);
+			hj_root.connectedBody = root.rigidbody;
+			Physics.IgnoreCollision(root.collider, limb.collider, true);
+			
+			JointMotor m = new JointMotor();
+			m.force = 10000;
+			m.targetVelocity = 200;
+			hj_root.motor = m;
+			
+			limb.rigidbody.mass = 3;
+
+			foreach (GameObject lmb in limb_objects) {
+				Physics.IgnoreCollision(limb.collider, lmb.collider, true);
 			}
-			if (energy >= hungerThreshold) {
-				state = State.persuing_mate;
+			limb_objects.Add(limb);
+			
+			GameObject limb_child = null;
+			for (int j=0; j<limb_script.getRecurrances(); j++) {
+				limb_child = GameObject.CreatePrimitive(PrimitiveType.Cube);
+				limb_child.transform.parent = _t;				
+				limb_script = limb_child.AddComponent<Limb>();
+				limb_script.parent = limb;
+				
+				limb_script.setColour		( (Color)	l[0] );
+				limb_child.transform.parent = limb.transform;
+				//limb_script.setPosition		( new Vector3(0,0,limb.transform.localPosition.z) / 2 );
+				limb_script.setPosition		( new Vector3(0,0,-0.9F) );
+				limb_child.transform.parent = _t;
+				limb_script.setScale		( new Vector3(1.6F,1.6F,4.4F) );
+				limb_script.setRecurrances	( 1 );
+				
+				limb_child.transform.LookAt(limb.transform);
+
+
+				
+				limb_child.AddComponent<Rigidbody>();
+				Physics.IgnoreCollision(root.collider, limb_child.collider, true);
+				
+				// add joint to parent
+				HingeJoint jnt = limb.AddComponent<HingeJoint>();
+				jnt.axis = new Vector3(1F,0F,0F);
+				jnt.anchor = new Vector3(0F,0F,.5F);
+				jnt.connectedBody = limb_child.rigidbody;
+
+				JointMotor jm = new JointMotor();
+				jm.force = 10000;
+				jm.targetVelocity = -50;
+				jnt.motor = jm;
+				
+				limb_child.rigidbody.mass = 1;
+				//limb_child.collider.material = (PhysicMaterial) Resources.Load("Physics Materials/Rubber");
+	
+				foreach (GameObject lmb in limb_objects) {
+					Physics.IgnoreCollision(limb_child.collider, lmb.collider, true);
+				}
+				limb_objects.Add(limb_child);
+			}
+			
+			if (limb_child != null) {
+				HingeJoint hj_child = limb.AddComponent<HingeJoint>();
+				hj_child.axis = new Vector3(0.5F, 0F, 0F);
+				hj_child.anchor = new Vector3(0F, 0F, -0.5F);
+				hj_child.connectedBody = limb_child.rigidbody;
+				Physics.IgnoreCollision(root.collider, limb_child.collider, true);
 			}
 		}
+		
+		age = 0.0D;
+		state = State.neutral;
+		
+		InvokeRepeating("updateAge",1.0f,1.0f);
+		InvokeRepeating("updateState",0,0.1f);
+		InvokeRepeating("metabolise",1.0f,1.0f);
+	}
+		
+	/*
+	 * Add 1 second to the creature's age when called.
+	 */
+	void updateAge() {
+		age += 1;
+	}
+
+	public void setEnergy(double n) {
+		energy = n;
+	}
+	
+	void updateState() {
+		if(state != Creature.State.mating) {
+			if (energy < hunger_threshold) {
+				state = State.hungry;
+			}
+			if (energy >= hunger_threshold && age > age_sexual_maturity) {
+				state = State.pursuing_mate;
+			}
+		}
+	}
+	
+	public void invokechromosome (Chromosome gs) {
+		this.chromosome = gs;
+	}
+	
+	/*
+	 * 
+	 */
+	public void setRootSize (Vector3 scale) {
+		rootsize = scale;	
 	}
 	
 	
 	/*
 	 * Return the current energy value for the creature
 	 */
-	public int getEnergy () {
+	public double getEnergy () {
 		return energy;
 	}
 	
 	/*
 	 * Add to the creature the energy of what it ate
 	 */
-	public void eat (int n) {
+	public void addEnergy (double n) {
 		energy += n;
-		if (energy > MAX_ENERGY) energy = MAX_ENERGY;
+		if (energy > MAX_ENERGY) {
+			double remainder = energy - MAX_ENERGY;
+			energy = MAX_ENERGY;
+			eth.addToEnergy(remainder);
+		}
 	}
 	
-	public void subtractEnergy (int n) {
-		energy -= n;
-		if(energy < 0) energy = 0;
+	/*
+	 * Remove a specified amount of energy from the creature,
+	 * kill it if the creature's energy reaches zero.
+	 */
+	public void subtractEnergy (double n) {
+		if (energy <= n) {
+			eth.addToEnergy(energy);
+			energy = 0;
+			kill ();
+		} else
+			energy -= n;
+	}
+	
+	/*
+	 * Remove energy from the creature for merely existing,
+	 * return it to the ether.
+	 */
+	private void metabolise () {
+		subtractEnergy(metabolic_rate);
+		eth.addToEnergy(metabolic_rate);
 	}
 	
 	/*
 	 * Remove the creature from existence and return
 	 * the creature's energy.
 	 */
-	public int kill () {
+	public double kill () {
 		Destroy(gameObject);
 		crt_count.number_of_creatures--;
 		return energy;
-	}
-	
-	
-	/*
-	 * Stuff to make the creatures move to keyboard commands
-	 */
-	
-	void moveForward (float n) {
-		Vector3 fwd = _t.forward;
-		fwd.y = 0;
-		fwd.Normalize();
-		_t.position += n * fwd;
-	}
-	
-	void changeHeading (float n) {
-		hdg += n;
-		wrapAngle(hdg);
-		_t.localEulerAngles = new Vector3(0,hdg,0);
-	}
-	
-	void wrapAngle (float angle) {
-		if (angle < -360F)
-			angle += 360F;
-		if (angle > 360F)
-			angle -= 360F;
 	}
 
 }

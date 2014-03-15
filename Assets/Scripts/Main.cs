@@ -14,7 +14,8 @@ using System.Collections;
 public class Main : MonoBehaviour {
 
 	#pragma warning disable 0414
-	// Logger lg;
+	 Logger lg;
+	 Settings settings;
 	 Spawner spw;
 	 GeneticsMain gm;
 	 CollisionMediator co;
@@ -22,7 +23,7 @@ public class Main : MonoBehaviour {
 	 GameObject aperatus;
 	 GameObject cam;
 	 GameObject plane;
-	 GameObject ether;
+	 Ether ether;
 	 GameObject _catch;
 	 GameObject nrg_ether;
 	 GameObject gui_text;
@@ -34,20 +35,25 @@ public class Main : MonoBehaviour {
 	 * Instantiate all necessary objects, attach and configure
 	 * Components as needed.
 	 */
-	void Start () {
-		//lg = Logger.getInstance();
+	void Start () {		
+		lg = Logger.getInstance();
+		settings = Settings.getInstance();
+		
 		aperatus = (GameObject)Instantiate(Resources.Load("Prefabs/Aperatus"));
 		cam = GameObject.Find("Main Camera");
 		cam.AddComponent("CameraCtl");
-		cam.AddComponent("PauseMenu");
 		plane = GameObject.Find("Plane");
+		
 		p_mr = (MeshRenderer)plane.AddComponent("MeshRenderer");
 		p_mr.material = (Material)Resources.Load("Materials/grid");
-		p_mr.material.mainTextureScale = new Vector2(50,50);
+		int tile_scale = (int) settings.contents["environment"]["tile_scale"];
+		p_mr.material.mainTextureScale = new Vector2(tile_scale, tile_scale);
+		
 		_catch = GameObject.Find("Catch");
 		_catch.AddComponent("Catch");
-		ether = (GameObject)Instantiate(Resources.Load("Prefabs/Ether"));
-		ether.AddComponent("Ether");
+		
+		ether = Ether.getInstance();
+		
 		gui_text = (GameObject)Instantiate(Resources.Load("Prefabs/GUItext"));
 		
 		co = CollisionMediator.getInstance();
