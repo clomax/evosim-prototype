@@ -61,11 +61,4 @@ public class Main : MonoBehaviour {
 		gm = GeneticsMain.getInstance();
 	}
 	
-	/*
-	 * Cleanup before exiting
-	 */
-	void OnDestroy() {
-		//lg.close();
-	}
-	
 }

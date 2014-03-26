@@ -1,7 +1,7 @@
 ﻿{
 	"config": {
-		"population_logging"		: 0,
-		"foodbit_logging"			: 0,
+		"population_logging"		: 1,
+		"foodbit_logging"			: 1,
 		"log_time"					: 1.0
 	},
 
@@ -11,15 +11,15 @@
 	
 	"ether": {
 		"total_energy"				: 10000.0,
-		"start_number_foodbits"		: 100,
-		"starting_creatures"		: 10,
-		"creature_spread"			: 20
+		"start_number_foodbits"		: 300,
+		"starting_creatures"		: 50,
+		"creature_spread"			: 100
 	},
 	
 	"foodbit": {
-		"init_energy"				: 30.0,
+		"init_energy"				: 35.0,
 		"destroy_at"				: 10.0,
-		"spore_time"				: 0.75,
+		"spore_time"				: 0.5,
 		"spore_range"				: 150,
 		"spore_rate"				: 1.0,
 		"wide_spread"				: 400.0,

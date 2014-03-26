@@ -26,6 +26,7 @@ public class Logger : MonoBehaviour {
 	int log_fbit_data;
 
 	float log_time;
+	string data_folder = "data";
 	string crt_count_filename;
 	string fbit_count_filename;
 
@@ -42,6 +43,9 @@ public class Logger : MonoBehaviour {
 		settings = Settings.getInstance();
 		cc = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
 		fc = GameObject.Find("FoodbitCount").GetComponent<FoodbitCount>();
+
+		if (!Directory.Exists(Application.dataPath + "/" + data_folder))
+			System.IO.Directory.CreateDirectory(Application.dataPath + "/" + data_folder);
 
 		log_pop_data = (int) settings.contents["config"]["population_logging"];
 		log_fbit_data = (int) settings.contents["config"]["foodbit_logging"];
@@ -73,7 +77,7 @@ public class Logger : MonoBehaviour {
 	}
 	
 	void write (String str, String file) {
-		File.AppendAllText(Application.dataPath + "/data/" + file + ".csv", str);
+		File.AppendAllText(Application.dataPath + "/" + data_folder + "/" + file + ".csv", str);
 	}
 
 }
