@@ -14,7 +14,7 @@ public class Settings : MonoBehaviour {
 	public static Settings instance;
 	
 	public Settings () {
-		sr = new StreamReader(Application.dataPath + "/" + settings_file);
+		sr = new StreamReader(Application.dataPath + "/Resources/" + settings_file);
 		raw_contents = sr.ReadToEnd();
 		contents = JsonMapper.ToObject(raw_contents);
 		sr.Close();
