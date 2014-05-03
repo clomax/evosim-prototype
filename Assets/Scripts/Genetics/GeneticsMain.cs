@@ -110,16 +110,22 @@ public class GeneticsMain : MonoBehaviour {
 				                             (float) Random.Range(min_limb_scale.y,max_limb_scale.y),
 				                             (float) Random.Range(min_limb_scale.z,max_limb_scale.z)
 				                            );
+
+				/* Generate joint parameters */
+				float freq = Random.Range(0F, 15F);
+				float amp = Random.Range (0F, 30F);
+				chromosome.addJoint(freq, amp);
 				
-				int recurrence = Random.Range(1,recurrence_limit);
-				for (int k=0; k<recurrence; k++) {
+				int recurrence = Random.Range(1,recurrence_limit+1);
+				int recurrences = recurrence;
+				for (int k=0; k<recurrences; k++) {
 					// create new limb
 					point = Vector3.zero;	// Position is not a factor in child limbs, set it to zero
 					scale = new Vector3 ((float) Random.Range(min_limb_scale.x,max_limb_scale.x),
 		                                 (float) Random.Range(min_limb_scale.y,max_limb_scale.y),
 		                                 (float) Random.Range(min_limb_scale.z,max_limb_scale.z)
 		                                );
-					recurrence -= 1;
+					recurrences -= 1;
 					chromosome.addLimb(col, point, scale, recurrence);
 				}
 			}

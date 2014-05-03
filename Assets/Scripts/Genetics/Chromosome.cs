@@ -20,6 +20,12 @@ public class Chromosome {
 	ArrayList limbs = new ArrayList();	
 	ArrayList limb;
 
+	ArrayList joints = new ArrayList();
+	ArrayList joint;
+
+	Vector3 joint_axis;
+
+
 	public Color getColour () {
 		return colour;	
 	}
@@ -60,6 +66,12 @@ public class Chromosome {
 		limb.Add(scale);
 		limb.Add(recur);
 		limbs.Add(limb);
+	}
+
+	public void addJoint (float freq, float amp) {
+		joint = new ArrayList();
+		joint.Add(freq);
+		joint.Add(amp);
 	}
 	
 	public void delLimb () {

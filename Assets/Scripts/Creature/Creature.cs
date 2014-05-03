@@ -131,6 +131,10 @@ public class Creature : MonoBehaviour {
 		InvokeRepeating("updateState",0,0.1f);
 		InvokeRepeating("metabolise",1.0f,1.0f);
 	}
+
+	void Update () {
+		Sine(10f);
+	}
 		
 	/*
 	 * Add 1 second to the creature's age when called.
@@ -164,7 +168,11 @@ public class Creature : MonoBehaviour {
 	public void setRootSize (Vector3 scale) {
 		rootsize = scale;	
 	}
-	
+
+	void Sine (float x) {
+		float y = Mathf.Sin(Time.time * x);
+		//Debug.Log(y);
+	}
 	
 	/*
 	 * Return the current energy value for the creature
@@ -257,9 +265,31 @@ public class Creature : MonoBehaviour {
 			}
 			limb_objects.Add(limb);
 
+			GameObject limb_child = null;
 			for (int j=0; j<limb_script.getRecurrances(); j++) {
-				if (j == 5)
-					Debug.Log(j);
+				limb_child = GameObject.CreatePrimitive(PrimitiveType.Cube);
+				limb_script = limb_child.AddComponent<Limb>();
+				limb_script.setColour((Color) l[0]);
+
+				limb_child.transform.parent = _t;
+				limb_script.setScale (limb.transform.localScale * 0.8F);
+
+				limb_child.transform.localPosition = limb.transform.localPosition;
+				limb_child.transform.Translate (new Vector3(0,0,-limb_child.transform.localScale.z), limb.transform);
+
+				limb_child.transform.LookAt(limb.transform);
+
+				limb_child.transform.localRotation = limb.transform.localRotation;
+
+				limb_child.AddComponent<Rigidbody>();
+				limb_child.rigidbody.mass = 1;
+
+				HingeJoint hj = limb_child.AddComponent<HingeJoint>();
+				hj.axis = new Vector3(0.5F,0F,0F);
+				hj.anchor = new Vector3(0F,0F,0.5F);
+				hj.connectedBody = limb.rigidbody;
+				Physics.IgnoreCollision(root.collider,limb_child.collider,true);
+				Physics.IgnoreCollision(limb.collider,limb_child.collider,true);
 			}
 		}
 	}

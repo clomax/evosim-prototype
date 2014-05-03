@@ -10,16 +10,16 @@
 	},
 	
 	"ether": {
-		"total_energy"				: 10000.0,
-		"start_number_foodbits"		: 100,
-		"starting_creatures"		: 10,
-		"creature_spread"			: 20
+		"total_energy"				: 17500.0,
+		"start_number_foodbits"		: 50,
+		"starting_creatures"		: 30,
+		"creature_spread"			: 150
 	},
 	
 	"foodbit": {
-		"init_energy"				: 30.0,
+		"init_energy"				: 40.0,
 		"destroy_at"				: 10.0,
-		"spore_time"				: 0.75,
+		"spore_time"				: 0.5,
 		"spore_range"				: 150,
 		"spore_rate"				: 1.0,
 		"wide_spread"				: 400.0,
@@ -32,15 +32,15 @@
 		"MAX_ENERGY"				: 100.0,
 		"init_energy"				: 75.0,
 		"hunger_threshold"			: 50.0,
-		"line_of_sight"				: 80.0,
+		"line_of_sight"				: 0.0,
 		"energy_to_offspring"		: 0.50,
-		"metabolic_rate"			: 0.25,
+		"metabolic_rate"			: 0.20,
 		"mate_range"				: 10.0,
 		"eat_range"					: 10.0,
-		"eye_refresh_rate"			: 0.1,
+		"eye_refresh_rate"			: 0.5,
 		"age_sexual_maturity"		: 3,
-		"branch_limit"				: 4,
-		"recursion_limit"			: 5,
+		"branch_limit"				: 5,
+		"recurrence_limit"			: 5,
 		
 		"root": {
 			"max_root_scale" : {
@@ -58,14 +58,14 @@
 		
 		"limb": {
 			"max_limb_scale" : {
-				"x"					: 2.0,
-				"y"					: 2.0,
-				"z"					: 5.0
+				"x"					: 1.0,
+				"y"					: 1.0,
+				"z"					: 4.0
 			},
 			"min_limb_scale" : {
-				"x"					: 2.0,
-				"y"					: 2.0,
-				"z"					: 5.0
+				"x"					: 3.0,
+				"y"					: 3.0,
+				"z"					: 7.0
 			}
 		}
 	},
@@ -77,6 +77,6 @@
 	"genetics": {
 		"crossover_rate"			: 0.5,
 		"mutation_rate"				: 0.2,
-		"mutation_factor"			: 0.1
+		"mutation_factor"			: 0.2
 	}
 }

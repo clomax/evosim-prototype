@@ -2,20 +2,17 @@ using UnityEngine;
 using System.Collections;
 
 public class Limb : MonoBehaviour {
-	
-	MeshRenderer mr;
-	Color c;
-	Vector3 position;
-	Vector3 scale;
-	
+
 	public GameObject parent;
-	
+	MeshRenderer mr;
 	HingeJoint hj;
-	
 	int recurrances;
 	
 	void Start () {
 		gameObject.name = "limb";
+	}
+
+	public void addSegment () {
 	}
 	
 	public void setColour (Color c) {
@@ -24,16 +21,13 @@ public class Limb : MonoBehaviour {
 	}
 	
 	public void setPosition (Vector3 p) {
-		position = p;
 		transform.localPosition = p;
 	}
 	
 	public void setScale (Vector3 s) {
-		scale = s;
 		transform.localScale = s;
 	}
-	
-	
+
 	public void setRecurrances (int r) {
 		recurrances = r;
 	}
