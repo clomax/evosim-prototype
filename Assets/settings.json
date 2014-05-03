@@ -32,7 +32,7 @@
 		"MAX_ENERGY"				: 100.0,
 		"init_energy"				: 75.0,
 		"hunger_threshold"			: 50.0,
-		"line_of_sight"				: 0.0,
+		"line_of_sight"				: 80.0,
 		"energy_to_offspring"		: 0.50,
 		"metabolic_rate"			: 0.20,
 		"mate_range"				: 10.0,
