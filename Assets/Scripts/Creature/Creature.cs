@@ -11,8 +11,6 @@ using System.Collections;
  */
 
 public class Creature : MonoBehaviour {
-
-	private static double MAX_ENERGY = 100.0D;
 	
 	Transform 		_t;
 	
@@ -42,6 +40,7 @@ public class Creature : MonoBehaviour {
 	double 			hunger_threshold;
 	double 			metabolic_rate;
 	int 			age_sexual_maturity;
+	double			max_energy;
 	
 	public enum State { hungry,
 						pursuing_mate,
@@ -121,6 +120,7 @@ public class Creature : MonoBehaviour {
 		age_sexual_maturity = (int)		settings.contents ["creature"]["age_sexual_maturity"];
 		branch_limit 		= (int)		settings.contents ["creature"]["branch_limit"];
 		recurrence_limit	= (int)		settings.contents ["creature"]["recurrence_limit"];
+		max_energy			= (double)	settings.contents ["creature"]["MAX_ENERGY"];
 
 		setupLimbs();
 
@@ -186,9 +186,9 @@ public class Creature : MonoBehaviour {
 	 */
 	public void addEnergy (double n) {
 		energy += n;
-		if (energy > MAX_ENERGY) {
-			double remainder = energy - MAX_ENERGY;
-			energy = MAX_ENERGY;
+		if (energy > max_energy) {
+			double remainder = energy - max_energy;
+			energy = max_energy;
 			eth.addToEnergy(remainder);
 		}
 	}

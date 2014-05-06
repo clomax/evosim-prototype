@@ -87,7 +87,7 @@ public class GeneticsMain : MonoBehaviour {
 								   );
 			
 			// random initial limbs
-			int branches = Random.Range (1,branch_limit);
+			int branches = Random.Range (1,branch_limit+1);
 			chromosome.setBranches(branches);
 			for (int j=0; j<branches; j++) {
 				
@@ -116,9 +116,9 @@ public class GeneticsMain : MonoBehaviour {
 				float amp = Random.Range (0F, 30F);
 				chromosome.addJoint(freq, amp);
 				
-				int recurrence = Random.Range(1,recurrence_limit+1);
+				int recurrence = Random.Range(0,recurrence_limit+1);
 				int recurrences = recurrence;
-				for (int k=0; k<recurrences; k++) {
+				for (int k=0; k<=recurrences; k++) {
 					// create new limb
 					point = Vector3.zero;	// Position is not a factor in child limbs, set it to zero
 					scale = new Vector3 ((float) Random.Range(min_limb_scale.x,max_limb_scale.x),
