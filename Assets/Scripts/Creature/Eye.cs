@@ -77,6 +77,8 @@ public class Eye : MonoBehaviour {
 						co.observe(crt.genital.gameObject, other_genital.gameObject);
 						other_crt.state = Creature.State.mating;
 						crt.state = Creature.State.mating;
+						crt.times_mated++;
+						other_crt.times_mated++;
 					}
 					dist = curr_dist;
 				}
@@ -106,6 +108,7 @@ public class Eye : MonoBehaviour {
 					fbit = f.GetComponent<Foodbit>();
 					crt.addEnergy(fbit.energy);
 					fbit.destroy ();
+					crt.times_eaten++;
 				}
 			}
 		}
