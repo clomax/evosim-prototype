@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 /*
@@ -11,8 +12,6 @@ using System.Collections;
  */
 
 public class Creature : MonoBehaviour {
-
-	private static double MAX_ENERGY = 100.0D;
 	
 	Transform 		_t;
 	
@@ -42,6 +41,7 @@ public class Creature : MonoBehaviour {
 	double 			hunger_threshold;
 	double 			metabolic_rate;
 	int 			age_sexual_maturity;
+	double			max_energy;
 	
 	public enum State { hungry,
 						pursuing_mate,
@@ -50,15 +50,11 @@ public class Creature : MonoBehaviour {
 						neutral
 					  };
 	public State state;
-	
-	int branch_limit;
-	int recursion_limit;
-	
+
 	GameObject limb;
 	GameObject limb_child;
-	int branches;
-	ArrayList limbs;
-	
+	MultiDimList branches;
+
 	Renderer rd;
 
 	void Start () {
@@ -68,7 +64,8 @@ public class Creature : MonoBehaviour {
 		eth = Ether.getInstance();
 		settings = Settings.getInstance();
 		crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
-		
+
+
 		max_root_scale = new Vector3();
 		max_root_scale.x = float.Parse( settings.contents["creature"]["root"]["max_root_scale"]["x"].ToString() );
 		max_root_scale.y = float.Parse( settings.contents["creature"]["root"]["max_root_scale"]["y"].ToString() );
@@ -89,7 +86,7 @@ public class Creature : MonoBehaviour {
 		root_script = root.AddComponent<Root>();
 		root_script.setColour(chromosome.getColour());
 		root_script.setScale(chromosome.getRootScale());
-		root.rigidbody.mass = 10;
+		root.rigidbody.mass = 3;
 		
 		rd = root.GetComponent<Renderer>();
 		
@@ -118,105 +115,20 @@ public class Creature : MonoBehaviour {
 		line_of_sight 		= (double) 	settings.contents ["creature"]["line_of_sight"];
 		metabolic_rate 		= (double) 	settings.contents ["creature"]["metabolic_rate"];
 		age_sexual_maturity = (int)		settings.contents ["creature"]["age_sexual_maturity"];
-		branch_limit 		= (int)		settings.contents ["creature"]["branch_limit"];
-		recursion_limit		= (int)		settings.contents ["creature"]["recursion_limit"];
-		
-		limbs = chromosome.getLimbs();
-		branches = chromosome.getBranches();
-		ArrayList limb_objects = new ArrayList();
-		
-		for (int i=0; i<branches; i++) {
-			limb = GameObject.CreatePrimitive(PrimitiveType.Cube);
-			limb.transform.parent = _t;
-			
-			Limb limb_script = limb.AddComponent<Limb>();
-			ArrayList l = (ArrayList) limbs[i];
-			
-			limb_script.setColour		( (Color)	l[0] );
-			limb_script.setPosition		( (Vector3) l[1] );
-			limb_script.setScale		( (Vector3) l[2] );
-			limb_script.setPosition		( Utility.RandomPointInsideCube(root.transform.localScale) );
-			limb_script.setRecurrances	( (int) 	l[3] );
-			limb.transform.LookAt(root.transform);
-			
-			limb.AddComponent<Rigidbody>();
-			
-			/* Hingejoint connecting limb to root */
-			HingeJoint hj_root = limb.AddComponent<HingeJoint>();
-			hj_root.axis = new Vector3(0.5F, 0F, 0F);
-			hj_root.anchor = new Vector3(0F, 0F, 0.5F);
-			hj_root.connectedBody = root.rigidbody;
-			Physics.IgnoreCollision(root.collider, limb.collider, true);
-			
-			JointMotor m = new JointMotor();
-			m.force = 10000;
-			m.targetVelocity = 200;
-			hj_root.motor = m;
-			
-			limb.rigidbody.mass = 3;
+		max_energy			= (double)	settings.contents ["creature"]["MAX_ENERGY"];
 
-			foreach (GameObject lmb in limb_objects) {
-				Physics.IgnoreCollision(limb.collider, lmb.collider, true);
-			}
-			limb_objects.Add(limb);
-			
-			GameObject limb_child = null;
-			for (int j=0; j<limb_script.getRecurrances(); j++) {
-				limb_child = GameObject.CreatePrimitive(PrimitiveType.Cube);
-				limb_child.transform.parent = _t;				
-				limb_script = limb_child.AddComponent<Limb>();
-				limb_script.parent = limb;
-				
-				limb_script.setColour		( (Color)	l[0] );
-				limb_child.transform.parent = limb.transform;
-				//limb_script.setPosition		( new Vector3(0,0,limb.transform.localPosition.z) / 2 );
-				limb_script.setPosition		( new Vector3(0,0,-0.9F) );
-				limb_child.transform.parent = _t;
-				limb_script.setScale		( new Vector3(1.6F,1.6F,4.4F) );
-				limb_script.setRecurrances	( 1 );
-				
-				limb_child.transform.LookAt(limb.transform);
+		setupLimbs();
 
-
-				
-				limb_child.AddComponent<Rigidbody>();
-				Physics.IgnoreCollision(root.collider, limb_child.collider, true);
-				
-				// add joint to parent
-				HingeJoint jnt = limb.AddComponent<HingeJoint>();
-				jnt.axis = new Vector3(1F,0F,0F);
-				jnt.anchor = new Vector3(0F,0F,.5F);
-				jnt.connectedBody = limb_child.rigidbody;
-
-				JointMotor jm = new JointMotor();
-				jm.force = 10000;
-				jm.targetVelocity = -50;
-				jnt.motor = jm;
-				
-				limb_child.rigidbody.mass = 1;
-				//limb_child.collider.material = (PhysicMaterial) Resources.Load("Physics Materials/Rubber");
-	
-				foreach (GameObject lmb in limb_objects) {
-					Physics.IgnoreCollision(limb_child.collider, lmb.collider, true);
-				}
-				limb_objects.Add(limb_child);
-			}
-			
-			if (limb_child != null) {
-				HingeJoint hj_child = limb.AddComponent<HingeJoint>();
-				hj_child.axis = new Vector3(0.5F, 0F, 0F);
-				hj_child.anchor = new Vector3(0F, 0F, -0.5F);
-				hj_child.connectedBody = limb_child.rigidbody;
-				Physics.IgnoreCollision(root.collider, limb_child.collider, true);
-			}
-		}
-		
 		age = 0.0D;
 		state = State.neutral;
 		
 		InvokeRepeating("updateAge",1.0f,1.0f);
 		InvokeRepeating("updateState",0,0.1f);
 		InvokeRepeating("metabolise",1.0f,1.0f);
+	}
+
+	void Update () {
+		//Sine(10f);
 	}
 		
 	/*
@@ -251,7 +163,10 @@ public class Creature : MonoBehaviour {
 	public void setRootSize (Vector3 scale) {
 		rootsize = scale;	
 	}
-	
+
+	void Sine (float x) {
+		float y = Mathf.Sin(Time.time * x);
+	}
 	
 	/*
 	 * Return the current energy value for the creature
@@ -265,9 +180,9 @@ public class Creature : MonoBehaviour {
 	 */
 	public void addEnergy (double n) {
 		energy += n;
-		if (energy > MAX_ENERGY) {
-			double remainder = energy - MAX_ENERGY;
-			energy = MAX_ENERGY;
+		if (energy > max_energy) {
+			double remainder = energy - max_energy;
+			energy = max_energy;
 			eth.addToEnergy(remainder);
 		}
 	}
@@ -304,4 +219,66 @@ public class Creature : MonoBehaviour {
 		return energy;
 	}
 
+	private void setupLimbs () {
+		branches = chromosome.getBranches();
+
+		for (int i=0; i<branches.Count; i++) {
+			List<GameObject> limbs = branches[i];
+			List<GameObject> actual_limbs = new List<GameObject>();
+
+			for (int j=0; j<limbs.Count; j++) {
+				Limb chromosome_limb_script = limbs[j].GetComponent<Limb>();
+
+				GameObject limb = GameObject.CreatePrimitive(PrimitiveType.Cube);
+				actual_limbs.Add(limb);
+				limb.layer = LayerMask.NameToLayer("Creature");
+				limb.name = "limb_"+i+"_"+j;
+				limb.transform.parent = _t;
+
+				Rigidbody rigidbody = limb.AddComponent<Rigidbody>();
+				limb.AddComponent<BoxCollider>();
+				rigidbody.mass = 1;
+
+				Limb limb_script = limb.AddComponent<Limb>();
+
+
+				limb_script.setScale( chromosome_limb_script.getScale() );
+				limb_script.setColour( chromosome_limb_script.getColour() );
+				if(j == 0) {
+					limb_script.setPosition( chromosome_limb_script.getPosition() );
+					limb.transform.LookAt(root.transform);
+				} else {
+					limb_script.setPosition( actual_limbs[j-1].transform.localPosition );
+					limb.transform.LookAt(root.transform);
+					limb.transform.Translate(0,0,-limb.transform.localScale.z);
+				}
+
+				HingeJoint hj = limb.AddComponent<HingeJoint>();
+				hj.axis = new Vector3(0.5F, 0F, 0F);
+				hj.anchor = new Vector3(0F, 0F, 0.5F);
+				if(j == 0)	hj.connectedBody = root.rigidbody;
+				else      	hj.connectedBody = actual_limbs[j-1].rigidbody;
+
+				JointMotor jm = new JointMotor();
+				jm.force = 100000;
+				jm.targetVelocity = 200;
+				if (j==0)
+					hj.motor = jm;
+
+			}
+		}
+
+		root.layer = LayerMask.NameToLayer("Creature");
+		Physics.IgnoreLayerCollision(8,8);
+	}
+
 }
+
+
+
+
+
+
+
+
+

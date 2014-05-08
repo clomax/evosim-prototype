@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 /*
@@ -13,7 +14,7 @@ using System.Collections;
  
 
 public class Utility : MonoBehaviour {
-	
+
 	static System.Random rnd = new System.Random();
 	
 	 // generate random float in the vicinity of n
@@ -59,3 +60,5 @@ public class Utility : MonoBehaviour {
 	}
 	
 }
+
+public class MultiDimList : List<List<GameObject>> { }

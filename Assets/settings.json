@@ -1,7 +1,7 @@
 ﻿{
 	"config": {
-		"population_logging"		: 1,
-		"foodbit_logging"			: 1,
+		"population_logging"		: 0,
+		"foodbit_logging"			: 0,
 		"log_time"					: 1.0
 	},
 
@@ -10,16 +10,16 @@
 	},
 	
 	"ether": {
-		"total_energy"				: 10000.0,
-		"start_number_foodbits"		: 300,
+		"total_energy"				: 20000.0,
+		"start_number_foodbits"		: 100,
 		"starting_creatures"		: 50,
-		"creature_spread"			: 100
+		"creature_spread"			: 250
 	},
 	
 	"foodbit": {
-		"init_energy"				: 35.0,
+		"init_energy"				: 50.0,
 		"destroy_at"				: 10.0,
-		"spore_time"				: 0.5,
+		"spore_time"				: 0.1,
 		"spore_range"				: 150,
 		"spore_rate"				: 1.0,
 		"wide_spread"				: 400.0,
@@ -30,17 +30,17 @@
 	
 	"creature": {
 		"MAX_ENERGY"				: 100.0,
-		"init_energy"				: 75.0,
+		"init_energy"				: 80.0,
 		"hunger_threshold"			: 50.0,
-		"line_of_sight"				: 80.0,
-		"energy_to_offspring"		: 0.50,
-		"metabolic_rate"			: 0.25,
+		"line_of_sight"				: 50.0,
+		"energy_to_offspring"		: 0.45,
+		"metabolic_rate"			: 0.20,
 		"mate_range"				: 10.0,
 		"eat_range"					: 10.0,
-		"eye_refresh_rate"			: 0.1,
-		"age_sexual_maturity"		: 3,
+		"eye_refresh_rate"			: 0.5,
+		"age_sexual_maturity"		: 6,
 		"branch_limit"				: 4,
-		"recursion_limit"			: 5,
+		"recurrence_limit"			: 2,
 		
 		"root": {
 			"max_root_scale" : {
@@ -54,6 +54,19 @@
 				"y"					: 3.0,
 				"z"					: 4.0
 			}
+		},
+		
+		"limb": {
+			"max_limb_scale" : {
+				"x"					: 1.0,
+				"y"					: 1.0,
+				"z"					: 4.0
+			},
+			"min_limb_scale" : {
+				"x"					: 3.0,
+				"y"					: 3.0,
+				"z"					: 7.0
+			}
 		}
 	},
 	
@@ -64,6 +77,6 @@
 	"genetics": {
 		"crossover_rate"			: 0.5,
 		"mutation_rate"				: 0.2,
-		"mutation_factor"			: 0.1
+		"mutation_factor"			: 0.2
 	}
 }
