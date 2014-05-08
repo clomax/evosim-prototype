@@ -259,11 +259,19 @@ public class Creature : MonoBehaviour {
 				if(j == 0)	hj.connectedBody = root.rigidbody;
 				else      	hj.connectedBody = actual_limbs[j-1].rigidbody;
 
-				JointMotor jm = new JointMotor();
-				jm.force = 100000;
-				jm.targetVelocity = 200;
-				if (j==0)
-					hj.motor = jm;
+				JointLimits jl = new JointLimits();
+				jl.min = -90;
+				jl.max = 90;
+				hj.limits = jl;
+
+				JointSpring js = new JointSpring();
+				js.damper = 10;
+				js.spring = 1000;
+				js.targetPosition = 0;
+				hj.spring = js;
+
+				hj.useLimits = true;
+				hj.useSpring = true;
 
 			}
 		}
