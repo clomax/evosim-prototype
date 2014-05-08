@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 /*
  *		Author: 	Craig Lomax
@@ -13,7 +14,7 @@ using System.Collections;
 public class GeneticsUtils {
 	
 	static System.Random rnd = new System.Random();
-	
+
 	static Vector3 c2_v;
 
 	public static Chromosome mutate (Chromosome c, double rate, float factor) {
@@ -41,7 +42,8 @@ public class GeneticsUtils {
 			if (rand < rate)
 				rs[i] += randomiseGene(factor);
 		}
-		c.setRootScale(rs[0], rs[1], rs[2]);
+		Vector3 rootScale = new Vector3 (rs[0], rs[1], rs[2]);
+		c.setRootScale(rootScale);
 		
 		// mutate limbs
 		cc = c.getLimbColour();
@@ -55,18 +57,25 @@ public class GeneticsUtils {
 		}
 		c.setLimbColour(cs[0], cs[1], cs[2]);
 
-		ArrayList limbs = c.getLimbs();
-		for (int i=0; i<limbs.Count; i++) {
-			ArrayList l = (ArrayList) limbs[i];
-			for (int j=1; j<l.Count-1; j++) {
-				Vector3 v = (Vector3) l[j];
-				for (int k=0; k<3; k++) {
-					double rand = rnd.NextDouble();
-					if(rand < rate)
-						v[k] += randomiseGene(factor);
+		MultiDimList branches = c.getBranches();
+		for (int b=0; b<branches.Count; b++) {
+			List<GameObject> limbs = branches[b];
+			for (int i=0; i<limbs.Count; i++) {
+				GameObject l = limbs[i];
+				try {
+					Limb l_script = l.GetComponent<Limb>();
+					Vector3 v = l_script.getScale();
+					for (int k=0; k<3; k++) {
+						double rand = rnd.NextDouble();
+						if(rand < rate)
+							v[k] += randomiseGene(factor);
+						}
+				} catch {
+					break;
 				}
 			}
 		}
+		c.setBranches(branches);
 		
 		return c;
 	}
@@ -82,38 +91,41 @@ public class GeneticsUtils {
 				col[i] = c2.getColour()[i];
 		}
 		c.setColour(col[0], col[1], col[2]);
-		
-		// Crossover limbs
-		// get limbs from first creature
-		ArrayList c_limbs = c.getLimbs();
 
-		// get limbs from second creature
-		ArrayList c2_limbs = c2.getLimbs();
-		
-		// Collect limb attributes from second creature
-		
-		for (int i=0; i<c2_limbs.Count; i++) {
-			ArrayList c2_l = (ArrayList) c2_limbs[i];
-			
-			for (int j=1; j<c2_l.Count-1; j++) {
-				c2_v = (Vector3) c2_l[j];
-			}
+		// Crossover limbs
+		MultiDimList c1_branches = c1.getBranches();
+		MultiDimList c2_branches = c2.getBranches();
+		MultiDimList c_branches;
+
+		// Randomly select the parent from which the child will derive its limb structure
+		int select = Random.Range(0,2);
+		MultiDimList other_crt_branches;
+		if (select == 0) {
+			c_branches = c1_branches;
+			other_crt_branches = c2_branches;
+		} else {
+			c_branches = c2_branches;
+			other_crt_branches = c1_branches;
 		}
 		
-		// Randomly select attributes from second creature's limbs to
-		//	assign to creature's limbs
-		for (int i=0; i<c_limbs.Count; i++) {
-			ArrayList c_l = (ArrayList) c_limbs[i];
+		// Randomly select attributes from the selected creature's limbs to
+		//	assign to child creature's limbs
+		for (int i=0; i<c_branches.Count; i++) {
+			List<GameObject> c_limbs = c_branches[i];
 			
-			for (int j=1; j<c_l.Count-1; j++) {
-				Vector3 c_v = (Vector3) c_l[j];
-				
-				for (int k=0; k<3; k++) {
-					double rand = rnd.NextDouble();
-					int index = Random.Range(0,3);
-					
-					if(rand < rate)
-						c_v[k] = c2_v[index];
+			for (int j=1; j<c_limbs.Count; j++) {
+				double rand = rnd.NextDouble();
+				if (rand < rate) {
+					Limb limb_script;
+					Limb child_limb_script;
+					try {
+						limb_script = c_limbs[j].GetComponent<Limb>();
+						child_limb_script = other_crt_branches[i][j].GetComponent<Limb>();
+					} catch {
+						break;
+					}
+					child_limb_script.setScale(limb_script.getScale());
+					child_limb_script.setPosition(limb_script.getPosition());
 				}
 			}
 		}		

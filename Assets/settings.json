@@ -39,7 +39,7 @@
 		"eat_range"					: 10.0,
 		"eye_refresh_rate"			: 0.5,
 		"age_sexual_maturity"		: 6,
-		"branch_limit"				: 4,
+		"branch_limit"				: 2,
 		"recurrence_limit"			: 2,
 		
 		"root": {

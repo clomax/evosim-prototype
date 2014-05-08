@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 /*
@@ -49,15 +50,11 @@ public class Creature : MonoBehaviour {
 						neutral
 					  };
 	public State state;
-	
-	int branch_limit;
-	int recurrence_limit;
-	
+
 	GameObject limb;
 	GameObject limb_child;
-	int branches;
-	ArrayList limbs;
-	
+	MultiDimList branches;
+
 	Renderer rd;
 
 	void Start () {
@@ -89,7 +86,7 @@ public class Creature : MonoBehaviour {
 		root_script = root.AddComponent<Root>();
 		root_script.setColour(chromosome.getColour());
 		root_script.setScale(chromosome.getRootScale());
-		root.rigidbody.mass = 10;
+		root.rigidbody.mass = 3;
 		
 		rd = root.GetComponent<Renderer>();
 		
@@ -118,8 +115,6 @@ public class Creature : MonoBehaviour {
 		line_of_sight 		= (double) 	settings.contents ["creature"]["line_of_sight"];
 		metabolic_rate 		= (double) 	settings.contents ["creature"]["metabolic_rate"];
 		age_sexual_maturity = (int)		settings.contents ["creature"]["age_sexual_maturity"];
-		branch_limit 		= (int)		settings.contents ["creature"]["branch_limit"];
-		recurrence_limit	= (int)		settings.contents ["creature"]["recurrence_limit"];
 		max_energy			= (double)	settings.contents ["creature"]["MAX_ENERGY"];
 
 		setupLimbs();
@@ -171,7 +166,6 @@ public class Creature : MonoBehaviour {
 
 	void Sine (float x) {
 		float y = Mathf.Sin(Time.time * x);
-		//Debug.Log(y);
 	}
 	
 	/*
@@ -226,72 +220,61 @@ public class Creature : MonoBehaviour {
 	}
 
 	private void setupLimbs () {
-		limbs = chromosome.getLimbs();
 		branches = chromosome.getBranches();
-		ArrayList limb_objects = new ArrayList();
+		List<GameObject> ignore_physics_limbs = new List<GameObject>();
 
-		for (int i=0; i<branches; i++) {
-			limb = GameObject.CreatePrimitive(PrimitiveType.Cube);
-			limb.transform.parent = _t;
-			
-			Limb limb_script = limb.AddComponent<Limb>();
-			ArrayList l = (ArrayList) limbs[i];
-			
-			limb_script.setColour		( (Color)	l[0] );
-			limb_script.setPosition		( (Vector3) l[1] );
-			limb_script.setScale		( (Vector3) l[2] );
-			limb_script.setPosition		( Utility.RandomPointInsideCube(root.transform.localScale) );
-			limb_script.setRecurrances	( (int) 	l[3] );
-			limb.transform.LookAt(root.transform);
-			
-			limb.AddComponent<Rigidbody>();
-			
-			/* Hingejoint connecting limb to root */
-			HingeJoint hj_root = limb.AddComponent<HingeJoint>();
-			hj_root.axis = new Vector3(0.5F, 0F, 0F);
-			hj_root.anchor = new Vector3(0F, 0F, 0.5F);
-			hj_root.connectedBody = root.rigidbody;
-			Physics.IgnoreCollision(root.collider, limb.collider, true);
-			
-			JointMotor m = new JointMotor();
-			m.force = 10000;
-			m.targetVelocity = 200;
-			hj_root.motor = m;
-			
-			limb.rigidbody.mass = 3;
-			
-			foreach (GameObject lmb in limb_objects) {
-				Physics.IgnoreCollision(limb.collider, lmb.collider, true);
-			}
-			limb_objects.Add(limb);
+		for (int i=0; i<branches.Count; i++) {
+			List<GameObject> limbs = branches[i];
+			List<GameObject> actual_limbs = new List<GameObject>();
 
-			GameObject limb_child = null;
-			for (int j=0; j<limb_script.getRecurrances(); j++) {
-				limb_child = GameObject.CreatePrimitive(PrimitiveType.Cube);
-				limb_script = limb_child.AddComponent<Limb>();
-				limb_script.setColour((Color) l[0]);
+			for (int j=0; j<limbs.Count; j++) {
+				Limb chromosome_limb_script = limbs[j].GetComponent<Limb>();
 
-				limb_child.transform.parent = _t;
-				limb_script.setScale (limb.transform.localScale * 0.8F);
+				GameObject limb = GameObject.CreatePrimitive(PrimitiveType.Cube);
+				actual_limbs.Add(limb);
+				ignore_physics_limbs.Add (limb);
+				limb.name = "limb_"+i+"_"+j;
+				limb.transform.parent = _t;
 
-				limb_child.transform.localPosition = limb.transform.localPosition;
-				limb_child.transform.Translate (new Vector3(0,0,-limb_child.transform.localScale.z), limb.transform);
+				Rigidbody rigidbody = limb.AddComponent<Rigidbody>();
+				limb.AddComponent<BoxCollider>();
+				rigidbody.mass = 1;
 
-				limb_child.transform.LookAt(limb.transform);
+				Limb limb_script = limb.AddComponent<Limb>();
 
-				limb_child.transform.localRotation = limb.transform.localRotation;
 
-				limb_child.AddComponent<Rigidbody>();
-				limb_child.rigidbody.mass = 1;
+				limb_script.setScale( chromosome_limb_script.getScale() );
+				limb_script.setColour( chromosome_limb_script.getColour() );
+				if(j == 0) {
+					limb_script.setPosition( chromosome_limb_script.getPosition() );
+					limb.transform.LookAt(root.transform);
+				} else {
+					limb_script.setPosition( actual_limbs[j-1].transform.localPosition );
+					limb.transform.LookAt(root.transform);
+					limb.transform.Translate(0,0,-limb.transform.localScale.z);
+				}
 
-				HingeJoint hj = limb_child.AddComponent<HingeJoint>();
-				hj.axis = new Vector3(0.5F,0F,0F);
-				hj.anchor = new Vector3(0F,0F,0.5F);
-				hj.connectedBody = limb.rigidbody;
-				Physics.IgnoreCollision(root.collider,limb_child.collider,true);
-				Physics.IgnoreCollision(limb.collider,limb_child.collider,true);
+				HingeJoint hj = limb.AddComponent<HingeJoint>();
+				hj.axis = new Vector3(0.5F, 0F, 0F);
+				hj.anchor = new Vector3(0F, 0F, 0.5F);
+				if(j == 0)	hj.connectedBody = root.rigidbody;
+				else      	hj.connectedBody = actual_limbs[j-1].rigidbody;
 			}
 		}
+
+		root.layer = LayerMask.NameToLayer("Creature");
+		for(int i=0; i<ignore_physics_limbs.Count; i++)
+			ignore_physics_limbs[i].layer = LayerMask.NameToLayer("Creature");
+		Physics.IgnoreLayerCollision(8,8);
 	}
 
 }
+
+
+
+
+
+
+
+
+
