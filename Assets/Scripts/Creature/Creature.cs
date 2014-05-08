@@ -42,6 +42,9 @@ public class Creature : MonoBehaviour {
 	double 			metabolic_rate;
 	int 			age_sexual_maturity;
 	double			max_energy;
+
+	public int times_mated;
+	public int times_eaten;
 	
 	public enum State { hungry,
 						pursuing_mate,
@@ -121,6 +124,8 @@ public class Creature : MonoBehaviour {
 
 		age = 0.0D;
 		state = State.neutral;
+		times_eaten = 0;
+		times_mated = 0;
 		
 		InvokeRepeating("updateAge",1.0f,1.0f);
 		InvokeRepeating("updateState",0,0.1f);
