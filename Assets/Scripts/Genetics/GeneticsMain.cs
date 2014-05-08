@@ -134,7 +134,7 @@ public class GeneticsMain : MonoBehaviour {
 
 					Vector3 position = Utility.RandomPointInsideCube(rootScale);
 
-					limb_script.create(col, position, scale, new Vector3(0.5F,0,0));
+					limb_script.create(col, position, scale);
 				}
 			}
 

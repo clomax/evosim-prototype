@@ -9,12 +9,11 @@ public class Limb : MonoBehaviour {
 	void Start () {
 	}
 
-	public void create (Color c, Vector3 p, Vector3 s, Vector3 axis) {
+	public void create (Color c, Vector3 p, Vector3 s) {
 		mr = gameObject.AddComponent<MeshRenderer>();
 		setColour(c);
 		setPosition(p);
 		setScale(s);
-		setJoint (axis, new Vector3(0f,0f,0.5f), null);
 	}
 
 	public Color getColour () {
@@ -41,17 +40,4 @@ public class Limb : MonoBehaviour {
 		transform.localScale = s;
 	}
 
-	public void setJoint (Vector3 axis, Vector3 anchor, Rigidbody connected_body) {
-		hj = gameObject.AddComponent<HingeJoint>();
-		hj.axis = axis;
-		hj.anchor = anchor;
-		hj.connectedBody = connected_body;
-	}
-	
-	public void setMotor (float force, float target_vel) {
-		JointMotor m = new JointMotor();
-		m.force = force;
-		m.targetVelocity = target_vel;
-		hj.motor = m;
-	}
 }

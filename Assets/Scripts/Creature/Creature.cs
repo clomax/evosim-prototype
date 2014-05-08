@@ -128,7 +128,7 @@ public class Creature : MonoBehaviour {
 	}
 
 	void Update () {
-		Sine(10f);
+		//Sine(10f);
 	}
 		
 	/*
@@ -221,7 +221,6 @@ public class Creature : MonoBehaviour {
 
 	private void setupLimbs () {
 		branches = chromosome.getBranches();
-		List<GameObject> ignore_physics_limbs = new List<GameObject>();
 
 		for (int i=0; i<branches.Count; i++) {
 			List<GameObject> limbs = branches[i];
@@ -232,7 +231,7 @@ public class Creature : MonoBehaviour {
 
 				GameObject limb = GameObject.CreatePrimitive(PrimitiveType.Cube);
 				actual_limbs.Add(limb);
-				ignore_physics_limbs.Add (limb);
+				limb.layer = LayerMask.NameToLayer("Creature");
 				limb.name = "limb_"+i+"_"+j;
 				limb.transform.parent = _t;
 
@@ -259,12 +258,17 @@ public class Creature : MonoBehaviour {
 				hj.anchor = new Vector3(0F, 0F, 0.5F);
 				if(j == 0)	hj.connectedBody = root.rigidbody;
 				else      	hj.connectedBody = actual_limbs[j-1].rigidbody;
+
+				JointMotor jm = new JointMotor();
+				jm.force = 100000;
+				jm.targetVelocity = 200;
+				if (j==0)
+					hj.motor = jm;
+
 			}
 		}
 
 		root.layer = LayerMask.NameToLayer("Creature");
-		for(int i=0; i<ignore_physics_limbs.Count; i++)
-			ignore_physics_limbs[i].layer = LayerMask.NameToLayer("Creature");
 		Physics.IgnoreLayerCollision(8,8);
 	}
 
