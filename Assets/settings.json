@@ -23,7 +23,7 @@
 		"spore_range"				: 150,
 		"spore_rate"				: 1.0,
 		"wide_spread"				: 400.0,
-		"decay_amount"				: 0.4,
+		"decay_amount"				: 0.0,
 		"decay_time"				: 1.0,
 		"decay_rate"				: 0.1
 	},

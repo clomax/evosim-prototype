@@ -89,7 +89,7 @@ public class Creature : MonoBehaviour {
 		root_script = root.AddComponent<Root>();
 		root_script.setColour(chromosome.getColour());
 		root_script.setScale(chromosome.getRootScale());
-		root.rigidbody.mass = 10;
+		root.rigidbody.mass = 6;
 		
 		rd = root.GetComponent<Renderer>();
 		
@@ -135,14 +135,13 @@ public class Creature : MonoBehaviour {
 	void Update () {
 		for (int i=0; i<joints.Count; i++) {
 			JointSpring js = joints[i].hingeJoint.spring;
-			float target_pos = Sine (1.5f) * 45f;
-			js.targetPosition = target_pos;
+			js.targetPosition = Sine (1.5f) * 60f;
 			joints[i].hingeJoint.spring = js;
 		}
 	}
 
 	float Sine (float freq) {
-		return Mathf.Sin(Time.time * 5f);
+		return Mathf.Sin(Time.time * 10f);
 	}
 		
 	/*
@@ -280,7 +279,7 @@ public class Creature : MonoBehaviour {
 
 				JointSpring js = new JointSpring();
 				js.damper = 10;
-				js.spring = 5000;
+				js.spring = 10000;
 				js.targetPosition = 0;
 				hj.spring = js;
 
