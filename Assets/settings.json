@@ -34,7 +34,7 @@
 		"hunger_threshold"			: 50.0,
 		"line_of_sight"				: 50.0,
 		"energy_to_offspring"		: 0.45,
-		"metabolic_rate"			: 0.20,
+		"metabolic_rate"			: 0.10,
 		"mate_range"				: 10.0,
 		"eat_range"					: 10.0,
 		"eye_refresh_rate"			: 0.5,

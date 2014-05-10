@@ -72,7 +72,6 @@ public class GeneticsUtils {
 			}
 		}
 		c.setBranches(branches);
-		
 		return c;
 	}
 	
@@ -122,12 +121,27 @@ public class GeneticsUtils {
 				for (int s=0; s<3; s++) {
 					double rand = rnd.NextDouble();
 					if (rand < rate) {
-						other_crt_scale[s] = c_scale[s];
+						c_scale[s] = other_crt_scale[s];
+					}
+				}
+
+				//select random limb segment from other creature
+				other_crt_limbs = (ArrayList) other_crt_branches[Random.Range (0,other_crt_branches.Count)];
+				other_crt_attributes = (ArrayList) other_crt_limbs[Random.Range(0,other_crt_limbs.Count)];
+
+				Vector3 c_pos = (Vector3) c_attributes[0];
+				Vector3 other_crt_pos = (Vector3) other_crt_attributes[0];
+				for (int p=0; p<3; p++) {
+					double rand = rnd.NextDouble();
+					if (rand < rate) {
+						c_pos[p] = other_crt_pos[p];
 					}
 				}
 			}
+			c_branches[i] = c_limbs;
 		}
-		
+	
+		c.setBranches(c_branches);
 		return c;
 	}
 	
