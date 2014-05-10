@@ -32,6 +32,8 @@ public class Creature : MonoBehaviour {
 	
 	public CreatureCount crt_count;
 
+	List<HingeJoint> joints = new List<HingeJoint>();
+
 	double age;
 	public double energy;
 	
@@ -53,9 +55,7 @@ public class Creature : MonoBehaviour {
 						neutral
 					  };
 	public State state;
-
-	GameObject limb;
-	GameObject limb_child;
+	
 	MultiDimList branches;
 
 	Renderer rd;
@@ -89,7 +89,7 @@ public class Creature : MonoBehaviour {
 		root_script = root.AddComponent<Root>();
 		root_script.setColour(chromosome.getColour());
 		root_script.setScale(chromosome.getRootScale());
-		root.rigidbody.mass = 3;
+		root.rigidbody.mass = 10;
 		
 		rd = root.GetComponent<Renderer>();
 		
@@ -133,7 +133,16 @@ public class Creature : MonoBehaviour {
 	}
 
 	void Update () {
-		//Sine(10f);
+		for (int i=0; i<joints.Count; i++) {
+			JointSpring js = joints[i].hingeJoint.spring;
+			float target_pos = Sine (1.5f) * 45f;
+			js.targetPosition = target_pos;
+			joints[i].hingeJoint.spring = js;
+		}
+	}
+
+	float Sine (float freq) {
+		return Mathf.Sin(Time.time * 5f);
 	}
 		
 	/*
@@ -169,10 +178,6 @@ public class Creature : MonoBehaviour {
 		rootsize = scale;	
 	}
 
-	void Sine (float x) {
-		float y = Mathf.Sin(Time.time * x);
-	}
-	
 	/*
 	 * Return the current energy value for the creature
 	 */
@@ -225,44 +230,48 @@ public class Creature : MonoBehaviour {
 	}
 
 	private void setupLimbs () {
-		branches = chromosome.getBranches();
+		branches = new MultiDimList();
+		int num_branches = chromosome.getBranchCount();
 
-		for (int i=0; i<branches.Count; i++) {
-			List<GameObject> limbs = branches[i];
+		for (int i=0; i<num_branches; i++) {
+			ArrayList limbs = chromosome.getLimbs(i);
 			List<GameObject> actual_limbs = new List<GameObject>();
 
 			for (int j=0; j<limbs.Count; j++) {
-				Limb chromosome_limb_script = limbs[j].GetComponent<Limb>();
 
 				GameObject limb = GameObject.CreatePrimitive(PrimitiveType.Cube);
-				actual_limbs.Add(limb);
 				limb.layer = LayerMask.NameToLayer("Creature");
 				limb.name = "limb_"+i+"_"+j;
 				limb.transform.parent = _t;
-
-				Rigidbody rigidbody = limb.AddComponent<Rigidbody>();
-				limb.AddComponent<BoxCollider>();
-				rigidbody.mass = 1;
-
+				actual_limbs.Add(limb);
 				Limb limb_script = limb.AddComponent<Limb>();
 
+				ArrayList attributes = (ArrayList) limbs[j];
+				limb_script.setScale( (Vector3) attributes[1] );
+				limb_script.setColour( (Color) attributes[2]);
 
-				limb_script.setScale( chromosome_limb_script.getScale() );
-				limb_script.setColour( chromosome_limb_script.getColour() );
 				if(j == 0) {
-					limb_script.setPosition( chromosome_limb_script.getPosition() );
+					limb_script.setPosition( (Vector3) attributes[0] );
 					limb.transform.LookAt(root.transform);
 				} else {
 					limb_script.setPosition( actual_limbs[j-1].transform.localPosition );
 					limb.transform.LookAt(root.transform);
-					limb.transform.Translate(0,0,-limb.transform.localScale.z);
+					limb.transform.Translate(0,0,-actual_limbs[j-1].transform.localScale.z);
 				}
+				
+				Rigidbody rigidbody = limb.AddComponent<Rigidbody>();
+				limb.AddComponent<BoxCollider>();
+				rigidbody.mass = 1;
 
 				HingeJoint hj = limb.AddComponent<HingeJoint>();
 				hj.axis = new Vector3(0.5F, 0F, 0F);
 				hj.anchor = new Vector3(0F, 0F, 0.5F);
-				if(j == 0)	hj.connectedBody = root.rigidbody;
-				else      	hj.connectedBody = actual_limbs[j-1].rigidbody;
+				if(j == 0) {
+					hj.connectedBody = root.rigidbody;
+				} else {
+					hj.connectedBody = actual_limbs[j-1].rigidbody;
+				}
+				joints.Add(hj);
 
 				JointLimits jl = new JointLimits();
 				jl.min = -90;
@@ -271,13 +280,12 @@ public class Creature : MonoBehaviour {
 
 				JointSpring js = new JointSpring();
 				js.damper = 10;
-				js.spring = 1000;
+				js.spring = 5000;
 				js.targetPosition = 0;
 				hj.spring = js;
 
 				hj.useLimits = true;
 				hj.useSpring = true;
-
 			}
 		}
 

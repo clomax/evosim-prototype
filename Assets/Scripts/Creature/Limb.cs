@@ -6,16 +6,6 @@ public class Limb : MonoBehaviour {
 	MeshRenderer mr;
 	HingeJoint hj;
 
-	void Start () {
-	}
-
-	public void create (Color c, Vector3 p, Vector3 s) {
-		mr = gameObject.AddComponent<MeshRenderer>();
-		setColour(c);
-		setPosition(p);
-		setScale(s);
-	}
-
 	public Color getColour () {
 		return mr.material.color;
 	}

@@ -16,7 +16,15 @@ public class Chromosome {
 	Color limb_colour;
 	Vector3 root_scale;
 	
-	MultiDimList branches;
+	public ArrayList branches;
+
+	public int getBranchCount() {
+		return branches.Count;
+	}
+
+	public ArrayList getLimbs(int index) {
+		return (ArrayList) branches[index];
+	}
 
 	public Color getColour () {
 		return colour;	
@@ -30,11 +38,11 @@ public class Chromosome {
 		return root_scale;	
 	}
 	
-	public MultiDimList getBranches () {
+	public ArrayList getBranches () {
 		return branches;
 	}
 
-	public void setBranches (MultiDimList bs) {
+	public void setBranches (ArrayList bs) {
 		branches = bs;
 	}
 	

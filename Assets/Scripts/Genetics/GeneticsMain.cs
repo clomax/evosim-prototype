@@ -91,51 +91,28 @@ public class GeneticsMain : MonoBehaviour {
 			
 			// random initial limbs
 			int bs = Random.Range (1,branch_limit+1);
-			MultiDimList branches = new MultiDimList();
+			ArrayList branches = new ArrayList();
 
 			for (int j=0; j<bs; j++) {
-				branches.Add(new List<GameObject>());
+				ArrayList limbs = new ArrayList();
 
 				int recurrences = Random.Range(0,recurrence_limit);
 				for (int k=0; k<=recurrences; k++) {
 
-					branches[j].Add(new GameObject());
-					GameObject limb = branches[j][k];
-					Limb limb_script = limb.AddComponent<Limb>();
-
-					/* Randomly select point on root's surface */
-					Vector3 tmp = new Vector3(0F,0F,0F);
-					// set all axes to random float between -.5 and .5
-					for (int l=0; l<3; l++) {
-						tmp[l] = Random.Range(-0.5F, 0.5F);
-					}
-					// randomly select between x,y,z
-					int axis = Random.Range(0,3);
-					// randomly set that axis to -.5 or .5
-					int rnd = Random.Range(0,1);
-					if (rnd == 0)	tmp[axis] = -0.5F;
-					else 	 		tmp[axis] = 0.5F;
-					// set anchor point to new vector
-					Vector3 point = tmp;
 					Vector3 scale = new Vector3 ((float) Random.Range(min_limb_scale.x,max_limb_scale.x),
-					                             (float) Random.Range(min_limb_scale.y,max_limb_scale.y),
-					                             (float) Random.Range(min_limb_scale.z,max_limb_scale.z)
-					                            );
-
-					// Generate joint parameters
-					float freq = Random.Range(0F, 15F);
-					float amp = Random.Range (0F, 30F);				
-
-					point = Vector3.zero;	// Position is not a factor in child limbs, set it to zero
-					scale = new Vector3 ((float) Random.Range(min_limb_scale.x,max_limb_scale.x),
 		                                 (float) Random.Range(min_limb_scale.y,max_limb_scale.y),
 		                                 (float) Random.Range(min_limb_scale.z,max_limb_scale.z)
 		                                );
 
 					Vector3 position = Utility.RandomPointInsideCube(rootScale);
 
-					limb_script.create(col, position, scale);
+					ArrayList limb = new ArrayList();
+					limb.Add  (position);
+					limb.Add  (scale);
+					limb.Add  (col);
+					limbs.Add (limb);
 				}
+				branches.Add(limbs);
 			}
 
 			chromosome.setBranches(branches);
