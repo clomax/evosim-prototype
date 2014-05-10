@@ -15,6 +15,8 @@ public class Chromosome {
 	Color colour;
 	Color limb_colour;
 	Vector3 root_scale;
+	public float base_joint_frequency;
+	public float base_joint_amplitude;
 	
 	public ArrayList branches;
 
@@ -56,6 +58,14 @@ public class Chromosome {
 	
 	public void setRootScale (Vector3 rs) {
 		root_scale = rs;
+	}
+
+	public void setBaseFequency (float freq) {
+		base_joint_frequency = freq;
+	}
+
+	public void setBaseAmplitude (float amp) {
+		base_joint_amplitude = amp;
 	}
 
 }

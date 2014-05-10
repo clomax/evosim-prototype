@@ -33,6 +33,7 @@ public class Creature : MonoBehaviour {
 	public CreatureCount crt_count;
 
 	List<HingeJoint> joints = new List<HingeJoint>();
+	List<float>	joint_frequency_offsets = new List<float>();
 
 	double age;
 	public double energy;
@@ -133,15 +134,16 @@ public class Creature : MonoBehaviour {
 	}
 
 	void Update () {
+		float sine = Sine (chromosome.base_joint_frequency) * chromosome.base_joint_amplitude;
 		for (int i=0; i<joints.Count; i++) {
 			JointSpring js = joints[i].hingeJoint.spring;
-			js.targetPosition = Sine (1.5f) * 60f;
+			js.targetPosition = sine;
 			joints[i].hingeJoint.spring = js;
 		}
 	}
 
 	float Sine (float freq) {
-		return Mathf.Sin(Time.time * 10f);
+		return Mathf.Sin(Time.time * freq);
 	}
 		
 	/*
