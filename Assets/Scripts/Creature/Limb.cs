@@ -3,12 +3,7 @@ using System.Collections;
 
 public class Limb : MonoBehaviour {
 
-	MeshRenderer mr;
 	HingeJoint hj;
-
-	public Color getColour () {
-		return mr.material.color;
-	}
 
 	public Vector3 getPosition () {
 		return transform.localPosition;

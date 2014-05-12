@@ -33,7 +33,6 @@ public class Creature : MonoBehaviour {
 	public CreatureCount crt_count;
 
 	List<HingeJoint> joints = new List<HingeJoint>();
-	List<float>	joint_frequency_offsets = new List<float>();
 
 	double age;
 	public double energy;
@@ -56,10 +55,6 @@ public class Creature : MonoBehaviour {
 						neutral
 					  };
 	public State state;
-	
-	MultiDimList branches;
-
-	Renderer rd;
 
 	void Start () {
 		_t = transform;		
@@ -90,10 +85,8 @@ public class Creature : MonoBehaviour {
 		root_script = root.AddComponent<Root>();
 		root_script.setColour(chromosome.getColour());
 		root_script.setScale(chromosome.getRootScale());
-		root.rigidbody.mass = 6;
-		
-		rd = root.GetComponent<Renderer>();
-		
+		root.rigidbody.mass = 10;
+
 		eye = new GameObject();
 		eye.name = "Eye";
 		eye.transform.parent 			= root.transform;
@@ -133,7 +126,7 @@ public class Creature : MonoBehaviour {
 		InvokeRepeating("metabolise",1.0f,1.0f);
 	}
 
-	void Update () {
+	void FixedUpdate () {
 		float sine = Sine (chromosome.base_joint_frequency) * chromosome.base_joint_amplitude;
 		for (int i=0; i<joints.Count; i++) {
 			JointSpring js = joints[i].hingeJoint.spring;
@@ -171,13 +164,7 @@ public class Creature : MonoBehaviour {
 	public void invokechromosome (Chromosome gs) {
 		this.chromosome = gs;
 	}
-	
-	/*
-	 * 
-	 */
-	public void setRootSize (Vector3 scale) {
-		rootsize = scale;	
-	}
+
 
 	/*
 	 * Return the current energy value for the creature
@@ -231,7 +218,6 @@ public class Creature : MonoBehaviour {
 	}
 
 	private void setupLimbs () {
-		branches = new MultiDimList();
 		int num_branches = chromosome.getBranchCount();
 
 		for (int i=0; i<num_branches; i++) {
@@ -262,7 +248,7 @@ public class Creature : MonoBehaviour {
 				
 				Rigidbody rigidbody = limb.AddComponent<Rigidbody>();
 				limb.AddComponent<BoxCollider>();
-				rigidbody.mass = 1;
+				rigidbody.mass = 3;
 
 				HingeJoint hj = limb.AddComponent<HingeJoint>();
 				hj.axis = new Vector3(0.5F, 0F, 0F);
@@ -275,8 +261,8 @@ public class Creature : MonoBehaviour {
 				joints.Add(hj);
 
 				JointLimits jl = new JointLimits();
-				jl.min = -90;
-				jl.max = 90;
+				jl.min = -110;
+				jl.max = 110;
 				hj.limits = jl;
 
 				JointSpring js = new JointSpring();
