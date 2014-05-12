@@ -57,26 +57,21 @@ public class GeneticsUtils {
 		}
 		c.setLimbColour(cs[0], cs[1], cs[2]);
 
-		MultiDimList branches = c.getBranches();
+		ArrayList branches = c.branches;
 		for (int b=0; b<branches.Count; b++) {
-			List<GameObject> limbs = branches[b];
+			ArrayList limbs = (ArrayList) branches[b];
 			for (int i=0; i<limbs.Count; i++) {
-				GameObject l = limbs[i];
-				try {
-					Limb l_script = l.GetComponent<Limb>();
-					Vector3 v = l_script.getScale();
-					for (int k=0; k<3; k++) {
-						double rand = rnd.NextDouble();
-						if(rand < rate)
-							v[k] += randomiseGene(factor);
-						}
-				} catch {
-					break;
-				}
+				ArrayList limb = (ArrayList) limbs[i];
+				Vector3 v = (Vector3) limb[1];
+				for (int k=0; k<3; k++) {
+					double rand = rnd.NextDouble();
+					if(rand < rate)
+						v[k] += randomiseGene(factor);
+					}
+
 			}
 		}
 		c.setBranches(branches);
-		
 		return c;
 	}
 	
@@ -93,13 +88,13 @@ public class GeneticsUtils {
 		c.setColour(col[0], col[1], col[2]);
 
 		// Crossover limbs
-		MultiDimList c1_branches = c1.getBranches();
-		MultiDimList c2_branches = c2.getBranches();
-		MultiDimList c_branches;
+		ArrayList c1_branches = c.branches;
+		ArrayList c2_branches = c2.branches;
+		ArrayList c_branches;
 
 		// Randomly select the parent from which the child will derive its limb structure
 		int select = Random.Range(0,2);
-		MultiDimList other_crt_branches;
+		ArrayList other_crt_branches;
 		if (select == 0) {
 			c_branches = c1_branches;
 			other_crt_branches = c2_branches;
@@ -110,26 +105,43 @@ public class GeneticsUtils {
 		
 		// Randomly select attributes from the selected creature's limbs to
 		//	assign to child creature's limbs
+
 		for (int i=0; i<c_branches.Count; i++) {
-			List<GameObject> c_limbs = c_branches[i];
-			
+			ArrayList c_limbs = (ArrayList) c_branches[i];
+
 			for (int j=1; j<c_limbs.Count; j++) {
-				double rand = rnd.NextDouble();
-				if (rand < rate) {
-					Limb limb_script;
-					Limb child_limb_script;
-					try {
-						limb_script = c_limbs[j].GetComponent<Limb>();
-						child_limb_script = other_crt_branches[i][j].GetComponent<Limb>();
-					} catch {
-						break;
+				ArrayList c_attributes = (ArrayList) c_limbs[j];
+
+				//select random limb segment from other creature
+				ArrayList other_crt_limbs = (ArrayList) other_crt_branches[Random.Range (0,other_crt_branches.Count)];
+				ArrayList other_crt_attributes = (ArrayList) other_crt_limbs[Random.Range(0,other_crt_limbs.Count)];
+
+				Vector3 c_scale = (Vector3) c_attributes[1];
+				Vector3 other_crt_scale = (Vector3) other_crt_attributes[1];
+				for (int s=0; s<3; s++) {
+					double rand = rnd.NextDouble();
+					if (rand < rate) {
+						c_scale[s] = other_crt_scale[s];
 					}
-					child_limb_script.setScale(limb_script.getScale());
-					child_limb_script.setPosition(limb_script.getPosition());
+				}
+
+				//select random limb segment from other creature
+				other_crt_limbs = (ArrayList) other_crt_branches[Random.Range (0,other_crt_branches.Count)];
+				other_crt_attributes = (ArrayList) other_crt_limbs[Random.Range(0,other_crt_limbs.Count)];
+
+				Vector3 c_pos = (Vector3) c_attributes[0];
+				Vector3 other_crt_pos = (Vector3) other_crt_attributes[0];
+				for (int p=0; p<3; p++) {
+					double rand = rnd.NextDouble();
+					if (rand < rate) {
+						c_pos[p] = other_crt_pos[p];
+					}
 				}
 			}
-		}		
-		
+			c_branches[i] = c_limbs;
+		}
+	
+		c.setBranches(c_branches);
 		return c;
 	}
 	
