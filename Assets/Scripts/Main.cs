@@ -25,7 +25,6 @@ public class Main : MonoBehaviour {
 	 GameObject plane;
 	 Ether ether;
 	 GameObject _catch;
-	 GameObject nrg_ether;
 	 GameObject gui_text;
 	
 	 MeshRenderer p_mr;

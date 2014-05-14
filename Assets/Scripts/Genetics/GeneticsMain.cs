@@ -81,6 +81,7 @@ public class GeneticsMain : MonoBehaviour {
 								   (float)Random.Range(0.0F,1.0F)
 								 );
 			chromosome.setColour(col.r, col.g, col.b);
+			chromosome.setLimbColour(col.r, col.g, col.b);
 			
 			// random root scale
 			Vector3 rootScale = new Vector3((float) Random.Range(min_root_scale.x,max_root_scale.x),
@@ -112,7 +113,6 @@ public class GeneticsMain : MonoBehaviour {
 					ArrayList limb = new ArrayList();
 					limb.Add  (position);
 					limb.Add  (scale);
-					limb.Add  (col);
 					limbs.Add (limb);
 				}
 				branches.Add(limbs);
