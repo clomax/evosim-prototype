@@ -235,7 +235,7 @@ public class Creature : MonoBehaviour {
 
 				ArrayList attributes = (ArrayList) limbs[j];
 				limb_script.setScale( (Vector3) attributes[1] );
-				limb_script.setColour( (Color) attributes[2]);
+				limb_script.setColour( (Color) chromosome.getLimbColour());
 
 				if(j == 0) {
 					limb_script.setPosition( (Vector3) attributes[0] );
