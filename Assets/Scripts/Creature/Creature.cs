@@ -32,7 +32,7 @@ public class Creature : MonoBehaviour {
 	
 	public CreatureCount crt_count;
 
-	List<HingeJoint> joints = new List<HingeJoint>();
+	List<ConfigurableJoint> joints = new List<ConfigurableJoint>();
 
 	double age;
 	public double energy;
@@ -129,14 +129,12 @@ public class Creature : MonoBehaviour {
 	void FixedUpdate () {
 		float sine = Sine (chromosome.base_joint_frequency) * chromosome.base_joint_amplitude;
 		for (int i=0; i<joints.Count; i++) {
-			JointSpring js = joints[i].hingeJoint.spring;
-			js.targetPosition = sine;
-			joints[i].hingeJoint.spring = js;
+			joints[i].targetAngularVelocity = new Vector3(sine,0,0);
 		}
 	}
 
 	float Sine (float freq) {
-		return Mathf.Sin(Time.time * freq);
+		return Mathf.Sin(Time.time * freq/1.5f) /4;
 	}
 		
 	/*
@@ -248,31 +246,33 @@ public class Creature : MonoBehaviour {
 				
 				Rigidbody rigidbody = limb.AddComponent<Rigidbody>();
 				limb.AddComponent<BoxCollider>();
-				rigidbody.mass = 3;
 
-				HingeJoint hj = limb.AddComponent<HingeJoint>();
-				hj.axis = new Vector3(0.5F, 0F, 0F);
-				hj.anchor = new Vector3(0F, 0F, 0.5F);
+				ConfigurableJoint joint = limb.AddComponent<ConfigurableJoint>();
+				joint.axis = new Vector3(0.5F, 0F, 0F);
+				joint.anchor = new Vector3(0F, 0F, 0.5F);
 				if(j == 0) {
-					hj.connectedBody = root.rigidbody;
+					joint.connectedBody = root.rigidbody;
+					limb.rigidbody.mass = 3;
 				} else {
-					hj.connectedBody = actual_limbs[j-1].rigidbody;
+					joint.connectedBody = actual_limbs[j-1].rigidbody;
+					limb.rigidbody.mass = 1;
 				}
-				joints.Add(hj);
+				joints.Add(joint);
 
-				JointLimits jl = new JointLimits();
-				jl.min = -110;
-				jl.max = 110;
-				hj.limits = jl;
+				joint.xMotion = ConfigurableJointMotion.Locked;
+				joint.yMotion = ConfigurableJointMotion.Locked;
+				joint.zMotion = ConfigurableJointMotion.Locked;
 
-				JointSpring js = new JointSpring();
-				js.damper = 10;
-				js.spring = 10000;
-				js.targetPosition = 0;
-				hj.spring = js;
+				joint.angularXMotion = ConfigurableJointMotion.Free;
+				joint.angularYMotion = ConfigurableJointMotion.Locked;
+				joint.angularZMotion = ConfigurableJointMotion.Locked;
 
-				hj.useLimits = true;
-				hj.useSpring = true;
+				JointDrive angXDrive = new JointDrive();
+				angXDrive.mode = JointDriveMode.Velocity;
+				angXDrive.maximumForce = 50;
+				joint.angularXDrive = angXDrive;
+
+
 			}
 		}
 
