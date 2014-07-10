@@ -1,4 +1,4 @@
-# Evosim - A three-dimensional, real time simulation of natural and sexual selection in an artificial gene-pool.
+# Evosim - Artificial life simulation
 ## Introduction
 This is a proof of concept executed with the intention of realising how capable today's computing power is in the simulation of 3D artificial genepools, which are likely to contain many rigidbodies.
 
