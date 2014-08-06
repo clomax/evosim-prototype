@@ -4,7 +4,7 @@ This is a proof of concept executed with the intention of realising how capable 
 
 The program is intended to be a 'toy'. It is not a scientific tool or a true reflection of evolution in the natural world.
 
-Follow development at [clomax.me.uk](http://clomax.me.uk)
+See the collection of [screenshots](http://imgur.com/a/g5gJ3#0) and follow development at [clomax.me.uk](http://clomax.me.uk)
 
 ## Usage
 Clone this repository and open the directory as an existing project in Unity3D, open the scene named 'Main' and attach the script named 'Main' to the GameObject named 'Main' in the hierarchy.
