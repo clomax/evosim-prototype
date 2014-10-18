@@ -12,11 +12,10 @@ using System.Collections.Generic;
 
 
 public class GeneticsUtils {
-	
+
+	static double rand;
 	static System.Random rnd = new System.Random();
-
-	static Vector3 c2_v;
-
+	
 	public static Chromosome mutate (Chromosome c, double rate, float factor) {
 		// Mutate colour
 		float[] cs = new float[3];
@@ -25,25 +24,28 @@ public class GeneticsUtils {
 		cs[1] = cc.g;
 		cs[2] = cc.b;
 		for (int i=0; i<3; i++) {
-			double rand = rnd.NextDouble();
+			rand = rnd.NextDouble();
 			if (rand < rate)
 				cs[i] += randomiseGene(factor);
 		}
 		c.setColour(cs[0], cs[1], cs[2]);
 		
 		// Mutate root scale
-		float[] rs = new float[3];
 		Vector3 rc = c.getRootScale();
-		rs[0] = rc.x;
-		rs[1] = rc.y;
-		rs[2] = rc.z;
-		for (int i=0; i<3; i++) {
-			double rand = rnd.NextDouble();
-			if (rand < rate)
-				rs[i] += randomiseGene(factor);
+
+		if (rc.x > 1F && rc.y > 1F && rc.z > 1F) {
+			float[] rs = new float[3];
+			rs[0] = rc.x;
+			rs[1] = rc.y;
+			rs[2] = rc.z;
+			for (int i=0; i<3; i++) {
+				rand = rnd.NextDouble();
+				if (rand < rate)
+					rs[i] += randomiseGene(factor);
+			}
+			Vector3 rootScale = new Vector3 (rs[0], rs[1], rs[2]);
+			c.setRootScale(rootScale);
 		}
-		Vector3 rootScale = new Vector3 (rs[0], rs[1], rs[2]);
-		c.setRootScale(rootScale);
 		
 		// mutate limbs
 		cc = c.getLimbColour();
@@ -51,7 +53,7 @@ public class GeneticsUtils {
 		cs[1] = cc.g;
 		cs[2] = cc.b;
 		for (int i=0; i<3; i++) {
-			double rand = rnd.NextDouble();
+			rand = rnd.NextDouble();
 			if (rand < rate)
 				cs[i] += randomiseGene(factor);
 		}
@@ -64,13 +66,30 @@ public class GeneticsUtils {
 				ArrayList limb = (ArrayList) limbs[i];
 				Vector3 v = (Vector3) limb[1];
 				for (int k=0; k<3; k++) {
-					double rand = rnd.NextDouble();
+					rand = rnd.NextDouble();
 					if(rand < rate)
 						v[k] += randomiseGene(factor);
 					}
 
 			}
 		}
+
+		// mutate base frequency and amplitude
+		rand = rnd.NextDouble();
+		if(rand < rate) {
+			c.base_joint_amplitude += randomiseGene(factor);
+		}
+
+		rand = rnd.NextDouble();
+		if(rand < rate) {
+			c.base_joint_frequency += randomiseGene(factor);
+		}
+
+		rand = rnd.NextDouble();
+		if(rand < rate) {
+			c.base_joint_phase += randomiseGene(factor);
+		}
+
 		c.setBranches(branches);
 		return c;
 	}
@@ -81,7 +100,7 @@ public class GeneticsUtils {
 		// Crossover colour
 		Color col = c1.getColour();
 		for (int i=0; i<3; i++) {
-			double rand = rnd.NextDouble();
+			rand = rnd.NextDouble();
 			if (rand < rate)
 				col[i] = c2.getColour()[i];
 		}
@@ -119,7 +138,7 @@ public class GeneticsUtils {
 				Vector3 c_scale = (Vector3) c_attributes[1];
 				Vector3 other_crt_scale = (Vector3) other_crt_attributes[1];
 				for (int s=0; s<3; s++) {
-					double rand = rnd.NextDouble();
+					rand = rnd.NextDouble();
 					if (rand < rate) {
 						c_scale[s] = other_crt_scale[s];
 					}
@@ -132,7 +151,7 @@ public class GeneticsUtils {
 				Vector3 c_pos = (Vector3) c_attributes[0];
 				Vector3 other_crt_pos = (Vector3) other_crt_attributes[0];
 				for (int p=0; p<3; p++) {
-					double rand = rnd.NextDouble();
+					rand = rnd.NextDouble();
 					if (rand < rate) {
 						c_pos[p] = other_crt_pos[p];
 					}
@@ -140,7 +159,27 @@ public class GeneticsUtils {
 			}
 			c_branches[i] = c_limbs;
 		}
-	
+
+		// Crossover frequency and amplitude
+		c.base_joint_amplitude = c1.base_joint_amplitude;
+		c.base_joint_frequency = c1.base_joint_frequency;
+		c.base_joint_phase	   = c1.base_joint_phase;
+
+		rand = rnd.NextDouble();
+		if (rand < 0.5f) {
+			c.base_joint_amplitude = c2.base_joint_amplitude;
+		}
+
+		rand = rnd.NextDouble();
+		if (rand < 0.5f) {
+			c.base_joint_frequency = c2.base_joint_frequency;
+		}
+
+		rand = rnd.NextDouble();
+		if (rand < 0.5f) {
+			c.base_joint_phase = c2.base_joint_phase;
+		}
+
 		c.setBranches(c_branches);
 		return c;
 	}

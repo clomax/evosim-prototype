@@ -64,11 +64,11 @@ public class GeneticsMain : MonoBehaviour {
 
 		starting_creatures	= (int) 		settings.contents["ether"]["starting_creatures"];
 		creature_spread		= float.Parse(	settings.contents["ether"]["creature_spread"].ToString() );
-		double creature_init_energy	= (double)		settings.contents["creature"]["init_energy"];
+		double creature_init_energy	= (double) settings.contents["creature"]["init_energy"];
 		int branch_limit 	= (int)			settings.contents["creature"]["branch_limit"];
 		int recurrence_limit = (int)		settings.contents["creature"]["recurrence_limit"];
 
-		
+
 		/*
 		 * For each new creature, generate random genes and spawn the bugger
 		 */
@@ -107,8 +107,9 @@ public class GeneticsMain : MonoBehaviour {
 
 					Vector3 position = Utility.RandomPointInsideCube(rootScale);
 
-					chromosome.setBaseFequency (Random.Range (5,15));
-					chromosome.setBaseAmplitude (Random.Range (20,110));
+					chromosome.setBaseFequency (Random.Range (1,13));
+					chromosome.setBaseAmplitude (Random.Range (3,10));
+					chromosome.setBasePhase (Random.Range (0,90));
 
 					ArrayList limb = new ArrayList();
 					limb.Add  (position);
