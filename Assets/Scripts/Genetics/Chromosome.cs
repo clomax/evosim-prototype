@@ -17,6 +17,7 @@ public class Chromosome {
 	Vector3 root_scale;
 	public float base_joint_frequency;
 	public float base_joint_amplitude;
+	public float base_joint_phase;
 	
 	public ArrayList branches;
 
@@ -68,4 +69,8 @@ public class Chromosome {
 		base_joint_amplitude = amp;
 	}
 
+	public void setBasePhase (float phase)
+	{
+		base_joint_phase = phase;
+	}
 }

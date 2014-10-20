@@ -16,6 +16,7 @@ public class Main : MonoBehaviour {
 	#pragma warning disable 0414
 	 Logger lg;
 	 Settings settings;
+	 Selection selectionManager;
 	 Spawner spw;
 	 GeneticsMain gm;
 	 CollisionMediator co;
@@ -37,6 +38,7 @@ public class Main : MonoBehaviour {
 	void Start () {		
 		lg = Logger.getInstance();
 		settings = Settings.getInstance();
+		selectionManager = new Selection();
 		
 		aperatus = (GameObject)Instantiate(Resources.Load("Prefabs/Aperatus"));
 		cam = GameObject.Find("Main Camera");

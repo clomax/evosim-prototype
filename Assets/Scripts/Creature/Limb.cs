@@ -3,7 +3,16 @@ using System.Collections;
 
 public class Limb : MonoBehaviour {
 
+	private Selectable s;
 	HingeJoint hj;
+
+	void Start () {
+		s = transform.parent.GetComponent<Selectable>();
+	}
+
+	void OnMouseDown () {
+		s.select (transform.parent.gameObject);
+	}
 
 	public Vector3 getPosition () {
 		return transform.localPosition;

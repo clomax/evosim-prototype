@@ -8,7 +8,7 @@ public class Eye : MonoBehaviour {
 	public Creature closestCrt 		= null;
 	public GameObject closestFbit	= null;
 	CollisionMediator co;
-	float curr_dist 				= 0f;
+	public float curr_dist 			= 0f;
 	double crt_mate_range;
 	double fb_eat_range;
 	float eye_refresh_rate;
@@ -20,6 +20,10 @@ public class Eye : MonoBehaviour {
 	
 	Settings settings;
 	Creature other_crt;
+
+	public GameObject goal = null;
+	public float distance_to_goal = 0F;
+	Transform root;
 	
 	void Start () {
 		_t = transform;
@@ -33,25 +37,26 @@ public class Eye : MonoBehaviour {
 		eye_refresh_rate =	float.Parse( settings.contents["creature"]["eye_refresh_rate"].ToString() );
 		los = crt.line_of_sight;
 
+		root = _t.parent;
+
 		InvokeRepeating("refreshVision",0,eye_refresh_rate);
 	}
 
 	void refreshVision () {
 		switch (crt.state) {
-		case Creature.State.pursuing_mate:
+		case Creature.State.persuing_mate:
 			closestCreature();
 			break;
-		case Creature.State.hungry:
+		case Creature.State.searching_for_mate:
+			closestCreature();
+			break;
+		case Creature.State.persuing_food:
+			closestFoodbit();
+			break;
+		case Creature.State.searching_for_food:
 			closestFoodbit();
 			break;
 		}
-		/*
-		if (crt.state == Creature.State.pursuing_mate)
-			closestCreature();
-
-		if (crt.state == Creature.State.hungry)
-			closestFoodbit();
-			*/
 	}
 	
 	void closestCreature () {
@@ -60,6 +65,11 @@ public class Eye : MonoBehaviour {
 		GameObject c 			= null; // current collider being looked at
 		float dist 				= Mathf.Infinity;
 		cs = Physics.OverlapSphere(_t.position, (float)los);
+
+		if (cs.Length == 0) {
+			closest = null;
+			return;
+		}
 
 		foreach (Collider col in cs) {
 			c = (GameObject) col.transform.gameObject;
@@ -73,19 +83,22 @@ public class Eye : MonoBehaviour {
 				if (curr_dist < (float)crt_mate_range) {
 					other_crt = c.transform.parent.GetComponent<Creature>();
 					Genitalia other_genital = other_crt.genital.GetComponent<Genitalia>();
-					if (crt.state == Creature.State.pursuing_mate || other_crt.state == Creature.State.pursuing_mate) {
+					if (crt.state == Creature.State.persuing_mate || other_crt.state == Creature.State.persuing_mate) {
 						co.observe(crt.genital.gameObject, other_genital.gameObject);
 						other_crt.state = Creature.State.mating;
 						crt.state = Creature.State.mating;
-						crt.times_mated++;
-						other_crt.times_mated++;
 					}
 					dist = curr_dist;
 				}
 			}
 
-			if (closest)
+			distance_to_goal = 0F;
+			goal = null;
+			if (closest)  {
 				closestCrt = closest.GetComponent<Creature>();
+				goal = closestCrt.root;
+				distance_to_goal = distanceToGoal();
+			}
 		}	
 	}
 	
@@ -104,7 +117,7 @@ public class Eye : MonoBehaviour {
 					closest = f;
 					dist = curr_dist;
 				}
-				if (curr_dist < (float)fb_eat_range && crt.state == Creature.State.hungry) {
+				if (curr_dist < (float)fb_eat_range && crt.state == Creature.State.persuing_food) {
 					fbit = f.GetComponent<Foodbit>();
 					crt.addEnergy(fbit.energy);
 					fbit.destroy ();
@@ -112,9 +125,22 @@ public class Eye : MonoBehaviour {
 				}
 			}
 		}
-		
-		if (closest)
+
+		distance_to_goal = 0F;
+		if (closest) {
 			closestFbit = closest.gameObject;
-		
+		}
+
+		goal = closestFbit;
+		if (goal) {
+			distance_to_goal = distanceToGoal();
+		}
+	}
+
+	public float distanceToGoal () {
+		if (goal)
+			return Vector3.Distance(root.position, goal.transform.position);
+		else
+			return 0F;
 	}
 }

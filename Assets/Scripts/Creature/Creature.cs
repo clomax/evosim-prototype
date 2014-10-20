@@ -27,16 +27,16 @@ public class Creature : MonoBehaviour {
 	Vector3 rootsize;
 		
 	public GameObject eye;
-	public GameObject mouth;	
+	public GameObject mouth;
 	public GameObject genital;
 	
 	public CreatureCount crt_count;
 
-	List<HingeJoint> joints = new List<HingeJoint>();
+	List<ConfigurableJoint> joints = new List<ConfigurableJoint>();
 
-	double age;
+	public double age;
 	public double energy;
-	
+
 	public Chromosome chromosome;
 	
 	public double 	line_of_sight;
@@ -48,17 +48,21 @@ public class Creature : MonoBehaviour {
 	public int times_mated;
 	public int times_eaten;
 	
-	public enum State { hungry,
-						pursuing_mate,
+	public enum State { 
+						persuing_food,
+						persuing_mate,
+						searching_for_mate,
 						mating,
 						eating,
+						searching_for_food,
 						neutral
 					  };
 	public State state;
+	public Eye eye_script;
 
 	void Start () {
 		_t = transform;		
-		name = "Creature";
+		name = "creature" + gameObject.GetInstanceID();
 		
 		eth = Ether.getInstance();
 		settings = Settings.getInstance();
@@ -85,15 +89,16 @@ public class Creature : MonoBehaviour {
 		root_script = root.AddComponent<Root>();
 		root_script.setColour(chromosome.getColour());
 		root_script.setScale(chromosome.getRootScale());
-		root.rigidbody.mass = 10;
+		root.rigidbody.mass = 25F;
+		//root.collider.material = (PhysicMaterial)Resources.Load ("Physics Materials/Creature");
 
 		eye = new GameObject();
 		eye.name = "Eye";
 		eye.transform.parent 			= root.transform;
 		eye.transform.eulerAngles 		= root.transform.eulerAngles;
 		eye.transform.position 			= root.transform.position;
-		eye.AddComponent<Eye>();
-		
+		eye_script = eye.AddComponent<Eye>();
+
 		mouth = new GameObject();
 		mouth.name = "Mouth";
 		mouth.transform.parent 			= root.transform;
@@ -126,22 +131,23 @@ public class Creature : MonoBehaviour {
 		InvokeRepeating("metabolise",1.0f,1.0f);
 	}
 
+	public float phase;
+
 	void FixedUpdate () {
-		float sine = Sine (chromosome.base_joint_frequency) * chromosome.base_joint_amplitude;
+		float sine = Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, 0);
 		for (int i=0; i<joints.Count; i++) {
-			JointSpring js = joints[i].hingeJoint.spring;
-			js.targetPosition = sine;
-			joints[i].hingeJoint.spring = js;
+			joints[i].targetAngularVelocity = new Vector3(
+				Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase),
+			    Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase),
+			    Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase)
+			);
 		}
 	}
 
-	float Sine (float freq) {
-		return Mathf.Sin(Time.time * freq);
+	float Sine (float freq, float amplitude, float phase_shift) {
+		return Mathf.Sin(Time.time * freq + phase_shift) * amplitude;
 	}
-		
-	/*
-	 * Add 1 second to the creature's age when called.
-	 */
+
 	void updateAge() {
 		age += 1;
 	}
@@ -153,10 +159,10 @@ public class Creature : MonoBehaviour {
 	void updateState() {
 		if(state != Creature.State.mating) {
 			if (energy < hunger_threshold) {
-				state = State.hungry;
+				state = eye_script.closestFbit != null ? State.persuing_food : State.searching_for_food;
 			}
 			if (energy >= hunger_threshold && age > age_sexual_maturity) {
-				state = State.pursuing_mate;
+				state = eye_script.closestCrt != null ? State.persuing_mate : State.searching_for_mate;
 			}
 		}
 	}
@@ -248,31 +254,33 @@ public class Creature : MonoBehaviour {
 				
 				Rigidbody rigidbody = limb.AddComponent<Rigidbody>();
 				limb.AddComponent<BoxCollider>();
-				rigidbody.mass = 3;
+				limb.collider.material = (PhysicMaterial)Resources.Load("Physics Materials/Creature");
 
-				HingeJoint hj = limb.AddComponent<HingeJoint>();
-				hj.axis = new Vector3(0.5F, 0F, 0F);
-				hj.anchor = new Vector3(0F, 0F, 0.5F);
+				ConfigurableJoint joint = limb.AddComponent<ConfigurableJoint>();
+				joint.axis = new Vector3(0.5F, 0F, 0F);
+				joint.anchor = new Vector3(0F, 0F, 0.5F);
 				if(j == 0) {
-					hj.connectedBody = root.rigidbody;
+					joint.connectedBody = root.rigidbody;
+					limb.rigidbody.mass = 10;
 				} else {
-					hj.connectedBody = actual_limbs[j-1].rigidbody;
+					joint.connectedBody = actual_limbs[j-1].rigidbody;
+					limb.rigidbody.mass = 10;
 				}
-				joints.Add(hj);
+				joints.Add(joint);
 
-				JointLimits jl = new JointLimits();
-				jl.min = -110;
-				jl.max = 110;
-				hj.limits = jl;
+				joint.xMotion = ConfigurableJointMotion.Locked;
+				joint.yMotion = ConfigurableJointMotion.Locked;
+				joint.zMotion = ConfigurableJointMotion.Locked;
 
-				JointSpring js = new JointSpring();
-				js.damper = 10;
-				js.spring = 10000;
-				js.targetPosition = 0;
-				hj.spring = js;
+				joint.angularXMotion = ConfigurableJointMotion.Free;
+				joint.angularYMotion = ConfigurableJointMotion.Free;
+				joint.angularZMotion = ConfigurableJointMotion.Locked;
 
-				hj.useLimits = true;
-				hj.useSpring = true;
+				JointDrive angXDrive = new JointDrive();
+				angXDrive.mode = JointDriveMode.Velocity;
+				angXDrive.maximumForce = 200;
+				joint.angularXDrive = angXDrive;
+				joint.angularYZDrive = angXDrive;
 			}
 		}
 
