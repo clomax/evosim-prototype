@@ -98,13 +98,12 @@ public class GeneticsUtils {
 		Chromosome c = c1;
 		
 		// Crossover colour
-		Color col = c1.getColour();
-		for (int i=0; i<3; i++) {
-			rand = rnd.NextDouble();
-			if (rand < rate)
-				col[i] = c2.getColour()[i];
-		}
-		c.setColour(col[0], col[1], col[2]);
+		Color c1_col = c1.getColour();
+		Color c2_col = c2.getColour();
+		float r = (.5F * c1_col.r) + (.5F * c2_col.r);
+		float g = (.5F * c1_col.g) + (.5F * c2_col.g);
+		float b = (.5F * c1_col.b) + (.5F * c2_col.b);
+		c.setColour(r,g,b);
 
 		// Crossover limbs
 		ArrayList c1_branches = c.branches;
