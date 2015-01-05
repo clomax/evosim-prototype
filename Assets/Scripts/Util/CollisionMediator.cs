@@ -55,7 +55,7 @@ public class CollisionMediator : MonoBehaviour {
 		if (null != dup) {
 			collision_events.Clear();
 			Vector3 pos = (a.transform.position - b.transform.position) * 0.5F + b.transform.position;
-			pos.y += 10.0F;		// Drop creatures from a height
+			pos.y += 1.0F;		// Drop creatures from a height
 			
 			// Get references to the scripts of each creature
 			Creature a_script = a.transform.parent.parent.GetComponent<Creature>();

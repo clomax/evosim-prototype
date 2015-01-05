@@ -5,7 +5,7 @@
 		"log_time"					: 1.0,
 		
 		"camera": {
-			"sensitivity"			: 2.75,
+			"sensitivity"			: 1.0,
 			"invert"				: 1
 		}
 	},
@@ -15,33 +15,32 @@
 	},
 	
 	"ether": {
-		"total_energy"				: 12600.0,
+		"total_energy"				: 10000.0,
 		"start_number_foodbits"		: 100,
 		"starting_creatures"		: 50,
-		"creature_spread"			: 200
+		"creature_spread"			: 20
 	},
 	
 	"foodbit": {
-		"init_energy"				: 25.0,
+		"init_energy"				: 50.0,
 		"destroy_at"				: 10.0,
 		"spore_time"				: 0.01,
 		"spore_range"				: 100,
 		"spore_rate"				: 1.0,
-		"wide_spread"				: 400.0,
+		"wide_spread"				: 40.0,
 		"decay_amount"				: 0.0,
 		"decay_time"				: 1.0,
 		"decay_rate"				: 0.1
 	},
 	
 	"creature": {
-		"MAX_ENERGY"				: 100.0,
 		"init_energy"				: 80.0,
-		"hunger_threshold"			: 50.0,
-		"line_of_sight"				: 50.0,
+		"hunger_threshold"			: 55.0,
+		"line_of_sight"				: 5.0,
 		"energy_to_offspring"		: 0.50,
 		"metabolic_rate"			: 0.10,
-		"mate_range"				: 7.5,
-		"eat_range"					: 7.5,
+		"mate_range"				: 0.75,
+		"eat_range"					: 0.75,
 		"eye_refresh_rate"			: 0.25,
 		"age_sexual_maturity"		: 6,
 		"branch_limit"				: 4,
@@ -49,39 +48,39 @@
 		
 		"root": {
 			"max_root_scale" : {
-				"x"					: 10.0,
-				"y"					: 10.0,
-				"z"					: 10.0
+				"x"					: 1.0,
+				"y"					: 1.0,
+				"z"					: 1.0
 			},
 			
 			"min_root_scale": {
-				"x"					: 3.0,
-				"y"					: 3.0,
-				"z"					: 3.0
+				"x"					: 0.3,
+				"y"					: 0.3,
+				"z"					: 0.3
 			}
 		},
 		
 		"limb": {
 			"max_limb_scale" : {
-				"x"					: 3.0,
-				"y"					: 3.0,
-				"z"					: 10.0
+				"x"					: 0.3,
+				"y"					: 0.3,
+				"z"					: 1.0
 			},
 			"min_limb_scale" : {
-				"x"					: 1.0,
-				"y"					: 1.0,
-				"z"					: 6.0
+				"x"					: 0.1,
+				"y"					: 0.1,
+				"z"					: 0.6
 			}
 		}
 	},
 	
 	"genitalia": {
-		"line_length"				: 0.5
+		"line_length"				: 0.05
 	},
 	
 	"genetics": {
 		"crossover_rate"			: 0.5,
-		"mutation_rate"				: 0.2,
-		"mutation_factor"			: 0.3
+		"mutation_rate"				: 0.25,
+		"mutation_factor"			: 0.35
 	}
 }

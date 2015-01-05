@@ -21,8 +21,8 @@ public class Genitalia : MonoBehaviour {
 	Transform _t;
 	LineRenderer lr;
 	Vector3 line_start;
-	float line_length			= 0.5F; // default
-	float line_width  			= 0.5F; // values
+	float line_length			= 0.05F; // default
+	float line_width  			= 0.05F; // values
 	Vector3 line_end;
 	double timeCreated;
 	double timeToEnableMating 	= 1.0F;

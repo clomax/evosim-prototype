@@ -23,8 +23,8 @@ public class Mouth : MonoBehaviour {
 	Vector3 line_start;
 	Vector3 line_end;
 	
-	float line_length 	= 0.5F;
-	float line_width 	= 0.5F;
+	float line_length 	= 0.05F;
+	float line_width 	= 0.05F;
 	
 	int fb_detect_range = 40;
 	

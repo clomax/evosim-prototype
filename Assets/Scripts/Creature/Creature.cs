@@ -43,7 +43,6 @@ public class Creature : MonoBehaviour {
 	double 			hunger_threshold;
 	double 			metabolic_rate;
 	int 			age_sexual_maturity;
-	double			max_energy;
 
 	public int times_mated;
 	public int times_eaten;
@@ -89,7 +88,7 @@ public class Creature : MonoBehaviour {
 		root_script = root.AddComponent<Root>();
 		root_script.setColour(chromosome.getColour());
 		root_script.setScale(chromosome.getRootScale());
-		root.rigidbody.mass = 25F;
+		root.rigidbody.mass = 15F;
 		//root.collider.material = (PhysicMaterial)Resources.Load ("Physics Materials/Creature");
 
 		eye = new GameObject();
@@ -117,7 +116,6 @@ public class Creature : MonoBehaviour {
 		line_of_sight 		= (double) 	settings.contents ["creature"]["line_of_sight"];
 		metabolic_rate 		= (double) 	settings.contents ["creature"]["metabolic_rate"];
 		age_sexual_maturity = (int)		settings.contents ["creature"]["age_sexual_maturity"];
-		max_energy			= (double)	settings.contents ["creature"]["MAX_ENERGY"];
 
 		setupLimbs();
 
@@ -184,11 +182,6 @@ public class Creature : MonoBehaviour {
 	 */
 	public void addEnergy (double n) {
 		energy += n;
-		if (energy > max_energy) {
-			double remainder = energy - max_energy;
-			energy = max_energy;
-			eth.addToEnergy(remainder);
-		}
 	}
 	
 	/*
@@ -261,11 +254,11 @@ public class Creature : MonoBehaviour {
 				joint.anchor = new Vector3(0F, 0F, 0.5F);
 				if(j == 0) {
 					joint.connectedBody = root.rigidbody;
-					limb.rigidbody.mass = 10;
 				} else {
 					joint.connectedBody = actual_limbs[j-1].rigidbody;
-					limb.rigidbody.mass = 10;
 				}
+				limb.rigidbody.mass = 5;
+
 				joints.Add(joint);
 
 				joint.xMotion = ConfigurableJointMotion.Locked;

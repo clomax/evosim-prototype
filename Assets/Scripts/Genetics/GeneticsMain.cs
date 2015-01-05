@@ -107,9 +107,9 @@ public class GeneticsMain : MonoBehaviour {
 
 					Vector3 position = Utility.RandomPointInsideCube(rootScale);
 
-					chromosome.setBaseFequency (Random.Range (1,13));
-					chromosome.setBaseAmplitude (Random.Range (3,10));
-					chromosome.setBasePhase (Random.Range (0,90));
+					chromosome.setBaseFequency (Random.Range (1,5));
+					chromosome.setBaseAmplitude (Random.Range (3,8));
+					chromosome.setBasePhase (Random.Range (0,180));
 
 					ArrayList limb = new ArrayList();
 					limb.Add  (position);
@@ -122,7 +122,7 @@ public class GeneticsMain : MonoBehaviour {
 			chromosome.setBranches(branches);
 
 			if (eth.enoughEnergy(creature_init_energy)) {
-				spw.spawn(Utility.RandomFlatVec(-creature_spread,10,creature_spread), Utility.RandomRotVec(), creature_init_energy, chromosome);
+				spw.spawn(Utility.RandomFlatVec(-creature_spread,1.0F,creature_spread), Utility.RandomRotVec(), creature_init_energy, chromosome);
 				eth.subtractEnergy(creature_init_energy);
 			}
 		}
