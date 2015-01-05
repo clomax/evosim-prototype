@@ -18,7 +18,7 @@
 		"total_energy"				: 10000.0,
 		"start_number_foodbits"		: 100,
 		"starting_creatures"		: 50,
-		"creature_spread"			: 20
+		"creature_spread"			: 10
 	},
 	
 	"foodbit": {

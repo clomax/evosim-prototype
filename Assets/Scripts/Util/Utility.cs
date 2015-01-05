@@ -23,9 +23,9 @@ public class Utility : MonoBehaviour {
 	}
 	
 	//return a random 'flat' vector within a given range
-	public static Vector3 RandomFlatVec(float x, float y, float z) {
+	public static Vector3 RandomVec(float x, float y, float z) {
 		return new Vector3( Random.Range(-x,x),
-							y / 2,
+							Random.Range(-y,y),
 							Random.Range(-z,z)
 			              );
 	}

@@ -43,15 +43,6 @@ public class Main : MonoBehaviour {
 		aperatus = (GameObject)Instantiate(Resources.Load("Prefabs/Aperatus"));
 		cam = GameObject.Find("Main Camera");
 		cam.AddComponent("CameraCtl");
-		plane = GameObject.Find("Plane");
-		
-		p_mr = (MeshRenderer)plane.AddComponent("MeshRenderer");
-		p_mr.material = (Material)Resources.Load("Materials/grid");
-		int tile_scale = (int) settings.contents["environment"]["tile_scale"];
-		p_mr.material.mainTextureScale = new Vector2(tile_scale, tile_scale);
-		
-		_catch = GameObject.Find("Catch");
-		_catch.AddComponent("Catch");
 		
 		ether = Ether.getInstance();
 		

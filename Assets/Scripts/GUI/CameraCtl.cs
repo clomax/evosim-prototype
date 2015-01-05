@@ -70,12 +70,10 @@ public class CameraCtl : MonoBehaviour {
 	}
 
     void moveForwards(float n) {
-		float heightSensitivity = 30f;
+		float sensitivity = 10f;
         Vector3 fwd = transform.forward;
         fwd.y = 0;
         fwd.Normalize();
-		fwd.z *= (transform.position.y/heightSensitivity);
-		fwd.x *= (transform.position.y/heightSensitivity);
 		Camera.main.transform.position += invert * -(n * fwd);
     }
 
@@ -93,7 +91,7 @@ public class CameraCtl : MonoBehaviour {
         pitch += invert * n;
         wrapAngle(ref pitch);
         transform.localEulerAngles = new Vector3(pitch, hdg, 0);
-    }
+	}
 
     private static void wrapAngle(ref float angle) {
         if (angle < -360F)

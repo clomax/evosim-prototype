@@ -88,7 +88,7 @@ public class Creature : MonoBehaviour {
 		root_script = root.AddComponent<Root>();
 		root_script.setColour(chromosome.getColour());
 		root_script.setScale(chromosome.getRootScale());
-		root.rigidbody.mass = 15F;
+		root.rigidbody.mass = 10F;
 		//root.collider.material = (PhysicMaterial)Resources.Load ("Physics Materials/Creature");
 
 		eye = new GameObject();
@@ -257,7 +257,7 @@ public class Creature : MonoBehaviour {
 				} else {
 					joint.connectedBody = actual_limbs[j-1].rigidbody;
 				}
-				limb.rigidbody.mass = 5;
+				limb.rigidbody.mass = 1;
 
 				joints.Add(joint);
 
