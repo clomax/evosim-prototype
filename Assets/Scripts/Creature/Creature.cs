@@ -137,8 +137,10 @@ public class Creature : MonoBehaviour {
 		for (int i=0; i<joints.Count; i++) {
 			joints[i].targetAngularVelocity = new Vector3(
 				Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase),
-			    Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase),
-			    Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase)
+			    //Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase),
+				0F,
+			    //Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase)
+				0F
 			);
 		}
 	}
