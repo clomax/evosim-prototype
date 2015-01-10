@@ -51,12 +51,11 @@ public class CollisionMediator : MonoBehaviour {
 	public void observe (GameObject a, GameObject b) {
 		collision_events.Add(new CollEvent(a, b));
 		CollEvent dup = findMatch(a, b);
-		// If a duplicate has been found - spawn
+		// If a duplicate event has been found spawn a child
 		if (null != dup) {
 			collision_events.Clear();
 			Vector3 pos = (a.transform.position - b.transform.position) * 0.5F + b.transform.position;
-			pos.y += 1.0F;		// Drop creatures from a height
-			
+
 			// Get references to the scripts of each creature
 			Creature a_script = a.transform.parent.parent.GetComponent<Creature>();
 			Creature b_script = b.transform.parent.parent.GetComponent<Creature>();

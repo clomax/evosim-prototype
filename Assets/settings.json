@@ -18,7 +18,7 @@
 		"total_energy"				: 10000.0,
 		"start_number_foodbits"		: 100,
 		"starting_creatures"		: 50,
-		"creature_spread"			: 20
+		"creature_spread"			: 10
 	},
 	
 	"foodbit": {
@@ -27,7 +27,7 @@
 		"spore_time"				: 0.01,
 		"spore_range"				: 100,
 		"spore_rate"				: 1.0,
-		"wide_spread"				: 40.0,
+		"wide_spread"				: 20.0,
 		"decay_amount"				: 0.0,
 		"decay_time"				: 1.0,
 		"decay_rate"				: 0.1

@@ -34,7 +34,7 @@ public class Logger : MonoBehaviour {
 		if(!instance) {
 			container = new GameObject();
 			container.name = "Logger";
-			instance = container.AddComponent(typeof(Logger)) as Logger;
+			instance = container.AddComponent<Logger>();
 		}
 		return instance;
 	}

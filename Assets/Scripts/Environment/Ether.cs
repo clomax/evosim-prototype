@@ -53,10 +53,10 @@ public class Ether : MonoBehaviour {
 		foodbits = new ArrayList();
 		
 		for (int i=0; i<start_number_foodbits; i++) {
-			Vector3 pos = Utility.RandomFlatVec( -wide_spread,
-				                                  Foodbit.foodbitHeight /2,
-				                                  wide_spread
-				               				   );
+			Vector3 pos = Utility.RandomVec( -wide_spread,
+				                             wide_spread,
+				                             wide_spread
+				               				);
 			newFoodbit(pos);
 		}
 		
@@ -84,7 +84,7 @@ public class Ether : MonoBehaviour {
 			GameObject fb = (GameObject) foodbits[fb_index];
 			Foodbit fb_script = fb.GetComponent<Foodbit>();
 			Vector3 fb_pos = fb_script.transform.localPosition;
-			pos = Utility.RandomFlatVec (-spore_range,
+			pos = Utility.RandomVec (-spore_range,
 		                                 Foodbit.foodbitHeight / 2,
 		                                 spore_range
 										);
@@ -93,7 +93,7 @@ public class Ether : MonoBehaviour {
 			if (new_pos.x > wide_spread  || new_pos.x < -wide_spread
 				|| new_pos.z > wide_spread || new_pos.z < -wide_spread)
 			{
-				new_pos = Utility.RandomFlatVec(-wide_spread,
+				new_pos = Utility.RandomVec(-wide_spread,
 					                         	Foodbit.foodbitHeight / 2,
 					                         	wide_spread
 					               		   	   );

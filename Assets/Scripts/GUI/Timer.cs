@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Timer : MonoBehaviour {
 
+	public Text text;
+
 	void Update () {
-		guiText.text = "Time: " + Time.timeSinceLevelLoad.ToString("F2");
+		text.text = "Time: " + Time.timeSinceLevelLoad.ToString("F2");
 	}
 
 	void OnPostRender () {

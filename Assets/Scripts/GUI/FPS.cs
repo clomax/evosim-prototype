@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class FPS : MonoBehaviour {
 
 	float fps;
+	public Text text;
 
 	// Use this for initialization
 	void Start () {
@@ -15,6 +17,6 @@ public class FPS : MonoBehaviour {
 	}
 
 	void printFPS () {
-		guiText.text = "FPS: " + fps.ToString("F0");
+		text.text = "FPS: " + fps.ToString("F0");
 	}
 }

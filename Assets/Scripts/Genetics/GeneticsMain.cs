@@ -122,7 +122,7 @@ public class GeneticsMain : MonoBehaviour {
 			chromosome.setBranches(branches);
 
 			if (eth.enoughEnergy(creature_init_energy)) {
-				spw.spawn(Utility.RandomFlatVec(-creature_spread,1.0F,creature_spread), Utility.RandomRotVec(), creature_init_energy, chromosome);
+				spw.spawn(Utility.RandomVec(-creature_spread,creature_spread,creature_spread), Utility.RandomRotVec(), creature_init_energy, chromosome);
 				eth.subtractEnergy(creature_init_energy);
 			}
 		}

@@ -1,20 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Selection {
+public class Selection : MonoBehaviour {
 			
-	private static GameObject selected;
-	
-	public static GameObject getSelected {
-		get { return selected; }
-		set { selected = value; }
+	public GameObject selected;
+
+	public static GameObject container;
+	public static Selection instance;
+
+	public static Selection getInstance () {
+		if(!instance) {
+			container = new GameObject();
+			container.name = "SelectionManager";
+			instance = container.AddComponent<Selection>();
+		}
+		return instance;
+	}
+
+	public GameObject select (GameObject go) {
+		return selected = go;
 	}
 	
-	public static void select (GameObject go) {
-		getSelected = go;
-	}
-	
-	public static bool isSelected (GameObject go) {
+	public bool isSelected (GameObject go) {
 		return selected == go;
 	}
 

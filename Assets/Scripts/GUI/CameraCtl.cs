@@ -13,11 +13,7 @@ using System.Collections;
 
 public class CameraCtl : MonoBehaviour {
 
-    private float sensitivity;
-
-	private float angle_upper_limit;
-	private float angle_lower_limit;
-	
+    private float sensitivity;	
 	private Transform _t;
 	
     float hdg = 0F;
@@ -36,9 +32,6 @@ public class CameraCtl : MonoBehaviour {
 		sensitivity = float.Parse( settings.contents["config"]["camera"]["sensitivity"].ToString() );
 		invert = float.Parse( settings.contents["config"]["camera"]["invert"].ToString() );
 		invert = invert == 0 ? 1 : -1;
-
-		angle_upper_limit = 1F;
-		angle_lower_limit = 90F;
 
 		pitch = _t.localEulerAngles.x;
 		camera.farClipPlane = 100000;

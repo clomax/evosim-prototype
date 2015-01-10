@@ -132,7 +132,7 @@ public class Creature : MonoBehaviour {
 	public float phase;
 
 	void FixedUpdate () {
-		float sine = Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, 0);
+		//float sine = Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, 0);
 		for (int i=0; i<joints.Count; i++) {
 			joints[i].targetAngularVelocity = new Vector3(
 				Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase),
@@ -245,7 +245,7 @@ public class Creature : MonoBehaviour {
 					limb.transform.Translate(0,0,-actual_limbs[j-1].transform.localScale.z);
 				}
 				
-				Rigidbody rigidbody = limb.AddComponent<Rigidbody>();
+				limb.AddComponent<Rigidbody>();
 				limb.AddComponent<BoxCollider>();
 				limb.collider.material = (PhysicMaterial)Resources.Load("Physics Materials/Creature");
 
