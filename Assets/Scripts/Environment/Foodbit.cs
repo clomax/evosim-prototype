@@ -52,7 +52,7 @@ public class Foodbit : MonoBehaviour {
 		mr = (MeshRenderer)gameObject.AddComponent("MeshRenderer");
 		mr.material = (Material)Resources.Load("Materials/Foodbit");
 		eth = Ether.getInstance();
-		Collider co = GetComponent<BoxCollider>();
+		Collider co = GetComponent<SphereCollider>();
 		co.isTrigger = true;
 		
 		InvokeRepeating("decay", decay_time, decay_time);
