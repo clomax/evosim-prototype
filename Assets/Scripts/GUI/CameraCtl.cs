@@ -63,12 +63,11 @@ public class CameraCtl : MonoBehaviour {
 	}
 
     void moveForwards(float n) {
-		float heightSensitivity = 30f;
         Vector3 fwd = transform.forward;
         fwd.y = 0;
         fwd.Normalize();
-		fwd.z *= (transform.position.y/heightSensitivity);
-		fwd.x *= (transform.position.y/heightSensitivity);
+		fwd.z *= sensitivity;
+		fwd.x *= sensitivity;
 		Camera.main.transform.position += invert * -(n * fwd);
     }
 
