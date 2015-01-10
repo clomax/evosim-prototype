@@ -69,7 +69,7 @@ public class Genitalia : MonoBehaviour {
 			resetStart();
 		} else {
 			lr.useWorldSpace = false;
-			line_start = new Vector3(0,0,-.5f);
+			line_start = new Vector3(-0.05F,0,0);
 			line_end = new Vector3(0,0,line_length);
 			lr.SetPosition(0,line_start);
 			lr.SetPosition(1,line_end);

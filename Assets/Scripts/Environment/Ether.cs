@@ -94,9 +94,9 @@ public class Ether : MonoBehaviour {
 				|| new_pos.z > wide_spread || new_pos.z < -wide_spread)
 			{
 				new_pos = Utility.RandomVec(-wide_spread,
-					                         	Foodbit.foodbitHeight / 2,
-					                         	wide_spread
-					               		   	   );
+					                         wide_spread,
+					                         wide_spread
+					               		   );
 			}
 			
 			newFoodbit(new_pos);
