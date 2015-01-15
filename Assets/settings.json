@@ -15,19 +15,19 @@
 	},
 	
 	"ether": {
-		"total_energy"				: 10000.0,
+		"total_energy"				: 12000.0,
 		"start_number_foodbits"		: 100,
-		"starting_creatures"		: 50,
-		"creature_spread"			: 10
+		"starting_creatures"		: 10,
+		"creature_spread"			: 7
 	},
 	
 	"foodbit": {
-		"init_energy"				: 50.0,
+		"init_energy"				: 25.0,
 		"destroy_at"				: 10.0,
 		"spore_time"				: 0.01,
 		"spore_range"				: 100,
 		"spore_rate"				: 1.0,
-		"wide_spread"				: 20.0,
+		"wide_spread"				: 40.0,
 		"decay_amount"				: 0.0,
 		"decay_time"				: 1.0,
 		"decay_rate"				: 0.1

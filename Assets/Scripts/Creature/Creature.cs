@@ -90,7 +90,7 @@ public class Creature : MonoBehaviour {
 		root_script.setScale(chromosome.getRootScale());
 		root.rigidbody.mass = 15F;
 		root.rigidbody.angularDrag = 20F;
-		//root.collider.material = (PhysicMaterial)Resources.Load ("Physics Materials/Creature");
+		root.rigidbody.drag = 2F;
 
 		eye = new GameObject();
 		eye.name = "Eye";
@@ -103,14 +103,14 @@ public class Creature : MonoBehaviour {
 		mouth.name = "Mouth";
 		mouth.transform.parent 			= root.transform;
 		mouth.transform.eulerAngles 	= root.transform.eulerAngles;
-		mouth.transform.localPosition 	= new Vector3(.5F,0,0);
+		mouth.transform.localPosition 	= new Vector3(0,0,.5F);
 		mouth.AddComponent<Mouth>();
 		
 		genital = new GameObject();
 		genital.name = "Genital";
 		genital.transform.parent 		= root.transform;
 		genital.transform.eulerAngles 	= root.transform.eulerAngles;
-		genital.transform.localPosition	= new Vector3(-.5F,0,0);
+		genital.transform.localPosition	= new Vector3(0,0,-.5F);
 		genital.AddComponent<Genitalia>();
 		
 		hunger_threshold 	= (double) 	settings.contents ["creature"]["hunger_threshold"];
@@ -125,7 +125,6 @@ public class Creature : MonoBehaviour {
 		times_eaten = 0;
 		times_mated = 0;
 		
-		InvokeRepeating("updateAge",1.0f,1.0f);
 		InvokeRepeating("updateState",0,0.1f);
 		InvokeRepeating("metabolise",1.0f,1.0f);
 	}
@@ -133,24 +132,22 @@ public class Creature : MonoBehaviour {
 	public float phase;
 
 	void FixedUpdate () {
-		//float sine = Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, 0);
 		for (int i=0; i<joints.Count; i++) {
 			joints[i].targetAngularVelocity = new Vector3(
-				Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase),
-			    //Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase),
+				//Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase),
 				0F,
-			    //Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase)
-				0F
+			    Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase),
+			    Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase)
 			);
 		}
 	}
 
 	float Sine (float freq, float amplitude, float phase_shift) {
-		return Mathf.Sin(Time.time * freq + phase_shift) * amplitude;
+		return Mathf.Sin((float)age * freq + phase_shift) * amplitude;
 	}
 
-	void updateAge() {
-		age += 1;
+	void Update () {
+		age += Time.deltaTime;
 	}
 
 	public void setEnergy(double n) {
@@ -260,7 +257,7 @@ public class Creature : MonoBehaviour {
 				} else {
 					joint.connectedBody = actual_limbs[j-1].rigidbody;
 				}
-				limb.rigidbody.mass = 1;
+				limb.rigidbody.mass = 1F;
 
 				joints.Add(joint);
 
@@ -268,7 +265,7 @@ public class Creature : MonoBehaviour {
 				joint.yMotion = ConfigurableJointMotion.Locked;
 				joint.zMotion = ConfigurableJointMotion.Locked;
 
-				joint.angularXMotion = ConfigurableJointMotion.Free;
+				joint.angularXMotion = ConfigurableJointMotion.Locked;
 				joint.angularYMotion = ConfigurableJointMotion.Free;
 				joint.angularZMotion = ConfigurableJointMotion.Locked;
 
