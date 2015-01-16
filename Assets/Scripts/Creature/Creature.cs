@@ -58,6 +58,7 @@ public class Creature : MonoBehaviour {
 					  };
 	public State state;
 	public Eye eye_script;
+	public Vector3 direction;
 
 	void Start () {
 		_t = transform;		
@@ -127,6 +128,7 @@ public class Creature : MonoBehaviour {
 		
 		InvokeRepeating("updateState",0,0.1f);
 		InvokeRepeating("metabolise",1.0f,1.0f);
+		InvokeRepeating("RandomDirection", 1F, 10F);
 	}
 
 	public float phase;
@@ -134,12 +136,18 @@ public class Creature : MonoBehaviour {
 	void FixedUpdate () {
 		for (int i=0; i<joints.Count; i++) {
 			joints[i].targetAngularVelocity = new Vector3(
-				//Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase),
-				0F,
+				Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase),
 			    Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase),
 			    Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase)
 			);
 		}
+
+		if(eye_script.goal) {
+			direction = (eye_script.goal.transform.position - root.transform.position).normalized;
+		}
+		Quaternion lookRotation = Quaternion.LookRotation(direction);
+		root.transform.rotation = Quaternion.Slerp(root.transform.rotation, lookRotation, Time.deltaTime);
+		root.rigidbody.AddForce(root.transform.forward * 25F);
 	}
 
 	float Sine (float freq, float amplitude, float phase_shift) {
@@ -148,6 +156,10 @@ public class Creature : MonoBehaviour {
 
 	void Update () {
 		age += Time.deltaTime;
+	}
+
+	private void RandomDirection () {
+		direction = new Vector3 (Random.Range (-1F,1F), Random.Range(-1F,1F), Random.Range(-1F,1F));
 	}
 
 	public void setEnergy(double n) {

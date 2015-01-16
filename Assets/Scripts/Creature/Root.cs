@@ -16,16 +16,7 @@ public class Root : MonoBehaviour {
 	public Material mt;
 
 	private Selectable s;
-
-	private Eye eye_script;
-
-
-
-	public Vector3 direction;
-
-
-
-
+	
 	void Start () {
 		_t = transform;
 		
@@ -37,19 +28,6 @@ public class Root : MonoBehaviour {
 		genital = crt.genital;
 
 		s = crt.GetComponent<Selectable>();
-
-		eye_script = eye.GetComponent<Eye>();
-
-		InvokeRepeating("RandomDirection", 1F, 10F);
-	}
-
-	void FixedUpdate () {
-		if(eye_script.goal) {
-			direction = (eye_script.goal.transform.position - transform.position).normalized;
-		}
-		Quaternion lookRotation = Quaternion.LookRotation(direction);
-		transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime);
-		rigidbody.AddForce(direction * 25F);
 	}
 
 	void OnMouseDown () {
@@ -64,8 +42,5 @@ public class Root : MonoBehaviour {
 	public void setScale (Vector3 scale) {
 		transform.localScale = scale;	
 	}
-
-	private void RandomDirection () {
-		direction = new Vector3 (Random.Range (-1F,1F), Random.Range(-1F,1F), Random.Range(-1F,1F));
-	}
+	
 }
