@@ -277,8 +277,8 @@ public class Creature : MonoBehaviour {
 			}
 		}
 
-		root.layer = LayerMask.NameToLayer("Creature");
-		Physics.IgnoreLayerCollision(8,8);
+		//root.layer = LayerMask.NameToLayer("Creature");
+		//Physics.IgnoreLayerCollision(8,8);
 	}
 
 }

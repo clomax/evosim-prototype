@@ -40,7 +40,7 @@ public class Root : MonoBehaviour {
 
 		eye_script = eye.GetComponent<Eye>();
 
-		InvokeRepeating("RandomDirection", 1F, 20F);
+		InvokeRepeating("RandomDirection", 1F, 10F);
 	}
 
 	void FixedUpdate () {
@@ -49,7 +49,7 @@ public class Root : MonoBehaviour {
 		}
 		Quaternion lookRotation = Quaternion.LookRotation(direction);
 		transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime);
-		rigidbody.AddForce(direction * 15F);
+		rigidbody.AddForce(direction * 25F);
 	}
 
 	void OnMouseDown () {

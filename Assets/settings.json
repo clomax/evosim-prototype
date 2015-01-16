@@ -15,7 +15,7 @@
 	},
 	
 	"ether": {
-		"total_energy"				: 12000.0,
+		"total_energy"				: 10000.0,
 		"start_number_foodbits"		: 100,
 		"starting_creatures"		: 10,
 		"creature_spread"			: 7
@@ -27,7 +27,7 @@
 		"spore_time"				: 0.01,
 		"spore_range"				: 100,
 		"spore_rate"				: 1.0,
-		"wide_spread"				: 40.0,
+		"wide_spread"				: 30.0,
 		"decay_amount"				: 0.0,
 		"decay_time"				: 1.0,
 		"decay_rate"				: 0.1
@@ -36,10 +36,10 @@
 	"creature": {
 		"init_energy"				: 80.0,
 		"hunger_threshold"			: 55.0,
-		"line_of_sight"				: 5.0,
+		"line_of_sight"				: 7.0,
 		"energy_to_offspring"		: 0.50,
 		"metabolic_rate"			: 0.10,
-		"mate_range"				: 0.75,
+		"mate_range"				: 1.0,
 		"eat_range"					: 0.75,
 		"eye_refresh_rate"			: 0.25,
 		"age_sexual_maturity"		: 6,
