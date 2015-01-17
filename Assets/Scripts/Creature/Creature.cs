@@ -59,6 +59,8 @@ public class Creature : MonoBehaviour {
 	public State state;
 	public Eye eye_script;
 	public Vector3 direction;
+	private Quaternion lookRotation;
+	private float sine;
 
 	void Start () {
 		_t = transform;		
@@ -134,20 +136,17 @@ public class Creature : MonoBehaviour {
 	public float phase;
 
 	void FixedUpdate () {
+		sine = Sine(chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase);
 		for (int i=0; i<joints.Count; i++) {
-			joints[i].targetAngularVelocity = new Vector3(
-				Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase),
-			    Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase),
-			    Sine (chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase)
-			);
+			joints[i].targetAngularVelocity = new Vector3(sine, sine, sine);
 		}
 
 		if(eye_script.goal) {
 			direction = (eye_script.goal.transform.position - root.transform.position).normalized;
 		}
-		Quaternion lookRotation = Quaternion.LookRotation(direction);
-		root.transform.rotation = Quaternion.Slerp(root.transform.rotation, lookRotation, Time.deltaTime);
-		root.rigidbody.AddForce(root.transform.forward * 25F);
+		if (direction != Vector3.zero) { lookRotation = Quaternion.LookRotation(direction); }
+		root.transform.rotation = Quaternion.Slerp(root.transform.rotation, lookRotation, Time.deltaTime * sine);
+		root.rigidbody.AddForce((root.transform.forward * 10F * System.Math.Max(0F,sine)) * chromosome.getBranchCount());
 	}
 
 	float Sine (float freq, float amplitude, float phase_shift) {
@@ -262,6 +261,7 @@ public class Creature : MonoBehaviour {
 				limb.collider.material = (PhysicMaterial)Resources.Load("Physics Materials/Creature");
 
 				ConfigurableJoint joint = limb.AddComponent<ConfigurableJoint>();
+				//joint.configuredInWorldSpace = true;
 				joint.axis = new Vector3(0.5F, 0F, 0F);
 				joint.anchor = new Vector3(0F, 0F, 0.5F);
 				if(j == 0) {
@@ -270,6 +270,7 @@ public class Creature : MonoBehaviour {
 					joint.connectedBody = actual_limbs[j-1].rigidbody;
 				}
 				limb.rigidbody.mass = 1F;
+				limb.rigidbody.drag = 1F;
 
 				joints.Add(joint);
 
@@ -277,7 +278,7 @@ public class Creature : MonoBehaviour {
 				joint.yMotion = ConfigurableJointMotion.Locked;
 				joint.zMotion = ConfigurableJointMotion.Locked;
 
-				joint.angularXMotion = ConfigurableJointMotion.Locked;
+				joint.angularXMotion = ConfigurableJointMotion.Free;
 				joint.angularYMotion = ConfigurableJointMotion.Free;
 				joint.angularZMotion = ConfigurableJointMotion.Locked;
 
