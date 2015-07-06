@@ -36,7 +36,7 @@ public class Main : MonoBehaviour {
 		selectionManager = Selection.getInstance();
 		aperatus = (GameObject)Instantiate(Resources.Load("Prefabs/Aperatus"));
 		cam = GameObject.Find("Main Camera");
-		cam.AddComponent("CameraCtl");
+		cam.AddComponent<CameraCtl>();
 		ether = Ether.getInstance();
 		co = CollisionMediator.getInstance();
 		spw = Spawner.getInstance();

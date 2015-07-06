@@ -95,7 +95,7 @@ public class GeneticsUtils {
 	}
 	
 	public static Chromosome crossover (Chromosome c1, Chromosome c2, double rate) {
-		Chromosome c = c1;
+		Chromosome c = new Chromosome();
 		
 		// Crossover colour
 		Color c1_col = c1.getColour();
@@ -105,8 +105,15 @@ public class GeneticsUtils {
 		float b = (.5F * c1_col.b) + (.5F * c2_col.b);
 		c.setColour(r,g,b);
 
+		Color c1_limb_col = c1.getLimbColour();
+		Color c2_limb_col = c2.getLimbColour();
+		r = (.5F * c1_limb_col.r) + (.5F * c2_limb_col.r);
+		g = (.5F * c1_limb_col.g) + (.5F * c2_limb_col.g);
+		b = (.5F * c1_limb_col.b) + (.5F * c2_limb_col.b);
+		c.setLimbColour(r,g,b);
+
 		// Crossover limbs
-		ArrayList c1_branches = c.branches;
+		ArrayList c1_branches = c1.branches;
 		ArrayList c2_branches = c2.branches;
 		ArrayList c_branches;
 
@@ -120,7 +127,14 @@ public class GeneticsUtils {
 			c_branches = c2_branches;
 			other_crt_branches = c1_branches;
 		}
-		
+
+		select = Random.Range(0,2);
+		if (select == 0) {
+			c.setRootScale(c1.getRootScale());
+		} else {
+			c.setRootScale(c2.getRootScale());
+		}
+
 		// Randomly select attributes from the selected creature's limbs to
 		//	assign to child creature's limbs
 

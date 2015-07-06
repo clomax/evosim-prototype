@@ -34,7 +34,7 @@ public class CameraCtl : MonoBehaviour {
 		invert = invert == 0 ? 1 : -1;
 
 		pitch = _t.localEulerAngles.x;
-		camera.farClipPlane = 100000;
+		GetComponent<Camera>().farClipPlane = 100000;
     }
 
     void LateUpdate() {

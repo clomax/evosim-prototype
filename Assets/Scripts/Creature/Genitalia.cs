@@ -40,12 +40,12 @@ public class Genitalia : MonoBehaviour {
 		eye = crt.eye.gameObject.GetComponent<Eye>();
 		
 		_t = transform;
-		lr = (LineRenderer)gameObject.AddComponent("LineRenderer");
+		lr = (LineRenderer)gameObject.AddComponent<LineRenderer>();
 		lr.material.color = Color.white;
 		lr.material.shader = Shader.Find("Sprites/Default");
 		lr.SetWidth(line_width, line_width);
 		lr.SetVertexCount(2);
-		lr.renderer.enabled = true;
+		lr.GetComponent<Renderer>().enabled = true;
 		timeCreated = Time.time;
 		
 		line_length = 	float.Parse( settings.contents["genitalia"]["line_length"].ToString() );
@@ -57,20 +57,19 @@ public class Genitalia : MonoBehaviour {
 			timeCreated = Time.time;
 		}
 		
-		Creature cc = eye.closestCrt;
-		if(cc && crt.state == Creature.State.persuing_mate) {
+		if(eye.closestCrt && crt.state == Creature.State.persuing_mate) {
 			lr.useWorldSpace = true;
-			line_end = new Vector3(cc.genital.transform.position.x,
-			                       cc.genital.transform.position.y,
-			                       cc.genital.transform.position.z
+			line_end = new Vector3(eye.closestCrt.genital.transform.position.x,
+			                       eye.closestCrt.genital.transform.position.y,
+			                       eye.closestCrt.genital.transform.position.z
 			                      );
 			line_start = _t.position;
 			lr.SetPosition(1,line_end);
 			resetStart();
 		} else {
 			lr.useWorldSpace = false;
-			line_start = new Vector3(-0.05F,0,0);
-			line_end = new Vector3(0,0,line_length);
+			line_start = new Vector3(0,0,0);
+			line_end = new Vector3(0,0,-line_length);
 			lr.SetPosition(0,line_start);
 			lr.SetPosition(1,line_end);
 		}

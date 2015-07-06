@@ -1,8 +1,8 @@
 ﻿{
 	"config": {
-		"population_logging"		: 0,
-		"foodbit_logging"			: 0,
-		"log_time"					: 1.0,
+		"population_logging"		: 1,
+		"foodbit_logging"			: 1,
+		"log_time"					: 10.0,
 		
 		"camera": {
 			"sensitivity"			: 1.0,
@@ -17,28 +17,28 @@
 	"ether": {
 		"total_energy"				: 10000.0,
 		"start_number_foodbits"		: 100,
-		"starting_creatures"		: 10,
-		"creature_spread"			: 7
+		"starting_creatures"		: 20,
+		"creature_spread"			: 15
 	},
 	
 	"foodbit": {
-		"init_energy"				: 25.0,
+		"init_energy"				: 40.0,
 		"destroy_at"				: 10.0,
-		"spore_time"				: 0.01,
+		"spore_time"				: 0.175,
 		"spore_range"				: 100,
 		"spore_rate"				: 1.0,
-		"wide_spread"				: 30.0,
+		"wide_spread"				: 40.0,
 		"decay_amount"				: 0.0,
 		"decay_time"				: 1.0,
 		"decay_rate"				: 0.1
 	},
 	
 	"creature": {
-		"init_energy"				: 80.0,
+		"init_energy"				: 100.0,
 		"hunger_threshold"			: 55.0,
-		"line_of_sight"				: 7.0,
+		"line_of_sight"				: 12.0,
 		"energy_to_offspring"		: 0.50,
-		"metabolic_rate"			: 0.10,
+		"metabolic_rate"			: 0.1,
 		"mate_range"				: 1.0,
 		"eat_range"					: 0.75,
 		"eye_refresh_rate"			: 0.25,
@@ -80,7 +80,7 @@
 	
 	"genetics": {
 		"crossover_rate"			: 0.5,
-		"mutation_rate"				: 0.25,
-		"mutation_factor"			: 0.35
+		"mutation_rate"				: 0.2,
+		"mutation_factor"			: 0.3
 	}
 }

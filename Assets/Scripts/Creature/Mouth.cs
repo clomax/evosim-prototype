@@ -34,12 +34,12 @@ public class Mouth : MonoBehaviour {
 		_t = transform;
 		crt = (Creature)_t.parent.parent.gameObject.GetComponent("Creature");
 		eye = crt.eye.GetComponent<Eye>();
-		lr = (LineRenderer)gameObject.AddComponent("LineRenderer");
+		lr = (LineRenderer)gameObject.AddComponent<LineRenderer>();
 		lr.material.color = Color.green;
 		lr.material.shader = Shader.Find("Sprites/Default");
 		lr.SetWidth(line_width, line_width);
 		lr.SetVertexCount(2);
-		lr.renderer.enabled = true;
+		lr.GetComponent<Renderer>().enabled = true;
 		lr.receiveShadows = false;
 		lr.castShadows = false;
 	}

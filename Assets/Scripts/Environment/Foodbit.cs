@@ -27,7 +27,7 @@ public class Foodbit : MonoBehaviour {
 	
 	Settings settings;
 	Ether eth;
-	MeshRenderer mr;
+	//MeshRenderer mr;
 	
 	System.Random rnd = new System.Random();
 	
@@ -49,13 +49,13 @@ public class Foodbit : MonoBehaviour {
 
 		energy = init_energy;
 		
-		mr = (MeshRenderer)gameObject.AddComponent("MeshRenderer");
-		mr.material = (Material)Resources.Load("Materials/Foodbit");
+		//mr = (MeshRenderer)gameObject.AddComponent("MeshRenderer");
+		//mr.sharedMaterial = (Material)Resources.Load("Materials/Foodbit");
 		eth = Ether.getInstance();
 		Collider co = GetComponent<SphereCollider>();
 		co.isTrigger = true;
 		
-		InvokeRepeating("decay", decay_time, decay_time);
+		//InvokeRepeating("decay", decay_time, decay_time);
 	}
 
 	void decay () {

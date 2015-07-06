@@ -107,9 +107,9 @@ public class GeneticsMain : MonoBehaviour {
 
 					Vector3 position = Utility.RandomPointInsideCube(rootScale);
 
-					chromosome.setBaseFequency (Random.Range (1,15));
-					chromosome.setBaseAmplitude (Random.Range (2,5));
-					chromosome.setBasePhase (Random.Range (0,270));
+					chromosome.setBaseFequency (Random.Range (3,20));
+					chromosome.setBaseAmplitude (Random.Range (2,6));
+					chromosome.setBasePhase (Random.Range (0,360));
 
 					ArrayList limb = new ArrayList();
 					limb.Add  (position);

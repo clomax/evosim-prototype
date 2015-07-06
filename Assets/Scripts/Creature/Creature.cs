@@ -58,9 +58,12 @@ public class Creature : MonoBehaviour {
 					  };
 	public State state;
 	public Eye eye_script;
-	public Vector3 direction;
+	public Vector3 target_direction;
 	private Quaternion lookRotation;
 	private float sine;
+	private float lambda;
+	private Vector3 direction;
+
 
 	void Start () {
 		_t = transform;		
@@ -91,9 +94,9 @@ public class Creature : MonoBehaviour {
 		root_script = root.AddComponent<Root>();
 		root_script.setColour(chromosome.getColour());
 		root_script.setScale(chromosome.getRootScale());
-		root.rigidbody.mass = 15F;
-		root.rigidbody.angularDrag = 20F;
-		root.rigidbody.drag = 2F;
+		//root.rigidbody.mass = 15F;
+		root.GetComponent<Rigidbody>().angularDrag = 7.5F;
+		root.GetComponent<Rigidbody>().drag = 2F;
 
 		eye = new GameObject();
 		eye.name = "Eye";
@@ -130,23 +133,28 @@ public class Creature : MonoBehaviour {
 		
 		InvokeRepeating("updateState",0,0.1f);
 		InvokeRepeating("metabolise",1.0f,1.0f);
-		InvokeRepeating("RandomDirection", 1F, 10F);
+		InvokeRepeating("RandomDirection", 1F, 5F);
+
+		root.GetComponent<Rigidbody>().SetDensity(4F);
+		lambda = 20F;
 	}
 
-	public float phase;
 
 	void FixedUpdate () {
 		sine = Sine(chromosome.base_joint_frequency, chromosome.base_joint_amplitude, chromosome.base_joint_phase);
 		for (int i=0; i<joints.Count; i++) {
-			joints[i].targetAngularVelocity = new Vector3(sine, sine, sine);
+			joints[i].targetRotation = Quaternion.Euler (new Vector3(sine * 5F,0F,0F));
 		}
 
 		if(eye_script.goal) {
-			direction = (eye_script.goal.transform.position - root.transform.position).normalized;
+			target_direction = (eye_script.goal.transform.position - root.transform.position).normalized;
 		}
-		if (direction != Vector3.zero) { lookRotation = Quaternion.LookRotation(direction); }
-		root.transform.rotation = Quaternion.Slerp(root.transform.rotation, lookRotation, Time.deltaTime * sine);
-		root.rigidbody.AddForce((root.transform.forward * 10F * System.Math.Max(0F,sine)) * chromosome.getBranchCount());
+		if (target_direction != Vector3.zero) { lookRotation = Quaternion.LookRotation(target_direction); }
+		float abs_sine = Mathf.Abs(sine);
+		float pos_sine = System.Math.Max(sine,0);
+		root.transform.rotation = Quaternion.Slerp(root.transform.rotation, lookRotation, Time.deltaTime * (abs_sine * 2F));
+		if (pos_sine == 0) { direction = root.transform.forward; }
+		root.GetComponent<Rigidbody>().AddForce(direction * pos_sine * chromosome.getBranchCount());
 	}
 
 	float Sine (float freq, float amplitude, float phase_shift) {
@@ -158,7 +166,7 @@ public class Creature : MonoBehaviour {
 	}
 
 	private void RandomDirection () {
-		direction = new Vector3 (Random.Range (-1F,1F), Random.Range(-1F,1F), Random.Range(-1F,1F));
+		target_direction = new Vector3 (Random.Range (-1F,1F), Random.Range(-1F,1F), Random.Range(-1F,1F));
 	}
 
 	public void setEnergy(double n) {
@@ -213,8 +221,11 @@ public class Creature : MonoBehaviour {
 	 * return it to the ether.
 	 */
 	private void metabolise () {
-		subtractEnergy(metabolic_rate);
-		eth.addToEnergy(metabolic_rate);
+		double subtract = (metabolic_rate * chromosome.getBranchCount()) + 
+						  (metabolic_rate * chromosome.base_joint_amplitude) + 
+						  (metabolic_rate * chromosome.base_joint_frequency);
+		subtractEnergy(subtract);
+		eth.addToEnergy(subtract);
 	}
 	
 	/*
@@ -258,19 +269,19 @@ public class Creature : MonoBehaviour {
 				
 				limb.AddComponent<Rigidbody>();
 				limb.AddComponent<BoxCollider>();
-				limb.collider.material = (PhysicMaterial)Resources.Load("Physics Materials/Creature");
+				limb.GetComponent<Collider>().material = (PhysicMaterial)Resources.Load("Physics Materials/Creature");
 
 				ConfigurableJoint joint = limb.AddComponent<ConfigurableJoint>();
 				//joint.configuredInWorldSpace = true;
 				joint.axis = new Vector3(0.5F, 0F, 0F);
 				joint.anchor = new Vector3(0F, 0F, 0.5F);
 				if(j == 0) {
-					joint.connectedBody = root.rigidbody;
+					joint.connectedBody = root.GetComponent<Rigidbody>();
 				} else {
-					joint.connectedBody = actual_limbs[j-1].rigidbody;
+					joint.connectedBody = actual_limbs[j-1].GetComponent<Rigidbody>();
 				}
-				limb.rigidbody.mass = 1F;
-				limb.rigidbody.drag = 1F;
+				//limb.rigidbody.mass = 1F;
+				limb.GetComponent<Rigidbody>().drag = 1F;
 
 				joints.Add(joint);
 
@@ -280,13 +291,16 @@ public class Creature : MonoBehaviour {
 
 				joint.angularXMotion = ConfigurableJointMotion.Free;
 				joint.angularYMotion = ConfigurableJointMotion.Free;
-				joint.angularZMotion = ConfigurableJointMotion.Locked;
+				joint.angularZMotion = ConfigurableJointMotion.Free;
 
 				JointDrive angXDrive = new JointDrive();
-				angXDrive.mode = JointDriveMode.Velocity;
-				angXDrive.maximumForce = 200;
+				angXDrive.mode = JointDriveMode.Position;
+				angXDrive.positionSpring = 1F;
+				angXDrive.maximumForce = 100000000F;
 				joint.angularXDrive = angXDrive;
 				joint.angularYZDrive = angXDrive;
+
+				limb.GetComponent<Rigidbody>().SetDensity(1F);
 			}
 		}
 

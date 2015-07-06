@@ -71,7 +71,7 @@ public class Ether : MonoBehaviour {
 	public void newFoodbit (Vector3 pos) {
 		if(enoughEnergy(foodbit_energy)) {
 			GameObject fb = (GameObject)Instantiate(foodbit, pos, Quaternion.identity);
-			fb.AddComponent("Foodbit");
+			fb.AddComponent<Foodbit>();
 			subtractEnergy(foodbit_energy);
 			foodbits.Add(fb);
 		}
@@ -130,7 +130,6 @@ public class Ether : MonoBehaviour {
 	
 	public void addToEnergy(double n) {
 		energy += n;
-		if (energy > total_energy) energy = total_energy;
 	}
 
 	public bool enoughEnergy(double n) {
