@@ -36,7 +36,9 @@ Assets/Logs/*
 Assets/data/*
 evosim_Data/*
 ProjectSettings/NavMeshLayers.asset
-Library/EditorUserSettings.asset
+Library/*
+ProjectSettings/NavMeshAreas.asset
+ProjectSettings/ProjectVersion.txt
 Assets/data.meta
 Assets/settings.json.orig
 Assets/Resources/Materials/creature.mat

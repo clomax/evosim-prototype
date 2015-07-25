@@ -40,8 +40,6 @@ public class Mouth : MonoBehaviour {
 		lr.SetWidth(line_width, line_width);
 		lr.SetVertexCount(2);
 		lr.GetComponent<Renderer>().enabled = true;
-		lr.receiveShadows = false;
-		lr.castShadows = false;
 	}
 
 	void Update () {

@@ -11,14 +11,14 @@ using System.Collections.Generic;
  */
 
 public class Chromosome {
-	
+
 	Color colour;
 	Color limb_colour;
 	Vector3 root_scale;
 	public float base_joint_frequency;
 	public float base_joint_amplitude;
 	public float base_joint_phase;
-	
+
 	public ArrayList branches;
 
 	public int getBranchCount() {
@@ -30,17 +30,17 @@ public class Chromosome {
 	}
 
 	public Color getColour () {
-		return colour;	
+		return colour;
 	}
 
 	public Color getLimbColour () {
 		return limb_colour;
 	}
-	
+
 	public Vector3 getRootScale () {
-		return root_scale;	
+		return root_scale;
 	}
-	
+
 	public ArrayList getBranches () {
 		return branches;
 	}
@@ -48,7 +48,7 @@ public class Chromosome {
 	public void setBranches (ArrayList bs) {
 		branches = bs;
 	}
-	
+
 	public void setColour (float r, float g, float b) {
 		colour = new Color(r,g,b);
 	}
@@ -56,7 +56,7 @@ public class Chromosome {
 	public void setLimbColour (float r, float g, float b) {
 		limb_colour = new Color(r,g,b);
 	}
-	
+
 	public void setRootScale (Vector3 rs) {
 		root_scale = rs;
 	}
