@@ -22,8 +22,8 @@ public class Ether : MonoBehaviour {
 	Settings settings;
 	
 	public double total_energy;
-	double 		energy;
-	double 		foodbit_energy;
+	public double energy;
+	double foodbit_energy;
 
 	Vector3 pos;
 
@@ -53,7 +53,7 @@ public class Ether : MonoBehaviour {
 		foodbits = new ArrayList();
 		
 		for (int i=0; i<start_number_foodbits; i++) {
-			Vector3 pos = Utility.RandomVec( -wide_spread,
+			Vector3 pos = Utility.RandomVec(-wide_spread,
 				                             wide_spread,
 				                             wide_spread
 				               				);
@@ -85,9 +85,9 @@ public class Ether : MonoBehaviour {
 			Foodbit fb_script = fb.GetComponent<Foodbit>();
 			Vector3 fb_pos = fb_script.transform.localPosition;
 			pos = Utility.RandomVec (-spore_range,
-		                                 Foodbit.foodbitHeight / 2,
-		                                 spore_range
-										);
+	                                 Foodbit.foodbitHeight / 2,
+	                                 spore_range
+									);
 			
 			Vector3 new_pos = fb_pos + pos;
 			if (new_pos.x > wide_spread  || new_pos.x < -wide_spread
@@ -104,7 +104,7 @@ public class Ether : MonoBehaviour {
 	}
 	
 	public void removeFoodbit (GameObject fb) {
-		foodbits.Remove(fb);	
+		foodbits.Remove(fb);
 	}
 	
 	public int getFoodbitCount () {
@@ -126,10 +126,6 @@ public class Ether : MonoBehaviour {
 	
 	public void subtractEnergy (double n) {
 		energy -= n;
-	}
-	
-	public void addToEnergy(double n) {
-		energy += n;
 	}
 
 	public bool enoughEnergy(double n) {

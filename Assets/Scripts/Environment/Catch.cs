@@ -20,7 +20,7 @@ public class Catch : MonoBehaviour {
 		eth = GameObject.Find("Ether").GetComponent<Ether>();
 		if (col.gameObject.name == "root") {
 			crt = col.transform.parent.gameObject.GetComponent<Creature>();
-			eth.addToEnergy(crt.kill());
+			eth.energy += crt.kill();
 		}
 	}
 

@@ -196,6 +196,13 @@ public class GeneticsUtils {
 		c.setBranches(c_branches);
 		return c;
 	}
+
+	public static float similar_colour (Chromosome c1, Chromosome c2) {
+		Color colour1 = c1.getColour();
+		Color colour2 = c2.getColour();
+		
+		return Mathf.Abs((colour1.r * colour1.g * colour1.b) - (colour2.r * colour2.g * colour2.b));
+	}
 	
 	private static float randomiseGene(float factor) {
 		return (float) rnd.NextDouble() * ( Mathf.Abs(factor-(-factor)) ) + (-factor);

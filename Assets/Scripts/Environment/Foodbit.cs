@@ -41,36 +41,16 @@ public class Foodbit : MonoBehaviour {
 	void Start () {
 		name = "Foodbit";
 		settings = Settings.getInstance();
-		init_energy = 			(double) settings.contents["foodbit"]["init_energy"];
-		decay_amount = 			float.Parse(settings.contents["foodbit"]["decay_amount"].ToString() );
-		decay_time = 			float.Parse(settings.contents["foodbit"]["decay_time"].ToString() );
-		destroy_at = 			float.Parse(settings.contents["foodbit"]["destroy_at"].ToString() );
-		decay_rate = 			float.Parse(settings.contents["foodbit"]["decay_rate"].ToString() );
+		init_energy = (double) settings.contents["foodbit"]["init_energy"];
 
 		energy = init_energy;
-		
-		//mr = (MeshRenderer)gameObject.AddComponent("MeshRenderer");
-		//mr.sharedMaterial = (Material)Resources.Load("Materials/Foodbit");
+
 		eth = Ether.getInstance();
 		Collider co = GetComponent<SphereCollider>();
 		co.isTrigger = true;
 		
-		//InvokeRepeating("decay", decay_time, decay_time);
 	}
 
-	void decay () {
-		if (rnd.NextDouble() < (double)decay_rate) {
-			if (energy <= destroy_at) {
-				eth.addToEnergy(energy);
-				eth.removeFoodbit(gameObject);
-				destroy();
-			} else {
-				energy -= decay_amount;
-				eth.addToEnergy(decay_amount);
-			}
-		}
-	}
-	
 	public void destroy () {
 		eth.removeFoodbit(this.gameObject);
 		Destroy(gameObject);

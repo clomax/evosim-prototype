@@ -196,10 +196,10 @@ public class Creature : MonoBehaviour {
 	void updateState() {
 		if(state != Creature.State.mating) {
 			if (energy < hunger_threshold) {
-				state = (eye_script.closestFbit != null) ? State.persuing_food : State.searching_for_food;
+				state = (eye_script.targetFbit != null) ? State.persuing_food : State.searching_for_food;
 			}
 			if (energy >= hunger_threshold && age > age_sexual_maturity) {
-				state = (eye_script.closestCrt != null) ? State.persuing_mate : State.searching_for_mate;
+				state = (eye_script.targetCrt != null) ? State.persuing_mate : State.searching_for_mate;
 			}
 		}
 	}
@@ -217,19 +217,12 @@ public class Creature : MonoBehaviour {
 	}
 
 	/*
-	 * Add to the creature the energy of what it ate
-	 */
-	public void addEnergy (double n) {
-		energy += n;
-	}
-
-	/*
 	 * Remove a specified amount of energy from the creature,
 	 * kill it if the creature's energy reaches zero.
 	 */
 	public void subtractEnergy (double n) {
 		if (energy <= n) {
-			eth.addToEnergy(energy);
+			eth.energy += energy;
 			energy = 0;
 			kill ();
 		} else {
@@ -242,11 +235,8 @@ public class Creature : MonoBehaviour {
 	 * return it to the ether.
 	 */
 	private void metabolise () {
-		double subtract = (metabolic_rate * chromosome.getBranchCount()) +
-										  (metabolic_rate * chromosome.base_joint_amplitude) +
-										  (metabolic_rate * chromosome.base_joint_frequency);
-		subtractEnergy(subtract);
-		eth.addToEnergy(subtract);
+		subtractEnergy(metabolic_rate);
+		eth.energy += metabolic_rate;
 	}
 
 	/*

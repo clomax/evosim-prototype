@@ -1,7 +1,7 @@
 EVOSIM - README
 ===============
 
-Evosim - A three-dimensional, real time simulation of natural and sexual selection in an artificial gene-pool.
+Evosim - A three-dimensional, real time simulation of natural selection.
 
 This is a proof of concept executed with the intention of realising how capable today's computing power is in simulating of 3D artificial genepools, which are likely to contain many rigidbodies.
 

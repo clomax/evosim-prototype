@@ -1,14 +1,15 @@
-# Evosim - A three-dimensional, real time simulation of natural and sexual selection in an artificial gene-pool.
-## Introduction
-This is a proof of concept executed with the intention of realising how capable today's computing power is in the simulation of 3D artificial genepools, which are likely to contain many rigidbodies.
+### Evosim 
+#####A three-dimensional, real time simulation of natural selection.
 
-The program is intended to be a 'toy'. It is not a scientific tool or a true reflection of evolution in the natural world.
+[Download from itch.io](http://rlomax.itch.io/evosim)
 
-## Usage
-Clone this repository and open the directory as an existing project in Unity3D, open the scene named 'Main' and attach the script named 'Main' to the GameObject named 'Main' in the hierarchy.
+This is a proof of concept with the intention of realising how capable today's computing power is simulating artificial genepools, which are likely to contain many 3D rigidbodies.
 
-## License - MIT License
-Copyright (c) 2011 - 2014, Craig Lomax
+##### Usage
+Clone this repository and open the directory as an existing project in Unity3D, open the scene named 'Main' and make sure that the script named 'Main' is attached to the GameObject named 'Main' in the hierarchy.
+
+##### License - MIT License
+Copyright (c) 2011 - 2015, Craig Lomax
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
