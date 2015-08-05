@@ -37,7 +37,6 @@ public class Creature : MonoBehaviour {
 
 	public double age;
 	public double energy;
-	double MAX_ENERGY;
 
 	public Chromosome chromosome;
 
@@ -77,8 +76,6 @@ public class Creature : MonoBehaviour {
 		eth = Ether.getInstance();
 		settings = Settings.getInstance();
 		crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
-
-		MAX_ENERGY = (double) settings.contents ["creature"]["MAX_ENERGY"];
 
 		max_root_scale = new Vector3();
 		max_root_scale.x = float.Parse( settings.contents["creature"]["root"]["max_root_scale"]["x"].ToString() );
@@ -304,7 +301,7 @@ public class Creature : MonoBehaviour {
 
 				JointDrive angXDrive = new JointDrive();
 				angXDrive.mode = JointDriveMode.Position;
-				angXDrive.positionSpring = 1F;
+				angXDrive.positionSpring = 10F;
 				angXDrive.maximumForce = 100000000F;
 				joint.angularXDrive = angXDrive;
 				joint.angularYZDrive = angXDrive;
