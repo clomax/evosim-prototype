@@ -90,6 +90,11 @@ public class GeneticsUtils {
 			c.base_joint_phase += randomiseGene(factor);
 		}
 
+		rand = rnd.NextDouble();
+		if(rand < rate) {
+			c.hunger_threshold += randomiseGene(factor);
+		}
+
 		c.setBranches(branches);
 		return c;
 	}
@@ -191,6 +196,14 @@ public class GeneticsUtils {
 		rand = rnd.NextDouble();
 		if (rand < 0.5f) {
 			c.base_joint_phase = c2.base_joint_phase;
+		}
+
+		rand = rnd.NextDouble();
+		if (rand < 0.5f) {
+			c.hunger_threshold = c2.hunger_threshold;
+		}
+		else {
+			c.hunger_threshold = c1.hunger_threshold;
 		}
 
 		c.setBranches(c_branches);

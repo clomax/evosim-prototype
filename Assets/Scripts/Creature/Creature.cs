@@ -124,7 +124,6 @@ public class Creature : MonoBehaviour {
 		genital.transform.localPosition	= new Vector3(0,0,-.5F);
 		genital.AddComponent<Genitalia>();
 
-		hunger_threshold 	= (double) 	settings.contents ["creature"]["hunger_threshold"];
 		dying_threshold 	= (double) 	settings.contents ["creature"]["dying_threshold"];
 		line_of_sight 		= (double) 	settings.contents ["creature"]["line_of_sight"];
 		metabolic_rate 		= (double) 	settings.contents ["creature"]["metabolic_rate"];
@@ -195,10 +194,10 @@ public class Creature : MonoBehaviour {
 
 	void updateState() {
 		if(state != Creature.State.mating) {
-			if (energy < hunger_threshold) {
+			if (energy < chromosome.hunger_threshold) {
 				state = (eye_script.targetFbit != null) ? State.persuing_food : State.searching_for_food;
 			}
-			if (energy >= hunger_threshold && age > age_sexual_maturity) {
+			if (energy >= chromosome.hunger_threshold && age > age_sexual_maturity) {
 				state = (eye_script.targetCrt != null) ? State.persuing_mate : State.searching_for_mate;
 			}
 		}
@@ -223,7 +222,6 @@ public class Creature : MonoBehaviour {
 	public void subtractEnergy (double n) {
 		if (energy <= n) {
 			eth.energy += energy;
-			energy = 0;
 			kill ();
 		} else {
 			energy -= n;

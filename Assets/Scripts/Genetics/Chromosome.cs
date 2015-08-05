@@ -18,6 +18,7 @@ public class Chromosome {
 	public float base_joint_frequency;
 	public float base_joint_amplitude;
 	public float base_joint_phase;
+	public double hunger_threshold;
 
 	public ArrayList branches;
 

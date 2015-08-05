@@ -31,6 +31,8 @@ public class GeneticsMain : MonoBehaviour {
 
 	Vector3 max_limb_scale;
 	Vector3 min_limb_scale;
+
+	double hunger_threshold;
 	
 	
 	void Start () {
@@ -61,12 +63,11 @@ public class GeneticsMain : MonoBehaviour {
 		min_limb_scale.z 	= float.Parse( settings.contents["creature"]["limb"]["min_limb_scale"]["z"].ToString() );
 
 
-
-		starting_creatures	= (int) 		settings.contents["ether"]["starting_creatures"];
-		creature_spread		= float.Parse(	settings.contents["ether"]["creature_spread"].ToString() );
-		double creature_init_energy	= (double) settings.contents["creature"]["init_energy"];
-		int branch_limit 	= (int)			settings.contents["creature"]["branch_limit"];
-		int recurrence_limit = (int)		settings.contents["creature"]["recurrence_limit"];
+		starting_creatures	= (int) 			settings.contents["ether"]["starting_creatures"];
+		creature_spread		= float.Parse(		settings.contents["ether"]["creature_spread"].ToString() );
+		double creature_init_energy	= (double) 	settings.contents["creature"]["init_energy"];
+		int branch_limit 	= (int)				settings.contents["creature"]["branch_limit"];
+		int recurrence_limit = (int)			settings.contents["creature"]["recurrence_limit"];
 
 
 		/*
@@ -82,7 +83,9 @@ public class GeneticsMain : MonoBehaviour {
 								 );
 			chromosome.setColour(col.r, col.g, col.b);
 			chromosome.setLimbColour(col.r, col.g, col.b);
-			
+
+			chromosome.hunger_threshold = (double) settings.contents["creature"]["hunger_threshold"];
+
 			// random root scale
 			Vector3 rootScale = new Vector3((float) Random.Range(min_root_scale.x,max_root_scale.x),
 											(float) Random.Range(min_root_scale.y,max_root_scale.y),
@@ -107,10 +110,6 @@ public class GeneticsMain : MonoBehaviour {
 
 					Vector3 position = Utility.RandomPointInsideCube(rootScale);
 
-					chromosome.setBaseFequency (Random.Range (3,20));
-					chromosome.setBaseAmplitude (Random.Range (2,6));
-					chromosome.setBasePhase (Random.Range (0,360));
-
 					ArrayList limb = new ArrayList();
 					limb.Add  (position);
 					limb.Add  (scale);
@@ -118,6 +117,10 @@ public class GeneticsMain : MonoBehaviour {
 				}
 				branches.Add(limbs);
 			}
+
+			chromosome.setBaseFequency (Random.Range (3,20));
+			chromosome.setBaseAmplitude (Random.Range (3,6));
+			chromosome.setBasePhase (Random.Range (0,360));
 
 			chromosome.setBranches(branches);
 
