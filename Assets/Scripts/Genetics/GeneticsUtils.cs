@@ -214,7 +214,7 @@ public class GeneticsUtils {
 		Color colour1 = c1.getColour();
 		Color colour2 = c2.getColour();
 		
-		return Mathf.Abs((colour1.r * colour1.g * colour1.b) - (colour2.r * colour2.g * colour2.b));
+		return Mathf.Abs((colour1.r * colour2.r) - (colour1.g * colour2.g) - (colour1.b * colour2.g));
 	}
 	
 	private static float randomiseGene(float factor) {
