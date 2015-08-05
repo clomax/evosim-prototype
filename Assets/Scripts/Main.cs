@@ -37,10 +37,10 @@ public class Main : MonoBehaviour {
 		aperatus = (GameObject)Instantiate(Resources.Load("Prefabs/Aperatus"));
 		cam = GameObject.Find("Main Camera");
 		cam.AddComponent<CameraCtl>();
-		ether = Ether.getInstance();
-		co = CollisionMediator.getInstance();
 		spw = Spawner.getInstance();
 		gm = GeneticsMain.getInstance();
+		ether = Ether.getInstance();
+		co = CollisionMediator.getInstance();
 	}
 	
 }

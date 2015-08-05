@@ -42,7 +42,6 @@ public class Creature : MonoBehaviour {
 
 	public double 	line_of_sight;
 	double 			hunger_threshold;
-	double			dying_threshold;
 	double 			metabolic_rate;
 	int 			age_sexual_maturity;
 
@@ -121,7 +120,6 @@ public class Creature : MonoBehaviour {
 		genital.transform.localPosition	= new Vector3(0,0,-.5F);
 		genital.AddComponent<Genitalia>();
 
-		dying_threshold 	= (double) 	settings.contents ["creature"]["dying_threshold"];
 		line_of_sight 		= (double) 	settings.contents ["creature"]["line_of_sight"];
 		metabolic_rate 		= (double) 	settings.contents ["creature"]["metabolic_rate"];
 		age_sexual_maturity = (int)		settings.contents ["creature"]["age_sexual_maturity"];
@@ -301,7 +299,7 @@ public class Creature : MonoBehaviour {
 
 				JointDrive angXDrive = new JointDrive();
 				angXDrive.mode = JointDriveMode.Position;
-				angXDrive.positionSpring = 10F;
+				angXDrive.positionSpring = 7F;
 				angXDrive.maximumForce = 100000000F;
 				joint.angularXDrive = angXDrive;
 				joint.angularYZDrive = angXDrive;
