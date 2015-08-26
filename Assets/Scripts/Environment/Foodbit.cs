@@ -28,9 +28,7 @@ public class Foodbit : MonoBehaviour {
 	Settings settings;
 	Ether eth;
 	//MeshRenderer mr;
-	
-	System.Random rnd = new System.Random();
-	
+
 	double init_energy;
 	public double energy;
 	float decay_amount;

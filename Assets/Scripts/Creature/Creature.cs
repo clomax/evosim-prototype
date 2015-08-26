@@ -65,7 +65,6 @@ public class Creature : MonoBehaviour {
 	public Vector3 target_direction;
 	private Quaternion lookRotation;
 	private float sine;
-	private float lambda;
 	private Vector3 direction;
 
 	void Start () {
@@ -136,7 +135,6 @@ public class Creature : MonoBehaviour {
 		InvokeRepeating("RandomDirection", 1F, 5F);
 
 		root.GetComponent<Rigidbody>().SetDensity(4F);
-		lambda = 20F;
 	}
 
 
@@ -158,7 +156,7 @@ public class Creature : MonoBehaviour {
 
 		float abs_sine = Mathf.Abs(sine);
 		float pos_sine = System.Math.Max(sine,0);
-		root.transform.rotation = Quaternion.Slerp(root.transform.rotation, lookRotation, Time.deltaTime * (abs_sine * 2F));
+		root.transform.rotation = Quaternion.Slerp(root.transform.rotation, lookRotation, Time.deltaTime * (abs_sine * 3F));
 
 		if (pos_sine == 0) {
 			direction = root.transform.forward;
