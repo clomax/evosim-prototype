@@ -15,6 +15,8 @@ public class Root : MonoBehaviour {
 	public MeshRenderer mr;
 	public Material mt;
 
+	private Selectable s;
+	
 	void Start () {
 		_t = transform;
 		
@@ -24,8 +26,14 @@ public class Root : MonoBehaviour {
 		eye = crt.eye;
 		mouth = crt.mouth;
 		genital = crt.genital;
+
+		s = crt.GetComponent<Selectable>();
 	}
-	
+
+	void OnMouseDown () {
+		s.select(_t.parent.gameObject);
+	}
+
 	public void setColour (Color c) {
 		mr = gameObject.GetComponent<MeshRenderer>();
 		mr.material.color = c;
@@ -34,4 +42,5 @@ public class Root : MonoBehaviour {
 	public void setScale (Vector3 scale) {
 		transform.localScale = scale;	
 	}
+	
 }

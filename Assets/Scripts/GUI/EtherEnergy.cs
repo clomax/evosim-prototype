@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 
@@ -22,9 +23,10 @@ using System.Collections;
 public class EtherEnergy : MonoBehaviour {
 	
 	public Ether eth;
+	public Text text;
 	
 	void Update () {
 		eth = Ether.getInstance();	
-		guiText.text = "Ether energy: " + eth.getEnergy().ToString("#");
+		text.text = "Ether energy: " + eth.getEnergy().ToString("F0");
 	}
 }

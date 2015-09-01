@@ -21,8 +21,8 @@ public class Genitalia : MonoBehaviour {
 	Transform _t;
 	LineRenderer lr;
 	Vector3 line_start;
-	float line_length			= 0.5F; // default
-	float line_width  			= 0.5F; // values
+	float line_length			= 0.05F; // default
+	float line_width  			= 0.05F; // values
 	Vector3 line_end;
 	double timeCreated;
 	double timeToEnableMating 	= 1.0F;
@@ -40,12 +40,12 @@ public class Genitalia : MonoBehaviour {
 		eye = crt.eye.gameObject.GetComponent<Eye>();
 		
 		_t = transform;
-		lr = (LineRenderer)gameObject.AddComponent("LineRenderer");
+		lr = (LineRenderer)gameObject.AddComponent<LineRenderer>();
 		lr.material.color = Color.white;
 		lr.material.shader = Shader.Find("Sprites/Default");
 		lr.SetWidth(line_width, line_width);
 		lr.SetVertexCount(2);
-		lr.renderer.enabled = true;
+		lr.GetComponent<Renderer>().enabled = true;
 		timeCreated = Time.time;
 		
 		line_length = 	float.Parse( settings.contents["genitalia"]["line_length"].ToString() );
@@ -53,24 +53,23 @@ public class Genitalia : MonoBehaviour {
 	
 	void Update () {
 		if (crt.state == Creature.State.mating && Time.time > (timeCreated + timeToEnableMating)) {
-			crt.state = Creature.State.pursuing_mate;
+			crt.state = Creature.State.persuing_mate;
 			timeCreated = Time.time;
 		}
 		
-		Creature cc = eye.closestCrt;
-		if(cc && crt.state == Creature.State.pursuing_mate) {
+		if(eye.targetCrt && crt.state == Creature.State.persuing_mate) {
 			lr.useWorldSpace = true;
-			line_end = new Vector3(cc.genital.transform.position.x,
-			                       cc.genital.transform.position.y,
-			                       cc.genital.transform.position.z
+			line_end = new Vector3( eye.targetCrt.genital.transform.position.x,
+			                        eye.targetCrt.genital.transform.position.y,
+			                        eye.targetCrt.genital.transform.position.z
 			                      );
 			line_start = _t.position;
 			lr.SetPosition(1,line_end);
 			resetStart();
 		} else {
 			lr.useWorldSpace = false;
-			line_start = new Vector3(0,0,-.5f);
-			line_end = new Vector3(0,0,line_length);
+			line_start = new Vector3(0,0,0);
+			line_end = new Vector3(0,0,-line_length);
 			lr.SetPosition(0,line_start);
 			lr.SetPosition(1,line_end);
 		}

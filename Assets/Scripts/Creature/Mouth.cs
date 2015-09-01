@@ -23,8 +23,8 @@ public class Mouth : MonoBehaviour {
 	Vector3 line_start;
 	Vector3 line_end;
 	
-	float line_length 	= 0.5F;
-	float line_width 	= 0.5F;
+	float line_length 	= 0.05F;
+	float line_width 	= 0.05F;
 	
 	int fb_detect_range = 40;
 	
@@ -34,19 +34,17 @@ public class Mouth : MonoBehaviour {
 		_t = transform;
 		crt = (Creature)_t.parent.parent.gameObject.GetComponent("Creature");
 		eye = crt.eye.GetComponent<Eye>();
-		lr = (LineRenderer)gameObject.AddComponent("LineRenderer");
+		lr = (LineRenderer)gameObject.AddComponent<LineRenderer>();
 		lr.material.color = Color.green;
 		lr.material.shader = Shader.Find("Sprites/Default");
 		lr.SetWidth(line_width, line_width);
 		lr.SetVertexCount(2);
-		lr.renderer.enabled = true;
-		lr.receiveShadows = false;
-		lr.castShadows = false;
+		lr.GetComponent<Renderer>().enabled = true;
 	}
 
 	void Update () {
-		cf = eye.closestFbit;
-		if(cf && crt.state == Creature.State.hungry) {
+		cf = eye.targetFbit;
+		if(cf && crt.state == Creature.State.persuing_food) {
 			lr.useWorldSpace = true;
 			line_end = new Vector3(cf.transform.position.x,
 								   cf.transform.position.y,

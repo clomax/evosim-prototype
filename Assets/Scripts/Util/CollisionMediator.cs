@@ -15,30 +15,30 @@ using System.Collections;
  *	Objects of the same type.
  */
 public class CollisionMediator : MonoBehaviour {
-	
+
 	public static CollisionMediator instance;
-	public static GameObject container;	
+	public static GameObject container;
 	public CollEvent evt;
 	public ArrayList collision_events;
 	public Spawner spw;
-	
+
 	Settings settings;
-	
+
 	double energy_scale;
 	double crossover_rate;
 	double mutation_rate;
 	float mutation_factor;
-	
+
 	void Start () {
 		collision_events = new ArrayList();
 		spw = Spawner.getInstance();
 		settings = Settings.getInstance();
-		energy_scale 		= (double) 		settings.contents["creature"]["energy_to_offspring"];
-		crossover_rate 		= (double) 		settings.contents["genetics"]["crossover_rate"];
-		mutation_rate		= (double)		settings.contents["genetics"]["mutation_rate"];	
+		energy_scale 			= (double) 			settings.contents["creature"]["energy_to_offspring"];
+		crossover_rate 		= (double) 			settings.contents["genetics"]["crossover_rate"];
+		mutation_rate			= (double)			settings.contents["genetics"]["mutation_rate"];
 		mutation_factor		= float.Parse(	settings.contents["genetics"]["mutation_factor"].ToString() );
 	}
-	
+
 	public static CollisionMediator getInstance () {
 		if(!instance) {
 			container = new GameObject();
@@ -47,27 +47,26 @@ public class CollisionMediator : MonoBehaviour {
 		}
 		return instance;
 	}
-	
+
 	public void observe (GameObject a, GameObject b) {
 		collision_events.Add(new CollEvent(a, b));
 		CollEvent dup = findMatch(a, b);
-		// If a duplicate has been found - spawn
+		// If a duplicate event has been found spawn a child
 		if (null != dup) {
 			collision_events.Clear();
 			Vector3 pos = (a.transform.position - b.transform.position) * 0.5F + b.transform.position;
-			pos.y += 10.0F;		// Drop creatures from a height
-			
+
 			// Get references to the scripts of each creature
 			Creature a_script = a.transform.parent.parent.GetComponent<Creature>();
 			Creature b_script = b.transform.parent.parent.GetComponent<Creature>();
-			
+
 			double a_energy = a_script.getEnergy();
 			double b_energy = b_script.getEnergy();
-			
+
 			Chromosome newChromosome;
 			newChromosome = GeneticsUtils.crossover(a_script.chromosome, b_script.chromosome, crossover_rate);
 			newChromosome = GeneticsUtils.mutate(newChromosome, mutation_rate, mutation_factor);
-			
+
 			spw.spawn(pos,Vector3.zero,
 					  a_energy * energy_scale +
 					  b_energy * energy_scale,
@@ -75,11 +74,14 @@ public class CollisionMediator : MonoBehaviour {
 					 );
 			a_script.subtractEnergy(a_energy * energy_scale);
 			b_script.subtractEnergy(b_energy * energy_scale);
+
+			a_script.times_mated++;
+			b_script.times_mated++;
 		} else {
 			collision_events.Add(new CollEvent(b,a));
 		}
 	}
-	
+
 	private CollEvent findMatch(GameObject a, GameObject b) {
 		foreach (CollEvent e in collision_events) {
 			GameObject e0 = e.getColliders()[0];
@@ -91,5 +93,5 @@ public class CollisionMediator : MonoBehaviour {
 		}
 		return null;
 	}
-	
+
 }

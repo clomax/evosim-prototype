@@ -11,31 +11,45 @@ using System.Collections.Generic;
  */
 
 public class Chromosome {
-	
+
 	Color colour;
 	Color limb_colour;
 	Vector3 root_scale;
-	
-	int branches;
-	ArrayList limbs = new ArrayList();	
-	ArrayList limb;
+	public float base_joint_frequency;
+	public float base_joint_amplitude;
+	public float base_joint_phase;
+	public double hunger_threshold;
+
+	public ArrayList branches;
+
+	public int getBranchCount() {
+		return branches.Count;
+	}
+
+	public ArrayList getLimbs(int index) {
+		return (ArrayList) branches[index];
+	}
 
 	public Color getColour () {
-		return colour;	
+		return colour;
 	}
 
 	public Color getLimbColour () {
 		return limb_colour;
 	}
-	
+
 	public Vector3 getRootScale () {
-		return root_scale;	
+		return root_scale;
 	}
-	
-	public int getBranches () {
+
+	public ArrayList getBranches () {
 		return branches;
 	}
-	
+
+	public void setBranches (ArrayList bs) {
+		branches = bs;
+	}
+
 	public void setColour (float r, float g, float b) {
 		colour = new Color(r,g,b);
 	}
@@ -43,31 +57,21 @@ public class Chromosome {
 	public void setLimbColour (float r, float g, float b) {
 		limb_colour = new Color(r,g,b);
 	}
-	
-	public void setRootScale (float x, float y, float z) {
-		root_scale = new Vector3(x,y,z);
-	}
-	
-	public void setBranches (int b) {
-		branches = b;	
-	}
-	
-	public void addLimb (Color col, Vector3 point, Vector3 scale, int recur) {
-		limb_colour = col;
-		limb = new ArrayList();
-		limb.Add(col);
-		limb.Add(point);
-		limb.Add(scale);
-		limb.Add(recur);
-		limbs.Add(limb);
-	}
-	
-	public void delLimb () {
-		
-	}
-	
-	public ArrayList getLimbs () {
-		return limbs;
+
+	public void setRootScale (Vector3 rs) {
+		root_scale = rs;
 	}
 
+	public void setBaseFequency (float freq) {
+		base_joint_frequency = freq;
+	}
+
+	public void setBaseAmplitude (float amp) {
+		base_joint_amplitude = amp;
+	}
+
+	public void setBasePhase (float phase)
+	{
+		base_joint_phase = phase;
+	}
 }

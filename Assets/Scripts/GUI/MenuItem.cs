@@ -4,11 +4,11 @@ using System.Collections;
 public class MenuItem : MonoBehaviour {
 
 	 void OnMouseEnter () {
-        renderer.material.color = Color.green;
+        GetComponent<Renderer>().material.color = Color.green;
     }
 	
 	void OnMouseExit () {
-		renderer.material.color = Color.white;
+		GetComponent<Renderer>().material.color = Color.white;
 	}
 	
 	void OnMouseUp () {

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 /*
@@ -13,7 +14,7 @@ using System.Collections;
  
 
 public class Utility : MonoBehaviour {
-	
+
 	static System.Random rnd = new System.Random();
 	
 	 // generate random float in the vicinity of n
@@ -21,10 +22,10 @@ public class Utility : MonoBehaviour {
 		return Random.Range(n-r, n+r);
 	}
 	
-	//return a random 'flat' vector within a given range
-	public static Vector3 RandomFlatVec(float x, float y, float z) {
+	//return a random vector within a given range
+	public static Vector3 RandomVec(float x, float y, float z) {
 		return new Vector3( Random.Range(-x,x),
-							y / 2,
+		                    Random.Range(-y,y),
 							Random.Range(-z,z)
 			              );
 	}
@@ -59,3 +60,5 @@ public class Utility : MonoBehaviour {
 	}
 	
 }
+
+public class MultiDimList : List<List<GameObject>> { }
