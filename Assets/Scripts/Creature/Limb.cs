@@ -23,7 +23,8 @@ public class Limb : MonoBehaviour {
 	}
 	
 	public void setColour (Color c) {
-		gameObject.GetComponent<MeshRenderer>().material.color = c;
+        gameObject.GetComponent<MeshRenderer>().material.shader = Shader.Find("Legacy Shaders/Diffuse");
+        gameObject.GetComponent<MeshRenderer>().material.color = c;
 	}
 	
 	public void setPosition (Vector3 p) {

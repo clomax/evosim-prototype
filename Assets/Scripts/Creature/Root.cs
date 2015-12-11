@@ -36,6 +36,7 @@ public class Root : MonoBehaviour {
 
 	public void setColour (Color c) {
 		mr = gameObject.GetComponent<MeshRenderer>();
+        mr.material.shader = Shader.Find("Legacy Shaders/Diffuse");
 		mr.material.color = c;
 	}
 	
