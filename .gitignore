@@ -28,6 +28,7 @@ NetworkManager.asset
 ScriptMapper
 
 cache/*
+builds/*
 Temp/*
 metadata/*
 ScriptAssemblies/*
