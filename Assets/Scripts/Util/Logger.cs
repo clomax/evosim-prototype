@@ -46,9 +46,6 @@ public class Logger : MonoBehaviour {
 		cc = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
 		fc = GameObject.Find("FoodbitCount").GetComponent<FoodbitCount>();
 
-		if (!Directory.Exists(Application.dataPath + "/" + data_folder))
-			System.IO.Directory.CreateDirectory(Application.dataPath + "/" + data_folder);
-
 		log_pop_data = (int) settings.contents["config"]["population_logging"];
 		log_fbit_data = (int) settings.contents["config"]["foodbit_logging"];
 
