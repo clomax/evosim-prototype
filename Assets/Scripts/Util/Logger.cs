@@ -30,6 +30,8 @@ public class Logger : MonoBehaviour {
 	string crt_count_filename;
 	string fbit_count_filename;
 
+    FileStream fs;
+
 	public static Logger getInstance () {
 		if(!instance) {
 			container = new GameObject();
@@ -77,7 +79,11 @@ public class Logger : MonoBehaviour {
 	}
 	
 	void write (String str, String file) {
-		File.AppendAllText(Application.dataPath + "/" + data_folder + "/" + file + ".csv", str);
+        fs = new FileStream(Application.dataPath + "/" + data_folder + "/" + file + ".csv", FileMode.Append);
+        using (StreamWriter sw = new StreamWriter(fs))
+        {
+            sw.Write(str);
+        }
 	}
 
 }

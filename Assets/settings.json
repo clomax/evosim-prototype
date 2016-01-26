@@ -6,7 +6,12 @@
 
 		"camera": {
 			"sensitivity"			: 1.0,
-			"invert"				: 1
+			"invert"				: 1,
+			"background_colour" : {
+				"r"					: 0.0,
+				"g"					: 0.0,
+				"b"					: 4.3
+			}
 		}
 	},
 
