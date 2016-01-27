@@ -215,6 +215,7 @@ public class Creature : MonoBehaviour {
 	public void subtractEnergy (double n) {
 		if (energy <= n) {
 			eth.energy += energy;
+            energy = 0;
 			kill ();
 		} else {
 			energy -= n;
