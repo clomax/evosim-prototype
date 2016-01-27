@@ -16,7 +16,7 @@ public class CreaturePane : MonoBehaviour
 
     private UIElement ui_element;
 
-    private Creature crt;
+    public Creature crt;
 
     void OnEnable ()
     {

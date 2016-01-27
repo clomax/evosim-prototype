@@ -1,4 +1,5 @@
 using UnityEngine;
+using LitJson;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -10,11 +11,11 @@ using System.Collections.Generic;
  *
  */
 
-public class Chromosome {
-
+public class Chromosome
+{
 	public Color colour;
 	public Color limb_colour;
-	Vector3 root_scale;
+	public Vector3 root_scale;
 	public float base_joint_frequency;
 	public float base_joint_amplitude;
 	public float base_joint_phase;

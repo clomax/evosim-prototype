@@ -246,7 +246,8 @@ public class Creature : MonoBehaviour {
 	private void setupLimbs () {
 		int num_branches = chromosome.getBranchCount();
 
-		for (int i=0; i<num_branches; i++) {
+		for (int i=0; i<num_branches; i++)
+        {
 			limbs = chromosome.getLimbs(i);
 			List<GameObject> actual_limbs = new List<GameObject>();
 
