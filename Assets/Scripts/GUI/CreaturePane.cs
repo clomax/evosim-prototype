@@ -11,7 +11,19 @@ public class CreaturePane : MonoBehaviour
     public Image Root_Col;
     public Image Limb_Col;
 
-    public void set_data(Creature c)
+    private Creature crt;
+
+    void Update ()
+    {
+        set_data(crt);
+    }
+
+    public void set_creature(Creature c)
+    {
+        crt = c;
+    }
+
+    private void set_data(Creature c)
     {
         Name.text = c.name;
         Energy.text = c.energy.ToString();

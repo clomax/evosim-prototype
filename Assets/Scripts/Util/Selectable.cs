@@ -14,7 +14,7 @@ public class Selectable : MonoBehaviour
 
 	public void select (GameObject go) {
 		sm.select (go);
-        cp.set_data(go.GetComponent<Creature>());
+        cp.set_creature(go.GetComponent<Creature>());
 	}
 	
 
