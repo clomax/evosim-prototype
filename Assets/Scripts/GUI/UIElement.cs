@@ -6,6 +6,7 @@ public class UIElement : MonoBehaviour {
     {
         CanvasGroup cg = GetComponent<CanvasGroup>();
         cg.interactable = false;
+        cg.blocksRaycasts = false;
         cg.alpha = 0;
     }
 
@@ -13,6 +14,7 @@ public class UIElement : MonoBehaviour {
     {
         CanvasGroup cg = GetComponent<CanvasGroup>();
         cg.interactable = true;
+        cg.blocksRaycasts = true;
         cg.alpha = 1;
     }
 

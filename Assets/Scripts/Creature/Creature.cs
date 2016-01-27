@@ -234,10 +234,10 @@ public class Creature : MonoBehaviour {
 	 * Remove the creature from existence and return
 	 * the creature's energy.
 	 */
-	public double kill () {
+	public void kill () {
 		Destroy(gameObject);
 		crt_count.number_of_creatures -= 1;
-		return energy;
+        eth.energy += energy;
 	}
 
 // TODO: Limbs should be made into a better tree structure, not this

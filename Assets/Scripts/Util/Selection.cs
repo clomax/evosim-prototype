@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections;
 
 public class Selection : MonoBehaviour
@@ -29,19 +30,23 @@ public class Selection : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
-            if (Physics.Raycast(ray, out hit))
+            if (!EventSystem.current.IsPointerOverGameObject())
             {
-                Creature c = null;
-                if (hit.transform.tag == "Creature")
+                bool rayhit = Physics.Raycast(ray, out hit);
+                if (rayhit)
                 {
-                    c = hit.transform.GetComponentInParent<Creature>();
-                    selected = hit.transform.parent.gameObject;
-                    Selected(c);
+                    Creature c = null;
+                    if (hit.transform.tag == "Creature")
+                    {
+                        c = hit.transform.GetComponentInParent<Creature>();
+                        selected = hit.transform.parent.gameObject;
+                        Selected(c);
+                    }
                 }
-            }
-            else
-            {
-                Selected(null);
+                else
+                {
+                    Selected(null);
+                }
             }
         }
     }
