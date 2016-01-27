@@ -45,8 +45,8 @@ public class Creature : MonoBehaviour {
 	double 			metabolic_rate;
 	int 			age_sexual_maturity;
 
-	public int times_mated;
-	public int times_eaten;
+	public int offspring;
+	public int food_eaten;
 
 	ArrayList limbs;
 
@@ -127,8 +127,8 @@ public class Creature : MonoBehaviour {
 
 		age = 0.0D;
 		state = State.neutral;
-		times_eaten = 0;
-		times_mated = 0;
+		food_eaten = 0;
+		offspring = 0;
 
 		InvokeRepeating("updateState",0,0.1f);
 		InvokeRepeating("metabolise",1.0f,1.0f);

@@ -75,8 +75,8 @@ public class CollisionMediator : MonoBehaviour {
 			a_script.subtractEnergy(a_energy * energy_scale);
 			b_script.subtractEnergy(b_energy * energy_scale);
 
-			a_script.times_mated++;
-			b_script.times_mated++;
+			a_script.offspring++;
+			b_script.offspring++;
 		} else {
 			collision_events.Add(new CollEvent(b,a));
 		}

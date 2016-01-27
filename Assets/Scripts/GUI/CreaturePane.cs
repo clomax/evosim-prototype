@@ -7,6 +7,8 @@ public class CreaturePane : MonoBehaviour
     public Text Name;
     public Text Energy;
     public Text Age;
+    public Text Offspring;
+    public Text FoodEaten;
 
     public Image Root_Col;
     public Image Limb_Col;
@@ -45,8 +47,10 @@ public class CreaturePane : MonoBehaviour
         if (c)
         {
             Name.text = c.name;
-            Energy.text = c.energy.ToString();
+            Energy.text = c.energy.ToString("#.0");
             Age.text = c.age.ToString("#.0");
+            Offspring.text = c.offspring.ToString();
+            FoodEaten.text = c.food_eaten.ToString();
 
             Root_Col.color = c.chromosome.colour;
             Limb_Col.color = c.chromosome.limb_colour;
