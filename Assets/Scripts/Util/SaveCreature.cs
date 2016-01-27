@@ -18,23 +18,23 @@ public class SaveCreature : MonoBehaviour
         string filename = Application.dataPath + "/data/saved_creatures/" + crt_id + "/" + crt_id + ".json";
         string json_creature_pattern = 
 @"{{
-    ""crt_id\"" : {{
+    ""crt_id"" : {{
         ""colour"" : {{
             ""r"" : {0},
             ""g"" : {1},
-            ""b"" : {2},
+            ""b"" : {2}
         }},
                     
         ""limb_colour"" : {{
             ""r"" : {3},
             ""g"" : {4},
-            ""b"" : {5},
+            ""b"" : {5}
         }},
 
         ""root_scale"" : {{
             ""r"" : {6},
             ""g"" : {7},
-            ""b"" : {8},
+            ""b"" : {8}
         }},
 
         ""base_joint_frequency"" : {9},
@@ -54,7 +54,7 @@ public class SaveCreature : MonoBehaviour
         json_creature = string.Format(json_creature_pattern, args);
 
         json_creature +=
-        @"""limbs"" : {{
+        @"""limbs"" : {
         ";
 
         int branch_count = chromosome.getBranchCount();
@@ -68,18 +68,26 @@ public class SaveCreature : MonoBehaviour
                 Vector3 scale =     (Vector3)attributes[1];
 
                 string limb_string =
-        @"""{0}_{1}"" : {{
-            ""position"" : {{
-                {2},
-                {3},
-                {4}
-            }},
-            ""scale"" : {{
-                {5},
-                {6},
-                {7}
-            }}
-        }}";
+            @"
+
+            ""{0}_{1}"" : {{
+                ""position"" : {{
+                    ""x"": {2},
+                    ""y"": {3},
+                    ""z"": {4}
+                }},
+                ""scale"" : {{
+                    ""x"": {5},
+                    ""y"": {6},
+                    ""z"": {7}
+                }}
+            }}";
+
+                if (!(i == branch_count - 1))
+                    limb_string += ",";
+                else if (!(k == limbs.Count - 1))
+                    limb_string += ",";
+
                 string[] l_args = {
                         i.ToString(), k.ToString(),
                         position.x.ToString(), position.y.ToString(), position.z.ToString(),
@@ -89,12 +97,15 @@ public class SaveCreature : MonoBehaviour
             }
         }
 
-        json_creature +=
-        @"}}
-        ";
+            json_creature +=
+            @"
+            }
+            ";
 
         json_creature += 
-@"}}";
+        @"}";
+json_creature +=
+@"}";
 
         using (var sw = new StreamWriter(filename))
         {
