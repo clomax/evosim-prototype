@@ -5,8 +5,6 @@ public class Root : MonoBehaviour {
 	
 	Transform _t;
 	
-	GameObject root;
-	
 	public Creature crt;	
 	public GameObject eye;
 	public GameObject mouth;
@@ -14,8 +12,6 @@ public class Root : MonoBehaviour {
 	
 	public MeshRenderer mr;
 	public Material mt;
-
-	private Selectable s;
 	
 	void Start () {
 		_t = transform;
@@ -27,11 +23,7 @@ public class Root : MonoBehaviour {
 		mouth = crt.mouth;
 		genital = crt.genital;
 
-		s = crt.GetComponent<Selectable>();
-	}
-
-	void OnMouseDown () {
-		s.select(_t.parent.gameObject);
+        tag = "Creature";
 	}
 
 	public void setColour (Color c) {
