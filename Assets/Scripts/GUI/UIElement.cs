@@ -2,6 +2,23 @@
 using System.Collections;
 
 public class UIElement : MonoBehaviour {
+
+    public bool visible = true;
+
+    public void ToggleVisibility()
+    {
+        if (!visible)
+        {
+            make_visible();
+            visible = true;
+        }
+        else
+        {
+            make_invisible();
+            visible = false;
+        }
+    }
+
     public void make_invisible()
     {
         CanvasGroup cg = GetComponent<CanvasGroup>();
