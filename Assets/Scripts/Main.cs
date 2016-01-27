@@ -45,6 +45,18 @@ public class Main : MonoBehaviour {
 		co = CollisionMediator.getInstance();
     }
 
+    void Update ()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+            #else
+            Application.Quit();
+            #endif
+        }
+    }
+
     private void createFolders()
     {
         if (!Directory.Exists(Application.dataPath + "/data"))
