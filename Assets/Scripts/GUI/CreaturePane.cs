@@ -46,7 +46,7 @@ public class CreaturePane : MonoBehaviour
         {
             Name.text = c.name;
             Energy.text = c.energy.ToString();
-            Age.text = c.age.ToString();
+            Age.text = c.age.ToString("#.0");
 
             Root_Col.color = c.chromosome.colour;
             Limb_Col.color = c.chromosome.limb_colour;
@@ -57,5 +57,10 @@ public class CreaturePane : MonoBehaviour
         {
             ui_element.make_invisible();
         }
+    }
+
+    public void kill ()
+    {
+        crt.kill();
     }
 }
