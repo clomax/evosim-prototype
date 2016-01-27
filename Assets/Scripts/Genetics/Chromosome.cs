@@ -12,8 +12,8 @@ using System.Collections.Generic;
 
 public class Chromosome {
 
-	Color colour;
-	Color limb_colour;
+	public Color colour;
+	public Color limb_colour;
 	Vector3 root_scale;
 	public float base_joint_frequency;
 	public float base_joint_amplitude;
