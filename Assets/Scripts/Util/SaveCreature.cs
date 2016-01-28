@@ -4,6 +4,9 @@ using System.IO;
 
 public class SaveCreature : MonoBehaviour
 {
+    public delegate void Save();
+    public static event Save CreatureSaved;
+
     public CreaturePane cp;
 
     string json_creature;
@@ -18,32 +21,34 @@ public class SaveCreature : MonoBehaviour
         string filename = Application.dataPath + "/data/saved_creatures/" + crt_id + "/" + crt_id + ".json";
         string json_creature_pattern = 
 @"{{
-    ""crt_id"" : {{
+    ""name"" : {0},
+    ""attributes"" : {{
         ""colour"" : {{
-            ""r"" : {0},
-            ""g"" : {1},
-            ""b"" : {2}
+            ""r"" : {1},
+            ""g"" : {2},
+            ""b"" : {3}
         }},
                     
         ""limb_colour"" : {{
-            ""r"" : {3},
-            ""g"" : {4},
-            ""b"" : {5}
+            ""r"" : {4},
+            ""g"" : {5},
+            ""b"" : {6}
         }},
 
         ""root_scale"" : {{
-            ""r"" : {6},
-            ""g"" : {7},
-            ""b"" : {8}
+            ""x"" : {7},
+            ""y"" : {8},
+            ""z"" : {9}
         }},
 
-        ""base_joint_frequency"" : {9},
-        ""base_joint_amplitude"" : {10},
-        ""base_joint_phase""     : {11},
-        ""hunder_threshold""     : {12},
+        ""base_joint_frequency"" : {10},
+        ""base_joint_amplitude"" : {11},
+        ""base_joint_phase""     : {12},
+        ""hunger_threshold""     : {13},
         ";
 
         string[] args = {
+            crt_id.ToString(),
             chromosome.colour.r.ToString(), chromosome.colour.g.ToString(), chromosome.colour.b.ToString(),
             chromosome.limb_colour.r.ToString(), chromosome.limb_colour.g.ToString(), chromosome.limb_colour.b.ToString(),
             chromosome.root_scale.x.ToString(), chromosome.root_scale.y.ToString(), chromosome.root_scale.z.ToString(),
@@ -112,5 +117,7 @@ json_creature +=
             sw.Write(json_creature);
             sw.Close();
         }
+
+        CreatureSaved();
     }	
 }
