@@ -3,7 +3,16 @@ using System.Collections;
 
 public class UIElement : MonoBehaviour {
 
-    public bool visible = true;
+    public bool visible = false;
+    public bool passive;
+
+    void Start ()
+    {
+        if (visible)
+            make_visible();
+        else
+            make_invisible();
+    }
 
     public void ToggleVisibility()
     {
@@ -31,8 +40,8 @@ public class UIElement : MonoBehaviour {
     {
         CanvasGroup cg = GetComponent<CanvasGroup>();
         cg.interactable = true;
-        cg.blocksRaycasts = true;
+        if(!passive)
+            cg.blocksRaycasts = true;
         cg.alpha = 1;
     }
-
 }

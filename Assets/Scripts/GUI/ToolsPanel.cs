@@ -1,19 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Siminfo : MonoBehaviour {
-
+public class ToolsPanel : MonoBehaviour
+{
     public UIElement ui_element;
 
-    void Start ()
+    void Start()
     {
         ui_element = GetComponent<UIElement>();
     }
 
-	void Update () {
-	    if(Input.GetKeyUp(KeyCode.F1))
+    void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.F2))
         {
             ui_element.ToggleVisibility();
         }
-	}
+    }
 }

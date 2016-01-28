@@ -31,6 +31,7 @@ public class CreaturePane : MonoBehaviour
     void OnSelected (Creature c)
     {
         crt = c;
+        ui_element.make_visible();
     }
 
     void Start ()

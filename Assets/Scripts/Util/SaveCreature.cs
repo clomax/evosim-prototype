@@ -110,6 +110,7 @@ json_creature +=
         using (var sw = new StreamWriter(filename))
         {
             sw.Write(json_creature);
+            sw.Close();
         }
     }	
 }
