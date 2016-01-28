@@ -64,11 +64,13 @@ public class SaveCreature : MonoBehaviour
         for(int i=0; i<chromosome.num_recurrences.Length; ++i)
         {
             string r_pattern =
-            @"{0}";
+            @"""{0}""";
+
             if (!(i == chromosome.num_recurrences.Length-1))
             {
-                r_pattern += @",
-                ";
+                r_pattern +=
+            @",
+            ";
             }
 
             json_creature += string.Format(r_pattern, chromosome.num_recurrences[i]);
@@ -84,6 +86,13 @@ public class SaveCreature : MonoBehaviour
         int branch_count = chromosome.getBranchCount();
         for(int i=0; i<branch_count; ++i)
         {
+            string branch_string =
+            @"
+
+            ""{0}"" : [
+            ";
+            json_creature += string.Format(branch_string, i.ToString());
+
             ArrayList limbs = chromosome.getLimbs(i);
             for(int k=0; k<limbs.Count; ++k)
             {
@@ -92,32 +101,38 @@ public class SaveCreature : MonoBehaviour
                 Vector3 scale =     (Vector3)attributes[1];
 
                 string limb_string =
-            @"
+                @"{{
+                    ""position"" : {{
+                        ""x"": {1},
+                        ""y"": {2},
+                        ""z"": {3}
+                    }},
+                    ""scale"" : {{
+                        ""x"": {4},
+                        ""y"": {5},
+                        ""z"": {6}
+                    }}
+                }}";
 
-            ""{0}_{1}"" : {{
-                ""position"" : {{
-                    ""x"": {2},
-                    ""y"": {3},
-                    ""z"": {4}
-                }},
-                ""scale"" : {{
-                    ""x"": {5},
-                    ""y"": {6},
-                    ""z"": {7}
-                }}
-            }}";
-
-                if (!(i == branch_count - 1))
-                    limb_string += ",";
-                else if (!(k == limbs.Count - 1))
-                    limb_string += ",";
+                if (!(k == limbs.Count - 1))
+                    limb_string += @",
+                    ";
 
                 string[] l_args = {
-                        i.ToString(), k.ToString(),
+                        k.ToString(),
                         position.x.ToString(), position.y.ToString(), position.z.ToString(),
                         scale.x.ToString(), scale.y.ToString(), scale.z.ToString()
                 };
                 json_creature += string.Format(limb_string, l_args);
+            }
+
+            json_creature +=
+            @"]";
+
+            if (!(i == branch_count - 1))
+            {
+                json_creature += @",
+                ";
             }
         }
 
