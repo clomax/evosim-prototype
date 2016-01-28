@@ -19,12 +19,10 @@ public class UIElement : MonoBehaviour {
         if (!visible)
         {
             make_visible();
-            visible = true;
         }
         else
         {
             make_invisible();
-            visible = false;
         }
     }
 
@@ -34,6 +32,7 @@ public class UIElement : MonoBehaviour {
         cg.interactable = false;
         cg.blocksRaycasts = false;
         cg.alpha = 0;
+        visible = false;
     }
 
     public void make_visible()
@@ -43,5 +42,6 @@ public class UIElement : MonoBehaviour {
         if(!passive)
             cg.blocksRaycasts = true;
         cg.alpha = 1;
+        visible = true;
     }
 }
