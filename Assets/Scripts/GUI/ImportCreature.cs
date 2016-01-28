@@ -126,6 +126,7 @@ public class ImportCreature : MonoBehaviour
 
                 chromosome.colour = root_col;
                 chromosome.limb_colour = limb_col;
+                chromosome.hunger_threshold = ht;
                 chromosome.setRootScale(root_scale);
                 chromosome.setBaseFequency(bjf);
                 chromosome.setBaseAmplitude(bja);

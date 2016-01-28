@@ -15,7 +15,6 @@ public class Spawner : MonoBehaviour {
 	
 	void Start () {
 		lg = Logger.getInstance();
-		//crt = (GameObject)Resources.Load("Prefabs/Creature/PrototypeCreature");
 		crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
 		eth = Ether.getInstance();
 }

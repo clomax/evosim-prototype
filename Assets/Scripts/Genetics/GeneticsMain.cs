@@ -84,7 +84,7 @@ public class GeneticsMain : MonoBehaviour {
 			chromosome.setColour(col.r, col.g, col.b);
 			chromosome.setLimbColour(col.r, col.g, col.b);
 
-			chromosome.hunger_threshold = (double) settings.contents["creature"]["hunger_threshold"];
+			chromosome.hunger_threshold = float.Parse(settings.contents["creature"]["hunger_threshold"].ToString());
 
 			// random root scale
 			Vector3 rootScale = new Vector3((float) Random.Range(min_root_scale.x,max_root_scale.x),

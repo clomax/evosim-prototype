@@ -41,7 +41,6 @@ public class Creature : MonoBehaviour {
 	public Chromosome chromosome;
 
 	public double 	line_of_sight;
-	double 			hunger_threshold;
 	double 			metabolic_rate;
 	int 			age_sexual_maturity;
 

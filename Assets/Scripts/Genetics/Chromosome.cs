@@ -19,7 +19,7 @@ public class Chromosome
 	public float base_joint_frequency;
 	public float base_joint_amplitude;
 	public float base_joint_phase;
-	public double hunger_threshold;
+	public float hunger_threshold;
 
     public int num_branches;
     public int[] num_recurrences;
