@@ -45,6 +45,7 @@ public class SaveCreature : MonoBehaviour
         ""base_joint_amplitude"" : {11},
         ""base_joint_phase""     : {12},
         ""hunger_threshold""     : {13},
+        ""branches""             : {14},
         ";
 
         string[] args = {
@@ -53,10 +54,28 @@ public class SaveCreature : MonoBehaviour
             chromosome.limb_colour.r.ToString(), chromosome.limb_colour.g.ToString(), chromosome.limb_colour.b.ToString(),
             chromosome.root_scale.x.ToString(), chromosome.root_scale.y.ToString(), chromosome.root_scale.z.ToString(),
             chromosome.base_joint_frequency.ToString(), chromosome.base_joint_amplitude.ToString(), chromosome.base_joint_phase.ToString(),
-            chromosome.hunger_threshold.ToString()
+            chromosome.hunger_threshold.ToString(), chromosome.num_branches.ToString()
         };
-
         json_creature = string.Format(json_creature_pattern, args);
+
+        json_creature +=
+        @"""recurrences"" : [
+        ";
+        for(int i=0; i<chromosome.num_recurrences.Length; ++i)
+        {
+            string r_pattern =
+            @"{0}";
+            if (!(i == chromosome.num_recurrences.Length-1))
+            {
+                r_pattern += @",
+                ";
+            }
+
+            json_creature += string.Format(r_pattern, chromosome.num_recurrences[i]);
+        }
+        json_creature +=
+        @"],
+        ";        
 
         json_creature +=
         @"""limbs"" : {

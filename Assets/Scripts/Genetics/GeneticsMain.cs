@@ -95,12 +95,14 @@ public class GeneticsMain : MonoBehaviour {
 			
 			// random initial limbs
 			int bs = Random.Range (1,branch_limit+1);
-			ArrayList branches = new ArrayList();
+            chromosome.setNumBranches(bs);
+            ArrayList branches = new ArrayList();
 
 			for (int j=0; j<bs; j++) {
 				ArrayList limbs = new ArrayList();
 
 				int recurrences = Random.Range(0,recurrence_limit);
+                chromosome.num_recurrences[j] = recurrences;
 				for (int k=0; k<=recurrences; k++) {
 
 					Vector3 scale = new Vector3 ((float) Random.Range(min_limb_scale.x,max_limb_scale.x),
@@ -121,7 +123,6 @@ public class GeneticsMain : MonoBehaviour {
 			chromosome.setBaseFequency (Random.Range (3,20));
 			chromosome.setBaseAmplitude (Random.Range (3,6));
 			chromosome.setBasePhase (Random.Range (0,360));
-
 			chromosome.setBranches(branches);
 
 			if (eth.enoughEnergy(creature_init_energy)) {

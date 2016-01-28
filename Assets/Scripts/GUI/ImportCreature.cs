@@ -87,22 +87,48 @@ public class ImportCreature : MonoBehaviour
                 limb_col.b = float.Parse(contents["attributes"]["limb_colour"]["b"].ToString());
                 limb_col.a = 1;
 
-#if ZERO
                 Vector3 root_scale = new Vector3();
                 root_scale.x = float.Parse(contents["attributes"]["root_scale"]["x"].ToString());
                 root_scale.y = float.Parse(contents["attributes"]["root_scale"]["y"].ToString());
                 root_scale.z = float.Parse(contents["attributes"]["root_scale"]["z"].ToString());
 
-                float bjf = (int) contents["attributes"]["base_joint_frequency"];
-                float bja = (int) contents["attributes"]["base_joint_amplitude"];
-                float bjp = (int) contents["attributes"]["base_joint_phase"];
-                float ht =  (int) contents["attributes"]["hunger_threshold"];
-#endif
+                float bjf = float.Parse(contents["attributes"]["base_joint_frequency"].ToString());
+                float bja = float.Parse(contents["attributes"]["base_joint_amplitude"].ToString());
+                float bjp = float.Parse(contents["attributes"]["base_joint_phase"].ToString());
+                float ht =  float.Parse(contents["attributes"]["hunger_threshold"].ToString());
 
+                // load branches
+                ArrayList branches =  new ArrayList();
+#if ZERO
+                int num_branches = (int)contents["attributes"]["branches"];
+                for (int j = 0; j < num_branches ; j++)
+                {
+                    ArrayList limbs = new ArrayList();
+                    int recurrences = (int)contents["attributes"]["recurrences"][j];
+                    for (int k = 0; k <= recurrences; k++)
+                    {
+                        float x = float.Parse(contents["attributes"]["limbs"][])
+                        Vector3 scale = new Vector3();
+
+                        Vector3 position = Utility.RandomPointInsideCube(rootScale);
+
+                        ArrayList limb = new ArrayList();
+                        limb.Add(position);
+                        limb.Add(scale);
+                        limbs.Add(limb);
+                    }
+                    branches.Add(limbs);
+                }
+#endif
                 Chromosome chromosome = new Chromosome();
 
                 chromosome.colour = root_col;
                 chromosome.limb_colour = limb_col;
+                chromosome.setRootScale(root_scale);
+                chromosome.setBaseFequency(bjf);
+                chromosome.setBaseAmplitude(bja);
+                chromosome.setBasePhase(bjp);
+                chromosome.setBranches(branches);
 
                 creatures.Add(name, chromosome);
             }
@@ -117,6 +143,11 @@ public class ImportCreature : MonoBehaviour
             s.transform.SetParent(transform, false);
             selections.Add(s);
             s.GetComponent<RectTransform>().localPosition += new Vector3(0, (-40F*i), 0);
+
+            LoadChromosome lc = s.GetComponent<LoadChromosome>();
+            lc.parent = GetComponent<UIElement>();
+            lc.c = creatures.Values[i];
+
             Button b = s.GetComponent<Button>();
             Text t = b.GetComponentInChildren<Text>();
             t.text = creatures.Keys[i];

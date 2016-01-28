@@ -244,9 +244,10 @@ public class Creature : MonoBehaviour {
 // TODO: Limbs should be made into a better tree structure, not this
 // 				list of lists rubbish
 	private void setupLimbs () {
-		int num_branches = chromosome.getBranchCount();
+        int num_branches = chromosome.getBranchCount();
+        chromosome.setNumBranches(num_branches);
 
-		for (int i=0; i<num_branches; i++)
+        for (int i=0; i<num_branches; i++)
         {
 			limbs = chromosome.getLimbs(i);
 			List<GameObject> actual_limbs = new List<GameObject>();
