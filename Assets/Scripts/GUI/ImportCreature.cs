@@ -97,9 +97,7 @@ public class ImportCreature : MonoBehaviour
                 float bjp = float.Parse(contents["attributes"]["base_joint_phase"].ToString());
                 float ht =  float.Parse(contents["attributes"]["hunger_threshold"].ToString());
 
-                // load branches
                 ArrayList branches =  new ArrayList();
-#if ZERO
                 int num_branches = (int)contents["attributes"]["branches"];
                 for (int j = 0; j < num_branches ; j++)
                 {
@@ -107,10 +105,15 @@ public class ImportCreature : MonoBehaviour
                     int recurrences = (int)contents["attributes"]["recurrences"][j];
                     for (int k = 0; k <= recurrences; k++)
                     {
-                        float x = float.Parse(contents["attributes"]["limbs"][])
-                        Vector3 scale = new Vector3();
+                        float x = float.Parse(contents["attributes"]["limbs"][j.ToString()][k]["position"]["x"].ToString());
+                        float y = float.Parse(contents["attributes"]["limbs"][j.ToString()][k]["position"]["y"].ToString());
+                        float z = float.Parse(contents["attributes"]["limbs"][j.ToString()][k]["position"]["z"].ToString());
+                        Vector3 position = new Vector3(x,y,z);
 
-                        Vector3 position = Utility.RandomPointInsideCube(rootScale);
+                        x = float.Parse(contents["attributes"]["limbs"][j.ToString()][k]["scale"]["x"].ToString());
+                        y = float.Parse(contents["attributes"]["limbs"][j.ToString()][k]["scale"]["y"].ToString());
+                        z = float.Parse(contents["attributes"]["limbs"][j.ToString()][k]["scale"]["z"].ToString());
+                        Vector3 scale = new Vector3(x,y,z);
 
                         ArrayList limb = new ArrayList();
                         limb.Add(position);
@@ -119,7 +122,6 @@ public class ImportCreature : MonoBehaviour
                     }
                     branches.Add(limbs);
                 }
-#endif
                 Chromosome chromosome = new Chromosome();
 
                 chromosome.colour = root_col;

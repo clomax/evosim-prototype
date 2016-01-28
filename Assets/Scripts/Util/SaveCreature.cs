@@ -64,7 +64,7 @@ public class SaveCreature : MonoBehaviour
         for(int i=0; i<chromosome.num_recurrences.Length; ++i)
         {
             string r_pattern =
-            @"""{0}""";
+            @"{0}";
 
             if (!(i == chromosome.num_recurrences.Length-1))
             {
