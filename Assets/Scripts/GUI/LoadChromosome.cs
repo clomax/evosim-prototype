@@ -16,5 +16,6 @@ public class LoadChromosome : MonoBehaviour
              c
         );
         parent.make_invisible();
+        GetComponentInParent<CreatureList>().DepopulateMenu();
     }
 }

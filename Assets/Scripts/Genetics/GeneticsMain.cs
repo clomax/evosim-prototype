@@ -13,8 +13,8 @@ using System.Collections.Generic;
  */
 
 
-public class GeneticsMain : MonoBehaviour {
-
+public class GeneticsMain : MonoBehaviour
+{
 	private Ether eth;
 	private Settings settings;
 	private Spawner spw;
@@ -31,9 +31,6 @@ public class GeneticsMain : MonoBehaviour {
 
 	Vector3 max_limb_scale;
 	Vector3 min_limb_scale;
-
-	double hunger_threshold;
-	
 	
 	void Start () {
 		spw = Spawner.getInstance();

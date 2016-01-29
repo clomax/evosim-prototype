@@ -16,8 +16,9 @@ public class ImportCreature : MonoBehaviour
     public JsonData contents;
     public SortedList<string, Chromosome> creatures;
 
-    public GameObject selection_prefab;
     private UIElement ui_element;
+
+    public Transform button_ui_parent;
 
     List<GameObject> selections;
 
@@ -46,15 +47,12 @@ public class ImportCreature : MonoBehaviour
         if (ui_element.visible)
         {
             LoadCreatures();
-            PopulateMenu();
+            GetComponentInChildren<CreatureList>().PopulateMenu(creatures);
         }
 
         if(!ui_element.visible)
         {
-            foreach(var s in selections)
-            {
-                GameObject.Destroy(s);
-            }
+            GetComponentInChildren<CreatureList>().DepopulateMenu();
         }
     }
 
@@ -141,27 +139,4 @@ public class ImportCreature : MonoBehaviour
         }
     }
 
-    void PopulateMenu ()
-    {
-        for (int i=0; i<creatures.Count; ++i)
-        {
-            s = Instantiate(selection_prefab, selection_prefab.transform.position, selection_prefab.transform.rotation) as GameObject;
-            s.transform.SetParent(transform, false);
-            selections.Add(s);
-            s.GetComponent<RectTransform>().localPosition += new Vector3(0, (-40F*i), 0);
-
-            LoadChromosome lc = s.GetComponent<LoadChromosome>();
-            lc.parent = GetComponent<UIElement>();
-            lc.c = creatures.Values[i];
-
-            Button b = s.GetComponent<Button>();
-            Text t = b.GetComponentInChildren<Text>();
-            t.text = creatures.Keys[i];
-
-            Image[] colours = new Image[2];
-            colours = GameObject.FindObjectsOfType<Image>();
-            colours[0].color = creatures.Values[i].colour;
-            colours[1].color = creatures.Values[i].limb_colour;
-        }
-    }
 }
