@@ -36,6 +36,7 @@ public class Creature : MonoBehaviour {
 
 	public double age;
 	public double energy;
+    public double low_energy_threshold;
 
 	public Chromosome chromosome;
 
@@ -47,6 +48,7 @@ public class Creature : MonoBehaviour {
 	public int food_eaten;
 
 	ArrayList limbs;
+    ArrayList all_limbs;
 
     float joint_frequency;
     float joint_amplitude;
@@ -134,12 +136,14 @@ public class Creature : MonoBehaviour {
         metabolic_rate = (double)settings.contents["creature"]["metabolic_rate"];
         age_sexual_maturity = (int)settings.contents["creature"]["age_sexual_maturity"];
 
+        all_limbs = new ArrayList();
         setupLimbs();
 
         age = 0.0D;
         state = State.neutral;
         food_eaten = 0;
         offspring = 0;
+        low_energy_threshold = (double)settings.contents["creature"]["low_energy_threshold"];
 
         InvokeRepeating("updateState", 0, 0.1f);
         InvokeRepeating("metabolise", 1.0f, 1.0f);
@@ -175,7 +179,6 @@ public class Creature : MonoBehaviour {
 			direction = root.transform.forward;
 		}
 
-        print(force_scalar);
 		root.GetComponent<Rigidbody>().AddForce(Mathf.Abs(force_scalar) * direction * pos_sine * chromosome.getBranchCount());
 	}
 
@@ -183,16 +186,26 @@ public class Creature : MonoBehaviour {
 		return Mathf.Sin((float)age * freq + phase_shift) * amplitude;
 	}
 
-	void Update () {
-		age += Time.deltaTime;
+    void Update()
+    {
+        age += Time.deltaTime;
 
-        if (energy < 10.0 && !low_energy_lock)
+        if (energy < low_energy_threshold && !low_energy_lock)
         {
             low_energy_lock = true;
             StartCoroutine(SlowDown());
             StartCoroutine(Darken());
         }
-	}
+
+        if (energy >= low_energy_threshold)
+        {
+            low_energy_lock = false;
+            StopCoroutine(SlowDown());
+            StopCoroutine(Darken());
+            Lighten();
+            ResetSpeed();
+        }
+    }
 
 	private void RandomDirection () {
 		target_direction = new Vector3 (
@@ -328,6 +341,8 @@ public class Creature : MonoBehaviour {
 				joint.angularYZDrive = angXDrive;
 
 				limb.GetComponent<Rigidbody>().SetDensity(1F);
+
+                all_limbs.Add(limb_script);
 			}
 		}
 	}
@@ -336,7 +351,7 @@ public class Creature : MonoBehaviour {
     private IEnumerator Darken ()
     {
         float col = 1F;
-        while (col > 0.15F)
+        while (col > 0.15F && energy < low_energy_threshold)
         {
             foreach (var m in ms)
             {
@@ -352,7 +367,7 @@ public class Creature : MonoBehaviour {
     private IEnumerator SlowDown ()
     {
         float freq = joint_frequency;
-        while (freq > 0.15F)
+        while (freq > 0.15F && energy < low_energy_threshold)
         {
             freq -= d_freq;
             joint_frequency = freq;
@@ -362,4 +377,18 @@ public class Creature : MonoBehaviour {
         }
     }
 
+    private void Lighten ()
+    {
+        root.GetComponent<MeshRenderer>().material.color = root_script.original_colour;
+        foreach (Limb l in all_limbs)
+        {
+            l.GetComponent<MeshRenderer>().material.color = l.original_colour;
+        }
+    }
+
+    private void ResetSpeed ()
+    {
+        joint_frequency = chromosome.base_joint_frequency;
+        force_scalar = 1F;
+    }
 }

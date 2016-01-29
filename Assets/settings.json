@@ -29,15 +29,16 @@
 	"foodbit": {
 		"init_energy"				: 20.0,
 		"destroy_at"				: 10.0,
-		"spore_time"				: 0.01,
+		"spore_time"				: 0.05,
 		"spore_range"				: 100,
 		"spore_rate"				: 1.0,
 		"wide_spread"				: 40.0
 	},
 
 	"creature": {
-		"init_energy"				: 75.0,
+		"init_energy"				: 70.0,
 		"hunger_threshold"			: 50.0,
+		"low_energy_threshold"	: 10.0,
 		"line_of_sight"				: 12.0,
 		"energy_to_offspring"		: 0.50,
 		"metabolic_rate"			: 0.9,

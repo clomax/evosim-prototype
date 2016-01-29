@@ -4,6 +4,7 @@ using System.Collections;
 public class Limb : MonoBehaviour {
 
 	HingeJoint hj;
+    public Color original_colour;
 
 	void Start () {
         tag = "Creature";
@@ -18,6 +19,7 @@ public class Limb : MonoBehaviour {
 	}
 	
 	public void setColour (Color c) {
+        original_colour = c;
         gameObject.GetComponent<MeshRenderer>().material.shader = Shader.Find("Legacy Shaders/Diffuse");
         gameObject.GetComponent<MeshRenderer>().material.color = c;
 	}
