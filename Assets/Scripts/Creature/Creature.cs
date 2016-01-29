@@ -252,7 +252,7 @@ public class Creature : MonoBehaviour {
 			List<GameObject> actual_limbs = new List<GameObject>();
 
             int recurrences = chromosome.num_recurrences[i];
-            for (int j=0; j<recurrences; ++j) {
+            for (int j=0; j<recurrences; j++) {
 				GameObject limb = GameObject.CreatePrimitive(PrimitiveType.Cube);
 				limb.layer = LayerMask.NameToLayer("Creature");
 				limb.name = "limb_"+i+"_"+j;

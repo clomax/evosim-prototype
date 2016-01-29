@@ -15,6 +15,7 @@ public class LoadChromosome : MonoBehaviour
              75.0,
              c
         );
+        Ether.getInstance().subtractEnergy(75.0);
         parent.make_invisible();
         GetComponentInParent<CreatureList>().DepopulateMenu();
     }

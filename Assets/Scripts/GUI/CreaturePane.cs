@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Text;
 
 public class CreaturePane : MonoBehaviour
 {
@@ -53,7 +54,14 @@ public class CreaturePane : MonoBehaviour
             Age.text = c.age.ToString("#.0");
             Offspring.text = c.offspring.ToString();
             FoodEaten.text = c.food_eaten.ToString();
-            State.text = c.state.ToString();
+
+            StringBuilder sb = new StringBuilder(c.state.ToString());
+            string state = 
+                sb
+                  .Replace("_"," ")
+                  .ToString();
+
+            State.text = state;
 
             Root_Col.color = c.chromosome.colour;
             Limb_Col.color = c.chromosome.limb_colour;
