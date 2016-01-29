@@ -68,6 +68,8 @@ public class ImportCreature : MonoBehaviour
             fs = Directory.GetFiles(s, "*.json");
             foreach (var f in fs)
             {
+                Chromosome chromosome = new Chromosome();
+
                 sr = new StreamReader(f);
                 raw_contents = sr.ReadToEnd();
                 contents = JsonMapper.ToObject(raw_contents);
@@ -99,11 +101,13 @@ public class ImportCreature : MonoBehaviour
 
                 ArrayList branches =  new ArrayList();
                 int num_branches = (int)contents["attributes"]["branches"];
+                chromosome.num_recurrences = new int[num_branches];
                 for (int j = 0; j < num_branches ; j++)
                 {
                     ArrayList limbs = new ArrayList();
                     int recurrences = (int)contents["attributes"]["recurrences"][j];
-                    for (int k = 0; k <= recurrences; k++)
+                    chromosome.num_recurrences[j] = recurrences;
+                    for (int k = 0; k < recurrences; ++k)
                     {
                         float x = float.Parse(contents["attributes"]["limbs"][j.ToString()][k]["position"]["x"].ToString());
                         float y = float.Parse(contents["attributes"]["limbs"][j.ToString()][k]["position"]["y"].ToString());
@@ -122,7 +126,6 @@ public class ImportCreature : MonoBehaviour
                     }
                     branches.Add(limbs);
                 }
-                Chromosome chromosome = new Chromosome();
 
                 chromosome.colour = root_col;
                 chromosome.limb_colour = limb_col;
