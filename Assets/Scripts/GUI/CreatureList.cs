@@ -15,10 +15,10 @@ public class CreatureList : MonoBehaviour
             GameObject button = Instantiate(button_prefab, transform.position, transform.rotation) as GameObject;
             button.transform.SetParent(transform);
             LayoutElement le = button.AddComponent<LayoutElement>();
-            le.preferredHeight = 30;
+            le.minHeight = 30;
 
             LoadChromosome lc = button.GetComponent<LoadChromosome>();
-            lc.parent = GetComponent<UIElement>();
+            lc.parent = GetComponentInParent<UIElement>();
             lc.c = creatures.Values[i];
 
             Button b = button.GetComponent<Button>();
