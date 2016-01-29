@@ -56,7 +56,7 @@ public class ImportCreature : MonoBehaviour
         }
     }
 
-    void LoadCreatures()
+    public void LoadCreatures()
     {
         creatures.Clear();
         string[] fs;

@@ -8,7 +8,17 @@ public class CreatureList : MonoBehaviour
     public GameObject button_prefab;
     public List<GameObject> selections;
 
-    public void PopulateMenu(SortedList<string, Chromosome> creatures)
+    void OnEnable ()
+    {
+        SaveCreature.CreatureSaved += OnUpdate;
+    }
+
+    void OnDisable ()
+    {
+        SaveCreature.CreatureSaved -= OnUpdate;
+    }
+
+    public void PopulateMenu (SortedList<string, Chromosome> creatures)
     {
         for (int i = 0; i < creatures.Count; ++i)
         {
@@ -38,9 +48,20 @@ public class CreatureList : MonoBehaviour
         }
     }
 
-    public void DepopulateMenu()
+    public void DepopulateMenu ()
     {
         foreach (var s in selections)
+        {
             Destroy(s);
+        }
+        selections.Clear();
+
+    }
+
+    void OnUpdate ()
+    {
+        DepopulateMenu();
+        GetComponentInParent<ImportCreature>().LoadCreatures();
+        PopulateMenu(GetComponentInParent<ImportCreature>().creatures);
     }
 }
