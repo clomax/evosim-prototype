@@ -38,7 +38,7 @@
 	"creature": {
 		"init_energy"				: 70.0,
 		"hunger_threshold"			: 50.0,
-		"low_energy_threshold"	: 10.0,
+		"low_energy_threshold"	: 5.0,
 		"line_of_sight"				: 12.0,
 		"energy_to_offspring"		: 0.50,
 		"metabolic_rate"			: 0.9,
