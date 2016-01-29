@@ -11,19 +11,22 @@ using System.Collections.Generic;
  */
 
 
-public class GeneticsUtils {
+public class GeneticsUtils
+{
 
 	static double rand;
 	static System.Random rnd = new System.Random();
 	
-	public static Chromosome mutate (Chromosome c, double rate, float factor) {
+	public static Chromosome mutate (Chromosome c, double rate, float factor)
+    {
 		// Mutate colour
 		float[] cs = new float[3];
 		Color cc = c.getColour();
 		cs[0] = cc.r;
 		cs[1] = cc.g;
 		cs[2] = cc.b;
-		for (int i=0; i<3; i++) {
+		for (int i=0; i<3; i++)
+        {
 			rand = rnd.NextDouble();
 			if (rand < rate)
 				cs[i] += randomiseGene(factor);
@@ -33,12 +36,14 @@ public class GeneticsUtils {
 		// Mutate root scale
 		Vector3 rc = c.getRootScale();
 
-		if (rc.x > 1F && rc.y > 1F && rc.z > 1F) {
+		if (rc.x > 1F && rc.y > 1F && rc.z > 1F)
+        {
 			float[] rs = new float[3];
 			rs[0] = rc.x;
 			rs[1] = rc.y;
 			rs[2] = rc.z;
-			for (int i=0; i<3; i++) {
+			for (int i=0; i<3; i++)
+            {
 				rand = rnd.NextDouble();
 				if (rand < rate)
 					rs[i] += randomiseGene(factor);
@@ -52,7 +57,8 @@ public class GeneticsUtils {
 		cs[0] = cc.r;
 		cs[1] = cc.g;
 		cs[2] = cc.b;
-		for (int i=0; i<3; i++) {
+		for (int i=0; i<3; i++)
+        {
 			rand = rnd.NextDouble();
 			if (rand < rate)
 				cs[i] += randomiseGene(factor);
@@ -60,12 +66,15 @@ public class GeneticsUtils {
 		c.setLimbColour(cs[0], cs[1], cs[2]);
 
 		ArrayList branches = c.branches;
-		for (int b=0; b<branches.Count; b++) {
+		for (int b=0; b<branches.Count; b++)
+        {
 			ArrayList limbs = (ArrayList) branches[b];
-			for (int i=0; i<limbs.Count; i++) {
+			for (int i=0; i<limbs.Count; i++)
+            {
 				ArrayList limb = (ArrayList) limbs[i];
 				Vector3 v = (Vector3) limb[1];
-				for (int k=0; k<3; k++) {
+				for (int k=0; k<3; k++)
+                {
 					rand = rnd.NextDouble();
 					if(rand < rate)
 						v[k] += randomiseGene(factor);
@@ -76,22 +85,26 @@ public class GeneticsUtils {
 
 		// mutate base frequency and amplitude
 		rand = rnd.NextDouble();
-		if(rand < rate) {
+		if(rand < rate)
+        {
 			c.base_joint_amplitude += randomiseGene(factor);
 		}
 
 		rand = rnd.NextDouble();
-		if(rand < rate) {
+		if(rand < rate)
+        {
 			c.base_joint_frequency += randomiseGene(factor);
 		}
 
 		rand = rnd.NextDouble();
-		if(rand < rate) {
+		if(rand < rate)
+        {
 			c.base_joint_phase += randomiseGene(factor);
 		}
 
 		rand = rnd.NextDouble();
-		if(rand < rate) {
+		if(rand < rate)
+        {
 			c.hunger_threshold += randomiseGene(factor);
 		}
 
@@ -99,7 +112,8 @@ public class GeneticsUtils {
 		return c;
 	}
 	
-	public static Chromosome crossover (Chromosome c1, Chromosome c2, double rate) {
+	public static Chromosome crossover (Chromosome c1, Chromosome c2, double rate)
+    {
 		Chromosome c = new Chromosome();
 		
 		// Crossover colour
@@ -125,28 +139,38 @@ public class GeneticsUtils {
 		// Randomly select the parent from which the child will derive its limb structure
 		int select = Random.Range(0,2);
 		ArrayList other_crt_branches;
-		if (select == 0) {
+		if (select == 0)
+        {
 			c_branches = c1_branches;
 			other_crt_branches = c2_branches;
-		} else {
+		}
+        else
+        {
 			c_branches = c2_branches;
 			other_crt_branches = c1_branches;
 		}
 
 		select = Random.Range(0,2);
-		if (select == 0) {
+		if (select == 0)
+        {
 			c.setRootScale(c1.getRootScale());
-		} else {
+		}
+        else
+        {
 			c.setRootScale(c2.getRootScale());
 		}
 
-		// Randomly select attributes from the selected creature's limbs to
-		//	assign to child creature's limbs
+        // Randomly select attributes from the selected creature's limbs to
+        //	assign to child creature's limbs
 
-		for (int i=0; i<c_branches.Count; i++) {
+        c.num_recurrences = new int[c_branches.Count];
+		for (int i=0; i<c_branches.Count; i++)
+        {
 			ArrayList c_limbs = (ArrayList) c_branches[i];
+            c.num_recurrences[i] = c_limbs.Count;
 
-			for (int j=1; j<c_limbs.Count; j++) {
+            for (int j=1; j<c_limbs.Count; j++)
+            {
 				ArrayList c_attributes = (ArrayList) c_limbs[j];
 
 				//select random limb segment from other creature
@@ -155,7 +179,8 @@ public class GeneticsUtils {
 
 				Vector3 c_scale = (Vector3) c_attributes[1];
 				Vector3 other_crt_scale = (Vector3) other_crt_attributes[1];
-				for (int s=0; s<3; s++) {
+				for (int s=0; s<3; s++)
+                {
 					rand = rnd.NextDouble();
 					if (rand < rate) {
 						c_scale[s] = other_crt_scale[s];
@@ -168,14 +193,17 @@ public class GeneticsUtils {
 
 				Vector3 c_pos = (Vector3) c_attributes[0];
 				Vector3 other_crt_pos = (Vector3) other_crt_attributes[0];
-				for (int p=0; p<3; p++) {
+				for (int p=0; p<3; p++)
+                {
 					rand = rnd.NextDouble();
-					if (rand < rate) {
+					if (rand < rate)
+                    {
 						c_pos[p] = other_crt_pos[p];
 					}
 				}
 			}
 			c_branches[i] = c_limbs;
+            c.num_branches = c_branches.Count;
 		}
 
 		// Crossover frequency and amplitude
@@ -184,40 +212,48 @@ public class GeneticsUtils {
 		c.base_joint_phase	   = c1.base_joint_phase;
 
 		rand = rnd.NextDouble();
-		if (rand < 0.5f) {
+		if (rand < 0.5f)
+        {
 			c.base_joint_amplitude = c2.base_joint_amplitude;
 		}
 
 		rand = rnd.NextDouble();
-		if (rand < 0.5f) {
+		if (rand < 0.5f)
+        {
 			c.base_joint_frequency = c2.base_joint_frequency;
 		}
 
 		rand = rnd.NextDouble();
-		if (rand < 0.5f) {
+		if (rand < 0.5f)
+        { 
 			c.base_joint_phase = c2.base_joint_phase;
 		}
 
 		rand = rnd.NextDouble();
-		if (rand < 0.5f) {
+		if (rand < 0.5f)
+        {
 			c.hunger_threshold = c2.hunger_threshold;
 		}
-		else {
+		else
+        {
 			c.hunger_threshold = c1.hunger_threshold;
 		}
 
 		c.setBranches(c_branches);
-		return c;
+
+        return (c);
 	}
 
-	public static float similar_colour (Chromosome c1, Chromosome c2) {
+	public static float similar_colour (Chromosome c1, Chromosome c2)
+    {
 		Color colour1 = c1.getColour();
 		Color colour2 = c2.getColour();
 		
 		return Mathf.Abs((colour1.r * colour2.r) - (colour1.g * colour2.g) - (colour1.b * colour2.g));
 	}
 	
-	private static float randomiseGene(float factor) {
+	private static float randomiseGene(float factor)
+    {
 		return (float) rnd.NextDouble() * ( Mathf.Abs(factor-(-factor)) ) + (-factor);
 	}
 	

@@ -13,8 +13,8 @@ using System.Collections.Generic;
  */
 
 
-public class GeneticsMain : MonoBehaviour {
-
+public class GeneticsMain : MonoBehaviour
+{
 	private Ether eth;
 	private Settings settings;
 	private Spawner spw;
@@ -31,9 +31,6 @@ public class GeneticsMain : MonoBehaviour {
 
 	Vector3 max_limb_scale;
 	Vector3 min_limb_scale;
-
-	double hunger_threshold;
-	
 	
 	void Start () {
 		spw = Spawner.getInstance();
@@ -84,7 +81,7 @@ public class GeneticsMain : MonoBehaviour {
 			chromosome.setColour(col.r, col.g, col.b);
 			chromosome.setLimbColour(col.r, col.g, col.b);
 
-			chromosome.hunger_threshold = (double) settings.contents["creature"]["hunger_threshold"];
+			chromosome.hunger_threshold = float.Parse(settings.contents["creature"]["hunger_threshold"].ToString());
 
 			// random root scale
 			Vector3 rootScale = new Vector3((float) Random.Range(min_root_scale.x,max_root_scale.x),
@@ -95,12 +92,14 @@ public class GeneticsMain : MonoBehaviour {
 			
 			// random initial limbs
 			int bs = Random.Range (1,branch_limit+1);
-			ArrayList branches = new ArrayList();
+            chromosome.setNumBranches(bs);
+            ArrayList branches = new ArrayList();
 
 			for (int j=0; j<bs; j++) {
 				ArrayList limbs = new ArrayList();
 
 				int recurrences = Random.Range(0,recurrence_limit);
+                chromosome.num_recurrences[j] = recurrences;
 				for (int k=0; k<=recurrences; k++) {
 
 					Vector3 scale = new Vector3 ((float) Random.Range(min_limb_scale.x,max_limb_scale.x),
@@ -121,7 +120,6 @@ public class GeneticsMain : MonoBehaviour {
 			chromosome.setBaseFequency (Random.Range (3,20));
 			chromosome.setBaseAmplitude (Random.Range (3,6));
 			chromosome.setBasePhase (Random.Range (0,360));
-
 			chromosome.setBranches(branches);
 
 			if (eth.enoughEnergy(creature_init_energy)) {

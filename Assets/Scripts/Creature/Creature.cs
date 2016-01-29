@@ -41,12 +41,11 @@ public class Creature : MonoBehaviour {
 	public Chromosome chromosome;
 
 	public double 	line_of_sight;
-	double 			hunger_threshold;
 	double 			metabolic_rate;
 	int 			age_sexual_maturity;
 
-	public int times_mated;
-	public int times_eaten;
+	public int offspring;
+	public int food_eaten;
 
 	ArrayList limbs;
 
@@ -127,8 +126,8 @@ public class Creature : MonoBehaviour {
 
 		age = 0.0D;
 		state = State.neutral;
-		times_eaten = 0;
-		times_mated = 0;
+		food_eaten = 0;
+		offspring = 0;
 
 		InvokeRepeating("updateState",0,0.1f);
 		InvokeRepeating("metabolise",1.0f,1.0f);
@@ -215,6 +214,7 @@ public class Creature : MonoBehaviour {
 	public void subtractEnergy (double n) {
 		if (energy <= n) {
 			eth.energy += energy;
+            energy = 0;
 			kill ();
 		} else {
 			energy -= n;
@@ -234,22 +234,25 @@ public class Creature : MonoBehaviour {
 	 * Remove the creature from existence and return
 	 * the creature's energy.
 	 */
-	public double kill () {
+	public void kill () {
 		Destroy(gameObject);
 		crt_count.number_of_creatures -= 1;
-		return energy;
+        eth.energy += energy;
 	}
 
 // TODO: Limbs should be made into a better tree structure, not this
 // 				list of lists rubbish
 	private void setupLimbs () {
-		int num_branches = chromosome.getBranchCount();
+        int num_branches = chromosome.getBranchCount();
+        chromosome.setNumBranches(num_branches);
 
-		for (int i=0; i<num_branches; i++) {
+        for (int i=0; i<num_branches; i++)
+        {
 			limbs = chromosome.getLimbs(i);
 			List<GameObject> actual_limbs = new List<GameObject>();
 
-			for (int j=0; j<limbs.Count; j++) {
+            int recurrences = chromosome.num_recurrences[i];
+            for (int j=0; j<recurrences; ++j) {
 				GameObject limb = GameObject.CreatePrimitive(PrimitiveType.Cube);
 				limb.layer = LayerMask.NameToLayer("Creature");
 				limb.name = "limb_"+i+"_"+j;

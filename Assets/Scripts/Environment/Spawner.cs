@@ -15,7 +15,6 @@ public class Spawner : MonoBehaviour {
 	
 	void Start () {
 		lg = Logger.getInstance();
-		//crt = (GameObject)Resources.Load("Prefabs/Creature/PrototypeCreature");
 		crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
 		eth = Ether.getInstance();
 }
@@ -34,7 +33,6 @@ public class Spawner : MonoBehaviour {
 		clone.transform.localPosition = pos;
 		clone.transform.eulerAngles = Utility.RandomRotVec();
 		Creature crt_script = clone.AddComponent<Creature>();
-		clone.AddComponent<Selectable>();
 		clone.tag = "Creature";
 	
 		crt_script.invokechromosome(chromosome);

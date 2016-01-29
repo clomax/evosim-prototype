@@ -1,4 +1,5 @@
 using UnityEngine;
+using LitJson;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -10,17 +11,32 @@ using System.Collections.Generic;
  *
  */
 
-public class Chromosome {
-
-	Color colour;
-	Color limb_colour;
-	Vector3 root_scale;
+public class Chromosome
+{
+	public Color colour;
+	public Color limb_colour;
+	public Vector3 root_scale;
 	public float base_joint_frequency;
 	public float base_joint_amplitude;
 	public float base_joint_phase;
-	public double hunger_threshold;
+	public float hunger_threshold;
+
+    public int num_branches;
+    public int[] num_recurrences;
 
 	public ArrayList branches;
+
+    public void setNumBranches(int n)
+    {
+        num_branches = n;
+        if (num_recurrences == null)
+            initNumRecurrences(n);
+    }
+
+    void initNumRecurrences(int n)
+    {
+        num_recurrences = new int[n];
+    }
 
 	public int getBranchCount() {
 		return branches.Count;

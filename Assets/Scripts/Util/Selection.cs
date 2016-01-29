@@ -1,12 +1,19 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections;
 
-public class Selection : MonoBehaviour {
-			
+public class Selection : MonoBehaviour
+{			
 	public GameObject selected;
 
 	public static GameObject container;
 	public static Selection instance;
+
+    public delegate void SelectionDelegate(Creature c);
+    public static event SelectionDelegate Selected;
+
+    private Ray ray;
+    private RaycastHit hit;
 
 	public static Selection getInstance () {
 		if(!instance) {
@@ -17,9 +24,36 @@ public class Selection : MonoBehaviour {
 		return instance;
 	}
 
-	public GameObject select (GameObject go) {
-		return selected = go;
-	}
+    void Update ()
+    {
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                bool rayhit = Physics.Raycast(ray, out hit);
+                if (rayhit)
+                {
+                    Creature c = null;
+                    if (hit.transform.tag == "Creature")
+                    {
+                        c = hit.transform.GetComponentInParent<Creature>();
+                        selected = hit.transform.parent.gameObject;
+                        Selected(c);
+                    }
+                }
+                else
+                {
+                    Selected(null);
+                }
+            }
+        }
+    }
+
+	public void select (GameObject go) {
+        selected = go;
+    }
 	
 	public bool isSelected (GameObject go) {
 		return selected == go;

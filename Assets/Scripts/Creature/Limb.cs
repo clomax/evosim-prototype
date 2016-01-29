@@ -3,15 +3,10 @@ using System.Collections;
 
 public class Limb : MonoBehaviour {
 
-	private Selectable s;
 	HingeJoint hj;
 
 	void Start () {
-		s = transform.parent.GetComponent<Selectable>();
-	}
-
-	void OnMouseDown () {
-		s.select (transform.parent.gameObject);
+        tag = "Creature";
 	}
 
 	public Vector3 getPosition () {

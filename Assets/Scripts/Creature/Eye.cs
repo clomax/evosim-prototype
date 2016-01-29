@@ -172,7 +172,7 @@ public class Eye : MonoBehaviour {
 					fbit = f.GetComponent<Foodbit>();
 					crt.energy += fbit.energy;
 					fbit.destroy ();
-					crt.times_eaten++;
+					crt.food_eaten++;
 				}
 			}
 		}

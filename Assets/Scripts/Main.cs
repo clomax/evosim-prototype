@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.IO;
 
 
 /*
@@ -30,8 +31,9 @@ public class Main : MonoBehaviour {
 	 * Instantiate all necessary objects, attach and configure
 	 * Components as needed.
 	 */
-	void Start () {		
-		lg = Logger.getInstance();
+	void Start () {
+        createFolders();
+        lg = Logger.getInstance();
 		settings = Settings.getInstance();
 		selectionManager = Selection.getInstance();
 		aperatus = (GameObject)Instantiate(Resources.Load("Prefabs/Aperatus"));
@@ -41,6 +43,27 @@ public class Main : MonoBehaviour {
 		gm = GeneticsMain.getInstance();
 		ether = Ether.getInstance();
 		co = CollisionMediator.getInstance();
-	}
+    }
+
+    void Update ()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+            #else
+            Application.Quit();
+            #endif
+        }
+    }
+
+    private void createFolders()
+    {
+        if (!Directory.Exists(Application.dataPath + "/data"))
+            Directory.CreateDirectory(Application.dataPath + "/data");
+
+        if (!Directory.Exists(Application.dataPath + "/data/saved_creatures"))
+            Directory.CreateDirectory(Application.dataPath + "/data/saved_creatures");
+    }
 	
 }
