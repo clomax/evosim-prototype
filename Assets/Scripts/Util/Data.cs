@@ -17,6 +17,8 @@ public class Data : MonoBehaviour
     public CreatureCount cc;
     public FoodbitCount fc;
 
+    private UIElement ui_element;
+
     float log_time;
 
     public static Data getInstance()
@@ -30,8 +32,30 @@ public class Data : MonoBehaviour
         return instance;
     }
 
+    void OnEnable()
+    {
+        
+    }
+
+    void OnDisable()
+    {
+
+    }
+
+    public void OnVisible()
+    {
+        if (ui_element.visible)
+        {
+        }
+
+        if (!ui_element.visible)
+        {
+        }
+    }
+
     void Start ()
     {
+        ui_element = GetComponent<UIElement>();
         cc = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
         fc = GameObject.Find("FoodbitCount").GetComponent<FoodbitCount>();
         creature_population = new List<int>();
