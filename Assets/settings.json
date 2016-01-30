@@ -1,8 +1,8 @@
 ﻿{
 	"config": {
-		"population_logging"		: 0,
-		"foodbit_logging"			: 0,
-		"log_time"					: 10.0,
+		"population_logging"		: 1,
+		"foodbit_logging"			: 1,
+		"log_time"					: 1.0,
 
 		"camera": {
 			"sensitivity"			: 1.0,

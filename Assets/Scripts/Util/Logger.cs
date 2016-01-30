@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 /*
@@ -17,6 +18,7 @@ public class Logger : MonoBehaviour {
 	
 	public static GameObject container;
 	public static Logger instance;
+    public static Data data_instance;
 
 	Settings settings;
 	CreatureCount cc;
@@ -41,41 +43,46 @@ public class Logger : MonoBehaviour {
 		return instance;
 	}
 
-	void Start () {
+    void OnEnable ()
+    {
+        Data.DataUpdated += log;
+    }
+
+    void OnDisable()
+    {
+        Data.DataUpdated -= log;
+    }
+
+    void Start () {
+        data_instance = Data.getInstance();
 		settings = Settings.getInstance();
 		cc = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
 		fc = GameObject.Find("FoodbitCount").GetComponent<FoodbitCount>();
 
 		log_pop_data = (int) settings.contents["config"]["population_logging"];
-		log_fbit_data = (int) settings.contents["config"]["foodbit_logging"];
+        log_fbit_data = (int)settings.contents["config"]["foodbit_logging"];
+        log_time = float.Parse(settings.contents["config"]["log_time"].ToString());
 
-		String unixTime = Utility.UnixTimeNow().ToString();
+        String unixTime = Utility.UnixTimeNow().ToString();
 
-		if (log_pop_data == 1) {
-			log_time = float.Parse( settings.contents["config"]["log_time"].ToString() );
+        if (log_pop_data == 1) {
 			crt_count_filename = "creatures-"+unixTime;
 			write( log_time.ToString(), crt_count_filename );
-			InvokeRepeating("log_crt",0,log_time);
 		}
 
 		log_fbit_data = (int) settings.contents["config"]["foodbit_logging"];
 		if (log_fbit_data == 1) {
-			log_time = float.Parse( settings.contents["config"]["log_time"].ToString() );
 			fbit_count_filename = "foodbits-"+unixTime;
 			write( log_time.ToString(), fbit_count_filename );
-			InvokeRepeating("log_fbit",0,log_time);
 		}
 	}
 
-	void log_crt () {
-		write( ","+cc.number_of_creatures, crt_count_filename );
-	}
-
-	void log_fbit () {
-		write( ","+fc.fbit_count, fbit_count_filename );
+	private void log () {
+		write( ","+data_instance.creature_population.Last(), crt_count_filename );
+		write( ","+data_instance.foodbit_population.Last(), fbit_count_filename );
 	}
 	
-	void write (String str, String file) {
+	private void write (String str, String file) {
         fs = new FileStream(Application.dataPath + "/" + data_folder + "/" + file + ".csv", FileMode.Append);
         using (StreamWriter sw = new StreamWriter(fs))
         {

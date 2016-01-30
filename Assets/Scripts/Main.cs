@@ -14,7 +14,8 @@ using System.IO;
 
 public class Main : MonoBehaviour {
 
-	#pragma warning disable 0414
+#pragma warning disable 0414
+     Data d;
 	 Logger lg;
 	 Settings settings;
 	 Selection selectionManager;
@@ -33,6 +34,7 @@ public class Main : MonoBehaviour {
 	 */
 	void Start () {
         createFolders();
+        d = Data.getInstance();
         lg = Logger.getInstance();
 		settings = Settings.getInstance();
 		selectionManager = Selection.getInstance();
