@@ -78,5 +78,7 @@ public class CreaturePane : MonoBehaviour
     public void kill ()
     {
         crt.kill();
+        crt = null;
+        ui_element.make_invisible();
     }
 }
