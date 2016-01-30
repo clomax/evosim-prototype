@@ -8,6 +8,13 @@ public class CreatureList : MonoBehaviour
     public GameObject button_prefab;
     public List<GameObject> selections;
 
+    CreatureInfoContainer creature_info;
+
+    void Start ()
+    {
+        creature_info = CreatureInfoContainer.getInstance();
+    }
+
     void OnEnable ()
     {
         SaveCreature.CreatureSaved += OnUpdate;
@@ -63,6 +70,6 @@ public class CreatureList : MonoBehaviour
     {
         DepopulateMenu();
         GetComponentInParent<ImportCreature>().LoadCreatures();
-        PopulateMenu(GetComponentInParent<ImportCreature>().creatures);
+        PopulateMenu(creature_info.creatures);
     }
 }

@@ -14,19 +14,18 @@ public class ImportCreature : MonoBehaviour
     StreamReader sr;
     string raw_contents;
     public JsonData contents;
-    public SortedList<string, Chromosome> creatures;
+
+    CreatureInfoContainer creature_info;
 
     private UIElement ui_element;
-
     public Transform button_ui_parent;
-
     List<GameObject> selections;
 
     GameObject s;
 
     void Start()
     {
-        creatures = new SortedList<string, Chromosome>();
+        creature_info = CreatureInfoContainer.getInstance();
         creatures_folder = Application.dataPath + "/data/saved_creatures";
         ui_element = GetComponent<UIElement>();
         selections = new List<GameObject>();
@@ -37,7 +36,7 @@ public class ImportCreature : MonoBehaviour
         if (ui_element.visible)
         {
             LoadCreatures();
-            GetComponentInChildren<CreatureList>().PopulateMenu(creatures);
+            GetComponentInChildren<CreatureList>().PopulateMenu(creature_info.creatures);
         }
 
         if (!ui_element.visible)
@@ -48,7 +47,7 @@ public class ImportCreature : MonoBehaviour
 
     public void LoadCreatures()
     {
-        creatures.Clear();
+        creature_info.creatures.Clear();
         string[] fs;
         creature_files = Directory.GetDirectories(creatures_folder);
         foreach (var s in creature_files)
@@ -124,7 +123,7 @@ public class ImportCreature : MonoBehaviour
                 chromosome.setBasePhase(bjp);
                 chromosome.setBranches(branches);
 
-                creatures.Add(name, chromosome);
+                creature_info.creatures.Add(name, chromosome);
             }
         }
     }
