@@ -20,6 +20,8 @@ public class CreatureList : MonoBehaviour
 
     public void PopulateMenu (SortedList<string, Chromosome> creatures)
     {
+        DepopulateMenu();
+               
         for (int i = 0; i < creatures.Count; ++i)
         {
             GameObject button = Instantiate(button_prefab, transform.position, transform.rotation) as GameObject;
@@ -55,7 +57,6 @@ public class CreatureList : MonoBehaviour
             Destroy(s);
         }
         selections.Clear();
-
     }
 
     void OnUpdate ()

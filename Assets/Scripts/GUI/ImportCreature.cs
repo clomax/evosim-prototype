@@ -24,17 +24,7 @@ public class ImportCreature : MonoBehaviour
 
     GameObject s;
 
-    void OnEnable ()
-    {
-        SaveCreature.CreatureSaved += LoadCreatures;
-    }
-
-    void OnDisable()
-    {
-        SaveCreature.CreatureSaved -= LoadCreatures;
-    }
-
-    void Start ()
+    void Start()
     {
         creatures = new SortedList<string, Chromosome>();
         creatures_folder = Application.dataPath + "/data/saved_creatures";
@@ -50,7 +40,7 @@ public class ImportCreature : MonoBehaviour
             GetComponentInChildren<CreatureList>().PopulateMenu(creatures);
         }
 
-        if(!ui_element.visible)
+        if (!ui_element.visible)
         {
             GetComponentInChildren<CreatureList>().DepopulateMenu();
         }
@@ -95,12 +85,12 @@ public class ImportCreature : MonoBehaviour
                 float bjf = float.Parse(contents["attributes"]["base_joint_frequency"].ToString());
                 float bja = float.Parse(contents["attributes"]["base_joint_amplitude"].ToString());
                 float bjp = float.Parse(contents["attributes"]["base_joint_phase"].ToString());
-                float ht =  float.Parse(contents["attributes"]["hunger_threshold"].ToString());
+                float ht = float.Parse(contents["attributes"]["hunger_threshold"].ToString());
 
-                ArrayList branches =  new ArrayList();
+                ArrayList branches = new ArrayList();
                 int num_branches = (int)contents["attributes"]["branches"];
                 chromosome.num_recurrences = new int[num_branches];
-                for (int j = 0; j < num_branches ; j++)
+                for (int j = 0; j < num_branches; j++)
                 {
                     ArrayList limbs = new ArrayList();
                     int recurrences = (int)contents["attributes"]["recurrences"][j];
@@ -110,12 +100,12 @@ public class ImportCreature : MonoBehaviour
                         float x = float.Parse(contents["attributes"]["limbs"][j.ToString()][k]["position"]["x"].ToString());
                         float y = float.Parse(contents["attributes"]["limbs"][j.ToString()][k]["position"]["y"].ToString());
                         float z = float.Parse(contents["attributes"]["limbs"][j.ToString()][k]["position"]["z"].ToString());
-                        Vector3 position = new Vector3(x,y,z);
+                        Vector3 position = new Vector3(x, y, z);
 
                         x = float.Parse(contents["attributes"]["limbs"][j.ToString()][k]["scale"]["x"].ToString());
                         y = float.Parse(contents["attributes"]["limbs"][j.ToString()][k]["scale"]["y"].ToString());
                         z = float.Parse(contents["attributes"]["limbs"][j.ToString()][k]["scale"]["z"].ToString());
-                        Vector3 scale = new Vector3(x,y,z);
+                        Vector3 scale = new Vector3(x, y, z);
 
                         ArrayList limb = new ArrayList();
                         limb.Add(position);
@@ -138,5 +128,4 @@ public class ImportCreature : MonoBehaviour
             }
         }
     }
-
 }
