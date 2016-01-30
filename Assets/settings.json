@@ -41,7 +41,7 @@
 		"low_energy_threshold"	: 5.0,
 		"line_of_sight"				: 12.0,
 		"energy_to_offspring"		: 0.50,
-		"metabolic_rate"			: 0.9,
+		"metabolic_rate"			: 1.1,
 		"mate_range"				: 1.0,
 		"eat_range"					: 0.75,
 		"eye_refresh_rate"			: 0.25,
