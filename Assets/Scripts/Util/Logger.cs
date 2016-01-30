@@ -64,22 +64,22 @@ public class Logger : MonoBehaviour {
         log_time = float.Parse(settings.contents["config"]["log_time"].ToString());
 
         String unixTime = Utility.UnixTimeNow().ToString();
+        crt_count_filename = "creatures-" + unixTime;
+        fbit_count_filename = "foodbits-" + unixTime;
 
         if (log_pop_data == 1) {
-			crt_count_filename = "creatures-"+unixTime;
 			write( log_time.ToString(), crt_count_filename );
 		}
 
 		log_fbit_data = (int) settings.contents["config"]["foodbit_logging"];
 		if (log_fbit_data == 1) {
-			fbit_count_filename = "foodbits-"+unixTime;
 			write( log_time.ToString(), fbit_count_filename );
 		}
 	}
 
 	private void log () {
-		write( ","+data_instance.creature_population.Last(), crt_count_filename );
-		write( ","+data_instance.foodbit_population.Last(), fbit_count_filename );
+		if(log_pop_data != 0) write( ","+data_instance.creature_population.Last(), crt_count_filename );
+		if(log_fbit_data != 0) write( ","+data_instance.foodbit_population.Last(), fbit_count_filename );
 	}
 	
 	private void write (String str, String file) {
