@@ -31,8 +31,13 @@ public class CreaturePane : MonoBehaviour
 
     void OnSelected (Creature c)
     {
+        if (!c)
+        {
+            crt = null;
+            ui_element.make_invisible();
+            return;
+        }
         crt = c;
-        ui_element.make_visible();
     }
 
     void Start ()
@@ -67,10 +72,6 @@ public class CreaturePane : MonoBehaviour
             Limb_Col.color = c.chromosome.limb_colour;
 
             ui_element.make_visible();
-        }
-        else
-        {
-            ui_element.make_invisible();
         }
     }
 

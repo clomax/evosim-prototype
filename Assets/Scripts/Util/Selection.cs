@@ -27,7 +27,6 @@ public class Selection : MonoBehaviour
     void Update ()
     {
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
         if (Input.GetMouseButtonUp(0))
         {
             if (!EventSystem.current.IsPointerOverGameObject())
