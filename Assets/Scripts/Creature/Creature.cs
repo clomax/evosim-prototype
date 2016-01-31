@@ -30,8 +30,6 @@ public class Creature : MonoBehaviour {
 	public GameObject mouth;
 	public GameObject genital;
 
-	public CreatureCount crt_count;
-
 	List<ConfigurableJoint> joints = new List<ConfigurableJoint>();
 
 	public double age;
@@ -91,7 +89,6 @@ public class Creature : MonoBehaviour {
 
         eth = Ether.getInstance();
         settings = Settings.getInstance();
-        crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
 
         max_root_scale = new Vector3();
         max_root_scale.x = float.Parse(settings.contents["creature"]["root"]["max_root_scale"]["x"].ToString());
@@ -305,7 +302,6 @@ public class Creature : MonoBehaviour {
         ChangeState(State.dead);
         CreatureDead(this);
         Destroy(gameObject);
-        crt_count.number_of_creatures -= 1;
         eth.energy += energy;
 	}
 
