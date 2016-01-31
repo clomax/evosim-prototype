@@ -56,6 +56,9 @@ public class Creature : MonoBehaviour {
 
     float force_scalar = 1F;
 
+    public delegate void CreatureDeath();
+    public static event CreatureDeath CreatureDead;
+
 // TODO: Fix this shit "state machine"
 	public enum State {
 						persuing_food,
@@ -273,6 +276,7 @@ public class Creature : MonoBehaviour {
 		Destroy(gameObject);
 		crt_count.number_of_creatures -= 1;
         eth.energy += energy;
+        CreatureDead();
 	}
 
 // TODO: Limbs should be made into a better tree structure, not this

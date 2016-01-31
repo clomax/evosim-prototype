@@ -17,16 +17,20 @@ public class CreaturePane : MonoBehaviour
 
     private UIElement ui_element;
 
+    private Button[] buttons;
+
     public Creature crt;
 
     void OnEnable ()
     {
         Selection.Selected += OnSelected;
+        Creature.CreatureDead += OnCreatureDeath;
     }
 
     void OnDisable()
     {
         Selection.Selected -= OnSelected;
+        Creature.CreatureDead -= OnCreatureDeath;
     }
 
     void OnSelected (Creature c)
