@@ -31,6 +31,8 @@ public class CreatureList : MonoBehaviour
                
         for (int i = 0; i < creatures.Count; ++i)
         {
+            string name = creatures.Keys[i];
+            Chromosome chromosome = creatures.Values[i];
             GameObject button = Instantiate(button_prefab, transform.position, transform.rotation) as GameObject;
             button.transform.SetParent(transform);
             LayoutElement le = button.AddComponent<LayoutElement>();
@@ -38,15 +40,15 @@ public class CreatureList : MonoBehaviour
 
             LoadChromosome lc = button.GetComponent<LoadChromosome>();
             lc.parent = GetComponentInParent<UIElement>();
-            lc.c = creatures.Values[i];
+            lc.c = chromosome;
 
             Button b = button.GetComponent<Button>();
             Text t = button.GetComponentInChildren<Text>();
-            t.text = creatures.Keys[i];
+            t.text = name;
 
             Image[] colours = GameObject.FindObjectsOfType<Image>();
-            colours[0].color = creatures.Values[i].colour;
-            colours[1].color = creatures.Values[i].limb_colour;
+            colours[0].color = chromosome.colour;
+            colours[1].color = chromosome.limb_colour;
 
             button.AddComponent<Image>();
 

@@ -6,7 +6,6 @@ public class CreatureInfoContainer : MonoBehaviour
 {
     public static CreatureInfoContainer instance;
     public static GameObject container;
-
     public SortedList<string, Chromosome> creatures;
 
     public static CreatureInfoContainer getInstance ()
@@ -23,5 +22,10 @@ public class CreatureInfoContainer : MonoBehaviour
     void Start ()
     {
         creatures = new SortedList<string, Chromosome>();
+    }
+
+    public void Add(string name, Chromosome c)
+    {
+        creatures.Add(name, c);
     }
 }

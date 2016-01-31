@@ -123,7 +123,7 @@ public class ImportCreature : MonoBehaviour
                 chromosome.setBasePhase(bjp);
                 chromosome.setBranches(branches);
 
-                creature_info.creatures.Add(name, chromosome);
+                creature_info.Add(name, chromosome);
             }
         }
     }

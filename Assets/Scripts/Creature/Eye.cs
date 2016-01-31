@@ -73,25 +73,30 @@ public class Eye : MonoBehaviour {
 			return;
 		}
 
-		foreach (Collider col in cs) {
+		foreach (Collider col in cs)
+        {
 			c = (GameObject) col.transform.gameObject;
-			if (c && c.gameObject.name == "root" && c != crt.root.gameObject) {
+			if (c && c.gameObject.name == "root" && c != crt.root.gameObject)
+            {
 				other_crt = c.transform.parent.GetComponent<Creature>();
 				curr_similarity = GeneticsUtils.similar_colour (crt.chromosome, other_crt.chromosome);
 
-				if (curr_similarity < similarity) {
+				if (curr_similarity < similarity)
+                {
 					target = c.transform.parent.gameObject;
 					similarity = curr_similarity;
 				}
 
 				Vector3 diff = c.transform.position - _t.position;
-				if (diff.magnitude < (float)crt_mate_range) {
+				if (diff.magnitude < (float)crt_mate_range)
+                {
 					other_crt = c.transform.parent.GetComponent<Creature>();
 					Genitalia other_genital = other_crt.genital.GetComponent<Genitalia>();
-					if (crt.state == Creature.State.persuing_mate || other_crt.state == Creature.State.persuing_mate) {
+					if (crt.state == Creature.State.persuing_mate || other_crt.state == Creature.State.persuing_mate)
+                    {
 						co.observe(crt.genital.gameObject, other_genital.gameObject);
-						other_crt.state = Creature.State.mating;
-						crt.state = Creature.State.mating;
+						other_crt.ChangeState(Creature.State.mating);
+                        crt.ChangeState(Creature.State.mating);
 					}
 					similarity = curr_similarity;
 				}
@@ -136,8 +141,8 @@ public class Eye : MonoBehaviour {
 					Genitalia other_genital = other_crt.genital.GetComponent<Genitalia>();
 					if (crt.state == Creature.State.persuing_mate || other_crt.state == Creature.State.persuing_mate) {
 						co.observe(crt.genital.gameObject, other_genital.gameObject);
-						other_crt.state = Creature.State.mating;
-						crt.state = Creature.State.mating;
+						other_crt.ChangeState(Creature.State.mating);
+						crt.ChangeState(Creature.State.mating);
 					}
 					dist = curr_dist;
 				}

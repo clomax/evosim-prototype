@@ -11,6 +11,13 @@ public class SaveCreature : MonoBehaviour
 
     string json_creature;
 
+    CreatureInfoContainer creature_info;
+
+    void Start ()
+    {
+        creature_info = CreatureInfoContainer.getInstance();
+    }
+
     public void save ()
     {
         Chromosome chromosome = cp.crt.chromosome;
@@ -21,7 +28,7 @@ public class SaveCreature : MonoBehaviour
         string filename = Application.dataPath + "/data/saved_creatures/" + crt_id + "/" + crt_id + ".json";
         string json_creature_pattern = 
 @"{{
-    ""name"" : {0},
+    ""name"" : ""{0}"",
     ""attributes"" : {{
         ""colour"" : {{
             ""r"" : {1},
@@ -49,7 +56,7 @@ public class SaveCreature : MonoBehaviour
         ";
 
         string[] args = {
-            crt_id.ToString(),
+            cp.Name.text,
             chromosome.colour.r.ToString(), chromosome.colour.g.ToString(), chromosome.colour.b.ToString(),
             chromosome.limb_colour.r.ToString(), chromosome.limb_colour.g.ToString(), chromosome.limb_colour.b.ToString(),
             chromosome.root_scale.x.ToString(), chromosome.root_scale.y.ToString(), chromosome.root_scale.z.ToString(),

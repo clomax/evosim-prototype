@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 
 public class CreaturePane : MonoBehaviour
 {
-    public Text Name;
+    public InputField Name;
     public Text Energy;
     public Text Age;
     public Text Offspring;
@@ -18,6 +19,7 @@ public class CreaturePane : MonoBehaviour
     private UIElement ui_element;
 
     private Button[] buttons;
+    private bool crt_dead;
 
     public Creature crt;
 
@@ -35,6 +37,7 @@ public class CreaturePane : MonoBehaviour
 
     void OnSelected (Creature c)
     {
+        crt_dead = false;
         if (!c)
         {
             crt = null;
@@ -45,11 +48,15 @@ public class CreaturePane : MonoBehaviour
         Name.text = c.name;
     }
 
-    void OnCreatureDeath ()
+    void OnCreatureDeath (Creature c)
     {
-        foreach (var b in buttons)
+        if (c == crt)
         {
-            b.interactable = false;
+            crt_dead = true;
+            foreach (var b in buttons)
+            {
+                b.interactable = false;
+            }
         }
     }
 
@@ -62,13 +69,24 @@ public class CreaturePane : MonoBehaviour
     void Update ()
     {
         set_data(crt);
+        if(!crt_dead)
+        {
+            foreach(var b in buttons)
+            {
+                b.interactable = true;
+            }
+        }
+    }
+
+    public void UpdateName ()
+    {
+        crt.name = Name.text;
     }
 
     private void set_data(Creature c)
     {
         if (c)
         {
-            Name.text = c.name;
             Energy.text = c.energy.ToString("#.0");
             Age.text = c.age.ToString("#.0");
             Offspring.text = c.offspring.ToString();

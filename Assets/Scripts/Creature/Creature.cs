@@ -291,7 +291,7 @@ public class Creature : MonoBehaviour {
 		Destroy(gameObject);
 		crt_count.number_of_creatures -= 1;
         eth.energy += energy;
-        CreatureDead();
+        CreatureDead(this);
 	}
 
 // TODO: Limbs should be made into a better tree structure, not this
@@ -305,7 +305,6 @@ public class Creature : MonoBehaviour {
 			limbs = chromosome.getLimbs(i);
 			List<GameObject> actual_limbs = new List<GameObject>();
 
-            //int recurrences = chromosome.num_recurrences[i];
             for (int j=0; j<limbs.Count; j++) {
 				GameObject limb = GameObject.CreatePrimitive(PrimitiveType.Cube);
 				limb.layer = LayerMask.NameToLayer("Creature");
