@@ -56,20 +56,24 @@ public class Creature : MonoBehaviour {
 
     float force_scalar = 1F;
 
-    public delegate void CreatureDeath();
-    public static event CreatureDeath CreatureDead;
+    public delegate void CreatureState(Creature c);
+    public static event CreatureState CreatureDead;
+    public static event CreatureState CreatureDying;
 
-// TODO: Fix this shit "state machine"
-	public enum State {
+    // TODO: Fix this shit "state machine"
+    public enum State {
 						persuing_food,
 						persuing_mate,
 						searching_for_mate,
 						mating,
 						eating,
 						searching_for_food,
+                        dying,
 						neutral
 					  };
 	public State state;
+    private bool state_lock = false;
+
 	public Eye eye_script;
 	public Vector3 target_direction;
 	private Quaternion lookRotation;
@@ -143,7 +147,7 @@ public class Creature : MonoBehaviour {
         setupLimbs();
 
         age = 0.0D;
-        state = State.neutral;
+        ChangeState(State.neutral);
         food_eaten = 0;
         offspring = 0;
         low_energy_threshold = (double)settings.contents["creature"]["low_energy_threshold"];
@@ -193,15 +197,18 @@ public class Creature : MonoBehaviour {
     {
         age += Time.deltaTime;
 
-        if (energy < low_energy_threshold && !low_energy_lock)
+        if (energy <= low_energy_threshold && !low_energy_lock)
         {
+            ChangeState(State.dying);
+            state_lock = true;
             low_energy_lock = true;
             StartCoroutine(SlowDown());
             StartCoroutine(Darken());
         }
 
-        if (energy >= low_energy_threshold)
+        if (energy > low_energy_threshold)
         {
+            state_lock = false;
             low_energy_lock = false;
             StopCoroutine(SlowDown());
             StopCoroutine(Darken());
@@ -225,10 +232,10 @@ public class Creature : MonoBehaviour {
 	void updateState() {
 		if(state != Creature.State.mating) {
 			if (energy < chromosome.hunger_threshold) {
-				state = (eye_script.targetFbit != null) ? State.persuing_food : State.searching_for_food;
+                ChangeState((eye_script.targetFbit != null) ? State.persuing_food : State.searching_for_food);
 			}
 			if (energy >= chromosome.hunger_threshold && age > age_sexual_maturity) {
-				state = (eye_script.targetCrt != null) ? State.persuing_mate : State.searching_for_mate;
+                ChangeState((eye_script.targetCrt != null) ? State.persuing_mate : State.searching_for_mate);
 			}
 		}
 	}
@@ -236,6 +243,14 @@ public class Creature : MonoBehaviour {
 	public void invokechromosome (Chromosome gs) {
 		this.chromosome = gs;
 	}
+
+    public void ChangeState(State s)
+    {
+        if (!state_lock)
+        {
+            state = s;
+        }
+    }
 
 
 	/*
