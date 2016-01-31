@@ -42,11 +42,21 @@ public class CreaturePane : MonoBehaviour
             return;
         }
         crt = c;
+        Name.text = c.name;
+    }
+
+    void OnCreatureDeath ()
+    {
+        foreach (var b in buttons)
+        {
+            b.interactable = false;
+        }
     }
 
     void Start ()
     {
         ui_element = GetComponent<UIElement>();
+        buttons = GetComponentsInChildren<Button>();
     }
 
     void Update ()
