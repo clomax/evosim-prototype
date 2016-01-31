@@ -69,6 +69,7 @@ public class Creature : MonoBehaviour {
 						eating,
 						searching_for_food,
                         dying,
+                        dead,
 						neutral
 					  };
 	public State state;
@@ -215,6 +216,19 @@ public class Creature : MonoBehaviour {
             Lighten();
             ResetSpeed();
         }
+
+        float _force = force_scalar;
+        float _joint_frequency = joint_frequency;
+        if (state == State.mating)
+        {
+            joint_frequency = 0F;
+            force_scalar = 0F;
+        }
+        else
+        {
+            joint_frequency = _joint_frequency;
+            force_scalar = _force;
+        }
     }
 
 	private void RandomDirection () {
@@ -288,10 +302,11 @@ public class Creature : MonoBehaviour {
 	 * the creature's energy.
 	 */
 	public void kill () {
-		Destroy(gameObject);
-		crt_count.number_of_creatures -= 1;
-        eth.energy += energy;
+        ChangeState(State.dead);
         CreatureDead(this);
+        Destroy(gameObject);
+        crt_count.number_of_creatures -= 1;
+        eth.energy += energy;
 	}
 
 // TODO: Limbs should be made into a better tree structure, not this
