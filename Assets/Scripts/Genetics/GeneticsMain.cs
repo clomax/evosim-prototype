@@ -62,7 +62,7 @@ public class GeneticsMain : MonoBehaviour
 
 		starting_creatures	= (int) 			settings.contents["ether"]["starting_creatures"];
 		creature_spread		= float.Parse(		settings.contents["ether"]["creature_spread"].ToString() );
-		double creature_init_energy	= (double) 	settings.contents["creature"]["init_energy"];
+		decimal creature_init_energy = decimal.Parse(settings.contents["creature"]["init_energy"].ToString());
 		int branch_limit 	= (int)				settings.contents["creature"]["branch_limit"];
 		int recurrence_limit = (int)			settings.contents["creature"]["recurrence_limit"];
 
@@ -81,7 +81,7 @@ public class GeneticsMain : MonoBehaviour
 			chromosome.setColour(col.r, col.g, col.b);
 			chromosome.setLimbColour(col.r, col.g, col.b);
 
-			chromosome.hunger_threshold = float.Parse(settings.contents["creature"]["hunger_threshold"].ToString());
+			chromosome.hunger_threshold = decimal.Parse(settings.contents["creature"]["hunger_threshold"].ToString());
 
 			// random root scale
 			Vector3 rootScale = new Vector3((float) Random.Range(min_root_scale.x,max_root_scale.x),

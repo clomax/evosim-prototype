@@ -8,12 +8,12 @@ public class LoadChromosome : MonoBehaviour
 
     Settings s;
 
-    double init_energy;
+    decimal init_energy;
 
     void Start ()
     {
         s = Settings.getInstance();
-        init_energy = (double) s.contents["creature"]["init_energy"];
+        init_energy = decimal.Parse(s.contents["creature"]["init_energy"].ToString());
     }
 
     public void OnClick ()

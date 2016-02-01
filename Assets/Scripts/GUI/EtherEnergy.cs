@@ -27,6 +27,6 @@ public class EtherEnergy : MonoBehaviour {
 	
 	void Update () {
 		eth = Ether.getInstance();	
-		text.text = "Ether energy: " + eth.getEnergy().ToString("F1");
+		text.text = "Ether energy: " + eth.getEnergy().ToString("0");
 	}
 }

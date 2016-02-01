@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
-public class Spawner : MonoBehaviour {
-	
+public class Spawner : MonoBehaviour
+{	
 #pragma warning disable 0414
 	public static Spawner instance;
 	Logger lg;
@@ -13,14 +13,17 @@ public class Spawner : MonoBehaviour {
 	Vector3 pos;
 #pragma warning restore 0414
 	
-	void Start () {
+	void Start ()
+    {
 		lg = Logger.getInstance();
 		crt_count = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
 		eth = Ether.getInstance();
-}
+    }
 	
-	public static Spawner getInstance () {
-		if(!instance) {
+	public static Spawner getInstance ()
+    {
+		if(!instance)
+        {
 			container = new GameObject();
 			container.name = "Spawner";
 			instance = container.AddComponent(typeof(Spawner)) as Spawner;
@@ -28,7 +31,8 @@ public class Spawner : MonoBehaviour {
 		return instance;
 	}
 	
-	public void spawn (Vector3 pos, Vector3 rot, double energy, Chromosome chromosome) {
+	public void spawn (Vector3 pos, Vector3 rot, decimal energy, Chromosome chromosome)
+    {
 		GameObject clone = new GameObject();
 		clone.transform.localPosition = pos;
 		clone.transform.eulerAngles = Utility.RandomRotVec();

@@ -4,7 +4,7 @@ using System.Collections;
 
 public class TotalEnergy : MonoBehaviour {
 	
-	public double total_energy;
+	public decimal total_energy;
 	public Ether eth;
 	public Text text;
 	

@@ -105,7 +105,7 @@ public class GeneticsUtils
 		rand = rnd.NextDouble();
 		if(rand < rate)
         {
-			c.hunger_threshold += randomiseGene(factor);
+			c.hunger_threshold += (decimal)randomiseGene(factor);
 		}
 
 		c.setBranches(branches);

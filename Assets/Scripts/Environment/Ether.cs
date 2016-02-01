@@ -21,11 +21,15 @@ public class Ether : MonoBehaviour {
 	Logger lg;
 	Settings settings;
 	
-	public double total_energy;
-	public double energy;
-	double foodbit_energy;
+	public decimal total_energy;
+	public decimal energy;
+	decimal foodbit_energy;
+    float init_energy_min;
+    float init_energy_max;
+    float init_scale_min;
+    float init_scale_max;
 
-	Vector3 pos;
+    Vector3 pos;
 
 	float 	wide_spread;
 	int		start_number_foodbits;
@@ -41,13 +45,19 @@ public class Ether : MonoBehaviour {
 		
 		settings = Settings.getInstance();
 		
-		total_energy = 			(double) 	settings.contents[name]	["total_energy"];
+		total_energy = 			decimal.Parse(settings.contents[name]	["total_energy"].ToString());
 		start_number_foodbits = (int)	 	settings.contents[name]	["start_number_foodbits"];
 		spore_range = 			(int)	 	settings.contents["foodbit"]["spore_range"];
 		wide_spread = 			float.Parse(settings.contents["foodbit"]["wide_spread"].ToString() );
 		spore_time = 			float.Parse(settings.contents["foodbit"]["spore_time"].ToString() );
 
-		energy = total_energy;
+        init_energy_min = float.Parse(settings.contents["foodbit"]["init_energy_min"].ToString());
+        init_energy_max = float.Parse(settings.contents["foodbit"]["init_energy_max"].ToString());
+
+        init_scale_min = float.Parse(settings.contents["foodbit"]["init_scale_min"].ToString());
+        init_scale_min = float.Parse(settings.contents["foodbit"]["init_scale_min"].ToString());
+
+        energy = total_energy;
 
 		foodbits = new ArrayList();
 		
@@ -68,11 +78,15 @@ public class Ether : MonoBehaviour {
 	 * all foodbits and attach the script
 	 */
 	public void newFoodbit (Vector3 pos) {
-		if(enoughEnergy(foodbit_energy)) {
+        foodbit_energy = (decimal)Random.Range(init_energy_min, init_energy_max);
+        if (enoughEnergy(foodbit_energy)) {
 			GameObject fb = (GameObject)Instantiate(foodbit, pos, Quaternion.identity);
-			fb.AddComponent<Foodbit>();
+			Foodbit fb_s = fb.AddComponent<Foodbit>();
+            fb_s.energy = foodbit_energy;
 			subtractEnergy(foodbit_energy);
-			foodbits.Add(fb);
+            float scale = Utility.ConvertRange((float)energy, init_energy_min, init_energy_max, init_scale_min, init_scale_max);
+            fb.transform.localScale = new Vector3(scale, scale, scale);
+            foodbits.Add(fb);
 		}
 	}
 	
@@ -120,15 +134,20 @@ public class Ether : MonoBehaviour {
 		return instance;
 	}
 	
-	public double getEnergy() {
+	public decimal getEnergy() {
 		return energy;
 	}
+
+    public void addEnergy (decimal n)
+    {
+        energy += n;
+    }
 	
-	public void subtractEnergy (double n) {
-		energy -= n;
+	public void subtractEnergy (decimal n) {
+        energy -= n;
 	}
 
-	public bool enoughEnergy(double n) {
+	public bool enoughEnergy(decimal n) {
 		return energy >= n;
 	}
 	

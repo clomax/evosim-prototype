@@ -12,8 +12,8 @@ using System.Collections.Generic;
  *
  */
 
-public class Creature : MonoBehaviour {
-
+public class Creature : MonoBehaviour
+{
 	Transform _t;
 
 	Settings settings;
@@ -33,13 +33,13 @@ public class Creature : MonoBehaviour {
 	List<ConfigurableJoint> joints = new List<ConfigurableJoint>();
 
 	public double age;
-	public double energy;
-    public double low_energy_threshold;
+	public decimal energy;
+    public decimal low_energy_threshold;
 
 	public Chromosome chromosome;
 
 	public double 	line_of_sight;
-	double 			metabolic_rate;
+	decimal 			metabolic_rate;
 	int 			age_sexual_maturity;
 
 	public int offspring;
@@ -138,17 +138,17 @@ public class Creature : MonoBehaviour {
         genital.AddComponent<Genitalia>();
 
         line_of_sight = (double)settings.contents["creature"]["line_of_sight"];
-        metabolic_rate = (double)settings.contents["creature"]["metabolic_rate"];
+        metabolic_rate = decimal.Parse(settings.contents["creature"]["metabolic_rate"].ToString());
         age_sexual_maturity = (int)settings.contents["creature"]["age_sexual_maturity"];
 
         all_limbs = new ArrayList();
         setupLimbs();
 
-        age = 0.0D;
+        age = 0.0;
         ChangeState(State.neutral);
         food_eaten = 0;
         offspring = 0;
-        low_energy_threshold = (double)settings.contents["creature"]["low_energy_threshold"];
+        low_energy_threshold = decimal.Parse(settings.contents["creature"]["low_energy_threshold"].ToString());
 
         InvokeRepeating("updateState", 0, 0.1f);
         InvokeRepeating("metabolise", 1.0f, 1.0f);
@@ -236,7 +236,7 @@ public class Creature : MonoBehaviour {
 		);
 	}
 
-	public void setEnergy(double n) {
+	public void setEnergy(decimal n) {
 		energy = n;
 	}
 
@@ -267,7 +267,7 @@ public class Creature : MonoBehaviour {
 	/*
 	 * Return the current energy value for the creature
 	 */
-	public double getEnergy () {
+	public decimal getEnergy () {
 		return energy;
 	}
 
@@ -275,14 +275,14 @@ public class Creature : MonoBehaviour {
 	 * Remove a specified amount of energy from the creature,
 	 * kill it if the creature's energy reaches zero.
 	 */
-	public void subtractEnergy (double n) {
-		if (energy <= n) {
-			eth.energy += energy;
+	public void subtractEnergy (decimal n) {
+        energy -= n;
+        if(energy <= 0)
+        {
+            eth.addEnergy(Math.Abs(energy));
             energy = 0;
-			kill ();
-		} else {
-			energy -= n;
-		}
+            kill();
+        }
 	}
 
 	/*
@@ -291,7 +291,7 @@ public class Creature : MonoBehaviour {
 	 */
 	private void metabolise () {
 		subtractEnergy(metabolic_rate);
-		eth.energy += metabolic_rate;
+		eth.addEnergy(metabolic_rate);
 	}
 
 	/*
@@ -300,9 +300,10 @@ public class Creature : MonoBehaviour {
 	 */
 	public void kill () {
         ChangeState(State.dead);
+        state_lock = true;
         CreatureDead(this);
+        eth.addEnergy(energy);
         Destroy(gameObject);
-        eth.energy += energy;
 	}
 
 // TODO: Limbs should be made into a better tree structure, not this
@@ -342,7 +343,6 @@ public class Creature : MonoBehaviour {
 				limb.GetComponent<Collider>().material = (PhysicMaterial)Resources.Load("Physics Materials/Creature");
 
 				ConfigurableJoint joint = limb.AddComponent<ConfigurableJoint>();
-				//joint.configuredInWorldSpace = true;
 				joint.axis = new Vector3(0.5F, 0F, 0F);
 				joint.anchor = new Vector3(0F, 0F, 0.5F);
 				if(j == 0) {

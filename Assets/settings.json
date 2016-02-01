@@ -15,20 +15,16 @@
 		}
 	},
 
-	"environment": {
-		"tile_scale"				: 100
-	},
-
 	"ether": {
-		"total_energy"				: 1000.0,
-		"start_number_foodbits"		: 300,
+		"total_energy"				: 5000.0,
+		"start_number_foodbits"		: 100,
 		"starting_creatures"		: 0,
 		"creature_spread"			: 15
 	},
 
 	"foodbit": {
-		"init_energy_min"			: 5.0,
-		"init_energy_max"			: 50.0,
+		"init_energy_min"			: 20.0,
+		"init_energy_max"			: 20.0,
 		"init_scale_min"			: 0.5,
 		"init_scale_max"			: 1.5,
 		"destroy_at"				: 10.0,

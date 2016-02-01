@@ -20,7 +20,6 @@ public class CreaturePane : MonoBehaviour
 
     private Button[] buttons;
     private bool crt_dead;
-
     public Creature crt;
 
     void OnEnable ()
@@ -46,12 +45,17 @@ public class CreaturePane : MonoBehaviour
         }
         crt = c;
         Name.text = c.name;
+        foreach (var b in buttons)
+        {
+            b.interactable = true;
+        }
     }
 
     void OnCreatureDeath (Creature c)
     {
         if (c == crt)
         {
+            set_data(c);
             crt_dead = true;
             foreach (var b in buttons)
             {
@@ -69,26 +73,14 @@ public class CreaturePane : MonoBehaviour
     void Update ()
     {
         set_data(crt);
-        if(!crt_dead)
-        {
-            foreach(var b in buttons)
-            {
-                b.interactable = true;
-            }
-        }
-    }
-
-    public void UpdateName ()
-    {
-        crt.name = Name.text;
     }
 
     private void set_data(Creature c)
     {
         if (c)
         {
-            Energy.text = c.energy.ToString("#.0");
-            Age.text = c.age.ToString("#.0");
+            Energy.text = c.energy.ToString("0.0");
+            Age.text = c.age.ToString("0");
             Offspring.text = c.offspring.ToString();
             FoodEaten.text = c.food_eaten.ToString();
 
@@ -98,6 +90,7 @@ public class CreaturePane : MonoBehaviour
                   .Replace("_"," ")
                   .ToString();
 
+            state = char.ToUpper(state[0]) + state.Substring(1);
             State.text = state;
 
             Root_Col.color = c.chromosome.colour;
