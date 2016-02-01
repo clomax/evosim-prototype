@@ -226,6 +226,11 @@ public class Creature : MonoBehaviour
             joint_frequency = _joint_frequency;
             force_scalar = _force;
         }
+
+        if (state == State.dead)
+        {
+            kill();
+        }
     }
 
 	private void RandomDirection () {
@@ -281,7 +286,9 @@ public class Creature : MonoBehaviour
         {
             eth.addEnergy(Math.Abs(energy));
             energy = 0;
-            kill();
+            state = State.dead;
+            state_lock = true;
+            CreatureDead(this);
         }
 	}
 
@@ -299,12 +306,9 @@ public class Creature : MonoBehaviour
 	 * the creature's energy.
 	 */
 	public void kill () {
-        ChangeState(State.dead);
-        state_lock = true;
-        CreatureDead(this);
         eth.addEnergy(energy);
         Destroy(gameObject);
-	}
+    }
 
 // TODO: Limbs should be made into a better tree structure, not this
 // 				list of lists rubbish

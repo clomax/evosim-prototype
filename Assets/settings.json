@@ -17,7 +17,7 @@
 
 	"ether": {
 		"total_energy"				: 5000.0,
-		"start_number_foodbits"		: 100,
+		"start_number_foodbits"		: 200,
 		"starting_creatures"		: 0,
 		"creature_spread"			: 15
 	},
@@ -28,14 +28,14 @@
 		"init_scale_min"			: 0.5,
 		"init_scale_max"			: 1.5,
 		"destroy_at"				: 10.0,
-		"spore_time"				: 0.05,
+		"spore_time"				: 5.0,
 		"spore_range"				: 100,
 		"spore_rate"				: 2.0,
 		"wide_spread"				: 40.0
 	},
 
 	"creature": {
-		"init_energy"				: 70.0,
+		"init_energy"				: 5.0,
 		"hunger_threshold"			: 50.0,
 		"low_energy_threshold"		: 5.0,
 		"line_of_sight"				: 12.0,
