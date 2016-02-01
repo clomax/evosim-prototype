@@ -169,13 +169,17 @@ public class GeneticsUtils
 			ArrayList c_limbs = (ArrayList) c_branches[i];
             c.num_recurrences[i] = c_limbs.Count;
 
+            int index;
             for (int j=1; j<c_limbs.Count; j++)
             {
 				ArrayList c_attributes = (ArrayList) c_limbs[j];
 
-				//select random limb segment from other creature
-				ArrayList other_crt_limbs = (ArrayList) other_crt_branches[Random.Range (0,other_crt_branches.Count)];
-				ArrayList other_crt_attributes = (ArrayList) other_crt_limbs[Random.Range(0,other_crt_limbs.Count)];
+                //select random limb segment from other creature
+                index = Random.Range(0, other_crt_branches.Count);
+                ArrayList other_crt_limbs = (ArrayList) other_crt_branches[index];
+
+                index = Random.Range(0, other_crt_limbs.Count);
+                ArrayList other_crt_attributes = (ArrayList)other_crt_limbs[index];
 
 				Vector3 c_scale = (Vector3) c_attributes[1];
 				Vector3 other_crt_scale = (Vector3) other_crt_attributes[1];

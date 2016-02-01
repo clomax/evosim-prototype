@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-
 /*
  *		Author: 	Craig Lomax
  *		Date: 		31.08.2011
@@ -10,38 +9,37 @@ using System.Collections;
  *
  */
 
-
-
-/*
- * Foodbit - representing each foodbit in the environment
- * 	params: 
- *				> int energy - given by the `ether` gameObject
- *	
- *		notes:
- *				> timeToGerminate, treeRadius and energy should be options read from a settings file
- */
-
-public class Foodbit : MonoBehaviour {
-
+public class Foodbit : MonoBehaviour
+{
 	public static float foodbitHeight = 1.0F;
 	
 	Settings settings;
 	Ether eth;
-	//MeshRenderer mr;
+    //MeshRenderer mr;
 
-	double init_energy;
-	public double energy;
+    float init_energy_min;
+    float init_energy_max;
+    float init_scale_min;
+    float init_scale_max;
+    public double energy;
 	float decay_amount;
 	float destroy_at;
 	float decay_time;
 	float decay_rate;
 
-	void Start () {
+	void Start ()
+    {
 		name = "Foodbit";
 		settings = Settings.getInstance();
-		init_energy = (double) settings.contents["foodbit"]["init_energy"];
+		init_energy_min = float.Parse(settings.contents["foodbit"]["init_energy_min"].ToString());
+        init_energy_max = float.Parse(settings.contents["foodbit"]["init_energy_max"].ToString());
 
-		energy = init_energy;
+        init_scale_min = float.Parse(settings.contents["foodbit"]["init_scale_min"].ToString());
+        init_scale_min = float.Parse(settings.contents["foodbit"]["init_scale_min"].ToString());
+
+        energy = (double)Random.Range(init_energy_min, init_energy_max);
+        float scale = Utility.ConvertRange((float)energy, init_energy_min, init_energy_max, init_scale_min, init_scale_max);
+        transform.localScale = new Vector3(scale,scale, scale);
 
 		eth = Ether.getInstance();
 		Collider co = GetComponent<SphereCollider>();
@@ -49,7 +47,8 @@ public class Foodbit : MonoBehaviour {
 		
 	}
 
-	public void destroy () {
+	public void destroy ()
+    {
 		eth.removeFoodbit(this.gameObject);
 		Destroy(gameObject);
 	}

@@ -42,7 +42,6 @@ public class Ether : MonoBehaviour {
 		settings = Settings.getInstance();
 		
 		total_energy = 			(double) 	settings.contents[name]	["total_energy"];
-		foodbit_energy = 		(double) 	settings.contents["foodbit"]["init_energy"];
 		start_number_foodbits = (int)	 	settings.contents[name]	["start_number_foodbits"];
 		spore_range = 			(int)	 	settings.contents["foodbit"]["spore_range"];
 		wide_spread = 			float.Parse(settings.contents["foodbit"]["wide_spread"].ToString() );
@@ -83,6 +82,7 @@ public class Ether : MonoBehaviour {
 			int fb_index = Random.Range(0,fb_count);
 			GameObject fb = (GameObject) foodbits[fb_index];
 			Foodbit fb_script = fb.GetComponent<Foodbit>();
+            foodbit_energy = fb_script.energy;
 			Vector3 fb_pos = fb_script.transform.localPosition;
 			pos = Utility.RandomVec (-spore_range,
 	                                 Foodbit.foodbitHeight / 2,
