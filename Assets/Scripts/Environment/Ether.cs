@@ -175,9 +175,9 @@ public class Ether : MonoBehaviour
         decimal total = energy + total_crt + total_fb;
         if (total > total_energy)
         {
-            print("crt: " + total_crt + "     fb: " + total_fb + "     ether: " + energy + "        total: " + total);
+            //print("crt: " + total_crt + "     fb: " + total_fb + "     ether: " + energy + "        total: " + total);
             decimal fix = total - total_energy;
-            print("Fixing energy leak... "+fix);
+            //print("Fixing energy leak... "+fix);
             energy -= fix;
         }
     }

@@ -16,7 +16,7 @@
 	},
 
 	"ether": {
-		"total_energy"				: 5000.0,
+		"total_energy"				: 7500.0,
 		"start_number_foodbits"		: 200,
 		"starting_creatures"		: 20,
 		"creature_spread"			: 15
@@ -24,7 +24,7 @@
 
 	"foodbit": {
 		"init_energy_min"			: 5.0,
-		"init_energy_max"			: 25.0,
+		"init_energy_max"			: 35.0,
 		"init_scale_min"			: 0.3,
 		"init_scale_max"			: 0.8,
 		"destroy_at"				: 10.0,

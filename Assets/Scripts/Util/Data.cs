@@ -65,7 +65,6 @@ public class Data : MonoBehaviour
     void Start ()
     {
         ui_element = GetComponent<UIElement>();
-        cc = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
         fc = GameObject.Find("FoodbitCount").GetComponent<FoodbitCount>();
         creature_population = new List<int>();
         creatures = new List<Creature>();
@@ -78,7 +77,6 @@ public class Data : MonoBehaviour
 
     private void UpdateCounts ()
     {
-        creature_population.Add(cc.number_of_creatures);
         foodbit_population.Add(fc.fbit_count);
         DataUpdated();
     }

@@ -56,7 +56,7 @@ public class Creature : MonoBehaviour
 
     public delegate void CreatureState(Creature c);
     public static event CreatureState CreatureDead;
-    public static event CreatureState CreatureDying;
+    public static event CreatureState CreatureSpawned;
 
     // TODO: Fix this shit "state machine"
     public enum State {
@@ -156,6 +156,8 @@ public class Creature : MonoBehaviour
         root.GetComponent<Rigidbody>().SetDensity(4F);
 
         ms = GetComponentsInChildren<MeshRenderer>();
+
+        CreatureSpawned(this);
     }
 
 
@@ -415,6 +417,8 @@ public class Creature : MonoBehaviour
 
     float d_freq = 0.01F;
     float d_force = 0.01F;
+
+
     private IEnumerator SlowDown ()
     {
         float freq = joint_frequency;

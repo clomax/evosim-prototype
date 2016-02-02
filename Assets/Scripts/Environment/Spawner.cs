@@ -44,7 +44,6 @@ public class Spawner : MonoBehaviour
 		crt_script.invokechromosome(chromosome);
 		
 		crt_script.setEnergy(energy);
-		crt_count.number_of_creatures += 1;
         d.creatures.Add(crt_script);
 	}
 
