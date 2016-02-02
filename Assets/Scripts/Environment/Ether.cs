@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using LitJson;
 
 /*
@@ -37,7 +38,7 @@ public class Ether : MonoBehaviour
 	float 	spore_time;
 	int 	spore_range;
 	
-	ArrayList foodbits;
+	public ArrayList foodbits;
 	
 	
 	void Start ()
@@ -73,7 +74,7 @@ public class Ether : MonoBehaviour
 			newFoodbit(pos);
 		}
 
-        InvokeRepeating("FixEnergyLeak", 5F*60F, 5F*60F);
+        InvokeRepeating("FixEnergyLeak", 1F*60F, 1F*60F);
 		InvokeRepeating("fbSpawn",spore_time, spore_time);
 	}
 	
@@ -91,7 +92,7 @@ public class Ether : MonoBehaviour
 			Foodbit fb_s = fb.AddComponent<Foodbit>();
             fb_s.energy = foodbit_energy;
 			subtractEnergy(foodbit_energy);
-            float scale = Utility.ConvertRange((float)energy, init_energy_min, init_energy_max, init_scale_min, init_scale_max);
+            float scale = Utility.ConvertRange((float)foodbit_energy, init_energy_min, init_energy_max, init_scale_min, init_scale_max);
             fb.transform.localScale = new Vector3(scale, scale, scale);
             foodbits.Add(fb);
 		}
@@ -169,14 +170,15 @@ public class Ether : MonoBehaviour
 	
     private void FixEnergyLeak ()
     {
-        decimal total_crt = data.AverageCreatureEnergy();
-        decimal total_fb = foodbits.Count * 15m;
+        decimal total_crt = data.TotalCreatureEnergy();
+        decimal total_fb = data.TotalFoodbitEnergy();
         decimal total = energy + total_crt + total_fb;
         if (total > total_energy)
         {
             print("crt: " + total_crt + "     fb: " + total_fb + "     ether: " + energy + "        total: " + total);
-            print("Fixing energy leak...");
-            energy -= total - total_energy;
+            decimal fix = total - total_energy;
+            print("Fixing energy leak... "+fix);
+            energy -= fix;
         }
     }
 }

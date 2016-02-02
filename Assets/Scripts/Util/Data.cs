@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using System;
 
 public class Data : MonoBehaviour
 {
@@ -13,6 +13,7 @@ public class Data : MonoBehaviour
     public static Data instance;
 
     public List<Creature> creatures;
+    Ether eth;
 
     public List<int> creature_population;
     public List<int> foodbit_population;
@@ -68,6 +69,7 @@ public class Data : MonoBehaviour
         fc = GameObject.Find("FoodbitCount").GetComponent<FoodbitCount>();
         creature_population = new List<int>();
         creatures = new List<Creature>();
+        eth = Ether.getInstance();
         foodbit_population = new List<int>();
         log_time = float.Parse(Settings.getInstance().contents["config"]["log_time"].ToString());
 
@@ -81,12 +83,22 @@ public class Data : MonoBehaviour
         DataUpdated();
     }
 
-    public decimal AverageCreatureEnergy()
+    public decimal TotalCreatureEnergy()
     {
         decimal result = 0m;
         foreach(var c in creatures)
         {
             result += c.energy;
+        }
+        return (result);
+    }
+
+    internal decimal TotalFoodbitEnergy()
+    {
+        decimal result = 0m;
+        foreach (GameObject f in eth.foodbits)
+        {
+            result += f.GetComponent<Foodbit>().energy;
         }
         return (result);
     }
