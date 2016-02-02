@@ -2,18 +2,27 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-public class TotalEnergy : MonoBehaviour {
-	
-	public decimal total_energy;
-	public Ether eth;
-	public Text text;
-	
-	void Start () {
-		eth = Ether.getInstance();
-	}
-	
-	void Update () {
-		total_energy = eth.total_energy;
-		text.text = "Total energy: " + total_energy;
-	}
+public class TotalEnergy : MonoBehaviour
+{
+    Text text;
+
+    void Start()
+    {
+        text = GetComponent<Text>();
+    }
+
+    void OnEnable()
+    {
+        Ether.EnergyInitialised += OnStarted;
+    }
+
+    void OnDisable()
+    {
+        Ether.EnergyInitialised -= OnStarted;
+    }
+
+    void OnStarted(decimal n)
+    {
+        text.text = "Ether energy: " + n.ToString("0");
+    }
 }

@@ -77,7 +77,7 @@ public class Data : MonoBehaviour
 
     private void UpdateCounts ()
     {
-        foodbit_population.Add(fc.fbit_count);
+        foodbit_population.Add(eth.getFoodbitCount());
         DataUpdated();
     }
 

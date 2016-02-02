@@ -39,9 +39,16 @@ public class Ether : MonoBehaviour
 	int 	spore_range;
 	
 	public ArrayList foodbits;
-	
-	
-	void Start ()
+
+    public delegate void EtherInfo(decimal energy);
+    public static event EtherInfo EnergyUpdated;
+    public static event EtherInfo EnergyInitialised;
+
+    public delegate void FoodbitInfo();
+    public static event FoodbitInfo FoodbitCreated;
+    public static event FoodbitInfo FoodbitDestroyed;
+
+    void Start ()
     {
 		foodbit = (GameObject)Resources.Load("Prefabs/Foodbit");
 		string name = this.name.ToLower();
@@ -62,6 +69,7 @@ public class Ether : MonoBehaviour
         init_scale_max = float.Parse(settings.contents["foodbit"]["init_scale_max"].ToString());
 
         energy = total_energy;
+        EnergyInitialised(energy);
 
 		foodbits = new ArrayList();
 		
@@ -95,6 +103,7 @@ public class Ether : MonoBehaviour
             float scale = Utility.ConvertRange((float)foodbit_energy, init_energy_min, init_energy_max, init_scale_min, init_scale_max);
             fb.transform.localScale = new Vector3(scale, scale, scale);
             foodbits.Add(fb);
+            FoodbitCreated();
 		}
 	}
 	
@@ -129,7 +138,8 @@ public class Ether : MonoBehaviour
 	
 	public void removeFoodbit (GameObject fb)
     {
-		foodbits.Remove(fb);
+        FoodbitDestroyed();
+        foodbits.Remove(fb);
 	}
 	
 	public int getFoodbitCount ()
@@ -156,11 +166,13 @@ public class Ether : MonoBehaviour
     public void addEnergy (decimal n)
     {
         energy += n;
+        EnergyUpdated(energy);
     }
 	
 	public void subtractEnergy (decimal n)
     {
         energy -= n;
+        EnergyUpdated(energy);
 	}
 
 	public bool enoughEnergy(decimal n)
@@ -178,7 +190,7 @@ public class Ether : MonoBehaviour
             //print("crt: " + total_crt + "     fb: " + total_fb + "     ether: " + energy + "        total: " + total);
             decimal fix = total - total_energy;
             //print("Fixing energy leak... "+fix);
-            energy -= fix;
+            subtractEnergy(fix);
         }
     }
 }

@@ -23,7 +23,7 @@ public class Foodbit : MonoBehaviour
 	float decay_time;
 	float decay_rate;
 
-	void Start ()
+    void Start ()
     {
 		name = "Foodbit";
 		settings = Settings.getInstance();
@@ -31,8 +31,7 @@ public class Foodbit : MonoBehaviour
 		eth = Ether.getInstance();
 		Collider co = GetComponent<SphereCollider>();
 		co.isTrigger = true;
-		
-	}
+    }
 
 	public void destroy ()
     {
