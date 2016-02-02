@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 
 public class Data : MonoBehaviour
@@ -10,6 +11,8 @@ public class Data : MonoBehaviour
 
     public static GameObject container;
     public static Data instance;
+
+    public List<Creature> creatures;
 
     public List<int> creature_population;
     public List<int> foodbit_population;
@@ -34,12 +37,17 @@ public class Data : MonoBehaviour
 
     void OnEnable()
     {
-        
+        Creature.CreatureDead += OnCreatureDead;
     }
 
     void OnDisable()
     {
+        Creature.CreatureDead -= OnCreatureDead;
+    }
 
+    void OnCreatureDead (Creature c)
+    {
+        creatures.Remove(c);
     }
 
     public void OnVisible()
@@ -59,6 +67,7 @@ public class Data : MonoBehaviour
         cc = GameObject.Find("CreatureCount").GetComponent<CreatureCount>();
         fc = GameObject.Find("FoodbitCount").GetComponent<FoodbitCount>();
         creature_population = new List<int>();
+        creatures = new List<Creature>();
         foodbit_population = new List<int>();
         log_time = float.Parse(Settings.getInstance().contents["config"]["log_time"].ToString());
 
@@ -70,5 +79,15 @@ public class Data : MonoBehaviour
         creature_population.Add(cc.number_of_creatures);
         foodbit_population.Add(fc.fbit_count);
         DataUpdated();
+    }
+
+    public decimal AverageCreatureEnergy()
+    {
+        decimal result = 0m;
+        foreach(var c in creatures)
+        {
+            result += c.energy;
+        }
+        return (result);
     }
 }

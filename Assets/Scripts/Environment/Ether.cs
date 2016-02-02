@@ -11,8 +11,8 @@ using LitJson;
  */
 
 
-public class Ether : MonoBehaviour {
-	
+public class Ether : MonoBehaviour
+{	
 	public static GameObject container;
 	public static Ether instance;
 	
@@ -20,6 +20,7 @@ public class Ether : MonoBehaviour {
 
 	Logger lg;
 	Settings settings;
+    Data data;
 	
 	public decimal total_energy;
 	public decimal energy;
@@ -39,11 +40,13 @@ public class Ether : MonoBehaviour {
 	ArrayList foodbits;
 	
 	
-	void Start () {
+	void Start ()
+    {
 		foodbit = (GameObject)Resources.Load("Prefabs/Foodbit");
 		string name = this.name.ToLower();
 		
 		settings = Settings.getInstance();
+        data = Data.getInstance();
 		
 		total_energy = 			decimal.Parse(settings.contents[name]	["total_energy"].ToString());
 		start_number_foodbits = (int)	 	settings.contents[name]	["start_number_foodbits"];
@@ -55,20 +58,22 @@ public class Ether : MonoBehaviour {
         init_energy_max = float.Parse(settings.contents["foodbit"]["init_energy_max"].ToString());
 
         init_scale_min = float.Parse(settings.contents["foodbit"]["init_scale_min"].ToString());
-        init_scale_min = float.Parse(settings.contents["foodbit"]["init_scale_min"].ToString());
+        init_scale_max = float.Parse(settings.contents["foodbit"]["init_scale_max"].ToString());
 
         energy = total_energy;
 
 		foodbits = new ArrayList();
 		
-		for (int i=0; i<start_number_foodbits; i++) {
+		for (int i=0; i<start_number_foodbits; i++)
+        {
 			Vector3 pos = Utility.RandomVec(-wide_spread,
 				                             wide_spread,
 				                             wide_spread
 				               				);
 			newFoodbit(pos);
 		}
-		
+
+        InvokeRepeating("FixEnergyLeak", 5F*60F, 5F*60F);
 		InvokeRepeating("fbSpawn",spore_time, spore_time);
 	}
 	
@@ -77,9 +82,11 @@ public class Ether : MonoBehaviour {
 	 * assign the default energy value for
 	 * all foodbits and attach the script
 	 */
-	public void newFoodbit (Vector3 pos) {
+	public void newFoodbit (Vector3 pos)
+    {
         foodbit_energy = (decimal)Random.Range(init_energy_min, init_energy_max);
-        if (enoughEnergy(foodbit_energy)) {
+        if (enoughEnergy(foodbit_energy))
+        {
 			GameObject fb = (GameObject)Instantiate(foodbit, pos, Quaternion.identity);
 			Foodbit fb_s = fb.AddComponent<Foodbit>();
             fb_s.energy = foodbit_energy;
@@ -90,9 +97,11 @@ public class Ether : MonoBehaviour {
 		}
 	}
 	
-	private void fbSpawn () {
+	private void fbSpawn ()
+    {
 		int fb_count = getFoodbitCount();
-		if (fb_count >= 1) {
+		if (fb_count >= 1)
+        {
 			int fb_index = Random.Range(0,fb_count);
 			GameObject fb = (GameObject) foodbits[fb_index];
 			Foodbit fb_script = fb.GetComponent<Foodbit>();
@@ -117,16 +126,20 @@ public class Ether : MonoBehaviour {
 		}
 	}
 	
-	public void removeFoodbit (GameObject fb) {
+	public void removeFoodbit (GameObject fb)
+    {
 		foodbits.Remove(fb);
 	}
 	
-	public int getFoodbitCount () {
+	public int getFoodbitCount ()
+    {
 		return foodbits.Count;
 	}
 	
-	public static Ether getInstance () {
-		if(!instance) {
+	public static Ether getInstance ()
+    {
+		if(!instance)
+        {
 			container = new GameObject();
 			container.name = "Ether";
 			instance = container.AddComponent(typeof(Ether)) as Ether;
@@ -134,7 +147,8 @@ public class Ether : MonoBehaviour {
 		return instance;
 	}
 	
-	public decimal getEnergy() {
+	public decimal getEnergy()
+    {
 		return energy;
 	}
 
@@ -143,13 +157,26 @@ public class Ether : MonoBehaviour {
         energy += n;
     }
 	
-	public void subtractEnergy (decimal n) {
+	public void subtractEnergy (decimal n)
+    {
         energy -= n;
 	}
 
-	public bool enoughEnergy(decimal n) {
+	public bool enoughEnergy(decimal n)
+    {
 		return energy >= n;
 	}
 	
-
+    private void FixEnergyLeak ()
+    {
+        decimal total_crt = data.AverageCreatureEnergy();
+        decimal total_fb = foodbits.Count * 15m;
+        decimal total = energy + total_crt + total_fb;
+        if (total > total_energy)
+        {
+            print("crt: " + total_crt + "     fb: " + total_fb + "     ether: " + energy + "        total: " + total);
+            print("Fixing energy leak...");
+            energy -= total - total_energy;
+        }
+    }
 }

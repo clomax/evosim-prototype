@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 using System.IO;
 
-
 /*
  *		Author: 	Craig Lomax
  *		Date: 		06.09.2011
@@ -11,8 +10,8 @@ using System.IO;
  *
  */
 
-
-public class Main : MonoBehaviour {
+public class Main : MonoBehaviour
+{
 
 #pragma warning disable 0414
      Data d;
@@ -28,11 +27,8 @@ public class Main : MonoBehaviour {
 	 Ether ether;
 #pragma warning restore 0414
 
-	/*
-	 * Instantiate all necessary objects, attach and configure
-	 * Components as needed.
-	 */
-	void Start () {
+	void Start ()
+    {
         createFolders();
         d = Data.getInstance();
         lg = Logger.getInstance();

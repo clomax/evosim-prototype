@@ -151,7 +151,6 @@ public class Creature : MonoBehaviour
         low_energy_threshold = decimal.Parse(settings.contents["creature"]["low_energy_threshold"].ToString());
 
         InvokeRepeating("updateState", 0, 0.1f);
-        InvokeRepeating("metabolise", 1.0f, 1.0f);
         InvokeRepeating("RandomDirection", 1F, 5F);
 
         root.GetComponent<Rigidbody>().SetDensity(4F);
@@ -191,9 +190,17 @@ public class Creature : MonoBehaviour
 		return Mathf.Sin((float)age * freq + phase_shift) * amplitude;
 	}
 
+    float metabolise_timer = 1F;
     void Update()
     {
         age += Time.deltaTime;
+
+        metabolise_timer -= Time.deltaTime;
+        if(metabolise_timer <= 0 && state != State.dead)
+        {
+            metabolise();
+            metabolise_timer = 1F;
+        }
 
         if (energy <= low_energy_threshold && !low_energy_lock)
         {
@@ -279,17 +286,28 @@ public class Creature : MonoBehaviour
 	/*
 	 * Remove a specified amount of energy from the creature,
 	 * kill it if the creature's energy reaches zero.
+     *
+     * Return: true if energy is now below zero
 	 */
-	public void subtractEnergy (decimal n) {
+	public bool subtractEnergy (decimal n)
+    {
+        bool equal_or_below_zero = false;
+        
         energy -= n;
-        if(energy <= 0)
+        if (energy <= 0.0m)
         {
-            eth.addEnergy(Math.Abs(energy));
+            eth.addEnergy(energy + n);
             energy = 0;
+            equal_or_below_zero = true;
             state = State.dead;
             state_lock = true;
-            CreatureDead(this);
         }
+        else
+        {
+            eth.addEnergy(n);
+        }
+
+        return (equal_or_below_zero);
 	}
 
 	/*
@@ -297,8 +315,7 @@ public class Creature : MonoBehaviour
 	 * return it to the ether.
 	 */
 	private void metabolise () {
-		subtractEnergy(metabolic_rate);
-		eth.addEnergy(metabolic_rate);
+        subtractEnergy(metabolic_rate);
 	}
 
 	/*
@@ -306,7 +323,8 @@ public class Creature : MonoBehaviour
 	 * the creature's energy.
 	 */
 	public void kill () {
-        eth.addEnergy(energy);
+        subtractEnergy(energy);
+        CreatureDead(this);
         Destroy(gameObject);
     }
 
