@@ -44,9 +44,8 @@ public class Ether : MonoBehaviour
     public static event EtherInfo EnergyUpdated;
     public static event EtherInfo EnergyInitialised;
 
-    public delegate void FoodbitInfo();
-    public static event FoodbitInfo FoodbitCreated;
-    public static event FoodbitInfo FoodbitDestroyed;
+    public delegate void FoodbitInfo(int count);
+    public static event FoodbitInfo FoodbitsUpdated;
 
     void Start ()
     {
@@ -103,7 +102,7 @@ public class Ether : MonoBehaviour
             float scale = Utility.ConvertRange((float)foodbit_energy, init_energy_min, init_energy_max, init_scale_min, init_scale_max);
             fb.transform.localScale = new Vector3(scale, scale, scale);
             foodbits.Add(fb);
-            FoodbitCreated();
+            FoodbitsUpdated(foodbits.Count);
 		}
 	}
 	
@@ -138,7 +137,7 @@ public class Ether : MonoBehaviour
 	
 	public void removeFoodbit (GameObject fb)
     {
-        FoodbitDestroyed();
+        FoodbitsUpdated(foodbits.Count);
         foodbits.Remove(fb);
 	}
 	

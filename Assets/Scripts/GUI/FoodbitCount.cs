@@ -4,32 +4,28 @@ using System.Collections;
 
 public class FoodbitCount : MonoBehaviour
 {
-	public Text text;
-    int fbs = 0;
+	Text text;
+
+    void Start ()
+    {
+        text = GetComponent<Text>();
+    }
 	
 	void OnEnable ()
     {
-        Ether.FoodbitCreated += OnCreated;
-        Ether.FoodbitDestroyed += OnDestroyed;
+        Ether.FoodbitsUpdated += OnUpdated;
     }
 
     void OnDisable()
     {
-        Ether.FoodbitCreated -= OnCreated;
-        Ether.FoodbitDestroyed -= OnDestroyed;
+        Ether.FoodbitsUpdated -= OnUpdated;
     }
 
-    void OnCreated()
+    void OnUpdated(int count)
     {
-        fbs += 1;
-    }
-
-    void OnDestroyed()
-    {
-        fbs -= 1;
+        text.text = "Foodbits: " + count;
     }
 
     void Update ()	{
-		text.text = "Foodbits: " + fbs;
 	}
 }
