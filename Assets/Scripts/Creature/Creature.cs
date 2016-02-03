@@ -64,7 +64,6 @@ public class Creature : MonoBehaviour
 						mating,
 						eating,
 						searching_for_food,
-                        dying,
                         dead,
 						neutral
 					  };
@@ -202,8 +201,6 @@ public class Creature : MonoBehaviour
 
         if (energy <= low_energy_threshold && !low_energy_lock)
         {
-            ChangeState(State.dying);
-            state_lock = true;
             low_energy_lock = true;
             StartCoroutine(SlowDown());
             StartCoroutine(Darken());
