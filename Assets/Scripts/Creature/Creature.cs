@@ -18,7 +18,6 @@ public class Creature : MonoBehaviour
 
 	Settings settings;
 	Ether eth;
-	Logger lg;
 
 	public GameObject root;
 	public Root root_script;
@@ -56,7 +55,6 @@ public class Creature : MonoBehaviour
 
     public delegate void CreatureState(Creature c);
     public static event CreatureState CreatureDead;
-    public static event CreatureState CreatureSpawned;
 
     // TODO: Fix this shit "state machine"
     public enum State {
@@ -156,8 +154,6 @@ public class Creature : MonoBehaviour
         root.GetComponent<Rigidbody>().SetDensity(4F);
 
         ms = GetComponentsInChildren<MeshRenderer>();
-
-        CreatureSpawned(this);
     }
 
 

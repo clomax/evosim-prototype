@@ -17,7 +17,6 @@ public class GeneticsMain : MonoBehaviour
 {
 	private Ether eth;
 	private Settings settings;
-	private Spawner spw;
 	public static GameObject container;
 	public static GeneticsMain instance;
 	
@@ -33,7 +32,6 @@ public class GeneticsMain : MonoBehaviour
 	Vector3 min_limb_scale;
 	
 	void Start () {
-		spw = Spawner.getInstance();
 		settings = Settings.getInstance();
 		eth = Ether.getInstance();
 		
@@ -123,10 +121,10 @@ public class GeneticsMain : MonoBehaviour
 			chromosome.setBranches(branches);
 
 			if (eth.enoughEnergy(creature_init_energy)) {
-				spw.spawn(Utility.RandomVec(-creature_spread,creature_spread,creature_spread), Utility.RandomRotVec(), creature_init_energy, chromosome);
-				eth.subtractEnergy(creature_init_energy);
-			}
-		}
+				eth.spawner.spawn(Utility.RandomVec(-creature_spread,creature_spread,creature_spread), Utility.RandomRotVec(), creature_init_energy, chromosome);
+                eth.subtractEnergy(creature_init_energy);
+            }
+        }
 	}
 	
 	public static GeneticsMain getInstance () {

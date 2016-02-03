@@ -15,7 +15,7 @@ public class Foodbit : MonoBehaviour
 	
 	Settings settings;
 	Ether eth;
-    //MeshRenderer mr;
+    MeshRenderer mr;
 
     public decimal energy;
 	float decay_amount;
@@ -29,6 +29,10 @@ public class Foodbit : MonoBehaviour
 		settings = Settings.getInstance();
 		
 		eth = Ether.getInstance();
+
+        mr = GetComponent<MeshRenderer>();
+        mr.sharedMaterial = (Material)Resources.Load("Materials/Foodbit");
+
 		Collider co = GetComponent<SphereCollider>();
 		co.isTrigger = true;
     }

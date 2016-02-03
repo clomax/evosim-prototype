@@ -78,7 +78,7 @@ public class Logger : MonoBehaviour {
 	}
 
 	private void log () {
-		if(log_pop_data != 0) write( ","+data_instance.creature_population.Last(), crt_count_filename );
+		if(log_pop_data != 0)  write( ","+data_instance.creature_population.Last(), crt_count_filename );
 		if(log_fbit_data != 0) write( ","+data_instance.foodbit_population.Last(), fbit_count_filename );
 	}
 	

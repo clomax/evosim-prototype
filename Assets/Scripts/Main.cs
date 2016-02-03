@@ -18,7 +18,6 @@ public class Main : MonoBehaviour
 	 Logger lg;
 	 Settings settings;
 	 Selection selectionManager;
-	 Spawner spw;
 	 GeneticsMain gm;
 	 CollisionMediator co;
 
@@ -38,7 +37,6 @@ public class Main : MonoBehaviour
 		cam = GameObject.Find("Main Camera");
         cam.AddComponent<CameraCtl>();
         ether = Ether.getInstance();
-        spw = Spawner.getInstance();
 		gm = GeneticsMain.getInstance();
 		co = CollisionMediator.getInstance();
     }

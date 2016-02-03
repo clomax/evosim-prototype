@@ -4,7 +4,7 @@ using System.Collections;
 
 public class CreatureCount : MonoBehaviour
 {
-	int number_of_creatures;
+	public int number_of_creatures;
 	Text text;
 
     void Start ()
@@ -15,13 +15,13 @@ public class CreatureCount : MonoBehaviour
 
     void OnEnable ()
     {
-        Creature.CreatureSpawned += OnSpawn;
+        Spawner.CreatureSpawned += OnSpawn;
         Creature.CreatureDead += OnDeath;
     }
 
     void OnDisable()
     {
-        Creature.CreatureSpawned -= OnSpawn;
+        Spawner.CreatureSpawned -= OnSpawn;
         Creature.CreatureDead += OnDeath;
     }
 

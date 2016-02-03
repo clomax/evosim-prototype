@@ -22,6 +22,7 @@ public class Ether : MonoBehaviour
 	Logger lg;
 	Settings settings;
     Data data;
+    public Spawner spawner;
 	
 	public decimal total_energy;
 	public decimal energy;
@@ -37,7 +38,8 @@ public class Ether : MonoBehaviour
 	int		start_number_foodbits;
 	float 	spore_time;
 	int 	spore_range;
-	
+
+    public ArrayList creatures;
 	public ArrayList foodbits;
 
     public delegate void EtherInfo(decimal energy);
@@ -47,6 +49,18 @@ public class Ether : MonoBehaviour
     public delegate void FoodbitInfo(int count);
     public static event FoodbitInfo FoodbitsUpdated;
 
+    void OnEnable ()
+    {
+        Spawner.CreatureSpawned += OnCreatureSpawned;
+        Creature.CreatureDead += OnCreatureDeath;
+    }
+
+    void OnDisable()
+    {
+        Spawner.CreatureSpawned -= OnCreatureSpawned;
+        Creature.CreatureDead -= OnCreatureDeath;
+    }
+
     void Start ()
     {
 		foodbit = (GameObject)Resources.Load("Prefabs/Foodbit");
@@ -54,6 +68,7 @@ public class Ether : MonoBehaviour
 		
 		settings = Settings.getInstance();
         data = Data.getInstance();
+        spawner = Spawner.getInstance();
 		
 		total_energy = 			decimal.Parse(settings.contents[name]	["total_energy"].ToString());
 		start_number_foodbits = (int)	 	settings.contents[name]	["start_number_foodbits"];
@@ -70,6 +85,7 @@ public class Ether : MonoBehaviour
         energy = total_energy;
         EnergyInitialised(energy);
 
+        creatures = new ArrayList();
 		foodbits = new ArrayList();
 		
 		for (int i=0; i<start_number_foodbits; i++)
@@ -84,6 +100,16 @@ public class Ether : MonoBehaviour
         InvokeRepeating("FixEnergyLeak", 1F*60F, 1F*60F);
 		InvokeRepeating("fbSpawn",spore_time, spore_time);
 	}
+
+    void OnCreatureSpawned (Creature c)
+    {
+        creatures.Add(c);
+    }
+
+    void OnCreatureDeath (Creature c)
+    {
+        creatures.Remove(c);
+    }
 	
 	/*
 	 * Place a new foodbit at a random vector,
@@ -186,9 +212,9 @@ public class Ether : MonoBehaviour
         decimal total = energy + total_crt + total_fb;
         if (total > total_energy)
         {
-            //print("crt: " + total_crt + "     fb: " + total_fb + "     ether: " + energy + "        total: " + total);
+            print("crt: " + total_crt + "     fb: " + total_fb + "     ether: " + energy + "        total: " + total);
             decimal fix = total - total_energy;
-            //print("Fixing energy leak... "+fix);
+            print("Fixing energy leak... "+fix);
             subtractEnergy(fix);
         }
     }

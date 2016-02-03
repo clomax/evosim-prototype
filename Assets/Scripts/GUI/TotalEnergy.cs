@@ -23,6 +23,6 @@ public class TotalEnergy : MonoBehaviour
 
     void OnStarted(decimal n)
     {
-        text.text = "Ether energy: " + n.ToString("0");
+        text.text = "Total energy: " + n.ToString("0");
     }
 }

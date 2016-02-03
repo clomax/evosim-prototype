@@ -12,14 +12,12 @@ public class Data : MonoBehaviour
     public static GameObject container;
     public static Data instance;
 
-    public List<Creature> creatures;
     Ether eth;
 
     public List<int> creature_population;
     public List<int> foodbit_population;
 
     public CreatureCount cc;
-    public FoodbitCount fc;
 
     private UIElement ui_element;
 
@@ -36,21 +34,6 @@ public class Data : MonoBehaviour
         return instance;
     }
 
-    void OnEnable()
-    {
-        Creature.CreatureDead += OnCreatureDead;
-    }
-
-    void OnDisable()
-    {
-        Creature.CreatureDead -= OnCreatureDead;
-    }
-
-    void OnCreatureDead (Creature c)
-    {
-        creatures.Remove(c);
-    }
-
     public void OnVisible()
     {
         if (ui_element.visible)
@@ -65,9 +48,7 @@ public class Data : MonoBehaviour
     void Start ()
     {
         ui_element = GetComponent<UIElement>();
-        fc = GameObject.Find("FoodbitCount").GetComponent<FoodbitCount>();
         creature_population = new List<int>();
-        creatures = new List<Creature>();
         eth = Ether.getInstance();
         foodbit_population = new List<int>();
         log_time = float.Parse(Settings.getInstance().contents["config"]["log_time"].ToString());
@@ -84,7 +65,7 @@ public class Data : MonoBehaviour
     public decimal TotalCreatureEnergy()
     {
         decimal result = 0m;
-        foreach(var c in creatures)
+        foreach(Creature c in eth.creatures)
         {
             result += c.energy;
         }

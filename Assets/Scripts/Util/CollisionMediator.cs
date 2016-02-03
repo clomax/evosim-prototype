@@ -20,7 +20,7 @@ public class CollisionMediator : MonoBehaviour {
 	public static GameObject container;
 	public CollEvent evt;
 	public ArrayList collision_events;
-	public Spawner spw;
+	public Ether ether;
 
 	Settings settings;
 
@@ -31,7 +31,7 @@ public class CollisionMediator : MonoBehaviour {
 
 	void Start () {
 		collision_events = new ArrayList();
-		spw = Spawner.getInstance();
+		ether = Ether.getInstance();
 		settings = Settings.getInstance();
 		energy_scale 		= decimal.Parse(	settings.contents["creature"]["energy_to_offspring"].ToString());
 		crossover_rate 		= (double) 			settings.contents["genetics"]["crossover_rate"];
@@ -71,7 +71,8 @@ public class CollisionMediator : MonoBehaviour {
             decimal b_energy_to_child = (b_energy * energy_scale);
             decimal new_crt_energy = (a_energy_to_child + b_energy_to_child);
 
-			spw.spawn(pos,Vector3.zero,
+			ether.spawner.spawn(
+                      pos,Vector3.zero,
 					  new_crt_energy,
 					  newChromosome
 					 );

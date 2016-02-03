@@ -18,9 +18,9 @@ public class LoadChromosome : MonoBehaviour
 
     public void OnClick ()
     {
-        Spawner spawner = Spawner.getInstance();
-        spawner.spawn(
-            Camera.main.transform.position + new Vector3(0, 0, 10),
+        Ether eth = Ether.getInstance();
+        eth.spawner.spawn(
+             Camera.main.transform.position + new Vector3(0, 0, 10),
              Utility.RandomRotVec(),
              init_energy,
              c

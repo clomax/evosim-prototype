@@ -2,7 +2,7 @@
 	"config": {
 		"population_logging"		: 0,
 		"foodbit_logging"			: 0,
-		"log_time"					: 1.0,
+		"log_time"					: 5.0,
 
 		"camera": {
 			"sensitivity"			: 1.0,
@@ -18,17 +18,17 @@
 	"ether": {
 		"total_energy"				: 7500.0,
 		"start_number_foodbits"		: 200,
-		"starting_creatures"		: 20,
-		"creature_spread"			: 15
+		"starting_creatures"		: 10,
+		"creature_spread"			: 10
 	},
 
 	"foodbit": {
-		"init_energy_min"			: 5.0,
-		"init_energy_max"			: 35.0,
+		"init_energy_min"			: 20.0,
+		"init_energy_max"			: 20.0,
 		"init_scale_min"			: 0.3,
 		"init_scale_max"			: 0.8,
 		"destroy_at"				: 10.0,
-		"spore_time"				: 0.25,
+		"spore_time"				: 0.2,
 		"spore_range"				: 100,
 		"spore_rate"				: 2.0,
 		"wide_spread"				: 40.0

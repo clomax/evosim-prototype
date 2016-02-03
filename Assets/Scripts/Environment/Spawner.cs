@@ -13,6 +13,9 @@ public class Spawner : MonoBehaviour
 	static GameObject container;
 	Vector3 pos;
 #pragma warning restore 0414
+
+    public delegate void Crt(Creature c);
+    public static event Crt CreatureSpawned;
 	
 	void Start ()
     {
@@ -35,16 +38,13 @@ public class Spawner : MonoBehaviour
 	
 	public void spawn (Vector3 pos, Vector3 rot, decimal energy, Chromosome chromosome)
     {
-		GameObject clone = new GameObject();
-		clone.transform.localPosition = pos;
-		clone.transform.eulerAngles = Utility.RandomRotVec();
-		Creature crt_script = clone.AddComponent<Creature>();
-		clone.tag = "Creature";
-	
+		GameObject child = new GameObject();
+		child.transform.localPosition = pos;
+		child.transform.eulerAngles = Utility.RandomRotVec();
+		Creature crt_script = child.AddComponent<Creature>();
+		child.tag = "Creature";
 		crt_script.invokechromosome(chromosome);
-		
 		crt_script.setEnergy(energy);
-        d.creatures.Add(crt_script);
+        CreatureSpawned(crt_script);
 	}
-
 }
