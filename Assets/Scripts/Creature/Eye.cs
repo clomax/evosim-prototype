@@ -45,6 +45,7 @@ public class Eye : MonoBehaviour
 
 	void refreshVision ()
     {
+        targetCrt = null;
 		switch (crt.state)
         {
 		case Creature.State.persuing_mate:

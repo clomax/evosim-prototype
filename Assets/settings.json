@@ -16,18 +16,18 @@
 	},
 
 	"ether": {
-		"total_energy"				: 7500.0,
+		"total_energy"				: 5000.0,
 		"start_number_foodbits"		: 200,
-		"starting_creatures"		: 10,
-		"creature_spread"			: 10
+		"starting_creatures"		: 0,
+		"creature_spread"			: 12
 	},
 
 	"foodbit": {
-		"init_energy_min"			: 20.0,
-		"init_energy_max"			: 20.0,
+		"init_energy_min"			: 5.0,
+		"init_energy_max"			: 25.0,
 		"init_scale_min"			: 0.3,
 		"init_scale_max"			: 0.8,
-		"destroy_at"				: 10.0,
+		"destroy_at"				: 1.0,
 		"spore_time"				: 0.2,
 		"spore_range"				: 100,
 		"spore_rate"				: 2.0,
@@ -84,7 +84,7 @@
 
 	"genetics": {
 		"crossover_rate"			: 0.5,
-		"mutation_rate"				: 0.2,
+		"mutation_rate"				: 0.1,
 		"mutation_factor"			: 0.3
 	}
 }

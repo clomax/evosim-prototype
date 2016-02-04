@@ -111,11 +111,6 @@ public class Ether : MonoBehaviour
         creatures.Remove(c);
     }
 	
-	/*
-	 * Place a new foodbit at a random vector,
-	 * assign the default energy value for
-	 * all foodbits and attach the script
-	 */
 	public void newFoodbit (Vector3 pos)
     {
         foodbit_energy = (decimal)Random.Range(init_energy_min, init_energy_max);
@@ -210,9 +205,9 @@ public class Ether : MonoBehaviour
         decimal total_crt = data.TotalCreatureEnergy();
         decimal total_fb = data.TotalFoodbitEnergy();
         decimal total = energy + total_crt + total_fb;
+        print("crt: " + total_crt + "     fb: " + total_fb + "     ether: " + energy + "        total: " + total);
         if (total > total_energy)
         {
-            print("crt: " + total_crt + "     fb: " + total_fb + "     ether: " + energy + "        total: " + total);
             decimal fix = total - total_energy;
             print("Fixing energy leak... "+fix);
             subtractEnergy(fix);

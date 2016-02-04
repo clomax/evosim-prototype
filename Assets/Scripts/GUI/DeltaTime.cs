@@ -15,6 +15,6 @@ public class DeltaTime : MonoBehaviour
 
 	void printDeltaTime ()
     {
-		text.text = delta +"T: " + Time.deltaTime.ToString();
+		text.text = delta +"T: " + Time.deltaTime.ToString("0.000");
 	}
 }
