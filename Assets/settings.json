@@ -18,7 +18,7 @@
 	"ether": {
 		"total_energy"				: 5000.0,
 		"start_number_foodbits"		: 200,
-		"starting_creatures"		: 0,
+		"starting_creatures"		: 20,
 		"creature_spread"			: 12
 	},
 

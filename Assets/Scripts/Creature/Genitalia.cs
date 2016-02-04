@@ -41,9 +41,9 @@ public class Genitalia : MonoBehaviour {
 		
 		_t = transform;
 		lr = (LineRenderer)gameObject.AddComponent<LineRenderer>();
-		lr.material.color = Color.white;
-		lr.material.shader = Shader.Find("Sprites/Default");
-		lr.SetWidth(line_width, line_width);
+		lr.material.shader = Shader.Find("Unlit/Color");
+        lr.material.color = Color.white;
+        lr.SetWidth(line_width, line_width);
 		lr.SetVertexCount(2);
 		lr.GetComponent<Renderer>().enabled = true;
 		timeCreated = Time.time;

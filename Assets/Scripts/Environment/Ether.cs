@@ -206,7 +206,7 @@ public class Ether : MonoBehaviour
         decimal total_fb = data.TotalFoodbitEnergy();
         decimal total = energy + total_crt + total_fb;
         print("crt: " + total_crt + "     fb: " + total_fb + "     ether: " + energy + "        total: " + total);
-        if (total > total_energy)
+        if (total != total_energy)
         {
             decimal fix = total - total_energy;
             print("Fixing energy leak... "+fix);
