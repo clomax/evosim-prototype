@@ -20,6 +20,7 @@ public class SaveCreature : MonoBehaviour
 
     public void save ()
     {
+        /*
         Chromosome chromosome = cp.crt.chromosome;
         int crt_id = Mathf.Abs(cp.crt.gameObject.GetInstanceID());
         if (!Directory.Exists(Application.dataPath + "/data/saved_creatures" + crt_id))
@@ -52,35 +53,34 @@ public class SaveCreature : MonoBehaviour
         ""base_joint_amplitude"" : {11},
         ""base_joint_phase""     : {12},
         ""hunger_threshold""     : {13},
-        ""branches""             : {14},
         ";
 
         string[] args = {
             cp.Name.text,
-            chromosome.colour.r.ToString(), chromosome.colour.g.ToString(), chromosome.colour.b.ToString(),
-            chromosome.limb_colour.r.ToString(), chromosome.limb_colour.g.ToString(), chromosome.limb_colour.b.ToString(),
-            chromosome.root_scale.x.ToString(), chromosome.root_scale.y.ToString(), chromosome.root_scale.z.ToString(),
-            chromosome.base_joint_frequency.ToString(), chromosome.base_joint_amplitude.ToString(), chromosome.base_joint_phase.ToString(),
-            chromosome.hunger_threshold.ToString(), chromosome.num_branches.ToString()
+            chromosome.root_colour().r.ToString(), chromosome.root_colour().g.ToString(), chromosome.root_colour().b.ToString(),
+            chromosome.limb_colour().r.ToString(), chromosome.limb_colour().g.ToString(), chromosome.limb_colour().b.ToString(),
+            chromosome.root_scale().x.ToString(),  chromosome.root_scale().y.ToString(),  chromosome.root_scale().z.ToString(),
+            chromosome.base_joint_frequency().ToString(), chromosome.base_joint_amplitude().ToString(), chromosome.base_joint_phase().ToString(),
+            chromosome.hunger_threshold().ToString()
         };
         json_creature = string.Format(json_creature_pattern, args);
 
         json_creature +=
         @"""recurrences"" : [
         ";
-        for(int i=0; i<chromosome.num_recurrences.Length; ++i)
+        for(int i=0; i<chromosome.recurrences.Length; ++i)
         {
             string r_pattern =
             @"{0}";
 
-            if (!(i == chromosome.num_recurrences.Length-1))
+            if (!(i == chromosome.recurrences.Length-1))
             {
                 r_pattern +=
             @",
             ";
             }
 
-            json_creature += string.Format(r_pattern, chromosome.num_recurrences[i]);
+            json_creature += string.Format(r_pattern, chromosome.recurrences[i]);
         }
         json_creature +=
         @"],
@@ -90,8 +90,8 @@ public class SaveCreature : MonoBehaviour
         @"""limbs"" : {
         ";
 
-        int branch_count = chromosome.getBranchCount();
-        for(int i=0; i<branch_count; ++i)
+        int limb_count = chromosome.limbs.Count;
+        for(int i=0; i<limb_count; ++i)
         {
             string branch_string =
             @"
@@ -100,7 +100,7 @@ public class SaveCreature : MonoBehaviour
             ";
             json_creature += string.Format(branch_string, i.ToString());
 
-            ArrayList limbs = chromosome.getLimbs(i);
+            ArrayList limbs = (ArrayList) chromosome.limbs[i];
             for(int k=0; k<limbs.Count; ++k)
             {
                 ArrayList attributes = (ArrayList)limbs[k];
@@ -136,7 +136,7 @@ public class SaveCreature : MonoBehaviour
             json_creature +=
             @"]";
 
-            if (!(i == branch_count - 1))
+            if (!(i == limb_count - 1))
             {
                 json_creature += @",
                 ";
@@ -160,5 +160,6 @@ json_creature +=
         }
 
         CreatureSaved();
+        */
     }	
 }

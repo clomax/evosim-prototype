@@ -11,8 +11,8 @@ using System.Collections;
  */
 
 
-public class Mouth : MonoBehaviour {
-
+public class Mouth : MonoBehaviour
+{
 	Foodbit fb;
 	Creature crt;
 	Eye eye;
@@ -25,12 +25,15 @@ public class Mouth : MonoBehaviour {
 	
 	float line_length 	= 0.05F;
 	float line_width 	= 0.05F;
-	
-	int fb_detect_range = 40;
-	
-	GameObject cf;
 
-	void Start () {
+    int fb_detect_range = 40;
+    double timeToEat = 1F;
+
+    GameObject cf;
+    double timeCreated;
+
+	void Start ()
+    {
 		_t = transform;
 		crt = (Creature)_t.parent.parent.gameObject.GetComponent("Creature");
 		eye = crt.eye.GetComponent<Eye>();
@@ -40,11 +43,14 @@ public class Mouth : MonoBehaviour {
 		lr.SetWidth(line_width, line_width);
 		lr.SetVertexCount(2);
 		lr.GetComponent<Renderer>().enabled = true;
+        timeCreated = Time.time;
 	}
 
-	void Update () {
-		cf = eye.targetFbit;
-		if(cf && crt.state == Creature.State.persuing_food) {
+	void Update ()
+    {
+        cf = eye.targetFbit;
+		if(cf && crt.state == Creature.State.persuing_food)
+        {
 			lr.useWorldSpace = true;
 			line_end = new Vector3(cf.transform.position.x,
 								   cf.transform.position.y,
@@ -53,7 +59,9 @@ public class Mouth : MonoBehaviour {
 			line_start = _t.position;
 			lr.SetPosition(1,line_end);
 			resetStart();
-		} else {
+		}
+        else
+        {
 			lr.useWorldSpace = false;
 			line_start = Vector3.zero;
 			line_end = new Vector3(0,0,line_length);
@@ -62,12 +70,14 @@ public class Mouth : MonoBehaviour {
 		}
 	}
 	
-	void resetStart () {
+	void resetStart ()
+    {
 		line_start = new Vector3(_t.position.x,_t.position.y,_t.position.z);
 		lr.SetPosition(0,line_start);
 	}
 	
-	float getDetectRadius() {
+	float getDetectRadius()
+    {
 		return fb_detect_range;
 	}
 

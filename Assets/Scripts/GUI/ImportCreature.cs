@@ -86,14 +86,12 @@ public class ImportCreature : MonoBehaviour
                 float bjp = float.Parse(contents["attributes"]["base_joint_phase"].ToString());
                 decimal ht = decimal.Parse(contents["attributes"]["hunger_threshold"].ToString());
 
-                ArrayList branches = new ArrayList();
+                ArrayList limbs = new ArrayList();
                 int num_branches = (int)contents["attributes"]["branches"];
-                chromosome.num_recurrences = new int[num_branches];
                 for (int j = 0; j < num_branches; j++)
                 {
-                    ArrayList limbs = new ArrayList();
+                    ArrayList limb = new ArrayList();
                     int recurrences = (int)contents["attributes"]["recurrences"][j];
-                    chromosome.num_recurrences[j] = recurrences;
                     for (int k = 0; k < recurrences; ++k)
                     {
                         float x = float.Parse(contents["attributes"]["limbs"][j.ToString()][k]["position"]["x"].ToString());
@@ -106,22 +104,24 @@ public class ImportCreature : MonoBehaviour
                         z = float.Parse(contents["attributes"]["limbs"][j.ToString()][k]["scale"]["z"].ToString());
                         Vector3 scale = new Vector3(x, y, z);
 
-                        ArrayList limb = new ArrayList();
-                        limb.Add(position);
-                        limb.Add(scale);
-                        limbs.Add(limb);
+                        ArrayList segment = new ArrayList();
+                        segment.Add(position);
+                        segment.Add(scale);
+                        limb.Add(segment);
                     }
-                    branches.Add(limbs);
+                    limbs.Add(limbs);
                 }
 
-                chromosome.colour = root_col;
+                /*
+                chromosome.root_colour = root_col;
                 chromosome.limb_colour = limb_col;
                 chromosome.hunger_threshold = ht;
-                chromosome.setRootScale(root_scale);
-                chromosome.setBaseFequency(bjf);
-                chromosome.setBaseAmplitude(bja);
-                chromosome.setBasePhase(bjp);
-                chromosome.setBranches(branches);
+                chromosome.root_scale = root_scale;
+                chromosome.base_joint_frequency = bjf;
+                chromosome.base_joint_amplitude = bja;
+                chromosome.base_joint_phase = bjp;
+                chromosome.limbs = limbs;
+                */
 
                 creature_info.Add(name, chromosome);
             }

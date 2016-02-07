@@ -52,7 +52,8 @@ public class Genitalia : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (crt.state == Creature.State.mating && Time.time > (timeCreated + timeToEnableMating)) {
+		if (crt.state == Creature.State.mating && Time.time > (timeCreated + timeToEnableMating))
+        {
 			crt.state = Creature.State.persuing_mate;
 			timeCreated = Time.time;
 		}

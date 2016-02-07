@@ -21,8 +21,9 @@ public class Creature : MonoBehaviour
 
 	public GameObject root;
 	public Root root_script;
+    public Chromosome chromosome;
 
-	Vector3 max_root_scale;
+    Vector3 max_root_scale;
 	Vector3 min_root_scale;
 
 	public GameObject eye;
@@ -35,8 +36,6 @@ public class Creature : MonoBehaviour
 	public decimal energy;
     public decimal low_energy_threshold;
 
-	public Chromosome chromosome;
-
 	public double 	line_of_sight;
 	decimal 			metabolic_rate;
 	int 			age_sexual_maturity;
@@ -44,14 +43,11 @@ public class Creature : MonoBehaviour
 	public int offspring;
 	public int food_eaten;
 
-	ArrayList limbs;
-    ArrayList all_limbs;
-
     float joint_frequency;
     float joint_amplitude;
     float joint_phase;
 
-    float force_scalar = 1F;
+    float force_scalar = 10F;
 
     public delegate void CreatureState(Creature c);
     public static event CreatureState CreatureDead;
@@ -79,6 +75,8 @@ public class Creature : MonoBehaviour
     private bool low_energy_lock = false;
     MeshRenderer[] ms;
 
+    private ArrayList all_segments;
+
     void Start()
     {
         _t = transform;
@@ -97,9 +95,9 @@ public class Creature : MonoBehaviour
         min_root_scale.y = float.Parse(settings.contents["creature"]["root"]["min_root_scale"]["y"].ToString());
         min_root_scale.z = float.Parse(settings.contents["creature"]["root"]["min_root_scale"]["z"].ToString());
 
-        joint_frequency = chromosome.base_joint_frequency;
-        joint_amplitude = chromosome.base_joint_amplitude;
-        joint_phase = chromosome.base_joint_phase;
+        joint_frequency  = chromosome.base_joint_frequency();
+        joint_amplitude  = chromosome.base_joint_amplitude();
+        joint_phase      = chromosome.base_joint_phase();
 
         root = GameObject.CreatePrimitive(PrimitiveType.Cube);
         root.name = "root";
@@ -108,9 +106,9 @@ public class Creature : MonoBehaviour
         root.transform.eulerAngles = _t.eulerAngles;
         root.AddComponent<Rigidbody>();
         root_script = root.AddComponent<Root>();
-        root_script.setColour(chromosome.getColour());
-        root_script.setScale(chromosome.getRootScale());
-        //root.rigidbody.mass = 15F;
+        root_script.setColour(chromosome.root_colour());
+        root_script.setScale(chromosome.root_scale());
+        root.GetComponent<Rigidbody>().mass = 1F;
         root.GetComponent<Rigidbody>().angularDrag = float.Parse(settings.contents["creature"]["angular_drag"].ToString());
         root.GetComponent<Rigidbody>().drag = float.Parse(settings.contents["creature"]["drag"].ToString());
         eye = new GameObject();
@@ -138,9 +136,6 @@ public class Creature : MonoBehaviour
         metabolic_rate = decimal.Parse(settings.contents["creature"]["metabolic_rate"].ToString());
         age_sexual_maturity = (int)settings.contents["creature"]["age_sexual_maturity"];
 
-        all_limbs = new ArrayList();
-        setupLimbs();
-
         age = 0.0;
         ChangeState(State.neutral);
         food_eaten = 0;
@@ -150,9 +145,14 @@ public class Creature : MonoBehaviour
         InvokeRepeating("updateState", 0, 0.1f);
         InvokeRepeating("RandomDirection", 1F, 5F);
 
-        root.GetComponent<Rigidbody>().SetDensity(4F);
+        root.GetComponent<Rigidbody>().SetDensity(1F);
+        force_scalar = 10F;
 
         ms = GetComponentsInChildren<MeshRenderer>();
+
+        all_segments = new ArrayList();
+
+        setupLimbs();
     }
 
 
@@ -179,8 +179,8 @@ public class Creature : MonoBehaviour
 		if (pos_sine == 0) {
 			direction = root.transform.forward;
 		}
-
-		root.GetComponent<Rigidbody>().AddForce(Mathf.Abs(force_scalar) * direction * pos_sine * chromosome.getBranchCount());
+        Vector3 force = Mathf.Abs(force_scalar) * direction * pos_sine * chromosome.num_limbs();
+        root.GetComponent<Rigidbody>().AddForce(force);
 	}
 
 	float Sine (float freq, float amplitude, float phase_shift) {
@@ -218,7 +218,7 @@ public class Creature : MonoBehaviour
 
         float _force = force_scalar;
         float _joint_frequency = joint_frequency;
-        if (state == State.mating)
+        if (state == State.mating || state == State.eating)
         {
             joint_frequency = 0F;
             force_scalar = 0F;
@@ -249,10 +249,10 @@ public class Creature : MonoBehaviour
 
 	void updateState() {
 		if(state != Creature.State.mating) {
-			if (energy < chromosome.hunger_threshold) {
+			if (energy < chromosome.hunger_threshold()) {
                 ChangeState((eye_script.targetFbit != null) ? State.persuing_food : State.searching_for_food);
 			}
-			if (energy >= chromosome.hunger_threshold && age > age_sexual_maturity) {
+			if (energy >= chromosome.hunger_threshold() && age > age_sexual_maturity) {
                 ChangeState((eye_script.targetCrt != null) ? State.persuing_mate : State.searching_for_mate);
 			}
 		}
@@ -326,48 +326,57 @@ public class Creature : MonoBehaviour
 // TODO: Limbs should be made into a better tree structure, not this
 // 				list of lists rubbish
 	private void setupLimbs () {
-        int num_branches = chromosome.getBranchCount();
-        chromosome.setNumBranches(num_branches);
-
-        for (int i=0; i<num_branches; i++)
+        int current_index = 14;
+        int num_limbs = chromosome.num_limbs();
+        for (int current_limb = 0; current_limb < num_limbs; current_limb++)
         {
-			limbs = chromosome.getLimbs(i);
-			List<GameObject> actual_limbs = new List<GameObject>();
+            int num_segments = (int)chromosome.genes[current_index];
+            int limb_start_index = current_index;
+            for (current_index = current_index + 1;
+                current_index < limb_start_index + (num_segments * 3);
+                current_index += 6)
+            {
+                GameObject[] segments = new GameObject[num_segments];
+                int current_segment = 0;
+                GameObject segment = GameObject.CreatePrimitive(PrimitiveType.Cube);
+				segment.layer = LayerMask.NameToLayer("Creature");
+				segment.name = current_limb+"_"+current_segment;
+				segment.transform.parent = _t;
+				Segment limb_script = segment.AddComponent<Segment>();
 
-            for (int j=0; j<limbs.Count; j++) {
-				GameObject limb = GameObject.CreatePrimitive(PrimitiveType.Cube);
-				limb.layer = LayerMask.NameToLayer("Creature");
-				limb.name = "limb_"+i+"_"+j;
-				limb.transform.parent = _t;
-				actual_limbs.Add(limb);
-				Limb limb_script = limb.AddComponent<Limb>();
+                Vector3 scale = new Vector3(
+                        chromosome.genes[current_index],
+                        chromosome.genes[current_index + 1],
+                        chromosome.genes[current_index + 2]
+                    );
+				limb_script.setScale(scale);
+				limb_script.setColour((Color) chromosome.limb_colour());
 
-				ArrayList attributes = (ArrayList) limbs[j];
-				limb_script.setScale( (Vector3) attributes[1] );
-				limb_script.setColour( (Color) chromosome.getLimbColour());
-
-				if(j == 0) {
-					limb_script.setPosition( (Vector3) attributes[0] );
-					limb.transform.LookAt(root.transform);
+                Vector3 position;
+				if(current_segment == 0) {
+                    position = Utility.RandomPointInsideCube(chromosome.root_scale());
+                    limb_script.setPosition(position);
+					segment.transform.LookAt(root.transform);
 				} else {
-					limb_script.setPosition( actual_limbs[j-1].transform.localPosition );
-					limb.transform.LookAt(root.transform);
-					limb.transform.Translate(0,0,-actual_limbs[j-1].transform.localScale.z);
+					limb_script.setPosition( segments[current_segment - 1].transform.localPosition );
+					segment.transform.LookAt(root.transform);
+					segment.transform.Translate(0,0,-segments[current_segment - 1].transform.localScale.z);
 				}
+                segments[current_segment] = segment;
 
-				limb.AddComponent<Rigidbody>();
-				limb.AddComponent<BoxCollider>();
-				limb.GetComponent<Collider>().material = (PhysicMaterial)Resources.Load("Physics Materials/Creature");
+				segment.AddComponent<Rigidbody>();
+				segment.AddComponent<BoxCollider>();
+				segment.GetComponent<Collider>().material = (PhysicMaterial)Resources.Load("Physics Materials/Creature");
 
-				ConfigurableJoint joint = limb.AddComponent<ConfigurableJoint>();
+				ConfigurableJoint joint = segment.AddComponent<ConfigurableJoint>();
 				joint.axis = new Vector3(0.5F, 0F, 0F);
 				joint.anchor = new Vector3(0F, 0F, 0.5F);
-				if(j == 0) {
+				if(current_segment == 0) {
 					joint.connectedBody = root.GetComponent<Rigidbody>();
 				} else {
-					joint.connectedBody = actual_limbs[j-1].GetComponent<Rigidbody>();
+					joint.connectedBody = segments[current_segment - 1].GetComponent<Rigidbody>();
 				}
-				limb.GetComponent<Rigidbody>().drag = 1F;
+				//segment.GetComponent<Rigidbody>().drag = .5F;
 
 				joints.Add(joint);
 
@@ -386,9 +395,9 @@ public class Creature : MonoBehaviour
 				joint.angularXDrive = angXDrive;
 				joint.angularYZDrive = angXDrive;
 
-				limb.GetComponent<Rigidbody>().SetDensity(1F);
-
-                all_limbs.Add(limb_script);
+				segment.GetComponent<Rigidbody>().SetDensity(1F);
+                all_segments.Add(segment);
+                current_segment += 1;
 			}
 		}
 	}
@@ -428,15 +437,15 @@ public class Creature : MonoBehaviour
     private void Lighten ()
     {
         root.GetComponent<MeshRenderer>().material.color = root_script.original_colour;
-        foreach (Limb l in all_limbs)
+        foreach (Segment s in all_segments)
         {
-            l.GetComponent<MeshRenderer>().material.color = l.original_colour;
+            s.GetComponent<MeshRenderer>().material.color = s.original_colour;
         }
     }
 
     private void ResetSpeed ()
     {
-        joint_frequency = chromosome.base_joint_frequency;
+        joint_frequency = chromosome.base_joint_frequency();
         force_scalar = 1F;
     }
 }

@@ -93,8 +93,8 @@ public class CreaturePane : MonoBehaviour
             state = char.ToUpper(state[0]) + state.Substring(1);
             State.text = state;
 
-            Root_Col.color = c.chromosome.colour;
-            Limb_Col.color = c.chromosome.limb_colour;
+            Root_Col.color = c.chromosome.root_colour();
+            Limb_Col.color = c.chromosome.limb_colour();
 
             ui_element.make_visible();
         }

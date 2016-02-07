@@ -1,93 +1,53 @@
 using UnityEngine;
-using LitJson;
 using System.Collections;
 using System.Collections.Generic;
 
-/*
- *		Author: 	Craig Lomax
- *		Date: 		07.09.2013
- *		URL:		clomax.me.uk
- *		email:		craig@clomax.me.uk
- *
- */
-
 public class Chromosome
 {
-	public Color colour;
-	public Color limb_colour;
-	public Vector3 root_scale;
-	public float base_joint_frequency;
-	public float base_joint_amplitude;
-	public float base_joint_phase;
-	public decimal hunger_threshold;
+    public List<float> genes;
 
-    public int num_branches;
-    public int[] num_recurrences;
-
-	public ArrayList branches;
-
-    public void setNumBranches(int n)
+    public Chromosome ()
     {
-        num_branches = n;
-        if (num_recurrences == null)
-            initNumRecurrences(n);
+        genes = new List<float>();
     }
 
-    void initNumRecurrences(int n)
+    public Color root_colour()
     {
-        num_recurrences = new int[n];
+        return new Color(genes[0], genes[1], genes[2]);
     }
 
-	public int getBranchCount() {
-		return branches.Count;
-	}
+    public Color limb_colour()
+    {
+        return new Color(genes[3], genes[4], genes[5]);
+    }
 
-	public ArrayList getLimbs(int index) {
-		return (ArrayList) branches[index];
-	}
+    public Vector3 root_scale()
+    {
+        return new Vector3(genes[6], genes[7], genes[8]);
+    }
 
-	public Color getColour () {
-		return colour;
-	}
+    public decimal hunger_threshold()
+    {
+        return (decimal)genes[9];
+    }
 
-	public Color getLimbColour () {
-		return limb_colour;
-	}
+    public float base_joint_frequency()
+    {
+        return genes[10];
+    }
 
-	public Vector3 getRootScale () {
-		return root_scale;
-	}
+    public float base_joint_amplitude()
+    {
+        return genes[11];
+    }
 
-	public ArrayList getBranches () {
-		return branches;
-	}
+    public float base_joint_phase()
+    {
+        return genes[12];
+    }
 
-	public void setBranches (ArrayList bs) {
-		branches = bs;
-	}
-
-	public void setColour (float r, float g, float b) {
-		colour = new Color(r,g,b);
-	}
-
-	public void setLimbColour (float r, float g, float b) {
-		limb_colour = new Color(r,g,b);
-	}
-
-	public void setRootScale (Vector3 rs) {
-		root_scale = rs;
-	}
-
-	public void setBaseFequency (float freq) {
-		base_joint_frequency = freq;
-	}
-
-	public void setBaseAmplitude (float amp) {
-		base_joint_amplitude = amp;
-	}
-
-	public void setBasePhase (float phase)
-	{
-		base_joint_phase = phase;
-	}
+    public int num_limbs()
+    {
+        return (int)genes[13];
+    }
 }
