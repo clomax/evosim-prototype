@@ -47,7 +47,7 @@ public class Creature : MonoBehaviour
     float joint_amplitude;
     float joint_phase;
 
-    float force_scalar = 1F;
+    float force_scalar = .1F;
 
     public delegate void CreatureState(Creature c);
     public static event CreatureState CreatureDead;
@@ -76,9 +76,8 @@ public class Creature : MonoBehaviour
     MeshRenderer[] ms;
 
     private ArrayList all_segments;
-    int num_limbs;
-    int[] num_segments;
-    Vector3[] segment_scales;
+    int num_segments;
+    float[] segment_scales;
 
     void Start()
     {
@@ -111,7 +110,7 @@ public class Creature : MonoBehaviour
         root_script = root.AddComponent<Root>();
         root_script.setColour(chromosome.root_colour());
         root_script.setScale(chromosome.root_scale());
-        root.GetComponent<Rigidbody>().mass = 1F;
+        root.GetComponent<Rigidbody>().mass = 1.5F;
         root.GetComponent<Rigidbody>().angularDrag = float.Parse(settings.contents["creature"]["angular_drag"].ToString());
         root.GetComponent<Rigidbody>().drag = float.Parse(settings.contents["creature"]["drag"].ToString());
         eye = new GameObject();
@@ -182,7 +181,7 @@ public class Creature : MonoBehaviour
 		if (pos_sine == 0) {
 			direction = root.transform.forward;
 		}
-        Vector3 force = Mathf.Abs(force_scalar) * direction * pos_sine * chromosome.num_limbs();
+        Vector3 force = Mathf.Abs(force_scalar) * direction * pos_sine * num_segments;
         root.GetComponent<Rigidbody>().AddForce(force);
 	}
 
@@ -309,21 +308,18 @@ public class Creature : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private Vector3[] UnrollGenes ()
+    private float[] GetLimbGenes()
     {
-        int total_segments = 0;
         for(int i=1; i < chromosome.limb_metadata.Length; i++)
         {
-            total_segments += chromosome.limb_metadata[i];
+            num_segments += chromosome.limb_metadata[i];
         }
+        segment_scales = new float[num_segments*3];
 
-        segment_scales = new Vector3[total_segments];
-        for (int segment_scales_index=0; segment_scales_index < total_segments; segment_scales_index++)
+        int segments_start = 13;
+        for (int segment_scales_index=0;  segment_scales_index < num_segments*3; segment_scales_index++)
         {
-            for (int i = 0; i < 3; i++)
-            {
-                segment_scales[segment_scales_index][i] = chromosome.genes[segment_scales_index + i];
-            }
+            segment_scales[segment_scales_index] = chromosome.genes[segments_start + segment_scales_index];
         }
 
         return (segment_scales);
@@ -331,26 +327,32 @@ public class Creature : MonoBehaviour
 
     private void setupLimbs ()
     {
+        float[] segment_scales = GetLimbGenes();
         int segment_scales_index = 0;
-        Vector3[] segment_scales = UnrollGenes();
 
         for (int current_limb = 1;
              current_limb <= chromosome.num_limbs();
              current_limb++)
         {
+            GameObject[] segments = new GameObject[chromosome.limb_metadata[current_limb]];
+
             for (int current_segment = 0;
                 current_segment < chromosome.limb_metadata[current_limb];
                 current_segment++)
             {
-                GameObject[] segments = new GameObject[chromosome.limb_metadata[current_limb]];
                 GameObject segment = GameObject.CreatePrimitive(PrimitiveType.Cube);
 				segment.layer = LayerMask.NameToLayer("Creature");
 				segment.name = current_limb+"_"+current_segment;
 				segment.transform.parent = _t;
 				Segment limb_script = segment.AddComponent<Segment>();
 
-                Vector3 scale = segment_scales[current_segment];
-				limb_script.setScale(scale);
+                Vector3 scale;
+                scale.x = segment_scales[segment_scales_index];
+                scale.y = segment_scales[segment_scales_index+1];
+                scale.z = segment_scales[segment_scales_index+2];
+                segment_scales_index += 3;
+
+                limb_script.setScale(scale);
 				limb_script.setColour((Color) chromosome.limb_colour());
 
                 Vector3 position;
@@ -398,7 +400,6 @@ public class Creature : MonoBehaviour
 
 				segment.GetComponent<Rigidbody>().SetDensity(1F);
                 all_segments.Add(segment);
-                current_segment += 1;
 			}
 		}
 	}

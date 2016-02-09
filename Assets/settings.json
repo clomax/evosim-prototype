@@ -46,21 +46,21 @@
 		"eye_refresh_rate"			: 0.25,
 		"age_sexual_maturity"		: 6,
 		"angular_drag"				: 4.5,
-		"drag"						: 0.5,
+		"drag"						: 1.0,
 		"limb_limit"				: 4,
 		"segment_limit"				: 3,
 
 		"root": {
 			"max_root_scale" : {
-				"x"					: 1.3,
-				"y"					: 1.3,
-				"z"					: 1.3
+				"x"					: 1.0,
+				"y"					: 1.0,
+				"z"					: 1.0
 			},
 
 			"min_root_scale": {
-				"x"					: 0.8,
-				"y"					: 0.8,
-				"z"					: 0.8
+				"x"					: 0.3,
+				"y"					: 0.3,
+				"z"					: 0.3
 			}
 		},
 
