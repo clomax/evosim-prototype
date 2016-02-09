@@ -90,21 +90,21 @@ public class GeneticsMain : MonoBehaviour
 
             // random initial limbs
             int num_limbs = Random.Range(1, limb_limit);
-            int[] num_segments = new int[num_limbs];
+            chromosome.limb_metadata = new int[num_limbs + 1];
+            chromosome.limb_metadata[0] = num_limbs;
 
-            for(int l=0; l<num_limbs; l++)
-                num_segments[l] = Random.Range(1, segment_limit);
+            for(int l=1; l<chromosome.limb_metadata.Length; l++)
+                chromosome.limb_metadata[l] = Random.Range(1, segment_limit);
 
-
-            for (int l=0; l<num_limbs; ++l)
+            for (int l = 1; l <= num_limbs; l++)
             {
-                Vector3[] segment_scales = new Vector3[num_segments[l]];
-                for (int s=0; s<num_segments[l]; s++)
+                Vector3[] segment_scales = new Vector3[chromosome.limb_metadata[l]];
+                for (int s = 0; s < chromosome.limb_metadata[l]; s++)
                 {
                     if (s == 0)
                     {
                         // random scale
-                        Vector3 scale = new Vector3 (
+                        Vector3 scale = new Vector3(
                             Random.Range(min_segment_scale.x, max_segment_scale.x),
                             Random.Range(min_segment_scale.y, max_segment_scale.y),
                             Random.Range(min_segment_scale.z, max_segment_scale.z)
@@ -125,8 +125,6 @@ public class GeneticsMain : MonoBehaviour
                                 segment_scales[s - 1].z * 0.8F
                             );
 
-                        if (s >= segment_scales.Length)
-                            print("test");
                         segment_scales[s] = scale;
 
                         chromosome.genes.Add(scale.x);
@@ -135,13 +133,6 @@ public class GeneticsMain : MonoBehaviour
                     }
                 }
             }
-
-            for(int s=0; s<num_limbs; ++s)
-            {
-                chromosome.genes.Add((float)num_segments[s]);
-            }
-
-            chromosome.genes.Add((float)num_limbs);
 
             if (eth.enoughEnergy(creature_init_energy))
             {

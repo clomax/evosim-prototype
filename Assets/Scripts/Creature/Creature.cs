@@ -47,7 +47,7 @@ public class Creature : MonoBehaviour
     float joint_amplitude;
     float joint_phase;
 
-    float force_scalar = 10F;
+    float force_scalar = 1F;
 
     public delegate void CreatureState(Creature c);
     public static event CreatureState CreatureDead;
@@ -76,6 +76,9 @@ public class Creature : MonoBehaviour
     MeshRenderer[] ms;
 
     private ArrayList all_segments;
+    int num_limbs;
+    int[] num_segments;
+    Vector3[] segment_scales;
 
     void Start()
     {
@@ -270,20 +273,10 @@ public class Creature : MonoBehaviour
         }
     }
 
-
-	/*
-	 * Return the current energy value for the creature
-	 */
 	public decimal getEnergy () {
 		return energy;
 	}
 
-	/*
-	 * Remove a specified amount of energy from the creature,
-	 * kill it if the creature's energy reaches zero.
-     *
-     * Return: true if energy is now below zero
-	 */
 	public bool subtractEnergy (decimal n)
     {
         bool equal_or_below_zero = false;
@@ -305,50 +298,58 @@ public class Creature : MonoBehaviour
         return (equal_or_below_zero);
 	}
 
-	/*
-	 * Remove energy from the creature for merely existing,
-	 * return it to the ether.
-	 */
 	private void metabolise () {
         subtractEnergy(metabolic_rate);
 	}
 
-	/*
-	 * Remove the creature from existence and return
-	 * the creature's energy.
-	 */
-	public void kill () {
+	public void kill ()
+    {
         subtractEnergy(energy);
         CreatureDead(this);
         Destroy(gameObject);
     }
 
-// TODO: Limbs should be made into a better tree structure, not this
-// 				list of lists rubbish
-	private void setupLimbs () {
-        int current_index = 14;
-        int num_limbs = chromosome.num_limbs();
-        for (int current_limb = 0; current_limb < num_limbs; current_limb++)
+    private Vector3[] UnrollGenes ()
+    {
+        int total_segments = 0;
+        for(int i=1; i < chromosome.limb_metadata.Length; i++)
         {
-            int num_segments = (int)chromosome.genes[current_index];
-            int limb_start_index = current_index;
-            for (current_index = current_index + 1;
-                current_index < limb_start_index + (num_segments * 3);
-                current_index += 6)
+            total_segments += chromosome.limb_metadata[i];
+        }
+
+        segment_scales = new Vector3[total_segments];
+        for (int segment_scales_index=0; segment_scales_index < total_segments; segment_scales_index++)
+        {
+            for (int i = 0; i < 3; i++)
             {
-                GameObject[] segments = new GameObject[num_segments];
-                int current_segment = 0;
+                segment_scales[segment_scales_index][i] = chromosome.genes[segment_scales_index + i];
+            }
+        }
+
+        return (segment_scales);
+    }
+
+    private void setupLimbs ()
+    {
+        int segment_scales_index = 0;
+        Vector3[] segment_scales = UnrollGenes();
+
+        for (int current_limb = 1;
+             current_limb <= chromosome.num_limbs();
+             current_limb++)
+        {
+            for (int current_segment = 0;
+                current_segment < chromosome.limb_metadata[current_limb];
+                current_segment++)
+            {
+                GameObject[] segments = new GameObject[chromosome.limb_metadata[current_limb]];
                 GameObject segment = GameObject.CreatePrimitive(PrimitiveType.Cube);
 				segment.layer = LayerMask.NameToLayer("Creature");
 				segment.name = current_limb+"_"+current_segment;
 				segment.transform.parent = _t;
 				Segment limb_script = segment.AddComponent<Segment>();
 
-                Vector3 scale = new Vector3(
-                        chromosome.genes[current_index],
-                        chromosome.genes[current_index + 1],
-                        chromosome.genes[current_index + 2]
-                    );
+                Vector3 scale = segment_scales[current_segment];
 				limb_script.setScale(scale);
 				limb_script.setColour((Color) chromosome.limb_colour());
 
@@ -437,9 +438,9 @@ public class Creature : MonoBehaviour
     private void Lighten ()
     {
         root.GetComponent<MeshRenderer>().material.color = root_script.original_colour;
-        foreach (Segment s in all_segments)
+        foreach (GameObject s in all_segments)
         {
-            s.GetComponent<MeshRenderer>().material.color = s.original_colour;
+            s.GetComponent<MeshRenderer>().material.color = s.GetComponent<Segment>().original_colour;
         }
     }
 

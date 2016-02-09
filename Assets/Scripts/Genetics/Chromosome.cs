@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Chromosome
 {
     public List<float> genes;
+    public int[] limb_metadata;
 
     public Chromosome ()
     {
@@ -48,6 +49,6 @@ public class Chromosome
 
     public int num_limbs()
     {
-        return (int)genes[13];
+        return limb_metadata[0];
     }
 }
