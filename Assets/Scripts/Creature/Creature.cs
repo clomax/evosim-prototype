@@ -47,7 +47,8 @@ public class Creature : MonoBehaviour
     float joint_amplitude;
     float joint_phase;
 
-    float force_scalar = .1F;
+    float force_scalar;
+    private float _force = 4F;
 
     public delegate void CreatureState(Creature c);
     public static event CreatureState CreatureDead;
@@ -148,10 +149,7 @@ public class Creature : MonoBehaviour
         InvokeRepeating("RandomDirection", 1F, 5F);
 
         root.GetComponent<Rigidbody>().SetDensity(1F);
-        force_scalar = 10F;
-
         ms = GetComponentsInChildren<MeshRenderer>();
-
         all_segments = new ArrayList();
 
         setupLimbs();
@@ -181,8 +179,12 @@ public class Creature : MonoBehaviour
 		if (pos_sine == 0) {
 			direction = root.transform.forward;
 		}
-        Vector3 force = Mathf.Abs(force_scalar) * direction * pos_sine * num_segments;
-        root.GetComponent<Rigidbody>().AddForce(force);
+
+        if (force_scalar > 0)
+        {
+            Vector3 force = Mathf.Abs(force_scalar) * direction * pos_sine * chromosome.num_limbs();
+            root.GetComponent<Rigidbody>().AddForce(force);
+        }
 	}
 
 	float Sine (float freq, float amplitude, float phase_shift) {
@@ -218,7 +220,7 @@ public class Creature : MonoBehaviour
             ResetSpeed();
         }
 
-        float _force = force_scalar;
+        _force = force_scalar;
         float _joint_frequency = joint_frequency;
         if (state == State.mating || state == State.eating)
         {
@@ -448,6 +450,6 @@ public class Creature : MonoBehaviour
     private void ResetSpeed ()
     {
         joint_frequency = chromosome.base_joint_frequency();
-        force_scalar = 1F;
+        force_scalar = _force;
     }
 }

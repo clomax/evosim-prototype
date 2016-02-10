@@ -24,6 +24,8 @@ public class GeneticsMain : MonoBehaviour
 	
 	int starting_creatures;
 	float creature_spread;
+
+
 	
 	Vector3 max_root_scale;
 	Vector3 min_root_scale;
@@ -65,8 +67,12 @@ public class GeneticsMain : MonoBehaviour
 		int limb_limit 	= (int)				    settings.contents["creature"]["limb_limit"];
 		int segment_limit = (int)			settings.contents["creature"]["segment_limit"];
 
+        float min_frequency = float.Parse(settings.contents["creature"]["min_frequency"].ToString());
+        float max_frequency = float.Parse(settings.contents["creature"]["max_frequency"].ToString());
+        float min_amplitude = float.Parse(settings.contents["creature"]["min_amplitude"].ToString());
+        float max_amplitude = float.Parse(settings.contents["creature"]["max_amplitude"].ToString());
 
-		for (int i=0; i<starting_creatures; i++)
+        for (int i=0; i<starting_creatures; i++)
         {
 			chromosome = new Chromosome();
 			
@@ -84,8 +90,8 @@ public class GeneticsMain : MonoBehaviour
             chromosome.genes.Add(float.Parse(settings.contents["creature"]["hunger_threshold"].ToString()));
 
             // base frequency, amp, phase
-            chromosome.genes.Add(Random.Range(3, 20));
-            chromosome.genes.Add(Random.Range (3,6));
+            chromosome.genes.Add(Random.Range(min_frequency, max_frequency));
+            chromosome.genes.Add(Random.Range(min_amplitude, max_amplitude));
             chromosome.genes.Add(Random.Range(0, 360));
 
             // random initial limbs

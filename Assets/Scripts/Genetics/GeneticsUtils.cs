@@ -22,11 +22,9 @@ public class GeneticsUtils
         Chromosome result = c;
 
         int size = result.genes.Count;
-        int num_limbs = (int)result.genes[size-1];
-        int limit = size - (num_limbs+1);
 
         int current_index;
-		for (current_index = 0; current_index < limit; current_index++)
+		for (current_index = 0; current_index < size; current_index++)
         {
 		    rand = rnd.NextDouble();
             if (rand < rate)
@@ -38,10 +36,13 @@ public class GeneticsUtils
 	
 	public static Chromosome crossover (Chromosome c1, Chromosome c2, double rate)
     {
-		Chromosome new_c = c1;
+        int c1_size = c1.genes.Count;
+        int c2_size = c2.genes.Count;
+		Chromosome new_c = (c1_size < c2_size) ? c1 : c2;
+        int size = new_c.genes.Count;
 
         int current_index;
-        for (current_index = 0; current_index < 13; current_index++)
+        for (current_index = 0; current_index < size; current_index++)
         {
             rand = rnd.NextDouble();
             new_c.genes[current_index] = (rand < 0.5f) ? c1.genes[current_index] : c2.genes[current_index];

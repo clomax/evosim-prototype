@@ -23,8 +23,8 @@
 	},
 
 	"foodbit": {
-		"init_energy_min"			: 5.0,
-		"init_energy_max"			: 25.0,
+		"init_energy_min"			: 20.0,
+		"init_energy_max"			: 20.0,
 		"init_scale_min"			: 0.3,
 		"init_scale_max"			: 0.8,
 		"destroy_at"				: 1.0,
@@ -40,40 +40,44 @@
 		"low_energy_threshold"		: 5.0,
 		"line_of_sight"				: 12.0,
 		"energy_to_offspring"		: 0.33,
-		"metabolic_rate"			: 0.8,
-		"mate_range"				: 2.0,
-		"eat_range"					: 0.75,
+		"metabolic_rate"			: 0.6,
+		"mate_range"				: 1.7,
+		"eat_range"					: 1.6,
 		"eye_refresh_rate"			: 0.25,
 		"age_sexual_maturity"		: 6,
 		"angular_drag"				: 4.5,
 		"drag"						: 1.0,
 		"limb_limit"				: 4,
 		"segment_limit"				: 3,
+		"min_frequency"				: 3.0,
+		"max_frequency"				: 15.0,
+		"min_amplitude"				: 3.0,
+		"max_amplitude"				: 6.0,
 
 		"root": {
 			"max_root_scale" : {
-				"x"					: 1.0,
-				"y"					: 1.0,
-				"z"					: 1.0
+				"x"					: 1.5,
+				"y"					: 1.5,
+				"z"					: 1.5
 			},
 
 			"min_root_scale": {
-				"x"					: 0.3,
-				"y"					: 0.3,
-				"z"					: 0.3
+				"x"					: 1.0,
+				"y"					: 1.0,
+				"z"					: 1.0
 			}
 		},
 
 		"segment": {
 			"max_segment_scale" : {
+				"x"					: 0.6,
+				"y"					: 0.6,
+				"z"					: 1.7
+			},
+			"min_segment_scale" : {
 				"x"					: 0.3,
 				"y"					: 0.3,
 				"z"					: 1.0
-			},
-			"min_segment_scale" : {
-				"x"					: 0.05,
-				"y"					: 0.05,
-				"z"					: 0.6
 			}
 		}
 	},
