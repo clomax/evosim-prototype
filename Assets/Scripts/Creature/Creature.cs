@@ -58,8 +58,8 @@ public class Creature : MonoBehaviour
 
     // TODO: Fix this shit "state machine"
     public enum State {
-						persuing_food,
-						persuing_mate,
+						pursuing_food,
+						pursuing_mate,
 						searching_for_mate,
 						mating,
 						eating,
@@ -250,10 +250,10 @@ public class Creature : MonoBehaviour
 	void updateState() {
 		if(state != Creature.State.mating) {
 			if (energy < chromosome.hunger_threshold) {
-                ChangeState((eye_script.targetFbit != null) ? State.persuing_food : State.searching_for_food);
+                ChangeState((eye_script.targetFbit != null) ? State.pursuing_food : State.searching_for_food);
 			}
 			if (energy >= chromosome.hunger_threshold && age > age_sexual_maturity) {
-                ChangeState((eye_script.targetCrt != null) ? State.persuing_mate : State.searching_for_mate);
+                ChangeState((eye_script.targetCrt != null) ? State.pursuing_mate : State.searching_for_mate);
 			}
 		}
 	}

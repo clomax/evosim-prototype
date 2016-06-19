@@ -48,13 +48,13 @@ public class Eye : MonoBehaviour
         targetCrt = null;
 		switch (crt.state)
         {
-		case Creature.State.persuing_mate:
+		case Creature.State.pursuing_mate:
 			most_similar_creature();
 			break;
 		case Creature.State.searching_for_mate:
 			most_similar_creature();
 			break;
-		case Creature.State.persuing_food:
+		case Creature.State.pursuing_food:
 			closestFoodbit();
 			break;
 		case Creature.State.searching_for_food:
@@ -98,7 +98,7 @@ public class Eye : MonoBehaviour
                 {
 					other_crt = c.transform.parent.GetComponent<Creature>();
 					Genitalia other_genital = other_crt.genital.GetComponent<Genitalia>();
-					if (crt.state == Creature.State.persuing_mate || other_crt.state == Creature.State.persuing_mate)
+					if (crt.state == Creature.State.pursuing_mate || other_crt.state == Creature.State.pursuing_mate)
                     {
 						co.observe(crt.genital.gameObject, other_genital.gameObject);
 						other_crt.ChangeState(Creature.State.mating);
@@ -152,7 +152,7 @@ public class Eye : MonoBehaviour
                 {
 					other_crt = c.transform.parent.GetComponent<Creature>();
 					Genitalia other_genital = other_crt.genital.GetComponent<Genitalia>();
-					if (crt.state == Creature.State.persuing_mate || other_crt.state == Creature.State.persuing_mate)
+					if (crt.state == Creature.State.pursuing_mate || other_crt.state == Creature.State.pursuing_mate)
                     {
 						co.observe(crt.genital.gameObject, other_genital.gameObject);
 						other_crt.ChangeState(Creature.State.mating);
@@ -191,7 +191,7 @@ public class Eye : MonoBehaviour
 					closest = f;
 					dist = curr_dist;
 				}
-				if (curr_dist < (float)fb_eat_range && (crt.state == Creature.State.persuing_food))
+				if (curr_dist < (float)fb_eat_range && (crt.state == Creature.State.pursuing_food))
                 {
 					fbit = f.GetComponent<Foodbit>();
 					crt.energy += fbit.energy;

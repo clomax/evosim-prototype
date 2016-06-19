@@ -53,11 +53,11 @@ public class Genitalia : MonoBehaviour {
 	
 	void Update () {
 		if (crt.state == Creature.State.mating && Time.time > (timeCreated + timeToEnableMating)) {
-			crt.state = Creature.State.persuing_mate;
+			crt.state = Creature.State.pursuing_mate;
 			timeCreated = Time.time;
 		}
 		
-		if(eye.targetCrt && crt.state == Creature.State.persuing_mate) {
+		if(eye.targetCrt && crt.state == Creature.State.pursuing_mate) {
 			lr.useWorldSpace = true;
 			line_end = new Vector3( eye.targetCrt.genital.transform.position.x,
 			                        eye.targetCrt.genital.transform.position.y,
