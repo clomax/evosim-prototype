@@ -1,30 +1,22 @@
 using UnityEngine;
-using System.Collections;
-
 public class Root : MonoBehaviour {
 	
 	Transform _t;
-	
 	public Creature crt;	
 	public GameObject eye;
 	public GameObject mouth;
 	public GameObject genital;
-	
 	public MeshRenderer mr;
 	public Material mt;
-
     public Color original_colour;
 	
 	void Start () {
 		_t = transform;
-		
 		mr = gameObject.GetComponent<MeshRenderer>();
-		
 		crt = _t.parent.gameObject.GetComponent<Creature>();
 		eye = crt.eye;
 		mouth = crt.mouth;
 		genital = crt.genital;
-
         tag = "Creature";
 	}
 

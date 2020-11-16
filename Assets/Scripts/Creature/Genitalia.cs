@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 /*
  *		Author: 	Craig Lomax
@@ -21,8 +20,8 @@ public class Genitalia : MonoBehaviour {
 	Transform _t;
 	LineRenderer lr;
 	Vector3 line_start;
-	float line_length			= 0.05F; // default
-	float line_width  			= 0.05F; // values
+	float line_length = 0.05F; // default
+	float line_width  = 0.05F; // values
 	Vector3 line_end;
 	double timeCreated;
 	double timeToEnableMating 	= 1.0F;
@@ -31,7 +30,6 @@ public class Genitalia : MonoBehaviour {
 
 	void Start () {
 		settings = Settings.getInstance();
-		
 		_t = transform;
 		gameObject.tag = "Genital";
 		crt = (Creature)_t.parent.parent.gameObject.GetComponent("Creature");
@@ -47,7 +45,6 @@ public class Genitalia : MonoBehaviour {
 		lr.SetVertexCount(2);
 		lr.GetComponent<Renderer>().enabled = true;
 		timeCreated = Time.time;
-		
 		line_length = 	float.Parse( settings.contents["genitalia"]["line_length"].ToString() );
 	}
 	
@@ -74,9 +71,6 @@ public class Genitalia : MonoBehaviour {
 			lr.SetPosition(1,line_end);
 		}
 	}
-	
-	
-	
 	void resetStart () {
 		line_start = new Vector3(_t.position.x,_t.position.y,_t.position.z);
 		lr.SetPosition(0,line_start);
