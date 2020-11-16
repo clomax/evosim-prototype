@@ -1,6 +1,4 @@
 using UnityEngine;
-using System.Collections;
-
 
 /*
  *		Author: 	Craig Lomax
@@ -16,18 +14,13 @@ public class Mouth : MonoBehaviour {
 	Foodbit fb;
 	Creature crt;
 	Eye eye;
-	
 	Transform _t;
 	LineRenderer lr;
-	
 	Vector3 line_start;
 	Vector3 line_end;
-	
 	float line_length 	= 0.05F;
 	float line_width 	= 0.05F;
-	
 	int fb_detect_range = 40;
-	
 	GameObject cf;
 
 	void Start () {
