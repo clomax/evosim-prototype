@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Evosim</title>
+  <meta name="description" content="A three-dimensional, real time artificial life simulator in which physics-driven creatures eat, mate and evolve by natural selection. Built in Unity.">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#top">Evosim</a>
+    <nav aria-label="Sections">
+      <a href="#overview">Overview</a>
+      <a href="#world">The world</a>
+      <a href="#creatures">Creatures</a>
+      <a href="#behaviour">Behaviour</a>
+      <a href="#genetics">Genetics</a>
+      <a href="#playing">Playing</a>
+      <a href="#limitations">Limitations</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Artificial life prototype</p>
+      <h1>Evosim</h1>
+      <p class="lede">
+        A three-dimensional, real time simulation of natural selection. Creatures made of
+        jointed physics blocks know nothing but eating and mating. Over generations they get
+        better at moving around, finding food and finding mates. Or they die out.
+      </p>
+      <p class="actions">
+        <a class="button" href="https://rlomax.itch.io/evosim">Download on itch.io</a>
+        <a class="button secondary" href="https://github.com/clomax/evosim-prototype">View source on GitHub</a>
+      </p>
+      <figure class="screenshot">
+        <img src="assets/img/hero.png" width="992" height="608"
+             alt="Pink block creatures in the teal water, two large ones in the foreground, with green lines from their mouths to the foodbits they are chasing.">
+        <figcaption>A population mid-run. Green lines show which foodbit each hungry creature is chasing.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="overview">
+    <div class="wrap">
+      <h2>Overview</h2>
+      <p>
+        Evosim is a proof of concept. It set out to find how well an ordinary consumer PC could
+        simulate a 3D artificial gene pool, where every creature is built from several rigid bodies
+        connected by joints and every one of them is simulated by the physics engine at once.
+      </p>
+      <p>
+        It is meant as a toy, not a scientific tool. Nothing about the creatures is designed:
+        the first generation is random, and everything after that comes from who managed to
+        eat and who managed to mate.
+      </p>
+      <h3>Inspiration</h3>
+      <p>
+        The project was first inspired by Karl Sims'
+        <a href="https://www.karlsims.com/evolved-virtual-creatures.html">Evolving Virtual Creatures</a>
+        (1994), in which creatures built from jointed blocks evolved to swim, walk and compete, and by
+        Jeffrey Ventrella's <a href="https://www.swimbots.com/">Swimbots</a>, a world of swimming
+        creatures that look for food and choose their own mates. The other spark was noticing that
+        this is what many people expected Spore (2008) to be: a world where creatures really evolve,
+        rather than being designed by the player.
+      </p>
+      <h3>What a creature does</h3>
+      <ol class="cards">
+        <li><strong>Eat</strong> When its energy drops below its hunger threshold, it looks for the nearest foodbit and swims towards it.</li>
+        <li><strong>Mate</strong> When it is fed and old enough, it looks for a partner, preferring one of a similar colour.</li>
+        <li><strong>Pass on genes</strong> A mating pair gives a third of each parent's energy to one child, whose genes are a mix of both, with random mutations.</li>
+        <li><strong>Die</strong> Being alive costs energy every second. A creature that runs out slows, darkens and dies.</li>
+      </ol>
+      <dl class="facts">
+        <dt>Engine</dt><dd>Unity, scripts in C#</dd>
+        <dt>Physics</dt><dd>Rigid bodies joined by configurable joints, driven by a sine wave</dd>
+        <dt>Platforms</dt><dd>Windows, Linux</dd>
+        <dt>Settings</dt><dd>One JSON file, no rebuild needed</dd>
+        <dt>Started</dt><dd>2011</dd>
+        <dt>Inspired by</dt><dd>Karl Sims' Evolving Virtual Creatures, Jeffrey Ventrella's Swimbots</dd>
+        <dt>Licence</dt><dd><a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></dd>
+      </dl>
+    </div>
+  </section>
+
+  <section id="world">
+    <div class="wrap">
+      <h2>The world and its energy</h2>
+      <p>
+        The simulation is a closed system. A fixed amount of energy, 5,000 units by default, is put
+        in at the start and never created or destroyed. Energy that isn't in a creature or a foodbit
+        sits in a pool called the <em>ether</em>. The ether limits how big the population can grow:
+        more creatures means less energy left for food.
+      </p>
+      <figure class="diagram">
+        <div class="diagram-scroll">
+          <svg viewBox="0 0 960 380" role="img" aria-labelledby="energy-title energy-desc">
+            <title id="energy-title">Energy flow</title>
+            <desc id="energy-desc">A closed system holding a fixed total of energy. The ether pays for new foodbits. Creatures gain energy by eating foodbits. Creatures return energy to the ether through metabolism every second and when they die. When two creatures mate, each gives a third of its energy to the child.</desc>
+            <defs>
+              <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z"/>
+              </marker>
+            </defs>
+
+            <rect class="d-zone" x="10" y="10" width="940" height="360" rx="12"/>
+            <text class="d-title" x="30" y="40">Closed system</text>
+            <text class="d-muted" x="30" y="60">total_energy = ether + foodbits + creatures</text>
+
+            <!-- Ether -->
+            <rect class="d-box" x="40" y="150" width="270" height="120" rx="8"/>
+            <text class="d-head" x="60" y="178">Ether</text>
+            <text x="60" y="202">The pool of unused energy</text>
+            <text x="60" y="220">Pays for every new foodbit</text>
+            <text class="d-muted" x="60" y="244">Corrects rounding leaks each minute</text>
+
+            <!-- Foodbits -->
+            <rect class="d-box" x="620" y="80" width="300" height="110" rx="8"/>
+            <circle class="d-food" cx="646" cy="103" r="7"/>
+            <text class="d-head" x="662" y="108">Foodbits</text>
+            <text x="640" y="132">5 to 25 units each; size shows energy</text>
+            <text x="640" y="150">Sprout near an existing foodbit,</text>
+            <text x="640" y="168">so food grows in clusters</text>
+
+            <!-- Creatures -->
+            <rect class="d-box" x="620" y="240" width="300" height="110" rx="8"/>
+            <rect class="d-body" x="639" y="257" width="14" height="14" rx="2"/>
+            <text class="d-head" x="662" y="268">Creatures</text>
+            <text x="640" y="292">Start with 70 units</text>
+            <text x="640" y="310">Spend 0.8 units a second to live</text>
+            <text x="640" y="328">Give 33% each to a child</text>
+
+            <!-- Ether to foodbits -->
+            <line class="d-flow" x1="310" y1="175" x2="619" y2="125" marker-end="url(#arrowhead)"/>
+            <text class="d-small" x="440" y="120" text-anchor="middle">New foodbit every 0.2 s,</text>
+            <text class="d-small" x="440" y="136" text-anchor="middle">if the ether can afford it</text>
+
+            <!-- Foodbits to creatures -->
+            <line class="d-flow" x1="770" y1="190" x2="770" y2="239" marker-end="url(#arrowhead)"/>
+            <text class="d-small" x="782" y="219">Eaten</text>
+
+            <!-- Creatures to ether -->
+            <line class="d-flow" x1="619" y1="300" x2="311" y2="245" marker-end="url(#arrowhead)"/>
+            <text class="d-small" x="465" y="300" text-anchor="middle">Metabolism every second,</text>
+            <text class="d-small" x="465" y="316" text-anchor="middle">everything left at death</text>
+          </svg>
+        </div>
+        <figcaption>Energy moves round a loop. The only way into a creature is through its mouth.</figcaption>
+      </figure>
+      <p>
+        Foodbits sprout from other foodbits, a short distance from a random parent, so food spreads
+        in patches across the world. Creatures that can reach a patch and stay near it do well, and
+        the patches thin out as they are grazed.
+      </p>
+    </div>
+  </section>
+
+  <section id="creatures">
+    <div class="wrap">
+      <h2>Creatures</h2>
+      <p>
+        Every creature is built at runtime from its chromosome. The body is a coloured box, the
+        <em>root</em>, with up to four branches of limbs attached to it. Each branch is a chain of
+        up to three box-shaped segments, joined to the root and to each other with physics joints.
+      </p>
+      <figure class="diagram">
+        <div class="diagram-scroll">
+          <svg viewBox="0 -45 960 395" role="img" aria-labelledby="body-title body-desc">
+            <title id="body-title">Creature body plan</title>
+            <desc id="body-desc">A creature's root box with three limb branches. One branch has two segments and the others have one each, joined by physics joints. The mouth sits on the front face and draws a green line to the foodbit it is chasing. The genital sits on the back face and draws a white line, ending in a red heart, to its chosen mate. The eye at the centre sees 12 units in every direction, shown by a dashed circle.</desc>
+
+            <!-- Line of sight -->
+            <circle class="d-zone" cx="330" cy="160" r="180"/>
+
+            <!-- Limbs -->
+            <rect class="d-limb" x="304" y="74" width="18" height="40" rx="2"/>
+            <rect class="d-limb" x="304" y="32" width="18" height="40" rx="2"/>
+            <rect class="d-limb" x="350" y="206" width="18" height="48" rx="2"/>
+            <rect class="d-limb" x="222" y="168" width="54" height="16" rx="2"/>
+
+            <!-- Root -->
+            <rect class="d-body" x="276" y="114" width="110" height="92" rx="4"/>
+
+            <!-- Joints -->
+            <circle class="d-box" cx="313" cy="114" r="5"/>
+            <circle class="d-box" cx="313" cy="73" r="5"/>
+            <circle class="d-box" cx="359" cy="206" r="5"/>
+            <circle class="d-box" cx="276" cy="176" r="5"/>
+
+            <!-- Eye, mouth, genital -->
+            <path class="d-eye" fill="#ffffff" stroke="#0f2627" stroke-width="1.5" d="M313,160 Q331,146 349,160 Q331,174 313,160 Z"/>
+            <circle class="d-iris" fill="#17a096" cx="331" cy="160" r="5.5"/>
+            <circle class="d-pupil" fill="#0f2627" cx="331" cy="160" r="2.5"/>
+            <line class="d-food-line" x1="386" y1="140" x2="462" y2="140"/>
+            <circle class="d-food" cx="480" cy="140" r="18"/>
+            <line class="d-mate-line" x1="276" y1="132" x2="200" y2="132"/>
+            <path class="d-heart" fill="#e02f4a" d="M188,141 C176,132 177,122 183,122 C186,122 188,124.5 188,126 C188,124.5 190,122 193,122 C199,122 200,132 188,141 Z"/>
+
+            <!-- Labels -->
+            <text class="d-head" x="660" y="64">Root</text>
+            <text x="660" y="84">A box with body colour and scale genes.</text>
+            <text x="660" y="102">The eye at its centre picks a target.</text>
+
+            <text class="d-head" x="660" y="140">Branches</text>
+            <text x="660" y="160">1 to 4 chains of 1 to 3 limb segments,</text>
+            <text x="660" y="178">all rocked by one sine wave.</text>
+
+            <text class="d-head" x="660" y="216">Mouth and genitalia</text>
+            <text x="660" y="236">The mouth on the front face eats food;</text>
+            <text x="660" y="254">the genital on the back face mates.</text>
+          </svg>
+        </div>
+        <figcaption>The body plan, simplified to two dimensions. Lines drawn from the mouth and genital show where a creature is heading. The dashed line is the creature's line-of-sight.</figcaption>
+      </figure>
+
+      <h3>How they move</h3>
+      <p>
+        Each creature has a sine wave set by three genes: frequency, amplitude and phase. The wave
+        drives every joint, so the limbs flap together in rhythm. On each upswing the creature is
+        pushed forwards and turns towards its target; it is pushed harder the more branches it has.
+        Drag on the root and limbs makes the world feel like water, and a body that flails in the
+        wrong direction gets nowhere.
+      </p>
+      <p>
+        A creature whose energy falls below 5 units slows down and fades to black. Food
+        brings its colour and speed back. If its energy reaches zero, it dies and its remaining
+        energy returns to the ether.
+      </p>
+
+      <div class="screenshot-pair">
+        <figure class="screenshot" style="--ar: calc(710 / 508)">
+          <img src="assets/img/creatures.png" width="710" height="508" loading="lazy"
+               alt="Close-up of creatures with mustard limb chains and red and coral bodies, two of them with green mouth lines to the same foodbit.">
+          <figcaption>Close up, the body plans vary a lot from one creature to the next.</figcaption>
+        </figure>
+        <figure class="screenshot" style="--ar: calc(807 / 593)">
+          <img src="assets/img/fading.png" width="807" height="593" loading="lazy"
+               alt="A spread-out population of small pink creatures, a few of them darkened to near black, with green lines running from mouths to foodbits.">
+          <figcaption>A starving creature slows down and darkens.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="behaviour">
+    <div class="wrap">
+      <h2>Behaviour</h2>
+      <p>
+        Creatures run a small state machine, updated ten times a second. The eye refreshes four
+        times a second and picks a target to suit the current state: the nearest foodbit when
+        hungry, or the most similarly coloured creature in sight when looking for a mate.
+      </p>
+      <div class="sequence-layout">
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>State</th><th>Entered when</th></tr></thead>
+            <tbody>
+              <tr><td>Searching for food</td><td>Energy below the hunger threshold and no foodbit in sight</td></tr>
+              <tr><td>Pursuing food</td><td>Hungry and a foodbit is in sight</td></tr>
+              <tr><td>Searching for mate</td><td>Fed, at least 6 seconds old, and no partner in sight</td></tr>
+              <tr><td>Pursuing mate</td><td>Fed, mature and a partner is in sight</td></tr>
+              <tr><td>Mating</td><td>A pursuing creature comes within 1 unit of its partner</td></tr>
+              <tr><td>Dead</td><td>Energy reaches zero, from any state</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <figure class="diagram sequence-diagram">
+          <div class="diagram-scroll">
+            <svg viewBox="-20 0 460 422" role="img" aria-labelledby="state-title state-desc">
+              <title id="state-title">Creature state machine</title>
+              <desc id="state-desc">A hungry creature searches for food, then pursues a foodbit once it sees one and eats it on contact. A fed, mature creature searches for a mate, pursues the partner it sees, and mates on contact, producing a child. After eating a foodbit, and after spawning a child, a decision checks whether the creature's energy is above its hunger threshold: if not, it goes back to searching for food; if so, it goes to searching for a mate.</desc>
+              <defs>
+                <marker id="st-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path class="d-arrowhead" d="M0,0 L10,5 L0,10 z"/>
+                </marker>
+                <marker id="st-arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path class="d-arrowhead-muted" d="M0,0 L10,5 L0,10 z"/>
+                </marker>
+              </defs>
+
+              <text class="d-head" x="105" y="24" text-anchor="middle">Hungry</text>
+              <text class="d-head" x="335" y="24" text-anchor="middle">Fed and mature</text>
+
+              <!-- Food side -->
+              <rect class="d-box" x="20" y="40" width="170" height="44" rx="8"/>
+              <text class="d-head" x="105" y="67" text-anchor="middle">Searching for food</text>
+              <line class="d-flow" x1="105" y1="84" x2="105" y2="139" marker-end="url(#st-arrow)"/>
+              <text class="d-small" x="113" y="116">Foodbit seen</text>
+
+              <rect class="d-box" x="20" y="140" width="170" height="44" rx="8"/>
+              <text class="d-head" x="105" y="167" text-anchor="middle">Pursuing food</text>
+              <line class="d-flow" x1="105" y1="184" x2="105" y2="239" marker-end="url(#st-arrow)"/>
+
+              <polygon class="d-box" points="20,262 36,240 174,240 190,262 174,284 36,284"/>
+              <text class="d-head" x="105" y="267" text-anchor="middle">Eat foodbit</text>
+              <circle class="d-gain" fill="#1fb565" cx="180" cy="242" r="9"/>
+              <path class="d-sign" stroke="#ffffff" stroke-width="2" d="M175,242 H185 M180,237 V247"/>
+              <line class="d-flow" x1="105" y1="284" x2="105" y2="304" marker-end="url(#st-arrow)"/>
+
+              <!-- Decision -->
+              <polygon class="d-box" points="20,340 105,305 190,340 105,375"/>
+              <text class="d-small" x="105" y="337" text-anchor="middle">Energy above</text>
+              <text class="d-small" x="105" y="352" text-anchor="middle">threshold?</text>
+
+              <!-- Mate side -->
+              <rect class="d-box" x="250" y="40" width="170" height="44" rx="8"/>
+              <text class="d-head" x="335" y="67" text-anchor="middle">Searching for mate</text>
+              <line class="d-flow" x1="335" y1="84" x2="335" y2="139" marker-end="url(#st-arrow)"/>
+              <text class="d-small" x="343" y="116">Partner seen</text>
+
+              <rect class="d-box" x="250" y="140" width="170" height="44" rx="8"/>
+              <text class="d-head" x="335" y="167" text-anchor="middle">Pursuing mate</text>
+              <line class="d-flow" x1="335" y1="184" x2="335" y2="239" marker-end="url(#st-arrow)"/>
+
+              <rect class="d-box" x="250" y="240" width="170" height="44" rx="8"/>
+              <text class="d-head" x="335" y="267" text-anchor="middle">Mating</text>
+              <line class="d-flow" x1="335" y1="284" x2="335" y2="329" marker-end="url(#st-arrow)"/>
+
+              <polygon class="d-box" points="250,352 266,330 404,330 420,352 404,374 266,374"/>
+              <text class="d-head" x="335" y="357" text-anchor="middle">Child spawned</text>
+              <circle class="d-loss" fill="#e02f4a" cx="410" cy="332" r="9"/>
+              <path class="d-sign" stroke="#ffffff" stroke-width="2" d="M405,332 H415"/>
+
+              <!-- Decision outcomes -->
+              <path class="d-flow" d="M190,340 H220 V62 H249" marker-end="url(#st-arrow)"/>
+              <text class="d-small" x="190" y="322">Yes</text>
+              <path class="d-flow" d="M20,340 H-10 V62 H19" marker-end="url(#st-arrow)"/>
+              <text class="d-small" x="22" y="322">No</text>
+
+              <!-- Back to the decision after mating -->
+              <path class="d-flow-muted" d="M335,374 V395 H105 V376" marker-end="url(#st-arrow-muted)"/>
+              <text class="d-small d-muted" x="220" y="412" text-anchor="middle">Energy spent on child</text>
+            </svg>
+          </div>
+          <figcaption>After eating, or after giving energy to a child, the creature's energy decides whether it looks for food or a mate next.</figcaption>
+        </figure>
+      </div>
+      <p>
+        The hunger threshold is itself a gene. A creature with a low threshold spends more of its
+        life looking for mates; one with a high threshold keeps eating. Which works better depends
+        on how much food is around, and the population drifts accordingly.
+      </p>
+      <figure class="screenshot">
+        <img src="assets/img/mating.gif" width="694" height="510" loading="lazy"
+             alt="Two orange creatures with long yellow limbs, joined by a white mate line, swim together and mate, and a child appears beside them.">
+        <figcaption>Two creatures meet, mate, and a child spawns between them.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="genetics">
+    <div class="wrap">
+      <h2>Genetics</h2>
+      <p>
+        A chromosome holds everything needed to build and run a creature. The first generation,
+        20 creatures by default, gets random genes within limits set in the settings file. After
+        that every new creature comes from two parents through crossover and then mutation.
+      </p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Gene</th><th>First generation</th><th>Crossover</th><th>Mutation</th></tr></thead>
+          <tbody>
+            <tr><td>Body colour</td><td>Random RGB</td><td>Average of both parents</td><td>Yes</td></tr>
+            <tr><td>Limb colour</td><td>Same as body colour</td><td>Average of both parents</td><td>Yes</td></tr>
+            <tr><td>Root scale</td><td>Random, 0.3 to 1.0 on each axis</td><td>From one parent</td><td>Only for roots over 1 unit on every axis</td></tr>
+            <tr><td>Limb structure</td><td>1 to 4 branches of 1 to 3 segments</td><td>From one parent</td><td>No</td></tr>
+            <tr><td>Segment size and position</td><td>Random within limits</td><td>Each axis may be swapped for a random segment's from the other parent</td><td>Size only</td></tr>
+            <tr><td>Joint wave: frequency, amplitude, phase</td><td>Random</td><td>Each from either parent</td><td>Yes</td></tr>
+            <tr><td>Hunger threshold</td><td>50 units</td><td>From either parent</td><td>Yes</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        With the default settings, each value has a 50% chance of being crossed over and a 10%
+        chance of mutating, by a random amount up to ±0.3. Because colour is averaged, and mates
+        are chosen by colour, related creatures tend to look alike and lineages show up as colour
+        groups across the world.
+      </p>
+    </div>
+  </section>
+
+  <section id="playing">
+    <div class="wrap">
+      <h2>Playing with it</h2>
+      <p>
+        Evosim is something to watch rather than play. Fly the camera around, click on creatures to
+        follow them, save the ones you like, and kill the ones you don't like.
+      </p>
+      <h3>Controls</h3>
+      <dl class="facts">
+        <dt>Right drag</dt><dd>Move forwards and back, and turn</dd>
+        <dt>Left and right drag</dt><dd>Turn and look up or down</dd>
+        <dt>Middle drag</dt><dd>Pan</dd>
+        <dt>Left click</dt><dd>Select a creature</dd>
+        <dt>F1</dt><dd>Show or hide simulation info</dd>
+        <dt>F2</dt><dd>Show or hide the tools panel</dd>
+        <dt>Esc</dt><dd>Quit</dd>
+      </dl>
+
+      <h3>Inspecting creatures</h3>
+      <p>
+        Selecting a creature opens a panel with its energy, age, number of offspring, food eaten
+        and current state. From there you can save it, kill it, or unlock the camera from it.
+        Saved creatures are written as JSON to <code>data/saved_creatures</code> and can be imported
+        back into a later run, so a creature that evolved well can be dropped into a fresh world.
+      </p>
+      <p>
+        There's already one in there that I saved called "Seahorse" because I thought it looked and behaved a bit like a seahorse.
+      </p>
+      <figure class="screenshot">
+        <img src="assets/img/creature-pane.png" width="939" height="661" loading="lazy"
+             alt="A selected coral creature chasing a large foodbit. The panel in the corner shows creature-4478 with energy 37.8, age 19 s, no offspring, one food eaten, state pursuing food, and Save, Kill and Unlock buttons.">
+        <figcaption>A selected creature and its info panel.</figcaption>
+      </figure>
+
+      <h3>Settings</h3>
+      <p>
+        Every number in the simulation lives in <code>evosim_Data/settings.json</code>: total
+        energy, starting population, food growth, metabolism, line of sight, body size limits,
+        and the crossover and mutation rates. Non-integer values must be written with a decimal
+        point, such as <code>3.0</code>, and nothing is validated. Population and foodbit counts
+        can be logged to CSV for graphing afterwards.
+      </p>
+      <pre><code>"ether": {
+    "total_energy"          : 5000.0,
+    "start_number_foodbits" : 200,
+    "starting_creatures"    : 20
+},
+"genetics": {
+    "crossover_rate"        : 0.5,
+    "mutation_rate"         : 0.1,
+    "mutation_factor"       : 0.3
+}</code></pre>
+      <p>
+        On a laptop or an older machine, lower <code>total_energy</code>. It puts a soft limit on
+        how many creatures can be alive at once, and so on how many rigid bodies the physics engine
+        has to handle. The default suits a 5th generation Core i5 or equivalent.
+      </p>
+
+      <h3>Building from source</h3>
+      <p>
+        Clone the repository and check out <code>develop</code>, since <code>master</code> is out of
+        date. Open the folder as an existing project in Unity, open the scene named
+        <em>Main</em>, and make sure the <em>Main</em> script is attached to the <em>Main</em>
+        GameObject.
+      </p>
+      <pre><code>git clone https://github.com/clomax/evosim-prototype.git
+cd evosim-prototype
+git checkout develop</code></pre>
+    </div>
+  </section>
+
+  <section id="limitations">
+    <div class="wrap">
+      <h2>Limitations</h2>
+      <p>
+        This is a prototype, and some of the shortcuts it takes are worth knowing about:
+      </p>
+      <ul>
+        <li>Movement is helped along. The root is pushed forwards in time with the joint wave, so limbs shape how a creature moves rather than doing all the work. The intention is to gradually introduce complexity.</li>
+        <li>The number of limbs and segments is fixed by the first generation; crossover picks one parent's layout and mutation never adds or removes a segment.</li>
+        <li>Root size almost never mutates, because the mutation only applies to roots larger than any first-generation creature.</li>
+        <li>The behaviour is a hand-written state machine, not something that evolves.</li>
+        <li>Performance is bounded by the physics engine. Large populations slow down quickly on modest hardware.</li>
+      </ul>
+      <h3>Ideas for further work</h3>
+      <p>
+        Plans and ideas are tracked on the project's
+        <a href="https://trello.com/b/YoK376nu/evosim">Trello board</a>.
+      </p>
+
+      <h4>Bodies and movement</h4>
+      <ul>
+        <li>Limbs that evolve: mutation that adds or removes segments and whole branches, and crossover that mixes branches from both parents, along with their shape, segments, colour and position. This is in progress.</li>
+        <li>A complete rebuild of how limbs work, drawing on Karl Sims' paper and Graph Craft.</li>
+        <li>Movement of limbs to determine propulsion rather than cheating it for effect, as Karl Sims' swimming creatures did.</li>
+        <li>An option to enforce symmetry in body shape.</li>
+        <li>Newborn creatures that grow slowly to full size.</li>
+      </ul>
+
+      <h4>Brains and behaviour</h4>
+      <ul>
+        <li>Neural network brains. Inputs would be the target's position, the creature's own position, its energy and how the distance to its goal is changing; outputs would set the joint amplitudes, frequencies and phases and the direction to face. Feedforward, recurrent, LSTM and NEAT or HyperNEAT networks are all candidates.</li>
+        <li>Sexual selection, and sexual dimorphism, with two sexes that can look different.</li>
+        <li>Carnivores, with creatures that can eat each other. This is more than a switch to flip, since it changes the whole energy balance.</li>
+        <li>Bioluminescence, perhaps as a way for creatures to signal to each other. Polyworld gave its creatures lights without knowing what they would use them for.</li>
+        <li>Groups of creatures at the start, each group identical or only slightly mutated, rather than all random.</li>
+      </ul>
+
+      <h4>Watching and experimenting</h4>
+      <ul>
+        <li>A settings panel inside the simulation for every value in the settings file, plus time scaling and a pause menu.</li>
+        <li>Saving and loading a whole gene pool, not just single creatures.</li>
+        <li>Statistics for the current gene pool, with live graphs of population and gene values.</li>
+        <li>A database behind it all: a time series of creature and foodbit numbers, together with settings, saved creatures, saved gene pools and a Clade diagram of genetic history.</li>
+        <li>Creature tracking: a list of creatures you're interested in, camera modes for following them, and a clear marker on the selected one.</li>
+        <li>Generated names for creatures, made of a genus name and a given name.</li>
+        <li>A creature editor that changes the genes as you edit the body, with import and export, and silhouettes of saved creatures.</li>
+        <li>Telling two chosen creatures to mate with each other.</li>
+        <li>A prettier environment.</li>
+      </ul>
+
+      <h4>Performance</h4>
+      <ul>
+        <li>A lookup table for the joint sine wave instead of calculating it every physics step.</li>
+        <li>Spreading the total energy check over several frames or threads.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Evosim by Craig Lomax · <a href="https://rlomax.itch.io/evosim">itch.io</a> · <a href="https://github.com/clomax/evosim-prototype">GitHub</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

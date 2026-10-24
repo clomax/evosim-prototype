@@ -1,0 +1,304 @@
+/* Evosim project site */
+
+/* Colours are taken from the simulation: the teal water, the green foodbits,
+   and the pink, coral and mustard of the creatures' bodies and limbs. */
+
+:root {
+  --bg: #f1f7f6;
+  --surface: #ffffff;
+  --text: #0f2627;
+  --muted: #4c6767;
+  --border: #cfe2df;
+  --accent: #0e7077;
+  --accent-text: #ffffff;
+  --code-bg: #e3efed;
+  --food: #1fb565;
+  --body: #d4687a;
+  --limb: #b89a1e;
+  --heart: #e02f4a;
+  --hero-from: #17a096;
+  --hero-to: #0e7077;
+  --hero-text: #ffffff;
+  --hero-muted: #d7f2ee;
+  --max: 64rem;
+  --gutter: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0a1f20;
+    --surface: #0f2b2c;
+    --text: #e2f1ee;
+    --muted: #93b4af;
+    --border: #1f4646;
+    --accent: #3fdc8a;
+    --accent-text: #062014;
+    --code-bg: #143637;
+    --food: #3fdc8a;
+    --body: #ec8a99;
+    --limb: #e0c64f;
+    --heart: #ff5268;
+    --hero-from: #10726d;
+    --hero-to: #0a3e42;
+    --hero-text: #f2fbf9;
+    --hero-muted: #b9e2dc;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 4rem; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 1rem/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+a { color: var(--accent); }
+
+code, pre {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.9em;
+}
+code { background: var(--code-bg); padding: 0.1em 0.3em; border-radius: 3px; }
+pre {
+  background: var(--code-bg);
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+pre code { background: none; padding: 0; }
+
+/* Header */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.site-header .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+.brand { font-weight: 700; color: var(--text); text-decoration: none; }
+.brand::before {
+  content: "";
+  display: inline-block;
+  width: 0.6em;
+  height: 0.6em;
+  margin-right: 0.45em;
+  border-radius: 50%;
+  background: var(--food);
+  vertical-align: 0.05em;
+}
+.site-header nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; }
+.site-header nav a { color: var(--muted); text-decoration: none; font-size: 0.95rem; }
+.site-header nav a:hover { color: var(--text); }
+
+/* Sections */
+
+section { padding: 3rem 0; border-bottom: 1px solid var(--border); }
+section:last-of-type { border-bottom: none; }
+
+h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); line-height: 1.15; margin: 0.25rem 0 1rem; }
+h2 { font-size: 1.6rem; margin: 0 0 1rem; }
+h3 { font-size: 1.15rem; margin: 2rem 0 0.75rem; }
+h4 { font-size: 1rem; margin: 1.5rem 0 0.5rem; color: var(--muted); }
+
+.eyebrow {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.lede { font-size: 1.15rem; color: var(--muted); max-width: 44rem; }
+
+/* Hero: the teal of the simulation's water */
+
+.hero {
+  background: linear-gradient(160deg, var(--hero-from), var(--hero-to));
+  color: var(--hero-text);
+  border-bottom: none;
+}
+.hero .eyebrow,
+.hero .lede { color: var(--hero-muted); }
+.hero .button { background: var(--hero-text); color: var(--hero-to); }
+.hero .button.secondary {
+  background: transparent;
+  color: var(--hero-text);
+  border-color: var(--hero-text);
+}
+.hero .screenshot figcaption { color: var(--hero-muted); }
+.hero .placeholder {
+  border-color: rgba(255, 255, 255, 0.45);
+  color: var(--hero-muted);
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1.5rem 0; }
+.button {
+  display: inline-block;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--accent-text);
+  text-decoration: none;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+.button.secondary {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+/* Drive cards */
+
+.cards {
+  list-style: none;
+  counter-reset: card;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 1rem;
+}
+.cards li {
+  counter-increment: card;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--food);
+  border-radius: 8px;
+  padding: 1rem;
+}
+.cards li:nth-child(2) { border-top-color: var(--body); }
+.cards li:nth-child(3) { border-top-color: var(--limb); }
+.cards li:nth-child(4) { border-top-color: var(--muted); }
+.cards li strong { display: block; margin-bottom: 0.25rem; }
+.cards li strong::before { content: counter(card) ". "; color: var(--muted); }
+
+/* Key facts */
+
+.facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.5rem;
+}
+.facts dt { font-weight: 600; }
+.facts dd { margin: 0; color: var(--muted); }
+
+@media (max-width: 30rem) {
+  .facts { grid-template-columns: 1fr; }
+  .facts dd { margin-bottom: 0.5rem; }
+}
+
+/* Tables */
+
+.table-scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; background: var(--surface); }
+th, td { text-align: left; padding: 0.5rem 0.75rem; border: 1px solid var(--border); vertical-align: top; }
+th { background: var(--code-bg); }
+
+/* Screenshots */
+
+.screenshot { margin: 1.5rem 0; }
+.screenshot img,
+.screenshot video {
+  display: block;
+  width: 100%;
+  max-width: 1024px;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.screenshot figcaption { margin-top: 0.5rem; color: var(--muted); font-size: 0.9rem; }
+
+/* Side by side, each figure grows in proportion to its image's aspect ratio
+   (--ar, set on the figure) so both images come out the same height */
+.screenshot-pair { display: grid; gap: 0 1.5rem; }
+@media (min-width: 52rem) {
+  .screenshot-pair { display: flex; align-items: flex-start; }
+  .screenshot-pair > .screenshot { flex: var(--ar, 1) 1 0; min-width: 0; }
+}
+
+/* Diagrams: inline SVG, coloured from the theme tokens */
+
+.diagram { margin: 1.5rem 0; }
+.diagram-scroll { overflow-x: auto; }
+.diagram svg { display: block; width: 100%; min-width: 720px; height: auto; }
+.diagram figcaption { margin-top: 0.5rem; color: var(--muted); font-size: 0.9rem; }
+
+.diagram text { fill: var(--text); font-size: 13px; }
+.diagram .d-title { font-size: 15px; font-weight: 700; }
+.diagram .d-head { font-size: 14px; font-weight: 600; }
+.diagram .d-small { font-size: 12px; }
+.diagram .d-muted { fill: var(--muted); font-weight: 400; }
+.diagram .d-mono { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; }
+
+.diagram .d-zone { fill: none; stroke: var(--muted); stroke-width: 1; stroke-dasharray: 6 4; }
+.diagram .d-box { fill: var(--surface); stroke: var(--border); stroke-width: 1.5; }
+.diagram .d-flow { stroke: var(--accent); stroke-width: 2; fill: none; }
+.diagram .d-arrowhead { fill: var(--accent); }
+.diagram .d-flow-muted { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 3; fill: none; }
+.diagram .d-arrowhead-muted { fill: var(--muted); }
+.diagram .d-box-alt { stroke: var(--muted); stroke-dasharray: 5 3; }
+
+.diagram .d-food { fill: var(--food); }
+.diagram .d-body { fill: var(--body); }
+.diagram .d-limb { fill: var(--limb); }
+.diagram .d-food-line { stroke: var(--food); stroke-width: 2; }
+/* White, as in the simulation; the shadow keeps it visible on the light background */
+.diagram .d-mate-line { stroke: #ffffff; stroke-width: 2; filter: drop-shadow(0 0 1px var(--muted)); }
+.diagram .d-heart { fill: var(--heart); }
+.diagram .d-gain { fill: var(--food); }
+.diagram .d-loss { fill: var(--heart); }
+.diagram .d-sign { stroke: #ffffff; stroke-width: 2; stroke-linecap: round; fill: none; }
+.diagram .d-eye { fill: #ffffff; stroke: #0f2627; stroke-width: 1.5; }
+.diagram .d-iris { fill: #17a096; }
+.diagram .d-pupil { fill: #0f2627; }
+
+/* Behaviour: table and state diagram side by side on wide screens */
+
+.sequence-layout { display: grid; gap: 1.5rem 2rem; align-items: start; }
+.sequence-layout .diagram { margin: 0; }
+.sequence-diagram svg { min-width: 340px; max-width: 460px; margin: 0 auto; }
+.sequence-diagram .d-small { font-size: 13px; }
+
+@media (min-width: 52rem) {
+  .sequence-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+/* Stand-ins for screenshots still to be added */
+
+.placeholder {
+  margin: 0;
+  min-height: 12rem;
+  aspect-ratio: 16 / 10;
+  display: grid;
+  place-items: center;
+  border: 2px dashed var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 1rem;
+}
+.placeholder code { background: none; padding: 0; }
+
+/* Footer */
+
+.site-footer { padding: 2rem 0; color: var(--muted); font-size: 0.9rem; }
